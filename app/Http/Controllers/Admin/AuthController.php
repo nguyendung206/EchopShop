@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -42,7 +41,7 @@ class AuthController extends Controller
         }
     }
 
-    public function Logout(Request $request)
+    public function Logout()
     {
         Auth::guard('admin')->logout();
         Session::flush();
