@@ -20,6 +20,9 @@ class AdminSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123'),
+            'avatar' => '1.png',
+            'status' => '1',
+            'role' => '1',
         ]);
     }
 }
