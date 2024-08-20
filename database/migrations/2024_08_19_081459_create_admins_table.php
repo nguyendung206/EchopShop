@@ -15,9 +15,12 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Tên của admin
-            $table->string('email')->unique(); // Email duy nhất
+            $table->string('name');
+            $table->string('email')->unique(); 
             $table->string('password');
+            $table->string('avatar');
+            $table->integer('status');
+            $table->integer('role');
             $table->timestamps();
         });
     }

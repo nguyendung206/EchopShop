@@ -4,23 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Model
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Tên bảng trong cơ sở dữ liệu (nếu không theo quy ước của Laravel)
-     * Laravel mặc định sử dụng số nhiều của tên class cho tên bảng, như ở đây sẽ là 'admins'.
-     * Nếu bảng của bạn tên là 'admin', bạn cần chỉ định nó.
-     */
-    protected $table = 'admin';
-
-    /**
-     * Các thuộc tính có thể gán hàng loạt.
-     * Laravel bảo vệ các thuộc tính khỏi việc gán hàng loạt một cách không an toàn.
-     */
     protected $fillable = [
         'name',
         'email',
