@@ -46,11 +46,11 @@
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address..." name="email">
+                                                placeholder="Enter Email Address..." name="email" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password" name="password">
+                                                id="exampleInputPassword" placeholder="Password" name="password" required>
                                         </div>
                                         @if (session('error'))
                                         <div class="alert alert-danger">
