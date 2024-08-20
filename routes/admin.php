@@ -15,10 +15,10 @@ use App\Http\Controllers\Admin\AuthController;
 */
 
 
-Route::get('/login', [AuthController::class, 'Index']);
+Route::get('/login', [AuthController::class, 'Index'])->name('admin.login');
 Route::post('/login', [AuthController::class, 'Login'])->name('login');
-Route::middleware(['auth'])->group(function () {
-    Route::prefix('admin')->group(function () {
-        Route::get('/', [AuthController::class, 'Index'])->name('admin');
-    });
+Route::get('/logout', [AuthController::class, 'Logout'])->name('logout');
+
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
+    Route::get('/', [AuthController::class, 'Index'])->name('admin.index');
 });

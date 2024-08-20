@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -16,7 +15,7 @@ class AuthController extends Controller
 
     public function Index()
     {
-        if (auth()->check()) {
+        if (Auth::guard('admin')->check()) {
             return view('admin.index');
         }
 
@@ -25,25 +24,27 @@ class AuthController extends Controller
 
     public function Login(Request $request)
     {
+
         $request->validate([
-            'email' => 'required|email:filter',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $email = $request->input('email');
-        $password = $request->input('password');
-        $user = Admin::where('email', $email)->first();
-        dd($user);
-        if ($user) {
-            if (Hash::check($password, $user->password)) {
-                auth()->login($user);
-                Session::put('admin', $user);
-                return view('admin.index');
-            } else {
-                return redirect()->back()->with('error', 'Mật khẩu không đúng.');
-            }
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            Session::put('admin', Auth::guard('admin')->user());
+            return redirect()->route('admin.index');
         } else {
-            return redirect()->back()->with('error', 'Admin không tồn tại.');
+            // Đăng nhập thất bại
+            return redirect()->back()->with('error', 'Email hoặc mật khẩu không đúng.');
         }
+    }
+
+    public function Logout()
+    {
+        Auth::guard('admin')->logout();
+        Session::flush();
+        return redirect()->route('admin.login');
     }
 }
