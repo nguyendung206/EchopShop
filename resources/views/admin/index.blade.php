@@ -99,7 +99,7 @@
                     </div>
                     <div class="card-body">
                         <div class="chart">
-                            <canvas id="hour2" class="w-100" height="460"></canvas>
+                            <canvas id="hour2" class="w-100"></canvas>
                         </div>
                     </div>
                 </div>

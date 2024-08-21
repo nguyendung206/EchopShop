@@ -4,25 +4,6 @@
 <div class="box box-primary">
     <div class="box-body">
         <form action="{{route('profile.save')}}" method="post" enctype="multipart/form-data">
-            @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-            @endif
-            @if (session('message'))
-            <div class="alert alert-success">
-                {{ session('message') }}
-            </div>
-            @endif
-            <!-- @if (flash()->message)
-            <div class="{{ flash()->class }} alert alert-success">
-                {{ flash()->message }}
-            </div>
-
-            @if(flash()->level === 'error')
-            This was an error.
-            @endif
-            @endif -->
             <input type="hidden" name="Id" value="{{$profile->id}}" />
             <input type="hidden" name="Password" value="{{$profile->Password}}" />
             <div class="form-group">

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use Spatie\Flash\Flash;
+use Laracasts\Flash\Flash;
 
 class ProfileController extends Controller
 {
@@ -23,7 +23,8 @@ class ProfileController extends Controller
                 ->where('id', '!=', $request->Id)
                 ->exists();
             if ($emailExists) {
-                return redirect()->back()->with('error', 'Email đã tồn tại. Vui lòng chọn email khác.');
+                flash('Email đã tồn tại. Vui lòng chọn email khác.')->error();
+                return redirect()->back();
             }
             $profile->email = $request->Email;
             $profile->name = $request->Name;
@@ -35,20 +36,11 @@ class ProfileController extends Controller
                 $profile->avatar = $file_name;
             }
             $profile->save();
-            // \Spatie\Flash\Flash::levels([
-            //     'success' => 'alert-success',
-            //     'warning' => 'alert-warning',
-            //     'error' => 'alert-error',
-            // ]);
-            // flash()->success('Hurray');
-            // flash()->warning('Mayybeee');
-            // flash()->error('Oh Oh');
-
-            // flash('Cập nhật Hồ sơ thành công')->success();
-            // return redirect()->route('profile.index', ['Id' => $request->Id]);
-            return redirect()->route('profile.index', ['Id' => $request->Id])->with('message', 'Cập nhật Hồ sơ thành công');
+            flash('Cập nhật thông tin thành công!')->success();
+            return redirect()->route('profile.index', ['Id' => $request->Id]);
         } else {
-            return redirect()->back()->with('error', 'Profile không tồn tại.');
+            flash('Không tìm thấy hồ sơ.')->error();
+            return redirect()->back();
         }
     }
 }
