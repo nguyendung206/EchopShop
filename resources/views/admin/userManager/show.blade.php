@@ -70,11 +70,7 @@
                         </div>
                         <div class="d-flex justify-content-start">
                             <a class="btn btn-primary" style="color: white" href="{{ route('manager-user.edit', $user->id)}}">Sửa</a>
-                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block; margin-bottom: 0">
-                                @csrf
-                                @method("DELETE")
-                                <button class="btn btn-danger" type="submit">Xoá</button>
-                            </form>
+                            
                             <a class="btn btn-secondary" style="color: white" href="{{route("manager-user.index")}}">Trở về</a>
                         </div>
                         </div>
@@ -87,7 +83,45 @@
         </section>
     </div>
 </div>
+
+<script>
+    $(document).on('click', '.btn-delete', function() {
+            let delete_id= $(this).attr('data-id');
+            let delete_href = $(this).attr('data-href');
+            Swal.fire({
+                title: 'Xoá người dùng này',
+                text: 'Bạn có muốn tiếp tục xoá',
+                // icon: 'error',
+                confirmButtonText: 'Tiếp tục',
+                cancelButtonText: 'Huỷ',
+                showCancelButton: true,
+                showCloseButton: true,
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var data = {
+                        "_token": "{{ csrf_token() }}",
+                        "id": delete_id,
+                    };
+                    $.ajax({
+                        type: "DELETE",
+                        url: delete_href,
+                        data: data,
+                        success: function (response){
+                            Swal.fire('Xoá thành công');
+                            location.reload();
+                        },
+                        error : function(err) {
+                            console.log(err.responseText);
+                            Swal.fire('Đã có lỗi xảy ra');
+                        }
+                    });
+                }
+            });
+        });
+</script>
 @endsection
+
 
 
 

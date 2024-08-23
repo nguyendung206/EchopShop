@@ -11,15 +11,11 @@ class UserController extends Controller
 {
     // Hiển thị tất cả người dùng
     public function index () {
-            $users = Users::all();
-            return view('admin.userManager.index', compact('users'));
+            $users = Users::paginate(5);
+            return view('admin.userManager.index', compact('users'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
-    public function show($id = null) {
-        if(empty($id)) {
-            $users = Users::all();
-            return view('admin.userManager.index', compact('users'));
-        }
+    public function show($id) {
         $user = Users::find($id);
         if(!$user) {
             return back()->with('message', 'Không có người dùng tương ứng');
@@ -33,6 +29,13 @@ class UserController extends Controller
 
     public function store (UserRequest $request) {
             
+            // if($request->has('image')) {
+            //     dd($request->image);
+            //     $file = $request->image;
+            //     $fileName = $file->getClientoriginalName();
+            //     $file-> move(public_path('image', $fileName));
+            //     $request->merge(['image' => $fileName]);
+            // }
             $request->day_of_issue = \DateTime::createFromFormat('d/m/Y', $request->input('day_of_issue'))->format('Y-m-d');
             $request->date_of_birth = \DateTime::createFromFormat('d/m/Y', $request->input('date_of_birth'))->format('Y-m-d');
             Users::create([
@@ -52,7 +55,7 @@ class UserController extends Controller
     }
 
 
-    public function edit($id = null) {
+    public function edit($id) {
         $user = Users::find($id);
         if(!$user) {
             return back()->with('message', 'Không có người dùng tương ứng');
@@ -60,7 +63,7 @@ class UserController extends Controller
         return view('admin.userManager.edit', compact('user'));
     }
 
-    public function update (Request $request ,$id = null) {
+    public function update (UserRequest $request ,$id = null) {
         $user = Users::find($id);
         if(!$user) {
             return back()->with('message', 'Không có người dùng tương ứng');
@@ -91,9 +94,9 @@ class UserController extends Controller
         
         $result = $user->delete();
         if($result){
-            return redirect()->route('manager-user.index');
+            return  response()->json(['message' => 'Xóa thành công'], 200);
         }else {
-            return redirect()->route('manager-user.index')->with('message', 'Xoá người dùng thất bại');
+            return response()->json(['message' => 'Xóa người dùng thất bại'], 500);
         }
     }
 }

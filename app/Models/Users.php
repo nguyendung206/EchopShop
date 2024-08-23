@@ -33,6 +33,15 @@ class Users extends Model
     protected $hidden = [
         'password',
     ];
+    public function statusText()
+    {
+        return $this->status == 0 ? 'Hoạt động' : 'Đax bị khoá';
+    }
+    public function genderText()
+    {
+        return $this->status == 0 ? 'Nam' : 'Nữ';
+    }
+
 
 }
 

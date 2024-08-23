@@ -23,10 +23,10 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rule = [
                 'name' => ['required', 'min:3', 'max:100'],
-                'password' => ['required', 'min:3', 'max:255'],
-                'passwordComfirm' => ['required', 'same:password'],
+                // 'password' => ['required', 'min:3', 'max:255'],
+                // 'passwordComfirm' => ['required', 'same:password'],
                 'phone_number' => ['required', 'numeric','digits: 10'],
                 'email' => ['required','email'],
                 'citizen_identification_number' => ['required','numeric', 'digits:12'],
@@ -40,6 +40,12 @@ class UserRequest extends FormRequest
                 }}],
                 'place_of_issue' => ['required', 'min:3', 'max:255'],
         ];
+        if ($this->has('password')) {
+            $rules['password'] = ['required', 'min:3', 'max:255'];
+            $rules['passwordComfirm'] = ['required', 'same:password'];
+        }
+    
+        return $rule;
     }
 
     public function messages() {
