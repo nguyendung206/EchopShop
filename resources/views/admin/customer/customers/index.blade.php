@@ -23,7 +23,7 @@
                 <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search')}}" @isset($sort_search) @endisset placeholder="@lang('user.search')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
-                <a href="{{route('admin.createUser')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
+                <a href="{{route('manager-user.create')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -123,10 +123,10 @@
                                             <i class="las la-ban"></i>
                                         </a>
                                     @endif
-                                    <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.editUser',$customer->id) }}" title="@lang('user.edit')">
+                                    <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('manager-user.edit',$customer->id) }}" title="@lang('user.edit')">
                                         <i class="las la-edit"></i>
                                     </a>
-                                    <a href="javascript:void(0)" data-href="{{route('admin.deleteUser',$customer->id)}}" data-id="{{$customer->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                                    <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$customer->id)}}" data-id="{{$customer->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
                                         <i class="las la-trash"></i>
                                     </a>
                             </form>

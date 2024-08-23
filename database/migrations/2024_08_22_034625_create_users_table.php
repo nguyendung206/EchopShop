@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('citizen_identification_number')->nullable();
             $table->dateTime('day_of_issue')->nullable();
             $table->string('place_of_issue')->nullable();
-            $table->string('date_of_birth')->nullable();
-            $table->boolean ('gender')->default(1);
+            $table->dateTime('date_of_birth')->nullable();
+            $table->integer ('gender')->default(1);
             $table->integer('rank_id')->default(1);
             $table->string('address')->nullable();
             $table->bigInteger('province_id')->nullable();
