@@ -63,7 +63,7 @@ class UserController extends Controller
         return view('admin.userManager.edit', compact('user'));
     }
 
-    public function update (UserRequest $request ,$id = null) {
+    public function update (UserRequest $request ,$id) {
         $user = Users::find($id);
         if(!$user) {
             return back()->with('message', 'Không có người dùng tương ứng');
