@@ -52,10 +52,10 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Xác nhận mật khẩu<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="password" id="passwordComfirm" placeholder="Xác nhận mật khẩu" name="passwordComfirm" class="form-control
-                             @error('passwordComfirm') is-invalid  @enderror" >
+                            <input type="password" id="passwordConfirm" placeholder="Xác nhận mật khẩu" name="passwordConfirm" class="form-control
+                             @error('passwordConfirm') is-invalid  @enderror" >
                             <span class="mt-1" id='message'></span>
-                            @error('passwordComfirm')
+                            @error('passwordConfirm')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -84,9 +84,9 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Ngày cấp<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="Nhập ngày cấp" name="day_of_issue" class="form-control
-                            @error('day_of_issue') is-invalid  @enderror" value="{{ old('day_of_issue') }}">
-                            @error('day_of_issue')
+                            <input type="date" placeholder="Nhập ngày cấp" name="date_of_issue" class="form-control
+                            @error('date_of_issue') is-invalid  @enderror" value="{{ old('date_of_issue') }}">
+                            @error('date_of_issue')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -104,7 +104,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Ngày sinh<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="Nhập ngày cấp" name="date_of_birth" class="form-control
+                            <input type="date" placeholder="Nhập ngày cấp" name="date_of_birth" class="form-control
                             @error('date_of_birth') is-invalid  @enderror" value="{{ old('date_of_birth') }}">
                             @error('date_of_birth')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -153,11 +153,11 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-        $('#password, #password_confirmation').on('keyup', function () {
-            if ($('#password').val() == $('#password_confirmation').val()) {
-                $('#message').html('Matching').css('color', 'green');
+        $('#password, #passwordConfirm').on('keyup', function () {
+            if ($('#password').val() == $('#passwordConfirm').val()) {
+                $('#message').html('Hợp lệ').css('color', 'green');
             } else
-                $('#message').html('Not Matching').css('color', 'red');
+                $('#message').html('Mật khẩu xác nhận không đúng').css('color', 'red');
         });
 
     </script>

@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-6 mb-3">
                             <h6>Ngày sinh</h6>
-                            <p class="text-muted">{{ \DateTime::createFromFormat('Y-m-d H:i:s', $user->date_of_birth)->format('d/m/Y');}}</p>
+                            <p class="text-muted">{{ date('d/m/Y', strtotime(optional($user)->date_of_birth)) }}</p>
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Giới tính</h6>
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col-6 mb-3">
                                 <h6>Ngày cấp</h6>
-                                <p class="text-muted">{{ \DateTime::createFromFormat('Y-m-d H:i:s', $user->day_of_issue)->format('d/m/Y');}}</p>
+                                <p class="text-muted">{{date('d/m/Y', strtotime(optional($user)->date_of_issue))}}</p>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <h6>Trạng thái tài khoản</h6>
@@ -70,7 +70,13 @@
                         </div>
                         <div class="d-flex justify-content-start">
                             <a class="btn btn-primary" style="color: white" href="{{ route('manager-user.edit', $user->id)}}">Sửa</a>
-                            
+                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block">
+                                @csrf
+                                @method("DELETE")
+                                <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete  btn-danger confirm-delete" title="@lang('user.delete')">
+                                    Xoá
+                                </a>
+                            </form>
                             <a class="btn btn-secondary" style="color: white" href="{{route("manager-user.index")}}">Trở về</a>
                         </div>
                         </div>
@@ -83,9 +89,12 @@
         </section>
     </div>
 </div>
+@endsection
 
-<script>
+@section('script')
+<script type="text/javascript">
     $(document).on('click', '.btn-delete', function() {
+        console.log("Alo")
             let delete_id= $(this).attr('data-id');
             let delete_href = $(this).attr('data-href');
             Swal.fire({
@@ -109,7 +118,7 @@
                         data: data,
                         success: function (response){
                             Swal.fire('Xoá thành công');
-                            location.reload();
+                            window.location.href = '/admin/manager-user';
                         },
                         error : function(err) {
                             console.log(err.responseText);

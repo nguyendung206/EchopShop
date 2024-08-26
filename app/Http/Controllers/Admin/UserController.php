@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Models\Users;
 use App\Http\Requests\UserRequest;
 
@@ -36,22 +37,20 @@ class UserController extends Controller
             //     $file-> move(public_path('image', $fileName));
             //     $request->merge(['image' => $fileName]);
             // }
-            $request->day_of_issue = \DateTime::createFromFormat('d/m/Y', $request->input('day_of_issue'))->format('Y-m-d');
-            $request->date_of_birth = \DateTime::createFromFormat('d/m/Y', $request->input('date_of_birth'))->format('Y-m-d');
             Users::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'phone_number' => $request->phone_number,
                 'citizen_identification_number' => $request->citizen_identification_number,
-                'day_of_issue' => $request->day_of_issue,
+                'date_of_issue' => $request->date_of_issue,
                 'place_of_issue' => $request->place_of_issue,
                 'date_of_birth' => $request->date_of_birth,
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
             ]);
-            return redirect()->route('manager-user.index');
+            return redirect()->route('manager-user.index')-> with('message', 'Thêm người dùng thành công');
     }
 
 
@@ -68,21 +67,19 @@ class UserController extends Controller
         if(!$user) {
             return back()->with('message', 'Không có người dùng tương ứng');
         }
-        $request->day_of_issue = \DateTime::createFromFormat('d/m/Y', $request->input('day_of_issue'))->format('Y-m-d');
-        $request->date_of_birth = \DateTime::createFromFormat('d/m/Y', $request->input('date_of_birth'))->format('Y-m-d');
         $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
                 'citizen_identification_number' => $request->citizen_identification_number,
-                'day_of_issue' => $request->day_of_issue,
+                'date_of_issue' => $request->date_of_issue,
                 'place_of_issue' => $request->place_of_issue,
                 'date_of_birth' => $request->date_of_birth,
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
         ]);
-        return redirect()->route('manager-user.index');
+        return redirect()->route('manager-user.index')-> with('message', 'Sửa người dùng thành công');
     }
 
  

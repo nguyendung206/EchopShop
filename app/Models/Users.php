@@ -16,7 +16,7 @@ class Users extends Model
         'avatar',
         'phone_number',
         'citizen_identification_number',
-        'day_of_issue',
+        'date_of_issue',
         'place_of_issue',
         'date_of_birth',
         'gender',

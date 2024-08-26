@@ -84,6 +84,11 @@
 </form>
 <div class="card">
     <div class="custom-overflow repon">
+        @if(session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
         <table class="table aiz-table mb-0 table_repon">
             <thead>
                 <tr>
@@ -117,7 +122,7 @@
                         <td class="font-weight-400 align-middle">{{$user->address}}</td>
                         <td class="font-weight-400 align-middle">{{optional($user)->statusText('status')}}</td>
                         <td class="font-weight-400 align-middle">{{optional($user)->genderText('gender')}}</td>
-                        <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birtht))}}</td>
+                        <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>
                         <td class="text-right">
                             {{-- <form action="" method="POST" class="mr-2" id="form-active-user">
                                 <input type="hidden" name="status" value="{{ $user->status == 1? '2':'1'}}">
