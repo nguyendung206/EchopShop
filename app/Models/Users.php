@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\UserGenger;
+
 
 class Users extends Model
 {
@@ -35,7 +37,7 @@ class Users extends Model
     ];
     public function statusText()
     {
-        return $this->status == 0 ? 'Hoạt động' : 'Đax bị khoá';
+        return $this->status == 0 ? 'Hoạt động' : 'Đã bị khoá';
     }
     public function genderText()
     {

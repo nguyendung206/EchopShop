@@ -14,15 +14,15 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">@lang('user.create_user')</h5>
+                <h5 class="mb-0 h6">Sửa người dùng</h5>
             </div>
             <div class="card-body">
                 @if(session('message'))
-                <div class="alert alert-danger">
+                <div class="alert alert-success">
                     {{ session('message') }}
                 </div>
                 @endif
-                <form action="{{ route("manager-user.update", $user->id) }}" method="POST">
+                <form action="{{ route("manager-user.update", $user->id) }}" method="POST" enctype="multipart/form-data">
                   	@csrf
                       @method("PUT")
                     <div class="form-group row">
@@ -112,8 +112,8 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Giới tính</label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="gender" >
-                                <option class=" text-center" value="0" {!! $user->gender != null && $user->gender == 0 ? ' selected' : null !!}>Nam</option>
-                                <option class=" text-center" value="1" {!! $user->gender != null && $user->gender == 1 ? ' selected' : null !!}>Nữ</option>
+                                <option class=" text-center" value="{{ App\Enums\UserGender::Male }}" {!! old('gender') != null && old('gender') == App\Enums\UserGender::Male || $user->gender == App\Enums\UserGender::Male ? ' selected' : null !!}>Nam</option>
+                                <option class=" text-center" value="{{ App\Enums\UserGender::Female }}" {!! old('gender') != null && old('gender') == 1 || $user->gender == App\Enums\UserGender::Female ? ' selected' : null !!}>Nữ</option>
                             </select>
                         </div>
                     </div>
@@ -121,11 +121,20 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái tài khoản</label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="status" >
-                                <option class=" text-center" value="0" {!! $user->status != null && $user->status == 0 ? ' selected' : null !!}>Đang hoạt động</option>
-                                <option class=" text-center" value="1" {!! $user->status != null && $user->status == 1 ? ' selected' : null !!}>Đã bị khoá</option>
+                                <option class=" text-center" value="{{ App\Enums\UserStatus::Active }}" {!! $user->status == App\Enums\UserStatus::Active ? ' selected' : null !!}>Đang hoạt động</option>
+                                <option class=" text-center" value="{{ App\Enums\UserStatus::Block }}" {!! $user->status == App\Enums\UserStatus::Block ? ' selected' : null !!}>Đã bị khoá</option>
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Ảnh đại diện:</label>
+                        <input type="hidden" name="Avatar" value="{{$user->avatar}}" />
+                        <input type="file" class="form-control" name="uploadFile" onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
+                    </div>
+                    <div class="form-group">
+                        <img id="Photo" src="{{ asset('upload/users/' . ($user->avatar ?? 'nophoto.png')) }}" class="img img-bordered" style="width:200px" />
+                    </div>
+
                     <div class="form-group mb-0 text-right">
                         <a href="{{route('manager-user.index', session('old_query'))}}" type="button" class="btn btn-light mr-2">Trở lại</a>
                         <button type="submit" class="btn btn-primary">Sửa tài khoản</button>

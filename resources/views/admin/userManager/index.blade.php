@@ -120,8 +120,8 @@
                         <td class="font-weight-400 align-middle text-overflow">{{optional($user)->name}}</td>
                         <td class="font-weight-400 align-middle">{{$user->email}}</td>
                         <td class="font-weight-400 align-middle">{{$user->address}}</td>
-                        <td class="font-weight-400 align-middle">{{optional($user)->statusText('status')}}</td>
-                        <td class="font-weight-400 align-middle">{{optional($user)->genderText('gender')}}</td>
+                        <td class="font-weight-400 align-middle">{{ App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}}</td>
+                        <td class="font-weight-400 align-middle">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</td>
                         <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>
                         <td class="text-right">
                             {{-- <form action="" method="POST" class="mr-2" id="form-active-user">

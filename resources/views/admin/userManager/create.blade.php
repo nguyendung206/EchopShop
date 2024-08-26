@@ -13,11 +13,16 @@
 <div class="row">
     <div class="col-lg-8 mx-auto">
         <div class="card">
+            @if(session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+                @endif
             <div class="card-header">
-                <h5 class="mb-0 h6">@lang('user.create_user')</h5>
+                <h5 class="mb-0 h6">Thêm người dùng</h5>
             </div>
             <div class="card-body">
-                <form action="{{route('manager-user.store')}}" method="POST">
+                <form action="{{route('manager-user.store')}}" method="POST" enctype="multipart/form-data">
                   	@csrf
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Tên người dùng<span class="text-vali">&#9913;</span></label>
@@ -126,8 +131,8 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Giới tính</label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="gender" >
-                                <option class=" text-center" value="0" {!! old('gender') != null && old('gender') == 0 ? ' selected' : null !!}>Nam</option>
-                                <option class=" text-center" value="1" {!! old('gender') != null && old('gender') == 1 ? ' selected' : null !!}>Nữ</option>
+                                <option class=" text-center" value="{{ App\Enums\UserGender::Male}}" {!! old('gender') != null && old('gender') == 0 ? ' selected' : null !!}>Nam</option>
+                                <option class=" text-center" value="{{ App\Enums\UserGender::Female }}" {!! old('gender') != null && old('gender') == 1 ? ' selected' : null !!}>Nữ</option>
                             </select>
                         </div>
                     </div>
@@ -140,6 +145,14 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Ảnh đại diện:</label>
+                        <input type="file" class="form-control" name="uploadFile" onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
+                    </div>
+                    <div class="form-group">
+                        <img id="Photo" src="{{ asset('upload/users/nophoto.png') }}" class="img img-bordered" style="width:200px" />
+                    </div>
+                    
                     <div class="form-group mb-0 text-right">
                         <a href="{{route('manager-user.index', session('old_query'))}}" type="button" class="btn btn-light mr-2">Trở lại</a>
                         <button type="submit" class="btn btn-primary">Thêm tài khoản</button>

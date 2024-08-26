@@ -15,7 +15,7 @@
                     <div class="row g-0">
                     <div class="col-md-4 gradient-custom text-center text-white"
                         style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                        <img src="{{ asset('upload/users/' . ($user->avatar ?? 'nophoto.png')) }}"
                         alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
                     </div>
                     <div class="col-md-8">
@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Giới tính</h6>
-                                <p class="text-muted">{{$user->gender == 0 ? "Nam" : "Nữ"}}</p>
+                                <p class="text-muted">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</p>
                             </div>
                         </div>
                         <hr class="mt-0 mb-4">
@@ -65,15 +65,15 @@
                                 </div>
                                 <div class="col-12 mb-3">
                                     <h6>Trạng thái tài khoản</h6>
-                                    <p class="text-muted">{{$user->status == 0 ? "Đang hoạt động" : "Đã bị khoá"}}</p>
+                                    <p class="text-muted">{{App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}}</p>
                                 </div>
                         </div>
                         <div class="d-flex justify-content-start">
                             <a class="btn btn-primary" style="color: white" href="{{ route('manager-user.edit', $user->id)}}">Sửa</a>
-                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block">
+                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block;margin-bottom: 0px">
                                 @csrf
                                 @method("DELETE")
-                                <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete  btn-danger confirm-delete" title="@lang('user.delete')">
+                                <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete  btn-danger confirm-delete" title="@lang('user.delete')" >
                                     Xoá
                                 </a>
                             </form>

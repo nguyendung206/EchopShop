@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\Users;
 use App\Http\Requests\UserRequest;
+use App\Enums\UserGender;
 
 class UserController extends Controller
 {
@@ -18,6 +19,7 @@ class UserController extends Controller
 
     public function show($id) {
         $user = Users::find($id);
+        echo $user->gender;
         if(!$user) {
             return back()->with('message', 'Không có người dùng tương ứng');
         }
@@ -29,15 +31,7 @@ class UserController extends Controller
     }
 
     public function store (UserRequest $request) {
-            
-            // if($request->has('image')) {
-            //     dd($request->image);
-            //     $file = $request->image;
-            //     $fileName = $file->getClientoriginalName();
-            //     $file-> move(public_path('image', $fileName));
-            //     $request->merge(['image' => $fileName]);
-            // }
-            Users::create([
+            $userData = [
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
@@ -49,8 +43,17 @@ class UserController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
-            ]);
-            return redirect()->route('manager-user.index')-> with('message', 'Thêm người dùng thành công');
+            ];
+
+            if ($request->hasFile('uploadFile')) {
+            $file = $request->file('uploadFile');
+            $ext = $file->getClientOriginalExtension();
+            $file_name = time() . '-' . 'user.' . $ext;
+            $file->move(public_path('upload/users'), $file_name);
+            $userData['avatar'] = $file_name;
+            }
+            Users::create($userData);
+            return redirect()->route('manager-user.create')-> with('message', 'Thêm người dùng thành công');
     }
 
 
@@ -67,19 +70,28 @@ class UserController extends Controller
         if(!$user) {
             return back()->with('message', 'Không có người dùng tương ứng');
         }
-        $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number,
-                'citizen_identification_number' => $request->citizen_identification_number,
-                'date_of_issue' => $request->date_of_issue,
-                'place_of_issue' => $request->place_of_issue,
-                'date_of_birth' => $request->date_of_birth,
-                'address' => $request->address,
-                'gender' => $request->gender,
-                'status' => $request->status,
-        ]);
-        return redirect()->route('manager-user.index')-> with('message', 'Sửa người dùng thành công');
+        
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'citizen_identification_number' => $request->citizen_identification_number,
+            'date_of_issue' => $request->date_of_issue,
+            'place_of_issue' => $request->place_of_issue,
+            'date_of_birth' => $request->date_of_birth,
+            'address' => $request->address,
+            'gender' => $request->gender,
+            'status' => $request->status,
+        ];
+        if ($request->hasFile('uploadFile')) {
+            $file = $request->file('uploadFile');
+            $ext = $file->getClientOriginalExtension();
+            $file_name = time() . '-' . 'user.' . $ext;
+            $file->move(public_path('upload/users'), $file_name);
+            $updateData['avatar'] = $file_name;
+        }
+        $user->update($updateData);
+        return redirect()->route('manager-user.edit', $id)-> with('message', 'Sửa người dùng thành công');
     }
 
  
