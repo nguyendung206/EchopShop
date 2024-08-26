@@ -4,7 +4,7 @@
 <div class="box box-primary">
     <div class="box-body">
         <form action="{{route('profile.save')}}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="Id" value="{{$profile->id}}" />
+            <input type="hidden" name="id" value="{{$profile->id}}" />
             <input type="hidden" name="Password" value="{{$profile->Password}}" />
             <div class="form-group">
                 <label>Tên:</label>

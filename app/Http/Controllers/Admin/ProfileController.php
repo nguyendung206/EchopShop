@@ -9,18 +9,22 @@ use Laracasts\Flash\Flash;
 
 class ProfileController extends Controller
 {
-    public function Index($Id)
+    public function Index($id)
     {
-        $profile = Admin::where('id', $Id)->first();
+        $profile = Admin::where('id', $id)->first();
         return view('admin.profile', compact('profile'));
     }
 
     public function Save(Request $request)
     {
-        $profile = Admin::where('id', $request->Id)->first();
+        $profile = Admin::where('id', $request->id)->first();
         if ($profile) {
+            if (empty($request->Name)) {
+                flash('Tên không được để trống.')->error();
+                return redirect()->back()->withInput();
+            }
             $emailExists = Admin::where('email', $request->Email)
-                ->where('id', '!=', $request->Id)
+                ->where('id', '!=', $request->id)
                 ->exists();
             if ($emailExists) {
                 flash('Email đã tồn tại. Vui lòng chọn email khác.')->error();
@@ -37,7 +41,7 @@ class ProfileController extends Controller
             }
             $profile->save();
             flash('Cập nhật thông tin thành công!')->success();
-            return redirect()->route('profile.index', ['Id' => $request->Id]);
+            return redirect()->route('profile.index', ['id' => $request->id]);
         } else {
             flash('Không tìm thấy hồ sơ.')->error();
             return redirect()->back();

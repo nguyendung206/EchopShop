@@ -6,28 +6,28 @@
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
 	<div class="align-items-center">
-			<h1 class="h3"><strong>@lang('user.customers')</strong></h1>
+			<h1 class="h3"><strong>@lang('Loại hàng')</strong></h1>
 	</div>
 </div>
 <div class="filter">
     <form class="" id="food" action="" method="GET">
         <?php
             $request = request()->all();
-        $newRequest = http_build_query($request);
+            $newRequest = http_build_query($request);
         ?>
         <div class="row gutters-5 mb-2">
             <div class="col-md-6 d-flex search">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search')}}" @isset($sort_search) @endisset placeholder="@lang('user.search')">
+                <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search')}}" @isset($sort_search) @endisset placeholder="@lang('Tìm kiếm')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
                 <a href="{{route('category.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>@lang('user.add')</span>
+                    <span>@lang('Bổ sung')</span>
                 </a>
             </div>
             <div class="col-md-3 text-md-right download" style="padding-left: 3px">
@@ -45,9 +45,9 @@
             </div>
             <div class="col-md-3 res-status">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="status" name="status">
-                    <option value="">@lang('user.status')</option>
-                    <option @if(request('status') == (1)) selected @endif value="1">@lang('user.active')</option>
-                    <option @if(request('status') == (2)) selected @endif value="2">@lang('user.deactivate')</option>
+                    <option value="">@lang('Trạng thái')</option>
+                    <option @if(request('status') == (1)) selected @endif value="1">@lang('Hoạt động')</option>
+                    <option @if(request('status') == (2)) selected @endif value="2">@lang('Không hoạt động')</option>
                 </select>
             </div>
             <div class="col-md-6 d-flex">
@@ -56,7 +56,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                       </svg>
                       {{-- <i class="las la-search la-lg mr-1"></i> --}}
-                    <span class="custom-FontSize">@lang('user.search1')</span>
+                    <span class="custom-FontSize">@lang('Tìm kiếm')</span>
                 </button>
                 <a href="{{url()->current()}}" class="pl-0 pr-0 w-25 btn btn-info ml-2 d-flex btn-responsive justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,22 +86,22 @@
     <div class="custom-overflow repon">
         <table class="table aiz-table mb-0 table_repon">
             <thead>
-                <tr>
-                    <th class="w-60 font-weight-800">ID</th>
-                    <th class="">@lang('user.photo')</th>
-                    <th class="">@lang('user.name')</th>
-                    <th class="">@lang('user.description')</th>
-                    <th class="w-140">@lang('user.status')</th>
-                    <th class="w-150 text-right">@lang('user.options')</th>
+                <tr class="text-center">
+                    <th class="w-60 font-weight-800">STT</th>
+                    <th class="w-60">@lang('Ảnh')</th>
+                    <th class="w-25">@lang('Tên loại hàng')</th>
+                    <th class="">@lang('Mô tả')</th>
+                    <th class="w-140">@lang('Trang thái')</th>
+                    <th class="w-150">@lang('Điều chỉnh')</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!empty($datas) && count($datas))
                 @foreach ($datas as $key => $data)
-                    <tr>
-                        <td class="font-weight-800 align-middle">#{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
+                    <tr class="text-center">
+                        <td class="font-weight-800 align-middle">{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
                         <td class="font-weight-400 align-middle">
-                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="/upload/employee/{{ $data->photo }}">
+                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="/upload/product/{{ $data->photo }}">
                         </td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
                         <td class="font-weight-400 align-middle">{{$data->description}}</td>
@@ -109,22 +109,22 @@
                         <td class="text-right">
                             <form action="" method="POST" class="mr-2" id="form-active-user">
                                 <input type="hidden" name="status" value="{{ $data->status == 1? '2':'1'}}">
-                                    @csrf
-                                    @if ($data->status==2)
-                                        <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" href="#" id="active-popup" title="@lang('user.deactivate')">
-                                            <i class="las la-ban"></i>
-                                        </a>
-                                    @else
-                                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" href="#" id="inactive-popup" title="@lang('user.active')">
-                                            <i class="las la-ban"></i>
-                                        </a>
-                                    @endif
-                                    <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="" title="@lang('user.edit')">
-                                        <i class="las la-edit"></i>
+                                @csrf
+                                @if ($data->status==2)
+                                    <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" href="#" id="active-popup" title="@lang('user.deactivate')">
+                                        <i class="las la-ban"></i>
                                     </a>
-                                    <a href="javascript:void(0)" data-href="" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
-                                        <i class="las la-trash"></i>
+                                @else
+                                    <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" href="#" id="inactive-popup" title="@lang('user.active')">
+                                        <i class="las la-ban"></i>
                                     </a>
+                                @endif
+                                <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('category.update', ['id' => $data->id]) }}"  title="@lang('Update')">
+                                    <i class="las la-edit"></i>
+                                </a>
+                                <a href="javascript:void(0)" data-href="{{ route('category.delete', ['id' => $data->id]) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                                    <i class="las la-trash"></i>
+                                </a>
                             </form>
                         </td>
                     </tr>
@@ -169,11 +169,11 @@
         // active popup
         $(document).on('click', '#active-popup', function() {
             Swal.fire({
-                title: '@lang('user.active_user')',
-                text: '@lang('user.continue')',
+                title: '@lang("user.active_user")',
+                text: '@lang("user.continue")',
                 // icon: 'error',
-                confirmButtonText: '@lang('user.yes')',
-                cancelButtonText: '@lang('user.no')',
+                confirmButtonText: '@lang("user.yes")',
+                cancelButtonText: '@lang("user.no")',
                 showCancelButton: true,
                 showCloseButton: true,
             }).then((result) => {
@@ -184,11 +184,11 @@
         });
         $(document).on('click', '#inactive-popup', function() {
             Swal.fire({
-                title: '@lang('user.inactive_user')',
-                text: '@lang('user.continue')',
+                title: '@lang("user.inactive_user")',
+                text: '@lang("user.continue")',
                 // icon: 'error',
-                confirmButtonText: '@lang('user.yes')',
-                cancelButtonText: '@lang('user.no')',
+                confirmButtonText: '@lang("user.yes")',
+                cancelButtonText: '@lang("user.no")',
                 showCancelButton: true,
                 showCloseButton: true,
             }).then((result) => {
@@ -199,38 +199,44 @@
         });
         //deletee
         $(document).on('click', '.btn-delete', function() {
-            let delete_id= $(this).attr('data-id');
+            let delete_id = $(this).attr('data-id');
             let delete_href = $(this).attr('data-href');
+
             Swal.fire({
-                title: '@lang('user.delete_cf')',
-                text: '@lang('user.continue')',
-                // icon: 'error',
-                confirmButtonText: '@lang('user.yes')',
-                cancelButtonText: '@lang('user.no')',
+                title: '@lang("Xóa loại hàng")',
+                text: '@lang("Bạn có muốn xóa Loại hàng này không ?")',
+                icon: 'warning',
+                confirmButtonText: '@lang("Có")',
+                cancelButtonText: '@lang("Không")',
                 showCancelButton: true,
                 showCloseButton: true,
-
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var data = {
-                        "_token": "{{ csrf_token() }}",
-                        "id": delete_id,
-                    };
                     $.ajax({
-                        type: "DELETE",
+                        type: "POST", 
                         url: delete_href,
-                        data: data,
-                        success: function (response){
-                            location.reload();
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "_method": "DELETE",
                         },
-                        error : function(err) {
-                            console.log(err.responseText);
-                            Swal.fire('Changes are not saved', '', 'info');
+                        success: function(response) {
+                            Swal.fire({
+                                title: 'Xóa thành công!',
+                                text: 'Loại hàng đã được xóa.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(err) {
+                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa loại hàng.', 'error');
                         }
                     });
                 }
             });
         });
+
 
         //Date
         $('#joined_date').daterangepicker({
@@ -274,6 +280,7 @@
         $('#joined_date').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
         });
+        
         @if(request('joined_date'))
         $('#joined_date').value("{{request('joined_date')}}");
         @endif
