@@ -17,9 +17,9 @@
                 <h5 class="mb-0 h6">Sửa người dùng</h5>
             </div>
             <div class="card-body">
-                @if(session('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
+                @if (flash()->message)
+                <div class="{{ flash()->class }}">
+                    {{ flash()->message }}
                 </div>
                 @endif
                 <form action="{{ route("manager-user.update", $user->id) }}" method="POST" enctype="multipart/form-data">
@@ -80,7 +80,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Nơi cấp<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="Nhập ngày cấp" name="place_of_issue" class="form-control
+                            <input type="text" placeholder="Nhập nơi cấp" name="place_of_issue" class="form-control
                             @error('place_of_issue') is-invalid  @enderror" value="{{ old('place_of_issue') ? old('place_of_issue') : $user->place_of_issue }}">
                             @error('place_of_issue')
                                 <div class="invalid-feedback">{{ $message }}</div>

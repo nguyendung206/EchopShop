@@ -101,7 +101,6 @@
                     <th class="w-140">@lang('user.create_at')</th>
                     <th class="w-140">@lang('user.status')</th>
                     <th class="w-150 text-right">@lang('user.options')</th> --}}
-
                     <th class="w-60 font-weight-800">STT</th>
                     <th class="w-140">Tên người dùng</th>
                     <th class="w-140">Email</th>
