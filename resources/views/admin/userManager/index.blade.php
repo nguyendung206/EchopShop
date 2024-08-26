@@ -84,10 +84,10 @@
 </form>
 <div class="card">
     <div class="custom-overflow repon">
-        @if(session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
+        @if (flash()->message)
+            <div class="{{ flash()->class }}">
+                {{ flash()->message }}
+            </div>
         @endif
         <table class="table aiz-table mb-0 table_repon">
             <thead>

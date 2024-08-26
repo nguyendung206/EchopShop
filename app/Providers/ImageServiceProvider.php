@@ -3,23 +3,24 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\ImageService;
 
-class AppServiceProvider extends ServiceProvider
+class ImageServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      *
      * @return void
      */
     public function register()
     {
-        $this->app->bind('MyTesting', function($app) {
-            return new \App\Test;
+        $this->app->singleton(ImageService::class, function ($app) {
+            return new ImageService();
         });
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      *
      * @return void
      */

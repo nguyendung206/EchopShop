@@ -3,23 +3,24 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\UserService;
 
-class AppServiceProvider extends ServiceProvider
+class UserServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      *
      * @return void
      */
     public function register()
     {
-        $this->app->bind('MyTesting', function($app) {
-            return new \App\Test;
+        $this->app->singleton(UserService::class, function ($app) {
+            return new UserService();
         });
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      *
      * @return void
      */

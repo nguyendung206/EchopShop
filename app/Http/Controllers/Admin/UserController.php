@@ -9,33 +9,45 @@ use App\Models\Users;
 use App\Http\Requests\UserRequest;
 use App\Enums\UserGender;
 use Spatie\Flash\Flash;
+use App\Services\ImageService;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    protected $imageService;
+    protected $userService;
+
+    public function __construct(ImageService $imageService, UserService $userService)
+    {
+        $this->imageService = $imageService;
+        $this->userService = $userService;
+    }
+
     // Hiển thị tất cả người dùng
     public function index (Request $request) {
         $name = $request->input('name');
         $status = $request->input('status');
         $gender = $request->input('gender');
-        $query = Users::query();
-        if(!empty($name)){
-            $query->where('name','like', "%$name%");
-        }
-        if(!empty($status)){
-            $query->where('status', $status);
-        }
-        if(!empty($gender)) {
-            $query->where('gender', $gender);
-        }
-        $users = $query->paginate(5);
-        return view('admin.userManager.index', compact('users', 'name', 'status', 'gender'))->with('i', (request()->input('page', 1) - 1) * 5);
+        $filters = [
+            'name' => $name,
+            'status' => $status,
+            'gender' => $gender,
+        ];
+        $users = $this->userService->filter($filters);
+        return view('admin.userManager.index', [
+                'users' => $users, 
+                'name' => $name,
+                'status' => $status,
+                'gender' => $gender,
+                'i' => (request()->input('page', 1) - 1) * 5
+        ]);
     }
 
     public function show($id) {
         $user = Users::find($id);
-        echo $user->gender;
         if(!$user) {
-            return back()->with('message', 'Không có người dùng tương ứng');
+            flash('Không có người dùng tương ứng', 'alert alert-warning');
+            return redirect()->route('manager-user.store');
         }
         return view('admin.userManager.show', compact('user'));
     }
@@ -45,10 +57,6 @@ class UserController extends Controller
     }
 
     public function store (UserRequest $request) {
-        Flash::levels([
-            'success' => 'alert alert-success',
-            'error' => 'alert alert-danger',
-        ]);
         try {
                 $userData = [
                     'name' => $request->name,
@@ -66,19 +74,17 @@ class UserController extends Controller
     
                 if ($request->hasFile('uploadFile')) {
                 $file = $request->file('uploadFile');
-                $ext = $file->getClientOriginalExtension();
-                $file_name = time() . '-' . 'user.' . $ext;
-                $file->move(public_path('upload/users'), $file_name);
+                $file_name = $this->imageService->upload($file);
                 $userData['avatar'] = $file_name;
                 }
                 Users::create($userData);
-                flash()->success('Thêm người dùng thành công');
+                flash('Thêm người dùng thành công', 'alert alert-success');
                 return redirect()->route('manager-user.create');
         } catch (QueryException $e) {
-            flash()->error('Thêm người dùng thất bại');
+            flash('Thêm người dùng thất bại', 'alert alert-danger');
             return redirect()->route('manager-user.create');
         } catch (\Exception $e) {
-            flash()->error('Thêm người dùng thất bại');
+            flash('Thêm người dùng thất bại', 'alert alert-danger');
             return redirect()->route('manager-user.create');
         }
     }
@@ -93,13 +99,9 @@ class UserController extends Controller
     }
 
     public function update (UserRequest $request ,$id) {
-        Flash::levels([
-            'success' => 'alert alert-success',
-            'error' => 'alert alert-danger',
-        ]);
         $user = Users::find($id);
         if(!$user) {
-            flash()->error('Sửa thông tin thất bại');
+            flash('Sửa thông tin thất bại', 'alert alert-danger');
             return back();
         }
         try {
@@ -123,13 +125,13 @@ class UserController extends Controller
                 $updateData['avatar'] = $file_name;
             }
             $user->update($updateData);
-            flash()->success('Sửa người dùng thành công');
+            flash('Sửa người dùng thành công', 'alert alert-success');
             return redirect()->route('manager-user.edit', $id);
         }  catch (QueryException $e) {
-            flash()->error('Sửa người dùng thất bại');
+            flash('Sửa người dùng thất bại', 'alert alert-danger');
             return redirect()->route('manager-user.create');
         } catch (\Exception $e) {
-            flash()->error('Sửa người dùng thất bại');
+            flash('Sửa người dùng thất bại', 'alert alert-danger');
             return redirect()->route('manager-user.create');
         }
     }
