@@ -10,17 +10,13 @@
 	</div>
 </div>
 <div class="filter">
-    <form class="" id="food" action="" method="GET">
-        <?php
-            $request = request()->all();
-            $newRequest = http_build_query($request);
-        ?>
+    <form class="" id="food" action="{{ route('category.index') }}" method="GET">
         <div class="row gutters-5 mb-2">
             <div class="col-md-6 d-flex search">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search')}}" @isset($sort_search) @endisset placeholder="@lang('Tìm kiếm')">
+                <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
                 <a href="{{route('category.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
@@ -46,23 +42,22 @@
             <div class="col-md-3 res-status">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="status" name="status">
                     <option value="">@lang('Trạng thái')</option>
-                    <option @if(request('status') == (1)) selected @endif value="1">@lang('Hoạt động')</option>
-                    <option @if(request('status') == (2)) selected @endif value="2">@lang('Không hoạt động')</option>
+                    <option @if(request('status') == '1') selected @endif value="1">@lang('Hoạt động')</option>
+                    <option @if(request('status') == '2') selected @endif value="2">@lang('Không hoạt động')</option>
                 </select>
             </div>
             <div class="col-md-6 d-flex">
-                <button type="submit" class=" pl-0 pr-0 btn btn-info w-25 d-flex btn-responsive justify-content-center">
+                <button type="submit" class="pl-0 pr-0 btn btn-info w-25 d-flex btn-responsive justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                      {{-- <i class="las la-search la-lg mr-1"></i> --}}
+                    </svg>
                     <span class="custom-FontSize">@lang('Tìm kiếm')</span>
                 </button>
-                <a href="{{url()->current()}}" class="pl-0 pr-0 w-25 btn btn-info ml-2 d-flex btn-responsive justify-content-center">
+                <a href="{{ url()->current() }}" class="pl-0 pr-0 w-25 btn btn-info ml-2 d-flex btn-responsive justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                    <span class="custom-FontSize">@lang('base.reset')</span>
+                    </svg>
+                    <span class="custom-FontSize">@lang('Làm mới')</span>
                 </a>
                 <a href="{{ request()->fullUrlWithQuery(['export' => 1]) }}" class="font-size btn btn-info w-25 ml-2 d-flex  btn-responsive justify-content-center">
                     <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
@@ -105,7 +100,7 @@
                         </td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
                         <td class="font-weight-400 align-middle">{{$data->description}}</td>
-                        <td class="font-weight-400 align-middle">{{optional($data)->statusText('status')}}</td>
+                        <td>{{ $data->status->label() }}</td>
                         <td class="text-right">
                             <form action="" method="POST" class="mr-2" id="form-active-user">
                                 <input type="hidden" name="status" value="{{ $data->status == 1? '2':'1'}}">
@@ -136,7 +131,7 @@
 </div>
 <div class="pagination-us">
     <div class="aiz-pagination">
-        {{ $datas->withQueryString()->render("pagination::bootstrap-4")}}
+        {{ $datas->appends(request()->input())->links("pagination::bootstrap-4") }}
     </div>
 </div>
 @endsection

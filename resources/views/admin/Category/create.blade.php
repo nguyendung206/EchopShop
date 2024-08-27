@@ -41,8 +41,11 @@
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Trạng thái')</label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="status">
-                                <option value="1" {!! old('status') !=null && old('status')==1 ? ' selected' : null !!}>@lang('Hoạt động')</option>
-                                <option value="2" {!! old('status') !=null && old('status')==2 ? ' selected' : null !!}>@lang('Không hoạt động')</option>
+                                @foreach(\App\Enums\CategoryStatus::cases() as $status)
+                                    <option value="{{ $status->value }}" {{ old('status', $category->status->value ?? null) == $status->value ? 'selected' : '' }}>
+                                        @lang($status->label())
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -68,18 +71,6 @@
         </div>
     </div>
 </div>
-<script>
-    function previewPhoto(input) {
-        const preview = document.getElementById('photo_preview');
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>
 @endsection
 @section('script')
 <script type="text/javascript">

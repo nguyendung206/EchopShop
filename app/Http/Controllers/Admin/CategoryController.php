@@ -2,16 +2,37 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\CategoryStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Models\Category;
+use App\Services\ImageService;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function Index()
+    protected $imageService;
+
+    public function __construct(ImageService $imageService)
     {
-        $datas = Category::paginate(5);
-        return view('Admin.Category.Index', compact('datas'))->with('i', (request()->input('page', 1) - 1) * 9);
+        $this->imageService = $imageService;
+    }
+
+    public function index(Request $request)
+    {
+        $query = Category::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        $datas = $query->paginate(5);
+
+        return view('admin.category.index', compact('datas'));
     }
 
     public function Create()
@@ -25,15 +46,7 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->description = $request->description;
         $category->status = $request->status;
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $fileName = time() . '-' . $file->getClientOriginalName();
-            $file->move(public_path('upload/product'), $fileName);
-            $category->photo = $fileName;
-        } else {
-            $category->photo = 'noproduct.png';
-        }
+        $category->photo = $this->imageService->uploadImage($request->file('photo'));
 
         $category->save();
 
@@ -52,15 +65,8 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->status = $request->status;
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $fileName = time() . '-' . $file->getClientOriginalName();
-            $file->move(public_path('upload/product'), $fileName);
-            $category->photo = $fileName;
-        } elseif (!$category->photo) {
-            $category->photo = 'noproduct.png';
-        }
+        $category->status = CategoryStatus::from($request->input('status'))->value;
+        $category->photo = $this->imageService->uploadImage($request->file('photo'));
         $category->save();
 
         flash('Cập nhật loại hàng thành công!')->success();

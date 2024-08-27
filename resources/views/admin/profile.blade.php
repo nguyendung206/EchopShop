@@ -8,11 +8,17 @@
             <input type="hidden" name="Password" value="{{$profile->Password}}" />
             <div class="form-group">
                 <label>Tên:</label>
-                <input type="text" class="form-control" name="Name" value="{{$profile->name}}">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $profile->name) }}">
+                @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label>Email:</label>
-                <input type="email" class="form-control" name="Email" value="{{$profile->email}}">
+                <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $profile->email) }}">
+                @error('email')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label>Chức vụ:</label>

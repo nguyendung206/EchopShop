@@ -46,8 +46,11 @@
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Trạng thái')</label>
                         <div class="col-sm-9">
                             <select class="form-control @error('status') is-invalid @enderror" name="status">
-                                <option value="1" {{ $category->status == 1 ? 'selected' : '' }}>@lang('Hoạt động')</option>
-                                <option value="2" {{ $category->status == 2 ? 'selected' : '' }}>@lang('Không hoạt động')</option>
+                                @foreach(\App\Enums\CategoryStatus::cases() as $status)
+                                <option value="{{ $status->value }}" {{ $category->status === $status->value ? 'selected' : '' }}>
+                                    {{ $status->label() }}
+                                </option>
+                                @endforeach
                             </select>
                             @error('status')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -79,17 +82,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    function previewPhoto(input) {
-        const preview = document.getElementById('photo_preview');
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>
 @endsection
