@@ -31,8 +31,7 @@
                         <span class="d-flex align-items-center">
                             <span class="avatar avatar-sm mr-md-2">
                                 <img
-                                    src=""
-                                >
+                                    src="{{asset('upload/employee/' .optional(Auth::user())->avatar)}}">
                             </span>
                             <span class="d-none d-md-block">
                                 <span class="d-block fw-500">{{optional(Auth::user())->name}}</span>
@@ -40,17 +39,17 @@
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-md">
-                        <a href="" class="dropdown-item">
+                        <a href="{{route('profile.index', Session::get('admin')->id)}}" class="dropdown-item">
                             <i class="las la-user-circle"></i>
-                            <span>{{trans('profile.profile')}}</span>
+                            <span>{{trans('Hồ sơ cá nhân')}}</span>
                         </a>
 
-                        <a href="javascript:void(0);" class="dropdown-item" >
+                        <a href="{{ route('logout') }}" class="dropdown-item">
                             <i class="las la-sign-out-alt"></i>
-                            <span>@lang('auth.logout')</span>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            <span>@lang('Đăng xuất')</span>
+                            <!-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
-                            </form>
+                            </form> -->
                         </a>
                     </div>
                 </div>
