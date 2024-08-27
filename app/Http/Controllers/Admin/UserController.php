@@ -25,22 +25,14 @@ class UserController extends Controller
 
     // Hiển thị tất cả người dùng
     public function index (Request $request) {
-        $name = $request->input('name');
-        $status = $request->input('status');
-        $gender = $request->input('gender');
+       
         $filters = [
-            'name' => $name,
-            'status' => $status,
-            'gender' => $gender,
+            'name' => $request->input('name'),
+            'status' => $request->input('status'),
+            'gender' => $request->input('gender'),
         ];
         $users = $this->userService->filter($filters);
-        return view('admin.userManager.index', [
-                'users' => $users, 
-                'name' => $name,
-                'status' => $status,
-                'gender' => $gender,
-                'i' => (request()->input('page', 1) - 1) * 5
-        ]);
+        return view('admin.userManager.index', compact('users'));
     }
 
     public function show($id) {
@@ -119,20 +111,19 @@ class UserController extends Controller
             ];
             if ($request->hasFile('uploadFile')) {
                 $file = $request->file('uploadFile');
-                $ext = $file->getClientOriginalExtension();
-                $file_name = time() . '-' . 'user.' . $ext;
-                $file->move(public_path('upload/users'), $file_name);
+                $file_name = $this->imageService->upload($file);
                 $updateData['avatar'] = $file_name;
-            }
+                }
+
             $user->update($updateData);
             flash('Sửa người dùng thành công', 'alert alert-success');
             return redirect()->route('manager-user.edit', $id);
         }  catch (QueryException $e) {
             flash('Sửa người dùng thất bại', 'alert alert-danger');
-            return redirect()->route('manager-user.create');
+            return redirect()->route('manager-user.edit',$id);
         } catch (\Exception $e) {
             flash('Sửa người dùng thất bại', 'alert alert-danger');
-            return redirect()->route('manager-user.create');
+            return redirect()->route('manager-user.edit', $id);
         }
     }
 

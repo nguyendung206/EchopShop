@@ -7,15 +7,16 @@ class UserService
 {
     public function filter($filters)
     {
+
         $query = Users::query();
         if(!empty($filters['name'])){
             $query->where('name','like', '%'.$filters['name'].'%');
         }
-        if(!empty($filters['status'])){
+        if(isset($filters['status'])){
             $query->where('status', $filters['status']);
         }
-        if(!empty($filters['gender'])) {
-            $query->where('gender', $filters['gender']);
+        if(isset($filters['gender'])) {
+            $query->where('gender', $filters['gender'] );
         }
         return $query->paginate(5);
     }
