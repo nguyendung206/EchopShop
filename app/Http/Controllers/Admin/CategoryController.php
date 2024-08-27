@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\CategoryStatus;
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
@@ -40,7 +40,7 @@ class CategoryController extends Controller
         return view('Admin.Category.Create');
     }
 
-    public function SaveCreate(CreateCategoryRequest $request)
+    public function SaveCreate(CategoryRequest $request)
     {
         $category = new Category();
         $category->name = $request->name;
@@ -60,13 +60,14 @@ class CategoryController extends Controller
         return view('Admin.Category.Update', compact('category'));
     }
 
-    public function SaveUpdate(CreateCategoryRequest $request, $id)
+    public function SaveUpdate(CategoryRequest $request, $id)
     {
         $category = Category::findOrFail($id);
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->status = CategoryStatus::from($request->input('status'))->value;
-        $category->photo = $this->imageService->uploadImage($request->file('photo'));
+        $category->status = Status::from($request->input('status'))->value;
+        $imageService = new ImageService();
+        $category->photo = $imageService->uploadImage($request->file('photo'), 'upload/product', $category->photo);
         $category->save();
 
         flash('Cập nhật loại hàng thành công!')->success();

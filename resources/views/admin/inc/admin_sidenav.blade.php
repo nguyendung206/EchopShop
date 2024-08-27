@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li class="aiz-side-nav-item">
-                            <a href="" class="aiz-side-nav-link ">
+                            <a href="{{route('brand.index')}}" class="aiz-side-nav-link ">
                                 <span class="aiz-side-nav-text">Hãng hàng</span>
                             </a>
                         </li>

@@ -10,7 +10,7 @@
 	</div>
 </div>
 <div class="filter">
-    <form class="" id="food" action="{{ route('category.index') }}" method="GET">
+    <form class="" id="food" action="{{ route('brand.index') }}" method="GET">
         <div class="row gutters-5 mb-2">
             <div class="col-md-6 d-flex search">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -19,7 +19,7 @@
                 <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
-                <a href="{{route('category.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
+                <a href="{{route('brand.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -87,9 +87,10 @@
                 <tr class="text-center">
                     <th class="w-60 font-weight-800">STT</th>
                     <th class="w-60">@lang('Ảnh')</th>
-                    <th class="w-25">@lang('Tên loại hàng')</th>
+                    <th class="w-25">@lang('Tên hãng')</th>
                     <th class="">@lang('Mô tả')</th>
-                    <th class="w-140">@lang('Trang thái')</th>
+                    <th class="w-140">@lang('Trạng thái')</th>
+                    <th class="w-140">@lang('Loại hàng')</th>
                     <th class="w-150">@lang('Điều chỉnh')</th>
                 </tr>
             </thead>
@@ -104,6 +105,7 @@
                         <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
                         <td class="font-weight-400 align-middle">{{$data->description}}</td>
                         <td>{{ $data->status->label() }}</td>
+                        <td>{{ $data->category->name }}</td>
                         <td class="text-right">
                             <form action="" method="POST" class="mr-2" id="form-active-user">
                                 <input type="hidden" name="status" value="{{ $data->status == 1? '2':'1'}}">
@@ -117,10 +119,10 @@
                                         <i class="las la-ban"></i>
                                     </a>
                                 @endif
-                                <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('category.update', ['id' => $data->id]) }}"  title="@lang('Update')">
+                                <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('brand.update', ['id' => $data->id]) }}"  title="@lang('Update')">
                                     <i class="las la-edit"></i>
                                 </a>
-                                <a href="javascript:void(0)" data-href="{{ route('category.delete', ['id' => $data->id]) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                                <a href="javascript:void(0)" data-href="{{ route('brand.delete', ['id' => $data->id]) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
                                     <i class="las la-trash"></i>
                                 </a>
                             </form>
@@ -201,8 +203,8 @@
         let delete_href = $(this).attr('data-href');
 
         Swal.fire({
-            title: '@lang("Xóa loại hàng")',
-            text: '@lang("Bạn có muốn xóa Loại hàng này không ?")',
+            title: '@lang("Xóa Hãng hàng")',
+            text: '@lang("Bạn có muốn xóa Hãng hàng này không ?")',
             icon: 'warning',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
@@ -220,7 +222,7 @@
                     success: function(response) {
                         Swal.fire({
                             title: 'Xóa thành công!',
-                            text: 'Loại hàng đã được xóa.',
+                            text: 'Hãng hàng đã được xóa.',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -228,7 +230,7 @@
                         });
                     },
                     error: function(err) {
-                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa loại hàng.', 'error');
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Hãng hàng.', 'error');
                     }
                 });
             }

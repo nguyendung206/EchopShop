@@ -103,25 +103,25 @@
     <script>
         var AIZ = AIZ || {};
         AIZ.local = {
-            nothing_found: '{{ trans('base.nothing_found') }}',
-            choose_file: '{{ translate('Choose file') }}',
-            file_selected: '{{ translate('File selected') }}',
-            files_selected: '{{ translate('Files selected') }}',
-            add_more_files: '{{ translate('Add more files') }}',
-            adding_more_files: '{{ translate('Adding more files') }}',
-            drop_files_here_paste_or: '{{ translate('Drop files here, paste or') }}',
-            browse: '{{ translate('Browse') }}',
-            upload_complete: '{{ translate('Upload complete') }}',
-            upload_paused: '{{ translate('Upload paused') }}',
-            resume_upload: '{{ translate('Resume upload') }}',
-            pause_upload: '{{ translate('Pause upload') }}',
-            retry_upload: '{{ translate('Retry upload') }}',
-            cancel_upload: '{{ translate('Cancel upload') }}',
-            uploading: '{{ translate('Uploading') }}',
-            processing: '{{ translate('Processing') }}',
-            complete: '{{ translate('Complete') }}',
-            file: '{{ translate('File') }}',
-            files: '{{ translate('Files') }}',
+            nothing_found: '{{ trans("base.nothing_found") }}',
+            choose_file: '{{ translate("Choose file") }}',
+            file_selected: '{{ translate("File selected") }}',
+            files_selected: '{{ translate("Files selected") }}',
+            add_more_files: '{{ translate("Add more files") }}',
+            adding_more_files: '{{ translate("Adding more files") }}',
+            drop_files_here_paste_or: '{{ translate("Drop files here, paste or") }}',
+            browse: '{{ translate("Browse") }}',
+            upload_complete: '{{ translate("Upload complete") }}',
+            upload_paused: '{{ translate("Upload paused") }}',
+            resume_upload: '{{ translate("Resume upload") }}',
+            pause_upload: '{{ translate("Pause upload") }}',
+            retry_upload: '{{ translate("Retry upload") }}',
+            cancel_upload: '{{ translate("Cancel upload") }}',
+            uploading: '{{ translate("Uploading") }}',
+            processing: '{{ translate("Processing") }}',
+            complete: '{{ translate("Complete") }}',
+            file: '{{ translate("File") }}',
+            files: '{{ translate("Files") }}',
         }
     </script>
 
@@ -178,7 +178,7 @@
 
     <script type="text/javascript">
         @foreach (session('flash_notification', collect())->toArray() as $message)
-            AIZ.plugins.notify('{{ $message['level'] }}', '{{ $message['message'] }}');
+            AIZ.plugins.notify('{{ $message["level"] }}', '{{ $message["message"] }}');
         @endforeach
     </script>
 </body>

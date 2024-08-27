@@ -5,7 +5,7 @@
 @section('content')
 <div class="backnow">
     <div class="backpage">
-        <a href="{{route('category.index')}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href="{{route('brand.index')}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg></a>
     </div>
@@ -17,12 +17,12 @@
                 <h5 class="mb-0 h6">@lang('Thêm mới loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{route('category.add.save')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('brand.add.save')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên loại hàng')<span class="text-vali">&#9913;</span></label>
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên hãng hàng')<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Tên loại hàng')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                            <input type="text" placeholder="@lang('Tên hãng hàng')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
                             @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -42,11 +42,29 @@
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="status">
                                 @foreach(\App\Enums\Status::cases() as $status)
-                                <option value="{{ $status->value }}" {{ old('status', $category->status->value ?? null) == $status->value ? 'selected' : '' }}>
+                                <option value="{{ $status->value }}" {{ old('status', $brand->status->value ?? null) == $status->value ? 'selected' : '' }}>
                                     @lang($status->label())
                                 </option>
                                 @endforeach
                             </select>
+                            @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Loại hàng')</label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500" name="category_id">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $brand->category_id ?? null) == $category->id ? 'selected' : '' }}>
+                                    @lang($category->name)
+                                </option>
+                            @endforeach
+                            </select>
+                            @error('category_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="form-group row">
@@ -60,10 +78,10 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ old('old_photo') ? asset('upload/category/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ old('old_photo') ? asset('upload/brand/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <a href="{{ route('category.index') }}" type="button" class="btn btn-light mr-2">@lang('Hủy')</a>
+                        <a href="{{ route('brand.index') }}" type="button" class="btn btn-light mr-2">@lang('Hủy')</a>
                         <button type="submit" class="btn btn-primary">@lang('Lưu')</button>
                     </div>
                 </form>

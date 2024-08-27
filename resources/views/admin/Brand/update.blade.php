@@ -5,7 +5,7 @@
 @section('content')
 <div class="backnow">
     <div class="backpage">
-        <a href="{{ route('category.index') }}" class="back btn">
+        <a href="{{ route('brand.index') }}" class="back btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -19,13 +19,13 @@
                 <h5 class="mb-0 h6">@lang('Cập nhật Loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('category.update.save', $category->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('brand.update.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên loại hàng')</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Tên loại hàng')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ $category->name }}" required>
+                            <input type="text" placeholder="@lang('Tên loại hàng')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ $brand->name }}" required>
                             @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -35,7 +35,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Mô tả')" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ $category->description }}">
+                            <input type="text" placeholder="@lang('Mô tả')" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ $brand->description }}">
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -47,7 +47,7 @@
                         <div class="col-sm-9">
                             <select class="form-control @error('status') is-invalid @enderror" name="status">
                                 @foreach(\App\Enums\Status::cases() as $status)
-                                <option value="{{ $status->value }}" {{ old('status', $category->status->value ?? null) === $status->value ? 'selected' : '' }}>
+                                <option value="{{ $status->value }}" {{ old('status', $brand->status->value ?? null) === $status->value ? 'selected' : '' }}>
                                     {{ $status->label() }}
                                 </option>
                                 @endforeach
@@ -57,11 +57,25 @@
                             @enderror
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Loại hàng')</label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500" name="category_id">
+                                @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $brand->category_id ?? null) == $category->id ? 'selected' : '' }}>
+                                    @lang($category->name)
+                                </option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh')</label>
                         <div class="col-sm-9">
-                            <input type="hidden" name="old_photo" value="{{ $category->photo }}">
+                            <input type="hidden" name="old_photo" value="{{ $brand->photo }}">
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)">
                             @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -70,11 +84,11 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ $category->photo ? asset('upload/product/' . $category->photo) : asset('upload/category/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ $brand->photo ? asset('upload/product/' . $brand->photo) : asset('upload/brand/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group mb-0 text-right">
-                        <a href="{{ route('category.index') }}" class="btn btn-light mr-2">@lang('Hủy')</a>
+                        <a href="{{ route('brand.index') }}" class="btn btn-light mr-2">@lang('Hủy')</a>
                         <button type="submit" class="btn btn-primary">@lang('Lưu')</button>
                     </div>
                 </form>
