@@ -62,13 +62,9 @@ class UserController extends Controller
                     'address' => $request->address,
                     'gender' => $request->gender,
                     'status' => $request->status,
+                    'avatar' => $this->imageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
                 ];
-    
-                if ($request->hasFile('uploadFile')) {
-                $file = $request->file('uploadFile');
-                $file_name = $this->imageService->upload($file);
-                $userData['avatar'] = $file_name;
-                }
+
                 Users::create($userData);
                 flash('Thêm người dùng thành công', 'alert alert-success');
                 return redirect()->route('manager-user.create');
@@ -109,15 +105,11 @@ class UserController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
+                'avatar' => $this->imageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
             ];
             if($request->has('password') && !empty($request->password)) {
                 $updateData['password'] = bcrypt($request->password);
             }
-            if ($request->hasFile('uploadFile')) {
-                $file = $request->file('uploadFile');
-                $file_name = $this->imageService->upload($file);
-                $updateData['avatar'] = $file_name;
-                }
 
             $user->update($updateData);
             flash('Sửa người dùng thành công', 'alert alert-success');
