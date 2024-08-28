@@ -17,10 +17,10 @@ class ImageService
         return $defaultImage;
     }
 
-    public function deleteImage($fileName, $path = 'upload/product')
+    public function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
         $filePath = public_path($path) . '/' . $fileName;
-        if (file_exists($filePath) && $fileName !== 'noproduct.png') {
+        if (file_exists($filePath) && $fileName !== $defaultImage) {
             unlink($filePath);
         }
     }

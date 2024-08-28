@@ -58,7 +58,7 @@
                                 <span class="aiz-side-nav-text">thông tin công ty</span>
                             </a>
                         </li>
-
+                        <li class="aiz-side-nav-item"> <a href="{{route("manager-user.index")}}" class="aiz-side-nav-link "> <span class="aiz-side-nav-text">Quản lý người dùng</span> </a> </li>
                     </ul>
                 </li>
 

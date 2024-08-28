@@ -27,11 +27,11 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>@lang('user.add')</span>
+                    <span>Thêm người dùng</span>
                 </a>
             </div>
             <div class="col-md-3 text-md-right download" style="padding-left: 3px">
-                <a href="{{ route('admin.users.defaultImport') . '?' . $newRequest }}"  type="button" class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex  btn-responsive justify-content-center">
+                <a href="/"  type="button" class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex  btn-responsive justify-content-center">
                     <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                     <span class="custom-FontSize ml-1">{{__('base.download-default-import')}}</span>
                 </a>
@@ -78,16 +78,17 @@
         </div>
     </form>
 </div>
-<form action="{{ route('admin.importUser') }}" id="form-import" method="POST" enctype="multipart/form-data">
+<form action="/" id="form-import" method="POST" enctype="multipart/form-data">
     @csrf
     <input type="file" accept=".csv,.xls,.xlsx" hidden name="file" class="form-control" id="file">
 </form>
 <div class="card">
     <div class="custom-overflow repon">
+       
         <table class="table aiz-table mb-0 table_repon">
             <thead>
                 <tr>
-                    <th class="w-60 font-weight-800">ID</th>
+                    {{-- <th class="w-60 font-weight-800">ID</th>
                     <th class="">@lang('user.name')</th>
                     <th class="">@lang('user.email')</th>
                     <th class="w-180">@lang('user.phone')</th>
@@ -95,26 +96,33 @@
                     <th class="w-140">@lang('user.level')</th>
                     <th class="w-140">@lang('user.create_at')</th>
                     <th class="w-140">@lang('user.status')</th>
-                    <th class="w-150 text-right">@lang('user.options')</th>
+                    <th class="w-150 text-right">@lang('user.options')</th> --}}
+                    <th class="w-60 font-weight-800">STT</th>
+                    <th class="w-140">Tên người dùng</th>
+                    <th class="w-140">Email</th>
+                    <th class="w-140">Địa chỉ</th>
+                    <th class="w-140">Trạng thái</th>
+                    <th class="w-140">Giới tính</th>
+                    <th class="w-140">Ngày sinh</th>
+                    <th class="w-140">Tuỳ chọn</th>   
                 </tr>
             </thead>
             <tbody>
-                @if (!empty($customers) && count($customers))
-                @foreach ($customers as $key => $customer)
+                @if (!empty($users) && count($users))
+                @foreach ($users as $key => $user)
                     <tr>
-                        <td class="font-weight-800 align-middle">#{{ ($key + 1) + ($customers->currentPage() - 1) * $customers->perPage() }}</td>
-                        <td class="font-weight-400 align-middle text-overflow">{{optional($customer)->name}}</td>
-                        <td class="font-weight-400 align-middle">{{$customer->email}}</td>
-                        <td class="font-weight-400 align-middle">{{$customer->phone}}</td>
-                        <td class="font-weight-400 align-middle">{{optional($customer)->point}}</td>
-                        <td class="font-weight-400 align-middle">{{optional($customer)->level}}</td>
-                        <td class="font-weight-400 align-middle">{{date('Y/m/d', strtotime(optional($customer)->created_at))}}</td>
-                        <td class="font-weight-400 align-middle">{{optional($customer)->statusText('status')}}</td>
+                        <td class="font-weight-800 align-middle">#{{ ($key + 1) + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                        <td class="font-weight-400 align-middle text-overflow">{{optional($user)->name}}</td>
+                        <td class="font-weight-400 align-middle">{{$user->email}}</td>
+                        <td class="font-weight-400 align-middle">{{$user->address}}</td>
+                        <td class="font-weight-400 align-middle">{{ App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}}</td>
+                        <td class="font-weight-400 align-middle">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</td>
+                        <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>
                         <td class="text-right">
-                            <form action="{{ route('admin.updateStatusUser',$customer->id)}}" method="POST" class="mr-2" id="form-active-user">
-                                <input type="hidden" name="status" value="{{ $customer->status == 1? '2':'1'}}">
+                            {{-- <form action="" method="POST" class="mr-2" id="form-active-user">
+                                <input type="hidden" name="status" value="{{ $user->status == 1? '2':'1'}}">
                                     @csrf
-                                    @if ($customer->status==2)
+                                    @if ($user->status==2)
                                         <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" href="#" id="active-popup" title="@lang('user.deactivate')">
                                             <i class="las la-ban"></i>
                                         </a>
@@ -123,12 +131,27 @@
                                             <i class="las la-ban"></i>
                                         </a>
                                     @endif
-                                    <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('manager-user.edit',$customer->id) }}" title="@lang('user.edit')">
+                                    <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('manager-user.edit',$user->id) }}" title="@lang('user.edit')">
                                         <i class="las la-edit"></i>
                                     </a>
-                                    <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$customer->id)}}" data-id="{{$customer->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                                    <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
                                         <i class="las la-trash"></i>
                                     </a>
+                            </form> --}}
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"  href="{{ route("manager-user.show", $user->id)}}"  >
+                                <i class="las la-list"></i>
+                            </a>
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route("manager-user.edit", $user->id)}}" >
+                                <i class="las la-edit"></i>
+                            </a>
+                            
+                            <form action="{{ route('manager-user.destroy', $user->id)}}" id="delete-form" method="POST"  style="display: inline-block">
+                                @csrf
+                                @method("DELETE")
+                                {{-- <button class="btn btn-danger" type="submit">Xoá</button> --}}
+                                <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                                    <i class="las la-trash"></i>
+                                </a>
                             </form>
                         </td>
                     </tr>
@@ -140,7 +163,7 @@
 </div>
 <div class="pagination-us">
     <div class="aiz-pagination">
-        {{ $customers->withQueryString()->render("pagination::bootstrap-4")}}
+        {{ $users->withQueryString()->render("pagination::bootstrap-4")}}
     </div>
 </div>
 @endsection
@@ -206,32 +229,37 @@
             let delete_id= $(this).attr('data-id');
             let delete_href = $(this).attr('data-href');
             Swal.fire({
-                title: '@lang('user.delete_cf')',
-                text: '@lang('user.continue')',
+                title: 'Xoá người dùng này',
+                text: 'Bạn có muốn tiếp tục xoá',
                 // icon: 'error',
-                confirmButtonText: '@lang('user.yes')',
-                cancelButtonText: '@lang('user.no')',
+                confirmButtonText: 'Tiếp tục',
+                cancelButtonText: 'Huỷ',
                 showCancelButton: true,
                 showCloseButton: true,
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var data = {
-                        "_token": "{{ csrf_token() }}",
-                        "id": delete_id,
-                    };
-                    $.ajax({
-                        type: "DELETE",
-                        url: delete_href,
-                        data: data,
-                        success: function (response){
-                            location.reload();
-                        },
-                        error : function(err) {
-                            console.log(err.responseText);
-                            Swal.fire('Changes are not saved', '', 'info');
-                        }
-                    });
+                    let form = $('#delete-form');
+                    form.attr('action', delete_href);
+                    form.submit();
+
+                    // var data = {
+                    //     "_token": "{{ csrf_token() }}",
+                    //     "id": delete_id,
+                    // };
+                    // $.ajax({
+                    //     type: "DELETE",
+                    //     url: delete_href,
+                    //     data: data,
+                    //     success: function (response){
+                    //         Swal.fire('Xoá thành công');
+                    //         location.reload();
+                    //     },
+                    //     error : function(err) {
+                    //         console.log(err.responseText);
+                    //         Swal.fire('Đã có lỗi xảy ra');
+                    //     }
+                    // });
                 }
             });
         });
@@ -285,3 +313,21 @@
 
     </script>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

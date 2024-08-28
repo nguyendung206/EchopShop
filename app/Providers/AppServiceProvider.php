@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('MyTesting', function($app) {
+            return new \App\Test;
+        });
     }
 
     /**
