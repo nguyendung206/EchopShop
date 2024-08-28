@@ -115,10 +115,20 @@
                         <td class="font-weight-400 align-middle text-overflow">{{optional($user)->name}}</td>
                         <td class="font-weight-400 align-middle">{{$user->email}}</td>
                         <td class="font-weight-400 align-middle">{{$user->address}}</td>
-                        <td class="font-weight-400 align-middle">{{ App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}}</td>
+                        <td class="font-weight-400 align-middle">
+                            {{-- {{ App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}} --}}
+                            <form action="{{ route('manager-user.updateStatus', $user->id)}}" id="status-form-{{$user->id}}" method="POST"  style="display: inline-block">
+                                @csrf
+                                @method("PUT")
+                            <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$user->id}}">
+                                <option class=" text-center" value="{{ App\Enums\UserStatus::Active }}" {!! $user->status == App\Enums\UserStatus::Active ? ' selected' : null !!}>Đang hoạt động</option>
+                                <option class=" text-center" value="{{ App\Enums\UserStatus::Block }}" {!! $user->status == App\Enums\UserStatus::Block ? ' selected' : null !!}>Đã bị khoá</option>
+                            </select>
+                            </form>
+                        </td>
                         <td class="font-weight-400 align-middle">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</td>
                         <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>
-                        <td class="text-right">
+                        <td class="">
                             {{-- <form action="" method="POST" class="mr-2" id="form-active-user">
                                 <input type="hidden" name="status" value="{{ $user->status == 1? '2':'1'}}">
                                     @csrf
@@ -231,7 +241,6 @@
             Swal.fire({
                 title: 'Xoá người dùng này',
                 text: 'Bạn có muốn tiếp tục xoá',
-                // icon: 'error',
                 confirmButtonText: 'Tiếp tục',
                 cancelButtonText: 'Huỷ',
                 showCancelButton: true,
@@ -263,6 +272,49 @@
                 }
             });
         });
+
+        $(document).on('change', '[id^=status-select]', function() {
+            let selectedText = $(this).find("option:selected").text(); // Lấy text của tùy chọn đã chọn
+            let userId = $(this).attr('id').replace('status-select', ''); // Lấy user ID từ id của thẻ select
+            let form = $('#status-form-' + userId); // Lấy form theo user ID
+            let formData = form.serialize(); // Lấy dữ liệu từ form, bao gồm cả CSRF token
+            let updateHref = form.attr('action'); // Lấy URL action của form
+
+            Swal.fire({
+                title: 'Đổi trạng thái người dùng này',
+                text: `Bạn đã chọn trạng thái: ${selectedText}. Bạn có muốn tiếp tục?`,
+                confirmButtonText: 'Tiếp tục',
+                cancelButtonText: 'Huỷ',
+                showCancelButton: true,
+                showCloseButton: true,
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "PUT",
+                        url: updateHref,
+                        data: formData,
+                        success: function (response){
+                            Swal.fire({
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                            });
+                        },
+                        error: function(err) {
+                            Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Có lỗi xảy ra khi cập nhật trạng thái người dùng.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        }
+                    });
+                }
+
+            });
+        });
+
 
         //Date
         $('#joined_date').daterangepicker({
