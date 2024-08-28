@@ -18,11 +18,6 @@
                 <h5 class="mb-0 h6">Thêm người dùng</h5>
             </div>
             <div class="card-body">
-                @if (flash()->message)
-                <div class="{{ flash()->class }}">
-                    {{ flash()->message }}
-                </div>
-            @endif
                 <form action="{{route('manager-user.store')}}" method="POST" enctype="multipart/form-data">
                   	@csrf
                     <div class="form-group row">

@@ -8,7 +8,8 @@ use Illuminate\Database\QueryException;
 use App\Models\Users;
 use App\Http\Requests\UserRequest;
 use App\Enums\UserGender;
-use Spatie\Flash\Flash;
+// use Spatie\Flash\Flash;
+use Laracasts\Flash\Flash;
 use App\Services\ImageService;
 use App\Services\UserService;
 
@@ -38,7 +39,7 @@ class UserController extends Controller
     public function show($id) {
         $user = Users::find($id);
         if(!$user) {
-            flash('Không có người dùng tương ứng', 'alert alert-warning');
+            flash('Không có người dùng tương ứng')->error();
             return redirect()->route('manager-user.store');
         }
         return view('admin.userManager.show', compact('user'));
@@ -66,13 +67,13 @@ class UserController extends Controller
                 ];
 
                 Users::create($userData);
-                flash('Thêm người dùng thành công', 'alert alert-success');
+                flash('Thêm người dùng thành công')->success();
                 return redirect()->route('manager-user.create');
         } catch (QueryException $e) {
-            flash('Thêm người dùng thất bại', 'alert alert-danger');
+            flash('Thêm người dùng thất bại')->error();
             return redirect()->route('manager-user.create');
         } catch (\Exception $e) {
-            flash('Thêm người dùng thất bại', 'alert alert-danger');
+            flash('Thêm người dùng thất bại')->error();
             return redirect()->route('manager-user.create');
         }
     }
@@ -89,7 +90,7 @@ class UserController extends Controller
     public function update (UserRequest $request ,$id) {
         $user = Users::find($id);
         if(!$user) {
-            flash('Sửa thông tin thất bại', 'alert alert-danger');
+            flash('Sửa thông tin thất bại')->error();
             return back();
         }
         
@@ -112,13 +113,13 @@ class UserController extends Controller
             }
 
             $user->update($updateData);
-            flash('Sửa người dùng thành công', 'alert alert-success');
+            flash('Sửa người dùng thành công')->success();
             return redirect()->route('manager-user.edit', $id);
         }  catch (QueryException $e) {
-            flash('Sửa người dùng thất bại', 'alert alert-danger');
+            flash('Sửa người dùng thất bại')->error();
             return redirect()->route('manager-user.edit',$id);
         } catch (\Exception $e) {
-            flash('Sửa người dùng thất bại', 'alert alert-danger');
+            flash('Sửa người dùng thất bại')->error();
             return redirect()->route('manager-user.edit', $id);
         }
     }
@@ -127,16 +128,16 @@ class UserController extends Controller
     public function destroy($id) {
         $user = Users::find($id);
         if(!$user) {
-            flash('Không có người dùng tương ứng', 'alert alert-danger');
+            flash('Không có người dùng tương ứng')->error();
             return back();
         }
         
         $result = $user->delete();
         if($result){
-            flash('Xoá người dùng thành công', 'alert alert-success');
+            flash('Xoá người dùng thành công')->success();
             return  redirect()->route('manager-user.index');
         }else {
-            flash('Xoá người dùng thất bại', 'alert alert-danger');
+            flash('Xoá người dùng thất bại')->error();
             return redirect()->route('manager-user.index');
         }
     }
