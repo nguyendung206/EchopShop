@@ -70,7 +70,7 @@
                         </div>
                         <div class="d-flex justify-content-start">
                             <a class="btn btn-primary" style="color: white" href="{{ route('manager-user.edit', $user->id)}}">Sửa</a>
-                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block;margin-bottom: 0px">
+                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block;margin-bottom: 0px" id="delete-form">
                                 @csrf
                                 @method("DELETE")
                                 <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete  btn-danger confirm-delete" title="@lang('user.delete')" >
@@ -108,23 +108,9 @@
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var data = {
-                        "_token": "{{ csrf_token() }}",
-                        "id": delete_id,
-                    };
-                    $.ajax({
-                        type: "DELETE",
-                        url: delete_href,
-                        data: data,
-                        success: function (response){
-                            Swal.fire('Xoá thành công');
-                            window.location.href = '/admin/manager-user';
-                        },
-                        error : function(err) {
-                            console.log(err.responseText);
-                            Swal.fire('Đã có lỗi xảy ra');
-                        }
-                    });
+                    let form = $('#delete-form');
+                    form.attr('action', delete_href);
+                    form.submit();
                 }
             });
         });

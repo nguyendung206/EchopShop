@@ -133,6 +133,7 @@ class UserController extends Controller
         }
         
         $result = $user->delete();
+        $this->imageService->deleteImage($user->avatar, 'upload/users','nophoto.png');
         if($result){
             flash('Xoá người dùng thành công')->success();
             return  redirect()->route('manager-user.index');
