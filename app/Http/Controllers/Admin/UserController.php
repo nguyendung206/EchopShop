@@ -142,4 +142,28 @@ class UserController extends Controller
             return redirect()->route('manager-user.index');
         }
     }
+
+    public function updateStatus (Request $request ,$id) {
+        $user = Users::find($id);
+        if(!$user) {
+            flash('Sửa thông tin thất bại')->error();
+            return back();
+        }
+        
+        try {
+
+            $updateData = [
+                'status' => $request->status,
+            ];
+            $user->update($updateData);
+            flash('Sửa thông tin thành công')->success();
+            return redirect()->route('manager-user.index',);
+        }  catch (QueryException $e) {
+            flash('Sửa thông tin thất bại')->error();
+            return redirect()->route('manager-user.index');
+        } catch (\Exception $e) {
+            flash('Sửa thông tin thất bại')->error();
+            return redirect()->route('manager-user.edit', $id);
+        }
+    }
 }

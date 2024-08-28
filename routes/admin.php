@@ -51,6 +51,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('manager-user.index');
         Route::get('/{id}', [UserController::class, 'show'])->name('manager-user.show');
         Route::get('/update/{id}/edit', [UserController::class, 'edit'])->name('manager-user.edit');
+        Route::put('/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('manager-user.updateStatus');
         Route::put('/update/{id}', [UserController::class, 'update'])->name('manager-user.update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('manager-user.destroy');
     });
