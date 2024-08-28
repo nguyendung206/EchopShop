@@ -117,10 +117,10 @@
                         <td class="font-weight-400 align-middle">{{$user->address}}</td>
                         <td class="font-weight-400 align-middle">
                             {{-- {{ App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}} --}}
-                            <form action="{{ route('manager-user.updateStatus', $user->id)}}" id="status-form" method="POST"  style="display: inline-block">
+                            <form action="{{ route('manager-user.updateStatus', $user->id)}}" id="status-form-{{$user->id}}" method="POST"  style="display: inline-block">
                                 @csrf
                                 @method("PUT")
-                            <select class="text-center font-weight-500" name="status" style="border: none" id="status-select">
+                            <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$user->id}}">
                                 <option class=" text-center" value="{{ App\Enums\UserStatus::Active }}" {!! $user->status == App\Enums\UserStatus::Active ? ' selected' : null !!}>Đang hoạt động</option>
                                 <option class=" text-center" value="{{ App\Enums\UserStatus::Block }}" {!! $user->status == App\Enums\UserStatus::Block ? ' selected' : null !!}>Đã bị khoá</option>
                             </select>
@@ -273,13 +273,16 @@
             });
         });
 
-        $(document).on('change', '#status-select', function() {
-            let selectedValue = $(this).find("option:selected").text();
-            let delete_id= $(this).attr('data-id');
-            let delete_href = $(this).attr('data-href');
+        $(document).on('change', '[id^=status-select]', function() {
+            let selectedText = $(this).find("option:selected").text(); // Lấy text của tùy chọn đã chọn
+            let userId = $(this).attr('id').replace('status-select', ''); // Lấy user ID từ id của thẻ select
+            let form = $('#status-form-' + userId); // Lấy form theo user ID
+            let formData = form.serialize(); // Lấy dữ liệu từ form, bao gồm cả CSRF token
+            let updateHref = form.attr('action'); // Lấy URL action của form
+
             Swal.fire({
                 title: 'Đổi trạng thái người dùng này',
-                text: `Bạn đã chọn trạng thái: ${selectedValue}. Bạn có muốn tiếp tục?`,
+                text: `Bạn đã chọn trạng thái: ${selectedText}. Bạn có muốn tiếp tục?`,
                 confirmButtonText: 'Tiếp tục',
                 cancelButtonText: 'Huỷ',
                 showCancelButton: true,
@@ -287,10 +290,28 @@
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let form = $('#status-form');
-                    form.attr('action', delete_href);
-                    form.submit();
+                    $.ajax({
+                        type: "PUT",
+                        url: updateHref,
+                        data: formData,
+                        success: function (response){
+                            Swal.fire({
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                            });
+                        },
+                        error: function(err) {
+                            Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Có lỗi xảy ra khi cập nhật trạng thái người dùng.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        }
+                    });
                 }
+
             });
         });
 

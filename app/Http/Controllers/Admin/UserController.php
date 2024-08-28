@@ -149,21 +149,25 @@ class UserController extends Controller
             flash('Sửa thông tin thất bại')->error();
             return back();
         }
-        
         try {
-
             $updateData = [
                 'status' => $request->status,
             ];
             $user->update($updateData);
-            flash('Sửa thông tin thành công')->success();
-            return redirect()->route('manager-user.index',);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Sửa thông tin thành công.'
+            ], 200);
         }  catch (QueryException $e) {
-            flash('Sửa thông tin thất bại')->error();
-            return redirect()->route('manager-user.index');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sửa thông tin thất bại.'
+            ], 500);
         } catch (\Exception $e) {
-            flash('Sửa thông tin thất bại')->error();
-            return redirect()->route('manager-user.edit', $id);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sửa thông tin thất bại.'
+            ], 500);
         }
     }
 }
