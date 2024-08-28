@@ -45,6 +45,28 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Mật khẩu<span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-9">
+                            <input type="password" id="password" placeholder="Nhập mật khẩu" name="password" class="form-control
+                            @error('password') is-invalid  @enderror" value="{{ old('password') ? old('password') : null}}">
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Xác nhận mật khẩu<span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-9">
+                            <input type="password" id="passwordConfirm" placeholder="Xác nhận mật khẩu" name="passwordConfirm" class="form-control
+                             @error('passwordConfirm') is-invalid  @enderror" value="{{ old('passwordConfirm') ? old('passwordConfirm') : null}}">
+                            <span class="mt-1" id='message'></span>
+                            @error('passwordConfirm')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Số điện thoại<span class="text-vali">&#9913;</span></label>
@@ -148,11 +170,11 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-        $('#password, #password_confirmation').on('keyup', function () {
-            if ($('#password').val() == $('#password_confirmation').val()) {
-                $('#message').html('Matching').css('color', 'green');
+        $('#password, #passwordConfirm').on('keyup', function () {
+            if ($('#password').val() == $('#passwordConfirm').val()) {
+                $('#message').html('Hợp lệ').css('color', 'green');
             } else
-                $('#message').html('Not Matching').css('color', 'red');
+                $('#message').html('Mật khẩu xác nhận không đúng').css('color', 'red');
         });
 
     </script>

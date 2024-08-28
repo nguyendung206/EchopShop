@@ -96,6 +96,7 @@ class UserController extends Controller
             flash('Sửa thông tin thất bại', 'alert alert-danger');
             return back();
         }
+        
         try {
             $updateData = [
                 'name' => $request->name,
@@ -109,6 +110,9 @@ class UserController extends Controller
                 'gender' => $request->gender,
                 'status' => $request->status,
             ];
+            if($request->has('password') && !empty($request->password)) {
+                $updateData['password'] = bcrypt($request->password);
+            }
             if ($request->hasFile('uploadFile')) {
                 $file = $request->file('uploadFile');
                 $file_name = $this->imageService->upload($file);
@@ -131,14 +135,17 @@ class UserController extends Controller
     public function destroy($id) {
         $user = Users::find($id);
         if(!$user) {
-            return back()->with('message', 'Không có người dùng tương ứng');
+            flash('Không có người dùng tương ứng', 'alert alert-danger');
+            return back();
         }
         
         $result = $user->delete();
         if($result){
-            return  response()->json(['message' => 'Xóa thành công'], 200);
+            flash('Xoá người dùng thành công', 'alert alert-success');
+            return  redirect()->route('manager-user.index');
         }else {
-            return response()->json(['message' => 'Xóa người dùng thất bại'], 500);
+            flash('Xoá người dùng thất bại', 'alert alert-danger');
+            return redirect()->route('manager-user.index');
         }
     }
 }

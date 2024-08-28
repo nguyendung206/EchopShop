@@ -30,13 +30,17 @@ class UserRequest extends FormRequest
                 'citizen_identification_number' => ['required','numeric', 'digits:12'],
                 'address' => ['required', 'min: 3', 'max: 255'],
                 'place_of_issue' => ['required', 'min:3', 'max:255'],
-                
         ];
         if ($this->has('password')) {
-            $rules['password'] = ['required', 'min:3', 'max:255'];
-            $rules['passwordConfirm'] = ['required', 'same:password'];
+            $rule['password'] = ['required', 'min:3', 'max:255'];
+            $rule['passwordConfirm'] = ['required', 'same:password'];
         }
-    
+        $method = $this->method();
+        if ($method == 'PUT') {
+            $rule['password'] = [];
+            $rule['passwordConfirm'] = [];
+        }
+        // dd($rule);
         return $rule;
     }
 

@@ -149,7 +149,7 @@
                                 <i class="las la-edit"></i>
                             </a>
                             
-                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block">
+                            <form action="{{ route('manager-user.destroy', $user->id)}}" id="delete-form" method="POST"  style="display: inline-block">
                                 @csrf
                                 @method("DELETE")
                                 {{-- <button class="btn btn-danger" type="submit">Xoá</button> --}}
@@ -243,23 +243,27 @@
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var data = {
-                        "_token": "{{ csrf_token() }}",
-                        "id": delete_id,
-                    };
-                    $.ajax({
-                        type: "DELETE",
-                        url: delete_href,
-                        data: data,
-                        success: function (response){
-                            Swal.fire('Xoá thành công');
-                            location.reload();
-                        },
-                        error : function(err) {
-                            console.log(err.responseText);
-                            Swal.fire('Đã có lỗi xảy ra');
-                        }
-                    });
+                    let form = $('#delete-form');
+                    form.attr('action', delete_href);
+                    form.submit();
+
+                    // var data = {
+                    //     "_token": "{{ csrf_token() }}",
+                    //     "id": delete_id,
+                    // };
+                    // $.ajax({
+                    //     type: "DELETE",
+                    //     url: delete_href,
+                    //     data: data,
+                    //     success: function (response){
+                    //         Swal.fire('Xoá thành công');
+                    //         location.reload();
+                    //     },
+                    //     error : function(err) {
+                    //         console.log(err.responseText);
+                    //         Swal.fire('Đã có lỗi xảy ra');
+                    //     }
+                    // });
                 }
             });
         });
