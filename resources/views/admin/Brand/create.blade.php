@@ -31,7 +31,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Mô tả')" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}">
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -55,13 +55,16 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Loại hàng')</label>
                         <div class="col-sm-9">
-                            <select class="text-center form-control font-weight-500" name="category_id">
+                        <select class="text-center form-control font-weight-500" name="category_id">
+                            <option value="" {{ old('category_id', $brand->category_id ?? null) === null ? 'selected' : '' }}>
+                                Chọn loại hàng
+                            </option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id', $brand->category_id ?? null) == $category->id ? 'selected' : '' }}>
                                     @lang($category->name)
                                 </option>
                             @endforeach
-                            </select>
+                        </select>
                             @error('category_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

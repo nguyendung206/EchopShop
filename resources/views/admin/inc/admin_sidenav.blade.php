@@ -16,7 +16,7 @@
                         <span class="aiz-side-nav-text">{{translate('Trang chủ')}}</span>
                     </a>
                 </li>
-                
+
                 <!-- Quản lý -->
                 <li class="aiz-side-nav-item">
                     <a href="#" class="aiz-side-nav-link">
@@ -36,6 +36,11 @@
                             </a>
                         </li>
 
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route('product.index')}}" class="aiz-side-nav-link ">
+                                <span class="aiz-side-nav-text">Sản phẩm</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

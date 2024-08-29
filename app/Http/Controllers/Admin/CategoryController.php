@@ -6,32 +6,25 @@ use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Services\CategoryService;
 use App\Services\ImageService;
+use App\Services\StatusService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    protected $imageService;
+    protected $categoryService;
+    protected $statusService;
 
-    public function __construct(ImageService $imageService)
+    public function __construct(CategoryService $categoryService, statusService $statusService)
     {
-        $this->imageService = $imageService;
+        $this->categoryService = $categoryService;
+        $this->statusService = $statusService;
     }
 
     public function index(Request $request)
     {
-        $query = Category::query();
-
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
-
-        $datas = $query->paginate(5);
-
+        $datas = $this->categoryService->getCategories($request);
         return view('admin.category.index', compact('datas'));
     }
 
@@ -42,14 +35,7 @@ class CategoryController extends Controller
 
     public function SaveCreate(CategoryRequest $request)
     {
-        $category = new Category();
-        $category->name = $request->name;
-        $category->description = $request->description;
-        $category->status = $request->status;
-        $category->photo = $this->imageService->uploadImage($request->file('photo'));
-
-        $category->save();
-
+        $this->categoryService->createCategory($request);
         flash('Thêm mới loại hàng thành công!')->success();
         return redirect()->route('category.index');
     }
@@ -62,35 +48,27 @@ class CategoryController extends Controller
 
     public function SaveUpdate(CategoryRequest $request, $id)
     {
-        $category = Category::findOrFail($id);
-        $category->name = $request->name;
-        $category->description = $request->description;
-        $category->status = Status::from($request->input('status'))->value;
-        $imageService = new ImageService();
-        $category->photo = $imageService->uploadImage($request->file('photo'), 'upload/product', $category->photo);
-        $category->save();
-
+        $this->categoryService->updateCategory($request, $id);
         flash('Cập nhật loại hàng thành công!')->success();
         return redirect()->route('category.index');
     }
 
     public function delete($id)
     {
-        try {
-            $category = Category::findOrFail($id);
-            if ($category->photo && $category->photo != 'noproduct.png') {
-                $oldImage = public_path('upload/product/') . $category->photo;
-                if (file_exists($oldImage)) {
-                    unlink($oldImage);
-                }
-            }
-            $category->delete();
-
+        if ($this->categoryService->deleteCategory($id)) {
             flash('Xóa loại hàng thành công!')->success();
-        } catch (\Exception $e) {
+        } else {
             flash('Đã xảy ra lỗi khi xóa loại hàng!')->error();
         }
 
+        return redirect()->route('category.index');
+    }
+
+    public function Status($id)
+    {
+        $category = Category::findOrFail($id);
+        $this->statusService->changeStatus($category);
+        flash('Thay đổi trạng thái thành công!')->success();
         return redirect()->route('category.index');
     }
 }

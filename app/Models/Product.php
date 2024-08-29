@@ -7,23 +7,23 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Product extends Model
 {
-    use HasFactory;
-    use Sluggable;
+    use HasFactory, Sluggable;
 
     protected $casts = [
         'status' => Status::class,
+        'list_photo' => 'array', 
     ];
 
-    public function brands()
+    public function category()
     {
-        return $this->hasMany(Brand::class, 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-    public function products()
+    public function brand()
     {
-        return $this->hasMany(Product::class, 'category_id', 'id');
+        return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
     public function sluggable(): array

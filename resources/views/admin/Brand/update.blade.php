@@ -35,7 +35,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Mô tả')" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ $brand->description }}">
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ $brand->description}}</textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

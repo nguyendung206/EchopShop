@@ -31,7 +31,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Mô tả')" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}">
+                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

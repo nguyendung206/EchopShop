@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
     <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
     <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css?v=' . time()) }}">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css">
     <style>
         body {
             font-size: 12px;
@@ -81,6 +82,10 @@
 
         .load-3 .line:nth-last-child(3) {
             animation: loadingC 0.6s 0.3s linear infinite;
+        }
+
+        .ck p {
+            min-height: 200px;
         }
 
         @keyframes loadingC {
@@ -173,6 +178,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.3.2/js/lightgallery.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    
     @yield('script')
 
 
@@ -181,6 +187,46 @@
             AIZ.plugins.notify('{{ $message["level"] }}', '{{ $message["message"] }}');
         @endforeach
     </script>
+    <script type="importmap">
+			{
+				"imports": {
+					"ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.js",
+					"ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.0.0/"
+				}
+			}
+		</script>
+		<script type="module">
+			import {
+				ClassicEditor,
+				Essentials,
+				Paragraph,
+				Bold,
+				Italic,
+				Font
+			} from 'ckeditor5';
+			ClassicEditor
+				.create( document.querySelector( '#description' ), {
+					plugins: [ Essentials, Paragraph, Bold, Italic, Font ],
+					toolbar: [
+						'undo', 'redo', '|', 'bold', 'italic', '|',
+						'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+					]
+				} )
+				.then( editor => {
+					window.editor = editor;
+				} )
+				.catch( error => {
+					console.error( error );
+				} );
+		</script>
+		<!-- A friendly reminder to run on a server, remove this during the integration. -->
+		<script>
+			window.onload = function() {
+				if ( window.location.protocol === 'file:' ) {
+					alert( 'This sample requires an HTTP server. Please serve this file with a web server.' );
+				}
+			};
+		</script>
 </body>
 
 </html>
