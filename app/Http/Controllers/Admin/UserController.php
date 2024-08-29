@@ -8,7 +8,6 @@ use Illuminate\Database\QueryException;
 use App\Models\Users;
 use App\Http\Requests\UserRequest;
 use App\Enums\UserGender;
-// use Spatie\Flash\Flash;
 use Laracasts\Flash\Flash;
 use App\Services\ImageService;
 use App\Services\UserService;
