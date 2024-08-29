@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ $brand->photo ? asset('upload/product/' . $brand->photo) : asset('upload/brand/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ $brand->photo ? asset('storage/upload/product/' . $brand->photo) : asset('upload/brand/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group mb-0 text-right">

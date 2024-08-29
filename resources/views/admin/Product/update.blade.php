@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ $product->photo ? asset('upload/product/' . $product->photo) : asset('upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ $product->photo ? asset('storage/upload/product/' . $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group row">
@@ -131,7 +131,7 @@
                         <div id="list_photo_preview" class="d-flex flex-wrap">
                             @if($product->list_photo)
                                 @foreach(json_decode($product->list_photo) as $photo)
-                                    <img src="{{ asset('upload/product/' . $photo) }}" class="img img-bordered m-2" style="width:100px" />
+                                    <img src="{{ asset('storage/upload/product/' . $photo) }}" class="img img-bordered m-2" style="width:100px" />
                                 @endforeach
                             @endif
                         </div>

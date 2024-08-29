@@ -105,9 +105,8 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ old('old_photo') ? asset('upload/product/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ old('old_photo') ? asset('storage/upload/product/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
                     </div>
-
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh khác')</label>
                         <div class="col-sm-9">

@@ -54,7 +54,18 @@ class ProductController extends Controller
         $product = Product::where('id', $id)->first();
         $categories = Category::all();
         $brands = Brand::all();
-        return view('Admin.Product.Update', compact('product','categories', 'brands'));
+        return view('Admin.Product.Update', compact('product', 'categories', 'brands'));
+    }
+
+    public function delete($id)
+    {
+        if ($this->productService->deleteProduct($id)) {
+            flash('Xóa sản phẩm thành công!')->success();
+        } else {
+            flash('Đã xảy ra lỗi khi xóa sản phẩm!')->error();
+        }
+
+        return redirect()->route('category.index');
     }
 
     public function Status($id)

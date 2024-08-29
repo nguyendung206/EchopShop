@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,5 +57,15 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::post('/update/{id}', [ProductController::class, 'SaveUpdate'])->name('product.update.save');
         Route::delete('/delete/{id}', [ProductController::class, 'Delete'])->name('product.delete');
         Route::get('/changestatus/{id}', [ProductController::class, 'Status'])->name('product.changestatus');
+    });
+    Route::prefix('/manager-user')->group(function () {
+        Route::get('/create', [UserController::class, 'create'])->name('manager-user.create');
+        Route::post('/', [UserController::class, 'store'])->name('manager-user.store');
+        Route::get('/', [UserController::class, 'index'])->name('manager-user.index');
+        Route::get('/{id}', [UserController::class, 'show'])->name('manager-user.show');
+        Route::get('/update/{id}/edit', [UserController::class, 'edit'])->name('manager-user.edit');
+        Route::put('/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('manager-user.updateStatus');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('manager-user.update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('manager-user.destroy');
     });
 });
