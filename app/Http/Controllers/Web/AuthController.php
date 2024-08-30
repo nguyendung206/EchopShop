@@ -103,47 +103,69 @@ class AuthController extends Controller
         ], 200);
     }
 
+    // Trang quên mật khẩu
     public function forgotPassword() {
         return view('web.forgotPassword');
     }
 
+    // Gửi mail 
     public function handleForgotPassword(EmailRequest $request) {
 
         $user = Users::where('email', $request->email)->first();
         $token = \Str::random(40);
+        $pin = rand(100000, 999999);
         $tokenData = [
             'email' => $request->email,
-            'token' => $token
+            'token' => $token,
+            'pin' => $pin,
         ];
         if(ResetPasswordToken::where('email',$request->email)->exists()) {
-            ResetPasswordToken::where('email', $request->email)->update(['token' => $token]); // update token mới nếu đã có email trong database
-            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token));
+            ResetPasswordToken::where('email', $request->email)->update(['token' => $token, 'pin' => $pin]); // update token mới nếu đã có email trong database
+            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
         }else{
             ResetPasswordToken::create($tokenData);
-            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token));
+            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
         }
         flash('Đã gửi tin nhắn đến mail của bạn vui lòng kiểm tra mail')->success();
         return back();
     }
 
-    public function resetPassword(Request $request ,$token) {
-        $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
-        return view('web.resetPassword', compact('token'));
-    }
 
+    // Hiển thị trang nhập PIN
+    public function indexPinAuthentication($token) {
+        $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
+        $email = $tokenData->email;
+        return view('web.pinCode', compact('token', 'email'));
+    }
+    // Kiểm tra PIN, đúng sẽ chuyển vào trang đổi mật khẩu
+    public function checkPinCode(Request $request, $token) {
+        $request->validate([
+            'pin' => ['required', 'digits:6']
+        ]);
+        $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
+        $pin = $request->pin;
+        $checkPin = ResetPasswordToken::where('pin', $pin)->exists();
+        if($checkPin){
+            return view('web.resetPassword', compact('token'));
+        }
+        return back()->with('error','Bạn đã nhập sai mã PIN vui lòng thử lại.');
+    }
+    // Xửa lý đổi mật khẩu
     public function handleResetPassword(Request $request, $token) {
         $request->validate([
             'password' => ['required', 'min:3', 'max:255'],
             'passwordConfirm' => ['required', 'same:password'],
         ]);
+
         $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
         $user = Users::where('email', $tokenData->email)->firstOrFail();
         $data = [
             'password' => bcrypt($request->password),
         ];
         $user->update($data);
-        $tokenChange = \Str::random(40);
-        ResetPasswordToken::where('token', $token)->update(['token' => $tokenChange]); // Đổi lại token sau khi update thành công (form dùng 1 lần)
+        $tokenNew = \Str::random(40);
+        $pinNew = rand(100000, 999999);
+        ResetPasswordToken::where('token', $token)->update(['token' => $tokenNew,'pin' => $pinNew]); // Đổi lại token sau khi update thành công (form dùng 1 lần)
         return redirect()->route('web.login');
     }
 }

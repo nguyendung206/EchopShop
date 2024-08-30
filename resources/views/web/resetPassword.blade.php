@@ -15,10 +15,10 @@
     <div class="login-page">
         <img class="background-1" src="{{ asset('/img/b1.png') }}" alt="b1">
         <img class="background-2" src="{{ asset('/img/b2.png') }}" alt="b2">
-        <div class="container content-wrap">
+        <div class=" content-wrap">
         <div class="row center-item">
-            <div class="col-lg-6 content-1 col-12 col-md-12">
-                <div class="login-form">
+            <div class=" content-1">
+                <div class="login-form" style="margin-top: -300px">
                     <form action="{{route('web.handleResetPassword', $token)}}" method="POST">
                         @csrf
                         <div>
@@ -60,7 +60,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-lg-6 content-2 col-12 col-md-12">
+            <div class="content-2 ">
                 <img src="{{ asset('/img/Untitled-2.png') }}" class="c-img-2" alt="">
             </div>
         </div>

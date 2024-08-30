@@ -15,7 +15,7 @@
                     <div class="row g-0">
                     <div class="col-md-4 gradient-custom text-center text-white"
                         style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                        <img src="{{ asset('upload/users/' . ($user->avatar ?? 'nophoto.png')) }}"
+                        <img src="{{ asset('storage/upload/users/' . ($user->avatar ?? 'nophoto.png')) }}"
                         alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
                     </div>
                     <div class="col-md-8">

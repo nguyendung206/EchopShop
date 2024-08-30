@@ -10,23 +10,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alatsi&family=Exo:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <div class="login-page">
         <img class="background-1" src="{{ asset('/img/b1.png') }}" alt="b1">
         <img class="background-2" src="{{ asset('/img/b2.png') }}" alt="b2">
-        <div class="container content-wrap">
-        <div class="row center-item">
-            <div class="col-lg-6 content-1 col-12 col-md-12">
-                <div class="login-form">
+        <div class=" content-wrap">
+        <div class="row center-item"  >
+            <div class="content-1">
+                <div class="login-form" style="margin-top: -50px">
                     <form action="{{ route('web.handleForgotPassword')}}" method="POST">
                         @csrf
                         <div>
                             <img src="{{ asset('/img/logo-2.png') }}" alt="logo">
                         </div>
                         <div class="c-1-title">Lấy lại mật khẩu</div>
-                        <div class="c-1-label">Vui lòng nhập email của bạn</div>
+                        <div class="c-1-label" style="text-align: center">Vui lòng nhập email của bạn</div>
                         <div class="c-1-input"><input type="text" placeholder="Email" name="email"></div>
                         @error('email')
                             <div style="color: rgba(117,0,0,1);text-align: left; margin-bottom: 25px">{{ $message }}</div>
@@ -36,7 +37,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-lg-6 content-2 col-12 col-md-12">
+            <div class="content-2">
                 <img src="{{ asset('/img/Untitled-2.png') }}" class="c-img-2" alt="">
             </div>
         </div>
