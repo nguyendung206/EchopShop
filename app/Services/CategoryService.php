@@ -7,12 +7,6 @@ use App\Models\Category;
 
 class CategoryService
 {
-    protected $imageService;
-
-    public function __construct(ImageService $imageService)
-    {
-        $this->imageService = $imageService;
-    }
     public function getCategories($request)
     {
         $query = Category::query();
@@ -40,7 +34,7 @@ class CategoryService
         $category->status = $request->status;
 
         if ($request->hasFile('photo')) {
-            $category->photo = $this->imageService->uploadImage($request->file('photo'));
+            $category->photo = uploadImage($request->file('photo'));
         } else {
             $category->photo = 'noproduct.png';
         }
@@ -58,7 +52,7 @@ class CategoryService
         $category->status = $request->status;
 
         if ($request->hasFile('photo')) {
-            $category->photo = $this->imageService->uploadImage($request->file('photo'), 'upload/product', $category->photo);
+            $category->photo = uploadImage($request->file('photo'), 'upload/product', $category->photo);
         }
 
         $category->save();
@@ -71,7 +65,7 @@ class CategoryService
         try {
             $category = Category::findOrFail($id);
             if ($category->photo && $category->photo != 'noproduct.png') {
-                $this->imageService->deleteImage($category->photo);
+                deleteImage($category->photo);
             }
 
             $category->delete();
@@ -79,19 +73,5 @@ class CategoryService
         } catch (\Exception $e) {
             return false; 
         }
-    }
-
-    public function changeStatus($categoryId)
-    {
-        $category = Category::findOrFail($categoryId);
-
-        if ($category->status->value == 2) {
-            $category->status = 1;
-        } else {
-            $category->status = 2;
-        }
-
-        $category->save();
-        return $category;
     }
 }

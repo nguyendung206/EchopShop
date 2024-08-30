@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
@@ -28,36 +29,58 @@ class ProductController extends Controller
         return view('admin.product.index', compact('datas'));
     }
 
-    public function Create()
+    public function create()
     {
-        $categories = Category::all();
-        $brands = Brand::all();
+        $categories = Category::where('status', Status::ACTIVE)->get();
+        $brands = Brand::where('status', Status::ACTIVE)->get();
         return view('admin.product.create', compact('categories', 'brands'));
     }
 
-    public function SaveCreate(ProductRequest $request)
+    public function store(ProductRequest $request)
     {
-        $this->productService->createProduct($request);
-        flash('Thêm mới sản phẩm thành công!')->success();
-        return redirect()->route('product.index');
+        try {
+            $product = $this->productService->createProduct($request);
+
+            if ($product) {
+                flash('Thêm mới sản phẩm thành công!')->success();
+                return redirect()->route('product.index');
+            } else {
+                flash('Không thể tạo sản phẩm, vui lòng thử lại.')->error();
+                return redirect()->back()->withInput();
+            }
+        } catch (\Exception $e) {
+            flash('Đã xảy ra lỗi, vui lòng thử lại.')->error();
+            return redirect()->back()->withInput();
+        }
     }
 
-    public function SaveUpdate(ProductRequest $request, $id)
-    {
-        $this->productService->updateProduct($request, $id);
-        flash('Cập nhật sản phẩm thành công!')->success();
-        return redirect()->route('product.index');
-    }
-
-    public function Update($id)
+    public function edit($id)
     {
         $product = Product::where('id', $id)->first();
-        $categories = Category::all();
-        $brands = Brand::all();
+        $categories = Category::where('status', Status::ACTIVE)->get();
+        $brands = Brand::where('status', Status::ACTIVE)->get();
         return view('Admin.Product.Update', compact('product', 'categories', 'brands'));
     }
 
-    public function delete($id)
+    public function update(ProductRequest $request, $id)
+    {
+        try {
+            $product = $this->productService->updateProduct($request, $id);
+
+            if ($product) {
+                flash('Cập nhật sản phẩm thành công!')->success();
+                return redirect()->route('product.index');
+            } else {
+                flash('Không thể cập nhật sản phẩm, vui lòng thử lại.')->error();
+                return redirect()->back()->withInput();
+            }
+        } catch (\Exception $e) {
+            flash('Đã xảy ra lỗi, vui lòng thử lại.')->error();
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function destroy($id)
     {
         if ($this->productService->deleteProduct($id)) {
             flash('Xóa sản phẩm thành công!')->success();
@@ -68,11 +91,22 @@ class ProductController extends Controller
         return redirect()->route('category.index');
     }
 
-    public function Status($id)
+    public function status($id)
     {
-        $product = Product::findOrFail($id);
-        $this->statusService->changeStatus(($product));
-        flash('Thay đổi trạng thái thành công')->success();
+        try {
+            $product = Product::findOrFail($id);
+            $this->statusService->changeStatus($product);
+            flash('Thay đổi trạng thái thành công')->success();
+        } catch (\Exception $e) {
+            flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
+            return redirect()->route('product.index');
+        }
+
         return redirect()->route('product.index');
+    }
+
+    public function show($id) {
+        $product = Product::where('id', $id)->first();
+        return view('Admin.Product.Show', compact('product'));
     }
 }

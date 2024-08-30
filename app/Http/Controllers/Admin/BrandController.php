@@ -28,34 +28,34 @@ class BrandController extends Controller
         return view('admin.brand.index', compact('datas'));
     }
 
-    public function Create()
+    public function create()
     {
-        $categories = Category::all();
+        $categories = Category::where('status', Status::ACTIVE)->get();
         return view('Admin.brand.Create', compact('categories'));
     }
 
-    public function SaveCreate(BrandRequest $request)
+    public function store(BrandRequest $request)
     {
         $this->brandService->createBrand($request);
         flash('Thêm mới loại hàng thành công!')->success();
         return redirect()->route('brand.index');
     }
 
-    public function Update($id)
+    public function edit($id)
     {
-        $categories = Category::all();
+        $categories = Category::where('status', Status::ACTIVE)->get();
         $brand = Brand::where('id', $id)->first();
         return view('Admin.brand.Update', compact('brand','categories'));
     }
 
-    public function SaveUpdate(BrandRequest $request, $id)
+    public function update(BrandRequest $request, $id)
     {
         $this->brandService->updateBrand($request, $id);
         flash('Cập nhật loại hàng thành công!')->success();
         return redirect()->route('brand.index');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         if ($this->brandService->deleteBrand($id)) {
             flash('Xóa loại hàng thành công!')->success();
@@ -66,11 +66,10 @@ class BrandController extends Controller
         return redirect()->route('brand.index');
     }
 
-    public function Status($id)
+    public function status($id)
     {
         $brand = Brand::findOrFail($id);
         $this->statusService->changeStatus($brand);
-        flash('Thay đổi trạng thái thành công!')->success();
         return redirect()->route('brand.index');
     }
 }

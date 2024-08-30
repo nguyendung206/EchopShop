@@ -19,7 +19,7 @@
                 <h5 class="mb-0 h6">@lang('Cập nhật Loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('brand.update.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('brand.edit.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group row">

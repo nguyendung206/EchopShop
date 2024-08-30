@@ -7,12 +7,6 @@ use App\Models\Brand;
 
 class BrandService
 {
-    protected $imageService;
-
-    public function __construct(ImageService $imageService)
-    {
-        $this->imageService = $imageService;
-    }
     public function getBrands($request)
     {
         $query = Brand::query();
@@ -41,7 +35,7 @@ class BrandService
         $brand->category_id = $request->category_id;
 
         if ($request->hasFile('photo')) {
-            $brand->photo = $this->imageService->uploadImage($request->file('photo'));
+            $brand->photo = uploadImage($request->file('photo'));
         } else {
             $brand->photo = 'noproduct.png';
         }
@@ -60,7 +54,7 @@ class BrandService
         $brand->category_id = $request->category_id;
 
         if ($request->hasFile('photo')) {
-            $brand->photo = $this->imageService->uploadImage($request->file('photo'), 'upload/product', $brand->photo);
+            $brand->photo = uploadImage($request->file('photo'), 'upload/product', $brand->photo);
         }
 
         $brand->save();
@@ -73,7 +67,7 @@ class BrandService
         try {
             $brand = Brand::findOrFail($id);
             if ($brand->photo && $brand->photo != 'noproduct.png') {
-                $this->imageService->deleteImage($brand->photo);
+                deleteImage($brand->photo);
             }
 
             $brand->delete();
@@ -81,19 +75,5 @@ class BrandService
         } catch (\Exception $e) {
             return false;
         }
-    }
-
-    public function changeStatus($brandId)
-    {
-        $brand = Brand::findOrFail($brandId);
-
-        if ($brand->status->value == 2) {
-            $brand->status = 1;
-        } else {
-            $brand->status = 2;
-        }
-
-        $brand->save();
-        return $brand;
     }
 }

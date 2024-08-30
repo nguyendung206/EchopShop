@@ -91,7 +91,7 @@
                     <th class="">@lang('Mô tả')</th>
                     <th class="">@lang('Giá')</th>
                     <th class="w-140">@lang('Trạng thái')</th>
-                    <th class="w-150">@lang('Điều chỉnh')</th>
+                    <th class="" style="width: 15%;">@lang('Điều chỉnh')</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,10 +103,13 @@
                             <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ asset('storage/upload/product/' . $data->photo) }}">
                         </td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
-                        <td class="font-weight-400 align-middle">{{$data->description}}</td>
-                        <td class="font-weight-400 align-middle">{{$data->price}}</td>
+                        <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>
+                        <td class="font-weight-400 align-middle">{{format_price($data->price)}}</td>
                         <td>{{ $data->status->label() }}</td>
                         <td class="text-right">
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.show', ['id' => $data->id]) }}"  title="@lang('Show')">
+                                <i class="las la-bars"></i>
+                            </a>
                             @if ($data->status->value == 1)
                                 <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}" 
                                 data-href="{{ route('product.changestatus', ['id' => $data->id]) }}" id="active-popup" title="@lang('user.deactivate')">
@@ -118,7 +121,7 @@
                                     <i class="las la-check-circle"></i>
                                 </a>
                             @endif
-                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.update', ['id' => $data->id]) }}"  title="@lang('Update')">
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.edit', ['id' => $data->id]) }}"  title="@lang('Update')">
                                 <i class="las la-edit"></i>
                             </a>
                             <a href="javascript:void(0)" data-href="{{ route('product.delete', ['id' => $data->id]) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
@@ -166,35 +169,77 @@
     @endforeach
     // active popup
     $(document).on('click', '#inactive-popup', function() {
-        let change_href = $(this).data('href');
+        let id = $(this).attr('data-id');
+        let href = $(this).attr('data-href');
 
         Swal.fire({
             title: '@lang("Kích hoạt")',
-            text: '@lang("Bạn muốn kích hoạt Sản phẩm này?")',
+            text: '@lang("Bạn muốn kích hoạt Danh mục này?")',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
             showCancelButton: true,
             showCloseButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = change_href; 
+                $.ajax({
+                    type: "GET", 
+                    url: href,
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "_method": "GET",
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Thông báo!',
+                            text: 'Thay đổi trạng thái thành công!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(err) {
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
+                    }
+                });  
             }
         });
     });
 
     $(document).on('click', '#active-popup', function() {
-        let change_href = $(this).data('href');
+        let id = $(this).attr('data-id');
+        let href = $(this).attr('data-href');
 
         Swal.fire({
             title: '@lang("Vô hiêu hóa")',
-            text: '@lang("Bạn muốn vô hiệu hóa Sản phẩm này")',
+            text: '@lang("Bạn muốn vô hiệu hóa Danh mục này")',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
             showCancelButton: true,
             showCloseButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = change_href; 
+                $.ajax({
+                    type: "GET", 
+                    url: href,
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "_method": "GET",
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Thông báo!',
+                            text: 'Thay đổi trạng thái thành công!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(err) {
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
+                    }
+                }); 
             }
         });
     });

@@ -33,27 +33,27 @@ class CategoryController extends Controller
         return view('Admin.Category.Create');
     }
 
-    public function SaveCreate(CategoryRequest $request)
+    public function store(CategoryRequest $request)
     {
         $this->categoryService->createCategory($request);
         flash('Thêm mới loại hàng thành công!')->success();
         return redirect()->route('category.index');
     }
 
-    public function Update($id)
+    public function edit($id)
     {
         $category = Category::where('id', $id)->first();
         return view('Admin.Category.Update', compact('category'));
     }
 
-    public function SaveUpdate(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         $this->categoryService->updateCategory($request, $id);
         flash('Cập nhật loại hàng thành công!')->success();
         return redirect()->route('category.index');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         if ($this->categoryService->deleteCategory($id)) {
             flash('Xóa loại hàng thành công!')->success();
@@ -64,7 +64,7 @@ class CategoryController extends Controller
         return redirect()->route('category.index');
     }
 
-    public function Status($id)
+    public function status($id)
     {
         $category = Category::findOrFail($id);
         $this->statusService->changeStatus($category);

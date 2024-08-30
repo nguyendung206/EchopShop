@@ -30,8 +30,8 @@ class ProductRequest extends FormRequest
             'list_photo.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240', 
             'status' => 'required|integer|in:1,2',
             'description' => 'nullable|string',
-            'brand_id' => 'required|exists:brands,id',
-            'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
+            'category_id' => 'nullable|exists:categories,id',
         ];
     }
 
@@ -65,10 +65,8 @@ class ProductRequest extends FormRequest
 
             'description.string' => 'Mô tả sản phẩm phải là một chuỗi ký tự.',
 
-            'brand_id.required' => 'Vui lòng chọn thương hiệu.',
             'brand_id.exists' => 'Thương hiệu không tồn tại.',
 
-            'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
             'category_id.exists' => 'Loại sản phẩm không tồn tại.',
         ];
     }

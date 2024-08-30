@@ -19,7 +19,7 @@
                 <h5 class="mb-0 h6">@lang('Cập nhật sản phẩm')</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('product.update.save', $product->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('product.edit.save', $product->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group row">
@@ -56,7 +56,7 @@
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Loại sản phẩm')</label>
                         <div class="col-sm-9">
                             <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
-                                <option value="" disabled>@lang('Chọn loại sản phẩm')</option>
+                                <option value="" {{ old('category_id', $brand->category_id ?? null) === null ? 'selected' : '' }}>@lang('Chọn loại sản phẩm')</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ $category->id == $product->category_id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -73,7 +73,7 @@
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Hãng sản phẩm')</label>
                         <div class="col-sm-9">
                             <select class="form-control @error('brand_id') is-invalid @enderror" name="brand_id">
-                                <option value="" disabled>@lang('Chọn hãng sản phẩm')</option>
+                                <option value="" {{ old('brand_id', $brand->brand_id ?? null) === null ? 'selected' : '' }}>@lang('Chọn hãng sản phẩm')</option>
                                 @foreach($brands as $brand)
                                 <option value="{{ $brand->id }}" {{ $brand->id == $product->brand_id ? 'selected' : '' }}>
                                     {{ $brand->name }}
@@ -130,9 +130,13 @@
                     <div class="form-group">
                         <div id="list_photo_preview" class="d-flex flex-wrap">
                             @if($product->list_photo)
-                                @foreach(json_decode($product->list_photo) as $photo)
-                                    <img src="{{ asset('storage/upload/product/' . $photo) }}" class="img img-bordered m-2" style="width:100px" />
-                                @endforeach
+                            @foreach(json_decode($product->list_photo) as $index => $photo)
+                            <div class="position-relative m-2">
+                                <img src="{{ asset('storage/upload/product/' . $photo) }}" class="img img-bordered" style="width:100px; height: 150px;" />
+                                <button type="button" class="btn btn-danger btn-sm position-absolute" style="top:0; right:0;" onclick="removePhoto(this, '{{ $photo }}')">X</button>
+                                <input type="hidden" name="photos_to_keep[]" value="{{ $photo }}">
+                            </div>
+                            @endforeach
                             @endif
                         </div>
                     </div>
@@ -163,18 +167,44 @@
         previewContainer.innerHTML = ''; // Clear previous previews
 
         if (input.files) {
-            Array.from(input.files).forEach(file => {
+            Array.from(input.files).forEach((file) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.className = 'position-relative m-2';
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
-                    img.className = 'img img-bordered m-2';
+                    img.className = 'img img-bordered';
                     img.style.width = '100px';
-                    previewContainer.appendChild(img);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn btn-danger btn-sm position-absolute';
+                    deleteBtn.style.top = '0';
+                    deleteBtn.style.right = '0';
+                    deleteBtn.textContent = 'X';
+                    deleteBtn.type = 'button';
+                    deleteBtn.onclick = function() {
+                        imgWrapper.remove();
+                    };
+
+                    imgWrapper.appendChild(img);
+                    imgWrapper.appendChild(deleteBtn);
+                    previewContainer.appendChild(imgWrapper);
                 };
                 reader.readAsDataURL(file);
             });
         }
+    }
+
+    function removePhoto(button, photoName) {
+        const photoWrapper = button.parentElement;
+        photoWrapper.remove();
+
+        const deletePhotosInput = document.getElementById('delete_photos');
+        let deletePhotos = JSON.parse(deletePhotosInput.value || '[]');
+        deletePhotos.push(photoName);
+        deletePhotosInput.value = JSON.stringify(deletePhotos);
     }
 </script>
 @endsection

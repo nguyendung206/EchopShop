@@ -102,7 +102,7 @@
                             <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="/storage/upload/product/{{ $data->photo }}">
                         </td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
-                        <td class="font-weight-400 align-middle">{{$data->description}}</td>
+                        <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>
                         <td>{{ $data->status->label() }}</td>
                         <td class="text-right">
                             @if ($data->status->value == 1)
@@ -116,7 +116,7 @@
                                     <i class="las la-check-circle"></i>
                                 </a>
                             @endif
-                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('category.update', ['id' => $data->id]) }}"  title="@lang('Update')">
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('category.edit', ['id' => $data->id]) }}"  title="@lang('Update')">
                                 <i class="las la-edit"></i>
                             </a>
                             <a href="javascript:void(0)" data-href="{{ route('category.delete', ['id' => $data->id]) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
@@ -164,7 +164,8 @@
     @endforeach
     // active popup
     $(document).on('click', '#inactive-popup', function() {
-        let change_href = $(this).data('href');
+        let id = $(this).attr('data-id');
+        let href = $(this).attr('data-href');
 
         Swal.fire({
             title: '@lang("Kích hoạt")',
@@ -175,13 +176,34 @@
             showCloseButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = change_href; 
+                $.ajax({
+                    type: "GET", 
+                    url: href,
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "_method": "GET",
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Thông báo!',
+                            text: 'Thay đổi trạng thái thành công!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(err) {
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
+                    }
+                });  
             }
         });
     });
 
     $(document).on('click', '#active-popup', function() {
-        let change_href = $(this).data('href');
+        let id = $(this).attr('data-id');
+        let href = $(this).attr('data-href');
 
         Swal.fire({
             title: '@lang("Vô hiêu hóa")',
@@ -192,7 +214,27 @@
             showCloseButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = change_href; 
+                $.ajax({
+                    type: "GET", 
+                    url: href,
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "_method": "GET",
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Thông báo!',
+                            text: 'Thay đổi trạng thái thành công!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(err) {
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
+                    }
+                }); 
             }
         });
     });
