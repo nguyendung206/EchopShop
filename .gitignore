@@ -2,6 +2,12 @@
 /public/build
 /public/hot
 /public/storage
+/public/storage/*.png
+/public/storage/*.jpg
+/public/storage/*.jpeg
+/public/storage/*.gif
+/public/storage/*.bmp
+/public/storage/*.tiff
 /storage/*.key
 /vendor
 .env
