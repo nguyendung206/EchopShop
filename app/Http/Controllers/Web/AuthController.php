@@ -31,7 +31,7 @@ class AuthController extends Controller
         if (session()->has('user')) {
             return redirect('/');
         }
-        return view('web.login');
+        return view('web.auth.login');
     }
 
     public function login(Request $request) {
@@ -53,7 +53,7 @@ class AuthController extends Controller
     public function register() {
         $provinces = Province::all();
 
-        return view('web.register', compact('provinces'));
+        return view('web.auth.register', compact('provinces'));
     }
 
     public function store (RegisterRequest $request) {
@@ -105,7 +105,7 @@ class AuthController extends Controller
 
     // Trang quên mật khẩu
     public function forgotPassword() {
-        return view('web.forgotPassword');
+        return view('web.auth.forgotPassword');
     }
 
     // Gửi mail 
@@ -135,7 +135,7 @@ class AuthController extends Controller
     public function indexPinAuthentication($token) {
         $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
         $email = $tokenData->email;
-        return view('web.pinCode', compact('token', 'email'));
+        return view('web.auth.pinCode', compact('token', 'email'));
     }
     // Kiểm tra PIN, đúng sẽ chuyển vào trang đổi mật khẩu
     public function checkPinCode(Request $request, $token) {
@@ -146,7 +146,7 @@ class AuthController extends Controller
         $pin = $request->pin;
         $checkPin = ResetPasswordToken::where('pin', $pin)->exists();
         if($checkPin){
-            return view('web.resetPassword', compact('token'));
+            return view('web.auth.resetPassword', compact('token'));
         }
         return back()->with('error','Bạn đã nhập sai mã PIN vui lòng thử lại.');
     }

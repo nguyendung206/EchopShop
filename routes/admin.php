@@ -19,9 +19,9 @@ use App\Http\Controllers\Admin\UserController;
 */
 
 
-Route::get('/login', [AuthController::class, 'Index'])->name('admin.login');
-Route::post('/login', [AuthController::class, 'Login'])->name('login');
-Route::get('/logout', [AuthController::class, 'Logout'])->name('logout');
+Route::get('admin/login', [AuthController::class, 'Index'])->name('admin.login');
+Route::post('admin/login', [AuthController::class, 'Login'])->name('admin.login');
+Route::get('admin/logout', [AuthController::class, 'Logout'])->name('admin.logout');
 
 Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AuthController::class, 'Index'])->name('admin.index');
