@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\EmailRequest;
 use Laracasts\Flash\Flash;
-use App\Services\UploadImageService;
 use App\Models\Users;
 use App\Models\District;
 use App\Models\Ward;
@@ -20,12 +19,8 @@ use Mail;
 
 class AuthController extends Controller
 {   
-    protected $uploadImageService;
 
-    public function __construct(UploadImageService $uploadImageService)
-    {
-        $this->uploadImageService = $uploadImageService;
-    }
+    
 
     public function index(Request $request) {
         if (session()->has('user')) {
@@ -67,7 +62,7 @@ class AuthController extends Controller
                     'province_id' => $request->province_id,
                     'district_id' => $request->district_id,
                     'ward_id' => $request->ward_id,
-                    'avatar' => $this->uploadImageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                    'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
                 ];
 
                 Users::create($userData);

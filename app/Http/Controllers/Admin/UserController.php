@@ -12,21 +12,15 @@ use App\Models\Ward;
 use App\Http\Requests\UserRequest;
 use App\Enums\UserGender;
 use Laracasts\Flash\Flash;
-use App\Services\UploadImageService;
 use App\Services\UserService;
-use App\Services\ShowProvinceService;
 
 class UserController extends Controller
 {
-    protected $uploadImageService;
     protected $userService;
-    protected $showProvinceService;
 
-    public function __construct(UploadImageService $uploadImageService, UserService $userService, ShowProvinceService $showProvinceService)
+    public function __construct( UserService $userService)
     {
-        $this->uploadImageService = $uploadImageService;
         $this->userService = $userService;
-        $this->showProvinceService = $showProvinceService;
     }
 
     // Hiển thị tất cả người dùng
@@ -47,10 +41,12 @@ class UserController extends Controller
             flash('Không có người dùng tương ứng')->error();
             return redirect()->route('manager-user.store');
         }
-        $provinceInformation = $this->showProvinceService->showProvince($user->province_id, $user->district_id, $user->ward_id);
-        $province_name = $provinceInformation['province_name'];
-        $district_name = $provinceInformation['district_name'];
-        $ward_name = $provinceInformation['ward_name'];
+        $province= Province::find($user->province_id);
+        $province_name = $province ? $province->province_name : 'Không xác định';
+        $district = District::find($user->district_id);
+        $district_name = $district ? $district->district_name : 'Không xác định';
+        $ward = Ward::find($user->ward_id);
+        $ward_name = $ward ? $ward->ward_name : 'Không xác định';
         return view('admin.userManager.show', compact('user', 'province_name','district_name','ward_name'));
     }
 
@@ -76,7 +72,7 @@ class UserController extends Controller
                     'address' => $request->address,
                     'gender' => $request->gender,
                     'status' => $request->status,
-                    'avatar' => $this->uploadImageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                    'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
                 ];
 
                 Users::create($userData);
@@ -123,7 +119,7 @@ class UserController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
-                'avatar' => $this->uploadImageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
             ];
             if($request->has('password') && !empty($request->password)) {
                 $updateData['password'] = bcrypt($request->password);
@@ -150,7 +146,7 @@ class UserController extends Controller
         }
         
         $result = $user->delete();
-        $this->uploadImageService->deleteImage($user->avatar, 'upload/users','nophoto.png');
+        deleteImage($user->avatar, 'upload/users','nophoto.png');
         if($result){
             flash('Xoá người dùng thành công')->success();
             return  redirect()->route('manager-user.index');
