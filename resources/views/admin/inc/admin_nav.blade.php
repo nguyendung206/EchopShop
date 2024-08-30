@@ -44,10 +44,10 @@
                             <span>{{trans('Hồ sơ cá nhân')}}</span>
                         </a>
 
-                        <a href="{{ route('logout') }}" class="dropdown-item">
+                        <a href="{{ route('admin.logout') }}" class="dropdown-item">
                             <i class="las la-sign-out-alt"></i>
                             <span>@lang('Đăng xuất')</span>
-                            <!-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            <!-- <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
                             </form> -->
                         </a>

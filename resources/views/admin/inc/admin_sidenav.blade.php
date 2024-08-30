@@ -11,7 +11,7 @@
             </ul>
             <ul class="aiz-side-nav-list" id="main-menu" data-toggle="aiz-side-menu">
                 <li class="aiz-side-nav-item">
-                    <a href="" class="aiz-side-nav-link">
+                    <a href="{{ route('admin.index') }}" class="aiz-side-nav-link">
                         <i class="las la-home aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">{{translate('Trang chủ')}}</span>
                     </a>

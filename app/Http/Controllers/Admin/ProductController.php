@@ -59,7 +59,7 @@ class ProductController extends Controller
         $product = Product::where('id', $id)->first();
         $categories = Category::where('status', Status::ACTIVE)->get();
         $brands = Brand::where('status', Status::ACTIVE)->get();
-        return view('Admin.Product.Update', compact('product', 'categories', 'brands'));
+        return view('admin.product.update', compact('product', 'categories', 'brands'));
     }
 
     public function update(ProductRequest $request, $id)
@@ -107,6 +107,6 @@ class ProductController extends Controller
 
     public function show($id) {
         $product = Product::where('id', $id)->first();
-        return view('Admin.Product.Show', compact('product'));
+        return view('admin.product.show', compact('product'));
     }
 }

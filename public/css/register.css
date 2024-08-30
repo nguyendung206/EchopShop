@@ -1,0 +1,93 @@
+.c-1-upload div{
+    display: inline-block;
+    border: 2px dashed rgba(177, 0, 0, 0.5);
+    padding: 14px 14px;
+    border-radius: 50%;
+    margin-bottom: 25px;
+    cursor: pointer;
+    
+}
+.content-wrap {
+    margin-right: auto;
+}
+#file {
+    display: none;
+}
+.register-form {
+    margin-top: 88px;
+    margin-bottom: 88px;
+    box-shadow: -30px -15px 25px rgba(0, 0, 0, 0.1),
+    -30px 12px 25px rgba(0, 0, 0, 0.1),
+     -10px -1000px 60px rgba(0, 0, 0, 0);
+}
+.c-1-input {
+    position: relative;
+}
+.c-1-input input{
+    position: relative;
+    background-color: #f2f2f2;
+    padding-left: 46px;
+    border: none;
+}
+.c-1-input img {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    z-index: 1;
+}
+.text-phone::placeholder {
+    color: #ABABAB;
+}
+.c-1-input select {
+    position: relative;
+    background-color: #f2f2f2;
+    padding-left: 46px;
+    width: 100%;
+    border: 1px solid rgba(142, 142, 142, 1);
+    font-size: 18px;
+    color: #8E8E8E;
+    padding: 8px;
+    margin-bottom: 25px;
+    padding-left: 42px;
+    border: none;
+}
+.location-wrap {
+    display: flex;
+}
+.c-1-location-1 {
+    width: 48%;
+    margin-right: 17px;
+}
+.c-1-location-2 {
+    width: 48%;
+}
+.c-1-input .select-2 {
+    padding-left: 10px;
+    width: 100%;
+}
+.c-1-address input{
+    padding-left: 15px;
+}
+.c-1-register {
+    margin-bottom: 25px;
+}
+
+.custom-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgba(177, 0, 0, 1);
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+.custom-checkbox.checked::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 2px;
+    width: 8px;
+    height: 16px;
+    border: solid rgba(177, 0, 0, 1);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}

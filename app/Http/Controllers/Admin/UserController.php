@@ -8,19 +8,18 @@ use Illuminate\Database\QueryException;
 use App\Models\Users;
 use App\Http\Requests\UserRequest;
 use App\Enums\UserGender;
-// use Spatie\Flash\Flash;
 use Laracasts\Flash\Flash;
-use App\Services\ImageService;
+use App\Services\UploadImageService;
 use App\Services\UserService;
 
 class UserController extends Controller
 {
-    protected $imageService;
+    protected $uploadImageService;
     protected $userService;
 
-    public function __construct(ImageService $imageService, UserService $userService)
+    public function __construct(UploadImageService $uploadImageService, UserService $userService)
     {
-        $this->imageService = $imageService;
+        $this->uploadImageService = $uploadImageService;
         $this->userService = $userService;
     }
 
@@ -63,7 +62,7 @@ class UserController extends Controller
                     'address' => $request->address,
                     'gender' => $request->gender,
                     'status' => $request->status,
-                    'avatar' => $this->imageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                    'avatar' => $this->uploadImageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
                 ];
 
                 Users::create($userData);
@@ -106,7 +105,7 @@ class UserController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
-                'avatar' => $this->imageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                'avatar' => $this->uploadImageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
             ];
             if($request->has('password') && !empty($request->password)) {
                 $updateData['password'] = bcrypt($request->password);
@@ -133,7 +132,7 @@ class UserController extends Controller
         }
         
         $result = $user->delete();
-        $this->imageService->deleteImage($user->avatar, 'upload/users','nophoto.png');
+        $this->uploadImageService->deleteImage($user->avatar, 'upload/users','nophoto.png');
         if($result){
             flash('Xoá người dùng thành công')->success();
             return  redirect()->route('manager-user.index');
