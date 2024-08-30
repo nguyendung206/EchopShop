@@ -10,7 +10,7 @@ class ImageService
     {
         if ($file) {
             $fileName = time() . '-' . $file->getClientOriginalName();
-            $file->move(storage_path($path), $fileName);
+            $file->storeAs($path, $fileName, 'public');
             return $fileName;
         }
 
@@ -19,10 +19,10 @@ class ImageService
 
     public function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
-        $filePath = storage_path($path . '/' . $fileName);
+        $filePath = storage_path('app/' . $path . '/' . $fileName);
+        if (file_exists($filePath) && $fileName !== $defaultImage) {
+            unlink($filePath);
+        }
 
-    if (file_exists($filePath) && $fileName !== $defaultImage) {
-        unlink($filePath);
-    }
     }
 }

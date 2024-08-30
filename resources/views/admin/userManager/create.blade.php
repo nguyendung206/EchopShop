@@ -112,10 +112,52 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Thành Phố<span class="text-vali">&#9913;</span></label></label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500"  name="province_id" id="province_select" >
+                                <option class=" text-center" value="0">Tỉnh/Thành phố *</option>
+                                    @foreach($provinces as $province)
+                                        <option class=" text-center" value="{{$province->id}}">{{ $province->province_name }}</option>
+                                    @endforeach
+                            </select>
+                                @error('province_id')
+                                    <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Quận/Huyện <span class="text-vali">&#9913;</span></label></label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500" name="district_id" id="district_select" >
+                                <option value="0" class=" text-center">Quận/Huyện *</option>
+                                <option value="0" class=" text-center" disabled>Vui lòng chọn thành phố trước</option>
+                            </select>
+                                @error('district_id')
+                                <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Phường/Thị xã <span class="text-vali">&#9913;</span></label></label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500" name="ward_id" id="ward_select" >
+                                <option value="0" class=" text-center">Phường/Thị xã *</option>
+                                <option value="0" class=" text-center" disabled>Vui lòng chọn quận huyện trước</option>
+                            </select>
+                            @error('ward_id')
+                            <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Địa chỉ<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="Nhập ngày cấp" name="address" class="form-control
+                            <input type="text" placeholder="Nhập địa chỉ" name="address" class="form-control
                             @error('address') is-invalid  @enderror" value="{{ old('address') }}">
                             @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -169,6 +211,57 @@
                 $('#message').html('Mật khẩu xác nhận không đúng').css('color', 'red');
         });
 
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#province_select').change(function() {
+            var provinceId = $(this).val(); // Lấy giá trị được chọn
+
+            $.ajax({
+                url: '{{ route('web.district') }}', 
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', 
+                    provinceId: provinceId 
+                },
+                success: function(response) {
+                    $('#district_select').empty().append('<option value="0">Quận/Huyện *</option>');
+
+                    $.each(response.districts, function(index, district) {
+                        $('#district_select').append('<option value="' + district.id + '">' + district.district_name + '</option>');
+                    });
+
+                    $('#ward_select').empty().append('<option value="0" >Phường/Thị xã *</option>');
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('#district_select').change(function() {
+            var districtId = $(this).val(); // Lấy giá trị được chọn
+            $.ajax({
+                url: '{{ route('web.ward') }}', 
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', 
+                    districtId: districtId 
+                },
+                success: function(response) {
+                    console.log(response.wards)
+                    $('#ward_select').empty().append('<option value="0">Phường/Thị xã *</option>');
+
+                    $.each(response.wards, function(index, ward) {
+                        $('#ward_select').append('<option value="' + ward.id + '">' + ward.ward_name + '</option>');
+                    });
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
     </script>
 @endsection
 

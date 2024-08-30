@@ -30,6 +30,11 @@ class UserRequest extends FormRequest
                 'citizen_identification_number' => ['required','numeric', 'digits:12'],
                 'address' => ['required', 'min: 3', 'max: 255'],
                 'place_of_issue' => ['required', 'min:3', 'max:255'],
+                'date_of_issue' => ['required'],
+                'date_of_birth' => ['required'],
+                'province_id' => ['not_in:0'],
+                'district_id' => ['not_in:0'],
+                'ward_id' => ['not_in:0'],
         ];
         if ($this->has('password')) {
             $rule['password'] = ['required', 'min:3', 'max:255'];
@@ -65,7 +70,12 @@ class UserRequest extends FormRequest
             'place_of_issue.required' => "Vui lòng nhập nơi cấp căn cước công dân", 
             'place_of_issue.min' => "Vui lòng nhập tối thiểu 3 ký tự",
             'place_of_issue.max' => "Vui lòng nhập tối đa 255 ký tự",
+            'date_of_issue' => 'Vui lòng chọn ngày cấp',
+            'date_of_birth' => 'Vui lòng chọn ngày sinh',
             'email.unique' => 'Email này đã tồn tại. Vui lòng chọn email khác',
+            'province_id.not_in' => "Vui lòng chọn thành phố",
+            'district_id.not_in' => "Vui lòng chọn quận/huyện",
+            'ward_id.not_in' => "Vui lòng chọn phường/thị xã",
         ];
     }
 }

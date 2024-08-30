@@ -48,6 +48,18 @@
                                 <h6>Giới tính</h6>
                                 <p class="text-muted">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</p>
                             </div>
+                            <div class="col-6 mb-3">
+                                <h6>Thành Phố</h6>
+                                <p class="text-muted">{{ $province_name }}</p>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>Quận/Huyện</h6>
+                                <p class="text-muted">{{ $district_name }}</p>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>Phường/Thị xã</h6>
+                                <p class="text-muted">{{ $ward_name }}</p>
+                            </div>
                         </div>
                         <hr class="mt-0 mb-4">
                         <div class="row pt-1">
