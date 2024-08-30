@@ -9,24 +9,24 @@ use Laracasts\Flash\Flash;
 
 class ProfileController extends Controller
 {
-    public function Index($id)
+    public function index($id)
     {
         $profile = Admin::where('id', $id)->first();
         return view('admin.profile', compact('profile'));
     }
 
-    public function Save(ProfileRequest $request)
+    public function update(ProfileRequest $request)
     {
-        $profile = Admin::where('id', $request->id)->first();
+        $profile = Admin::find($request->id);
+
         if ($profile) {
             $profile->email = $request->email;
             $profile->name = $request->name;
             if ($request->hasFile('uploadPhoto')) {
-                $file = $request->file('uploadPhoto');
-                $ext = $file->getClientOriginalExtension();
-                $file_name = time() . '-' . 'employee.' . $ext;
-                $file->move(public_path('upload/employee'), $file_name);
-                $profile->avatar = $file_name;
+                if ($profile->avatar && $profile->avatar !== 'default.png') {
+                    deleteImage($profile->avatar, 'upload/employee');
+                }
+                $profile->avatar = uploadImage($request->file('uploadPhoto'), 'upload/employee');
             }
             $profile->save();
             flash('Cập nhật thông tin thành công!')->success();

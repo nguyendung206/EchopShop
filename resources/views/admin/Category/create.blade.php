@@ -31,7 +31,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Mô tả')" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}">
+                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -60,7 +60,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ old('old_photo') ? asset('upload/category/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ old('old_photo') ? asset('storage/upload/product/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
                     </div>
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('category.index') }}" type="button" class="btn btn-light mr-2">@lang('Hủy')</a>

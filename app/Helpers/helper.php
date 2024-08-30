@@ -20,6 +20,55 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
+if (! function_exists('uploadImage')) {
+    function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        if ($file) {
+            $fileName = time() . '-' . $file->getClientOriginalName();
+            $file->storeAs($path, $fileName, 'public');
+
+            return $fileName;
+        }
+
+        return $defaultImage;
+    }
+}
+
+if (! function_exists('deleteImage')) {
+    function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        $filePath = storage_path('app/' . $path . '/' . $fileName);
+        if (file_exists($filePath) && $fileName !== $defaultImage) {
+            unlink($filePath);
+        }
+    }
+}
+
+if (! function_exists('uploadMultipleImages')) {
+    function uploadMultipleImages($files, $path = 'upload/product')
+    {
+        $fileNames = [];
+        if ($files && is_array($files)) {
+            foreach ($files as $file) {
+                $fileName = uploadImage($file, $path);
+                $fileNames[] = $fileName;
+            }
+        }
+        return $fileNames;
+    }
+}
+
+if (! function_exists('deleteMultipleImages')) {
+    function deleteMultipleImages($fileNames, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        if ($fileNames && is_array($fileNames)) {
+            foreach ($fileNames as $fileName) {
+                deleteImage($fileName, $path, $defaultImage);
+            }
+        }
+    }
+}
+
 if (! function_exists('text_order_status')) {
     function text_order_status($status)
     {
@@ -106,7 +155,7 @@ if (! function_exists('format_price')) {
     {
         $fomated_price = number_format($price, 0, '', ',');
 
-        return $fomated_price.' VNĐ';
+        return $fomated_price . ' VNĐ';
     }
 }
 //format no VNĐ
@@ -254,7 +303,7 @@ if (! function_exists('getFileBaseURL')) {
     function getFileBaseURL()
     {
         if (env('FILESYSTEM_DRIVER') == 's3') {
-            return env('AWS_URL').'/';
+            return env('AWS_URL') . '/';
         } else {
             return getBaseURL();
         }
@@ -319,7 +368,7 @@ if (! function_exists('formatBytes')) {
         $bytes /= pow(1024, $pow);
         // $bytes /= (1 << (10 * $pow));
 
-        return round($bytes, $precision).' '.$units[$pow];
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
 
@@ -562,7 +611,7 @@ if (! function_exists('replaceEmailOrPhone')) {
                 }
                 $result[] = $chars[$i];
             }
-            $result = implode('', $result).'@'.$last_name;
+            $result = implode('', $result) . '@' . $last_name;
         } else {
             $chars = preg_split('//', $email_or_phone, -1, PREG_SPLIT_NO_EMPTY);
             for ($i = 0; $i < count($chars); $i++) {
@@ -617,7 +666,7 @@ if (! function_exists('showInfoForTooltip')) {
         $stringInfo = '';
         foreach ($item->combo->foods as $list_food) {
             $weight = $list_food->pivot->quantity * $list_food->weight;
-            $stringInfo .= ' '.$weight.' '.optional($list_food->unit)->unit.' '.$list_food->name."<br \>";
+            $stringInfo .= ' ' . $weight . ' ' . optional($list_food->unit)->unit . ' ' . $list_food->name . "<br \>";
         }
 
         return $stringInfo;
@@ -630,7 +679,7 @@ if (! function_exists('showInfoForTooltipCombo')) {
         $stringInfo = '';
         foreach ($combo->foods as $list_food) {
             $weight = $list_food->pivot->quantity * $list_food->weight;
-            $stringInfo .= ' '.$weight.' '.optional($list_food->unit)->unit.' '.$list_food->name."<br \>";
+            $stringInfo .= ' ' . $weight . ' ' . optional($list_food->unit)->unit . ' ' . $list_food->name . "<br \>";
         }
 
         return $stringInfo;
@@ -644,7 +693,7 @@ if (! function_exists('showFirstTooltipCombo')) {
         foreach ($combo->foods as $list_food) {
             if ($list_food == reset($list_food)) {
                 $weight = $list_food->pivot->quantity * $list_food->weight;
-                $stringInfo = $weight.' '.optional($list_food->unit)->unit.' '.$list_food->name;
+                $stringInfo = $weight . ' ' . optional($list_food->unit)->unit . ' ' . $list_food->name;
 
                 return $stringInfo;
             }
@@ -656,7 +705,7 @@ if (! function_exists('getMainFood')) {
     function getMainFood($food)
     {
         if ($food->pivot->food_type == FoodTypeCombo::MAIN) {
-            return $food->weight.' '.optional($food->unit)->unit.' '.$food->name;
+            return $food->weight . ' ' . optional($food->unit)->unit . ' ' . $food->name;
         }
     }
 }
@@ -894,7 +943,7 @@ if (! function_exists('getContent')) {
         <style type="text/css">img{max-width:100%!important;width:100%!important;}</style>
         </head>
         <body>
-        '.$data.'
+        ' . $data . '
         </body>
         </html>
         ';

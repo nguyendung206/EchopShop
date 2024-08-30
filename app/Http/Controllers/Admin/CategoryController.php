@@ -2,93 +2,110 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use App\Services\ImageService;
+use App\Services\CategoryService;
+use App\Services\StatusService;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
 
 class CategoryController extends Controller
 {
-    protected $imageService;
+    protected $categoryService;
+    protected $statusService;
 
-    public function __construct(ImageService $imageService)
+    public function __construct(CategoryService $categoryService, StatusService $statusService)
     {
-        $this->imageService = $imageService;
+        $this->categoryService = $categoryService;
+        $this->statusService = $statusService;
     }
 
     public function index(Request $request)
     {
-        $query = Category::query();
-
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
+        try {
+            $datas = $this->categoryService->getCategories($request);
+            return view('admin.category.index', compact('datas'));
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi tải danh sách loại hàng!')->error();
+            return redirect()->back();
         }
+    }
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
+    public function create()
+    {
+        return view('admin.category.create');
+    }
+
+    public function store(CategoryRequest $request)
+    {
+        try {
+            $this->categoryService->createCategory($request);
+            flash('Thêm mới loại hàng thành công!')->success();
+            return redirect()->route('category.index');
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi thêm mới loại hàng!')->error();
+            return redirect()->back()->withInput();
         }
-
-        $datas = $query->paginate(5);
-
-        return view('admin.category.index', compact('datas'));
     }
 
-    public function Create()
-    {
-        return view('Admin.Category.Create');
-    }
-
-    public function SaveCreate(CategoryRequest $request)
-    {
-        $category = new Category();
-        $category->name = $request->name;
-        $category->description = $request->description;
-        $category->status = $request->status;
-        $category->photo = $this->imageService->uploadImage($request->file('photo'));
-
-        $category->save();
-
-        flash('Thêm mới loại hàng thành công!')->success();
-        return redirect()->route('category.index');
-    }
-
-    public function Update($id)
-    {
-        $category = Category::where('id', $id)->first();
-        return view('Admin.Category.Update', compact('category'));
-    }
-
-    public function SaveUpdate(CategoryRequest $request, $id)
-    {
-        $category = Category::findOrFail($id);
-        $category->name = $request->name;
-        $category->description = $request->description;
-        $category->status = Status::from($request->input('status'))->value;
-        $imageService = new ImageService();
-        $category->photo = $imageService->uploadImage($request->file('photo'), 'upload/product', $category->photo);
-        $category->save();
-
-        flash('Cập nhật loại hàng thành công!')->success();
-        return redirect()->route('category.index');
-    }
-
-    public function delete($id)
+    public function edit($id)
     {
         try {
             $category = Category::findOrFail($id);
-            if ($category->photo && $category->photo != 'noproduct.png') {
-                $oldImage = public_path('upload/product/') . $category->photo;
-                if (file_exists($oldImage)) {
-                    unlink($oldImage);
-                }
-            }
-            $category->delete();
+            return view('admin.category.update', compact('category'));
+        } catch (ModelNotFoundException $e) {
+            flash('Loại hàng không tồn tại!')->error();
+            return redirect()->route('category.index');
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi tải thông tin loại hàng!')->error();
+            return redirect()->route('category.index');
+        }
+    }
 
-            flash('Xóa loại hàng thành công!')->success();
-        } catch (\Exception $e) {
+    public function update(CategoryRequest $request, $id)
+    {
+        try {
+            $this->categoryService->updateCategory($request, $id);
+            flash('Cập nhật loại hàng thành công!')->success();
+            return redirect()->route('category.index');
+        } catch (ModelNotFoundException $e) {
+            flash('Loại hàng không tồn tại!')->error();
+            return redirect()->route('category.index');
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi cập nhật loại hàng!')->error();
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            if ($this->categoryService->deleteCategory($id)) {
+                flash('Xóa loại hàng thành công!')->success();
+            } else {
+                flash('Đã xảy ra lỗi khi xóa loại hàng!')->error();
+            }
+        } catch (ModelNotFoundException $e) {
+            flash('Loại hàng không tồn tại!')->error();
+        } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi xóa loại hàng!')->error();
+        }
+
+        return redirect()->route('category.index');
+    }
+
+    public function status($id)
+    {
+        try {
+            $category = Category::findOrFail($id);
+            $this->statusService->changeStatus($category);
+            flash('Thay đổi trạng thái thành công!')->success();
+        } catch (ModelNotFoundException $e) {
+            flash('Loại hàng không tồn tại!')->error();
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi thay đổi trạng thái!')->error();
         }
 
         return redirect()->route('category.index');

@@ -19,7 +19,7 @@
                 <h5 class="mb-0 h6">@lang('Cập nhật Loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('brand.update.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('brand.edit.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group row">
@@ -35,7 +35,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Mô tả')" name="description" class="form-control @error('description') is-invalid @enderror" value="{{ $brand->description }}">
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ $brand->description}}</textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ $brand->photo ? asset('upload/product/' . $brand->photo) : asset('upload/brand/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ $brand->photo ? asset('storage/upload/product/' . $brand->photo) : asset('upload/brand/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group mb-0 text-right">
