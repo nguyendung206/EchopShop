@@ -34,12 +34,13 @@
                             <input  type="password" placeholder="Mật khẩu" name="password">
                         </div>
                         @if (session('error'))
-                                        <div class="alert alert-danger">
-                                            {{ session('error') }}
-                                        </div>
-                                        @endif
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         <div class="c-1-button"><button>Đăng nhập</button></div>
-                        <div class="c-1-register">Bạn mới biết Echop? <a href="/register.html">Đăng ký</a></div>
+                        <div class="c-1-register" style="margin-bottom: 25px"><a href="{{route('web.forgotPassword')}}">Quên mật khẩu? </a></div>
+                        <div class="c-1-register">Bạn mới biết Echop? <a href="{{route('web.register')}}">Đăng ký</a></div>
                     </form>
                 </div>
             </div>

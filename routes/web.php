@@ -27,3 +27,8 @@ Route::post('/web/register', [AuthController::class, 'store'])->name('web.regist
 Route::get('/web/register', [AuthController::class, 'register'])->name('web.register');
 Route::post('/web/district', [AuthController::class, 'getDistrict'])->name('web.district');
 Route::post('/web/ward', [AuthController::class, 'getWard'])->name('web.ward');
+
+Route::get('/web/forgotPassword', [AuthController::class, 'forgotPassword'])->name('web.forgotPassword');
+Route::post('/web/forgotPassword', [AuthController::class, 'handleForgotPassword'])->name('web.handleForgotPassword');
+Route::get('/web/ResetPassword/{token}', [AuthController::class, 'resetPassword'])->name('web.resetPassword');
+Route::post('/web/ResetPassword/{token}', [AuthController::class, 'handleResetPassword'])->name('web.handleResetPassword');

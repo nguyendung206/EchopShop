@@ -149,7 +149,7 @@
                         <input type="file" class="form-control" name="uploadFile" onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
                     </div>
                     <div class="form-group">
-                        <img id="Photo" src="{{ asset('upload/users/' . ($user->avatar ?? 'nophoto.png')) }}" class="img img-bordered" style="width:200px" />
+                        <img id="Photo" src="{{  asset('storage/upload/users/' . ($user->avatar ?? 'nophoto.png')) }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group mb-0 text-right">
