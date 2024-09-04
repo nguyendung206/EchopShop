@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\HomeController;
 
 require __DIR__ . '/admin.php';
 /*
@@ -15,10 +16,12 @@ require __DIR__ . '/admin.php';
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
 
-    return view('welcome');
-});
+//     return view('welcome');
+// });
+Route::get('/',[HomeController::class, 'index']);
+Route::get('/getBrand', [HomeController::class, 'getBrand'])->name('web.getBrand');
 
 Route::get('/web/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/web/login', [AuthController::class, 'login'])->name('web.authentication');
