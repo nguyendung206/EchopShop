@@ -23,7 +23,7 @@ class AuthController extends Controller
     
 
     public function index(Request $request) {
-        if (session()->has('user')) {
+        if (Auth::check()) {
             return redirect('/');
         }
         return view('web.auth.login');
@@ -46,6 +46,9 @@ class AuthController extends Controller
     }
 
     public function register() {
+        if (Auth::check()) {
+            return redirect('/');
+        }
         $provinces = Province::all();
 
         return view('web.auth.register', compact('provinces'));
@@ -100,6 +103,9 @@ class AuthController extends Controller
 
     // Trang quên mật khẩu
     public function forgotPassword() {
+        if (Auth::check()) {
+            return redirect('/');
+        }
         return view('web.auth.forgotPassword');
     }
 
