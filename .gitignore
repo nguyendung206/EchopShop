@@ -2,6 +2,7 @@
 /public/build
 /public/hot
 /public/storage
+/public/storage/upload/
 /public/storage/upload/*.png
 /public/storage/upload/*.jpg
 /public/storage/upload/*.jpeg
