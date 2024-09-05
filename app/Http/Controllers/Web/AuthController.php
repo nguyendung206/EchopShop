@@ -123,10 +123,10 @@ class AuthController extends Controller
         ];
         if(ResetPasswordToken::where('email',$request->email)->exists()) {
             ResetPasswordToken::where('email', $request->email)->update(['token' => $token, 'pin' => $pin]); // update token mới nếu đã có email trong database
-            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token, $pin));
+            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
         }else{
             ResetPasswordToken::create($tokenData);
-            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token, $pin));
+            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
         }
         flash('Đã gửi tin nhắn đến mail của bạn vui lòng kiểm tra mail')->success();
         return back();
