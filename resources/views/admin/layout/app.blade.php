@@ -14,7 +14,7 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ url('assets/img/pukcom.png') }}">
     <title>@yield('title')</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- google font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ static_asset('assets/css/vendors.css') }}">
     <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
     <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css?v=' . time()) }}">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css">
     <style>
         body {
             font-size: 12px;
@@ -83,6 +84,10 @@
             animation: loadingC 0.6s 0.3s linear infinite;
         }
 
+        .ck p {
+            min-height: 200px;
+        }
+
         @keyframes loadingC {
             0 {
                 transform: translate(0, 0);
@@ -103,25 +108,25 @@
     <script>
         var AIZ = AIZ || {};
         AIZ.local = {
-            nothing_found: '{{ trans('base.nothing_found') }}',
-            choose_file: '{{ translate('Choose file') }}',
-            file_selected: '{{ translate('File selected') }}',
-            files_selected: '{{ translate('Files selected') }}',
-            add_more_files: '{{ translate('Add more files') }}',
-            adding_more_files: '{{ translate('Adding more files') }}',
-            drop_files_here_paste_or: '{{ translate('Drop files here, paste or') }}',
-            browse: '{{ translate('Browse') }}',
-            upload_complete: '{{ translate('Upload complete') }}',
-            upload_paused: '{{ translate('Upload paused') }}',
-            resume_upload: '{{ translate('Resume upload') }}',
-            pause_upload: '{{ translate('Pause upload') }}',
-            retry_upload: '{{ translate('Retry upload') }}',
-            cancel_upload: '{{ translate('Cancel upload') }}',
-            uploading: '{{ translate('Uploading') }}',
-            processing: '{{ translate('Processing') }}',
-            complete: '{{ translate('Complete') }}',
-            file: '{{ translate('File') }}',
-            files: '{{ translate('Files') }}',
+            nothing_found: '{{ trans("base.nothing_found") }}',
+            choose_file: '{{ translate("Choose file") }}',
+            file_selected: '{{ translate("File selected") }}',
+            files_selected: '{{ translate("Files selected") }}',
+            add_more_files: '{{ translate("Add more files") }}',
+            adding_more_files: '{{ translate("Adding more files") }}',
+            drop_files_here_paste_or: '{{ translate("Drop files here, paste or") }}',
+            browse: '{{ translate("Browse") }}',
+            upload_complete: '{{ translate("Upload complete") }}',
+            upload_paused: '{{ translate("Upload paused") }}',
+            resume_upload: '{{ translate("Resume upload") }}',
+            pause_upload: '{{ translate("Pause upload") }}',
+            retry_upload: '{{ translate("Retry upload") }}',
+            cancel_upload: '{{ translate("Cancel upload") }}',
+            uploading: '{{ translate("Uploading") }}',
+            processing: '{{ translate("Processing") }}',
+            complete: '{{ translate("Complete") }}',
+            file: '{{ translate("File") }}',
+            files: '{{ translate("Files") }}',
         }
     </script>
 
@@ -129,6 +134,12 @@
 
 <body class="">
    
+    @if (session()->has('flash_notification'))
+        <div class="flash-message {{ session('flash_notification.class') }}">
+            {{ session('flash_notification.message') }}
+        </div>
+    @endif
+
  <div class="load-wrapp" id="loadPage">
         <div class="load-3">
 
@@ -152,7 +163,7 @@
             </div><!-- .aiz-main-content -->
         </div><!-- .aiz-content-wrapper -->
     </div><!-- .aiz-main-wrapper -->
-
+    
     @yield('modal')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"
         referrerpolicy="no-referrer"></script>
@@ -167,15 +178,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.3.2/js/lightgallery.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    
     @yield('script')
 
 
     <script type="text/javascript">
         @foreach (session('flash_notification', collect())->toArray() as $message)
-            AIZ.plugins.notify('{{ $message['level'] }}', '{{ $message['message'] }}');
+            AIZ.plugins.notify('{{ $message["level"] }}', '{{ $message["message"] }}');
         @endforeach
     </script>
-
+    <script type="importmap">
+			{
+				"imports": {
+					"ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.js",
+					"ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.0.0/"
+				}
+			}
+		</script>
+		<script type="module">
+			import {
+				ClassicEditor,
+				Essentials,
+				Paragraph,
+				Bold,
+				Italic,
+				Font
+			} from 'ckeditor5';
+			ClassicEditor
+				.create( document.querySelector( '#description' ), {
+					plugins: [ Essentials, Paragraph, Bold, Italic, Font ],
+					toolbar: [
+						'undo', 'redo', '|', 'bold', 'italic', '|',
+						'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+					]
+				} )
+				.then( editor => {
+					window.editor = editor;
+				} )
+				.catch( error => {
+					console.error( error );
+				} );
+		</script>
+		<!-- A friendly reminder to run on a server, remove this during the integration. -->
+		<script>
+			window.onload = function() {
+				if ( window.location.protocol === 'file:' ) {
+					alert( 'This sample requires an HTTP server. Please serve this file with a web server.' );
+				}
+			};
+		</script>
 </body>
 
 </html>
