@@ -64,23 +64,27 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Ảnh:')</label>
                     <div class="col-sm-9">
-                        <img src="{{ $product->photo ? asset('storage/upload/product/' . $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img src="{{ $product->photo ? getImage('upload/product/', $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    @if($product->list_photo)
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Thư viện ảnh:')</label>
+                    @if($product->list_photo)
                     <div class="col-sm-9 d-flex flex-wrap">
                         @foreach(json_decode($product->list_photo) as $index => $photo)
-                        <img src="{{ asset('storage/upload/product/' . $photo) }}" class="img img-bordered m-2" style="width:100px; height: 150px;" />
+                        <img src="{{ getImage('upload/product/', $photo) }}" class="img img-bordered m-2" style="width:100px; height: 150px;" />
                         @endforeach
+                    </div>
+                    @else
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">Chưa có ảnh nào</p>
                     </div>
                     @endif
                 </div>
 
                 <!-- Hiển thị màu sắc và số lượng -->
-                @if($colors->count() > 0)
+                @if($product->colors->count() > 0)
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500 mt-2" style="font-size: 1rem;">@lang('Màu sắc:')</label>
                     <div class="col-sm-9">
@@ -92,7 +96,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($colors as $color)
+                                @foreach($product->colors as $color)
                                 <tr>
                                     <td>{{ $color->name }}</td>
                                     <td>{{ $color->quantity }}</td>
@@ -105,7 +109,7 @@
                 @endif
 
                 <!-- Hiển thị kích cỡ và số lượng -->
-                @if($sizes->count() > 0)
+                @if($product->sizes->count() > 0)
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500 mt-2" style="font-size: 1rem;">@lang('Kích cỡ:')</label>
                     <div class="col-sm-9">
@@ -117,7 +121,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($sizes as $size)
+                                @foreach($product->sizes as $size)
                                 <tr>
                                     <td>{{ $size->name }}</td>
                                     <td>{{ $size->quantity }}</td>

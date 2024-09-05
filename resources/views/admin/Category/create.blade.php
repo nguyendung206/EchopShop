@@ -60,7 +60,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ old('old_photo') ? asset('storage/upload/product/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ old('old_photo') ? getImage('upload/product/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
                     </div>
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('category.index') }}" type="button" class="btn btn-light mr-2">@lang('Hủy')</a>

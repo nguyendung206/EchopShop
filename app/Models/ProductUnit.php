@@ -6,10 +6,10 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductDetail extends Model
+class ProductUnit extends Model
 {
     use HasFactory, Sluggable;
-    protected $table = 'productdetails';
+    protected $table = 'product_units';
 
     public function product()
     {
@@ -23,5 +23,15 @@ class ProductDetail extends Model
                 'source' => 'name'
             ]
         ];
+    }
+
+    public function Color($query)
+    {
+        return $query->where('type', 'color');
+    }
+
+    public function Size($query)
+    {
+        return $query->where('type', 'size');
     }
 }

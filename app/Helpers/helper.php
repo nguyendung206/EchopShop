@@ -19,6 +19,20 @@ use App\Models\MenuItem;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+
+if (! function_exists('getImage')) {
+    function getImage($path = null, $file = null, $defaultImage = 'nophoto.png')
+    {
+        if (!$file) {
+            return asset('img/' . $defaultImage);
+        }
+        if (!$path) {
+            return asset('img/' . $file);
+        }
+        return Storage::url($path . $file);
+    }
+}
 
 if (! function_exists('uploadImage')) {
     function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')

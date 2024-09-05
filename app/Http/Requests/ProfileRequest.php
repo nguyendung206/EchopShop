@@ -29,17 +29,13 @@ class ProfileRequest extends FormRequest
             'uploadPhoto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
-    
-    public function messages()
+
+    public function attributes()
     {
         return [
-            'name.required' => 'Tên là bắt buộc.',
-            'email.required' => 'email là bắt buộc.',
-            'email.email' => 'email không hợp lệ.',
-            'email.unique' => 'email đã tồn tại. Vui lòng chọn email khác.',
-            'uploadPhoto.image' => 'Tệp tải lên phải là một hình ảnh.',
-            'uploadPhoto.mimes' => 'Hình ảnh phải có định dạng jpg, jpeg hoặc png.',
-            'uploadPhoto.max' => 'Hình ảnh tải lên không được lớn hơn 2MB.',
+            'name' => 'Tên thương hiệu',
+            'email' => 'Email',
+            'uploadPhoto' => 'Ảnh đại diện',
         ];
     }
 }

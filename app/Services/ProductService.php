@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
-use App\Models\ProductDetail;
+use App\Models\ProductUnit;
 
 class ProductService
 {
@@ -50,16 +50,16 @@ class ProductService
         $product->save();
         return $product;
     }
-    public function createProductDetail(array $data)
+    public function createProductUnit(array $data)
     {
-        $productDetail = new ProductDetail();
-        $productDetail->product_id = $data['product_id'];
-        $productDetail->type = $data['type'];
-        $productDetail->name = $data['name'];
-        $productDetail->quantity = $data['quantity'];
+        $productUnit = new ProductUnit();
+        $productUnit->product_id = $data['product_id'];
+        $productUnit->type = $data['type'];
+        $productUnit->name = $data['name'];
+        $productUnit->quantity = $data['quantity'];
 
-        $productDetail->save();
-        return $productDetail;
+        $productUnit->save();
+        return $productUnit;
     }
 
     public function updateProduct(ProductRequest $request, $id)
@@ -106,18 +106,18 @@ class ProductService
         return $product;
     }
 
-    public function updateProductDetail(array $data, $productId)
+    public function updateProductUnit(array $data, $productId)
     {
-        ProductDetail::where('product_id', $productId)->delete();
+        ProductUnit::where('product_id', $productId)->delete();
 
         foreach ($data as $detail) {
-            $productDetail = new ProductDetail();
-            $productDetail->product_id = $productId;
-            $productDetail->type = $detail['type'];
-            $productDetail->name = $detail['name'];
-            $productDetail->quantity = $detail['quantity'];
+            $productUnit = new ProductUnit();
+            $productUnit->product_id = $productId;
+            $productUnit->type = $detail['type'];
+            $productUnit->name = $detail['name'];
+            $productUnit->quantity = $detail['quantity'];
 
-            $productDetail->save();
+            $productUnit->save();
         }
 
         return true;

@@ -134,7 +134,7 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ $product->photo ? asset('storage/upload/product/' . $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ $product->photo ? getImage('upload/product/', $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group row">
@@ -152,7 +152,7 @@
                             @if($product->list_photo)
                             @foreach(json_decode($product->list_photo) as $index => $photo)
                             <div class="position-relative m-2">
-                                <img src="{{ asset('storage/upload/product/' . $photo) }}" class="img img-bordered" style="width:100px; height: 150px;" />
+                                <img src="{{ getImage('upload/product/', $photo) }}" class="img img-bordered" style="width:100px; height: 150px;" />
                                 <button type="button" class="btn btn-danger btn-sm position-absolute" style="top:0; right:0;" onclick="removePhoto(this, '{{ $photo }}')">X</button>
                                 <input type="hidden" name="photos_to_keep[]" value="{{ $photo }}">
                             </div>
@@ -239,8 +239,8 @@
     }
 
     // Tạo các input ban đầu dựa trên dữ liệu từ server
-    const existingColors = @json($colors);
-    const existingSizes = @json($sizes);
+    const existingColors = @json($product -> colors);
+    const existingSizes = @json($product -> sizes);
 
     existingColors.forEach(item => addColorBox(item.name, item.quantity));
     existingSizes.forEach(item => addSizeBox(item.name, item.quantity));
