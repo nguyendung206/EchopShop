@@ -17,7 +17,7 @@ require __DIR__ . '/admin.php';
 
 Route::get('/', function () {
 
-    return view('welcome');
+    return view('web.profile');
 });
 
 Route::get('/web/login', [AuthController::class, 'index'])->name('web.login');

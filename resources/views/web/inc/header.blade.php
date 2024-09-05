@@ -215,7 +215,7 @@
                             </div>
                             <div class="dropdown">
                                 <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img class="avt" src="{{ getImage('upload/users/', optional(Auth::user())->avatar) }}" alt="">
+                                    <img class="avt" src="{{ asset('storage/upload/users/', optional(Auth::user())->avatar) }}" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" href="">
