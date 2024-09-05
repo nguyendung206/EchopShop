@@ -1,3 +1,8 @@
+body {
+    margin: 0;
+    font-family: 'Roboto';
+    position: relative;
+}
 .c-1-upload div{
     display: inline-block;
     border: 2px dashed rgba(177, 0, 0, 0.5);
@@ -10,15 +15,39 @@
 .content-wrap {
     margin-right: auto;
 }
+.content-1 {
+    width: 640px;
+    background-color: white;
+}
+.row.center-item {
+    display: flex;
+    flex-wrap: nowrap !important
+}
 #file {
     display: none;
 }
 .register-form {
-    margin-top: 88px;
+    z-index: 1;
+    margin-top: 52px;
     margin-bottom: 88px;
+    margin-left: 112px;
     box-shadow: -30px -15px 25px rgba(0, 0, 0, 0.1),
     -30px 12px 25px rgba(0, 0, 0, 0.1),
      -10px -1000px 60px rgba(0, 0, 0, 0);
+}
+.register-form input::placeholder {
+    color: #1c1c1c;
+}
+.register-form select {
+    color: #1c1c1c !important;
+}
+.register-form option {
+    color: #1c1c1c !important;
+}
+.c-1-label-title {
+    font-size: 18px;
+    color: rgba(117, 0, 0, 1);
+    padding-bottom: 25px;
 }
 .c-1-input {
     position: relative;
@@ -34,9 +63,10 @@
     left: 8px;
     top: 8px;
     z-index: 1;
+    
 }
 .text-phone::placeholder {
-    color: #ABABAB;
+    color: #ABABAB !important;
 }
 .c-1-input select {
     position: relative;
@@ -70,6 +100,20 @@
 }
 .c-1-register {
     margin-bottom: 25px;
+    position: relative;
+}
+.c-1-register .custom-checkbox {
+    position: absolute;
+    left: 0;
+    top: 5%;
+}
+.c-1-register .term {
+    margin-left: 20px;
+}
+.c-1-upload div img {
+    max-width: 86px;
+    max-height: 86px;
+    border-radius: 0% !important;
 }
 
 .custom-checkbox {
@@ -90,4 +134,25 @@
     border: solid rgba(177, 0, 0, 1);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
+}
+.background-2 {
+    position: absolute;
+}
+.content-2 {
+    /* margin-left: 109px; */
+}
+.center-large-item {
+    overflow-x: hidden;
+}
+
+@media (min-width: 1630px) {
+    .center-large-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .row.center-item {
+        max-width: 1613px;
+        margin: auto;
+    }
 }
