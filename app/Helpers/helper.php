@@ -19,6 +19,69 @@ use App\Models\MenuItem;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+
+if(! function_exists('getImage')) {
+    function getImage($path = null, $file = null, $defaultImage = 'nophoto.png') {
+        
+        if(!$file) {
+            return asset('img/'. $defaultImage);
+        }
+        if(!$path) {
+            return asset('img/'. $file);
+        }
+        return Storage::url($path . $file);
+    }
+}
+
+if (! function_exists('uploadImage')) {
+    function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        if ($file) {
+            $fileName = time() . '-' . $file->getClientOriginalName();
+            $file->storeAs($path, $fileName, 'public');
+
+            return $fileName;
+        }
+
+        return $defaultImage;
+    }
+}
+
+if (! function_exists('deleteImage')) {
+    function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        $filePath = storage_path('app/public/' . $path . '/' . $fileName);
+        if (file_exists($filePath) && $fileName !== $defaultImage) {
+            unlink($filePath);
+        }
+    }
+}
+
+if (! function_exists('uploadMultipleImages')) {
+    function uploadMultipleImages($files, $path = 'upload/product')
+    {
+        $fileNames = [];
+        if ($files && is_array($files)) {
+            foreach ($files as $file) {
+                $fileName = uploadImage($file, $path);
+                $fileNames[] = $fileName;
+            }
+        }
+        return $fileNames;
+    }
+}
+
+if (! function_exists('deleteMultipleImages')) {
+    function deleteMultipleImages($fileNames, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        if ($fileNames && is_array($fileNames)) {
+            foreach ($fileNames as $fileName) {
+                deleteImage($fileName, $path, $defaultImage);
+            }
+        }
+    }
+}
 
 if (! function_exists('uploadImage')) {
     function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
