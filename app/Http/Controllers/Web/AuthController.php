@@ -15,6 +15,7 @@ use App\Models\Ward;
 use App\Models\Province;
 use App\Models\ResetPasswordToken;
 use  App\Mail\ForgotPasswordMail;
+use Carbon\Carbon;
 use Mail;
 
 class AuthController extends Controller
@@ -122,10 +123,10 @@ class AuthController extends Controller
         ];
         if(ResetPasswordToken::where('email',$request->email)->exists()) {
             ResetPasswordToken::where('email', $request->email)->update(['token' => $token, 'pin' => $pin]); // update token mới nếu đã có email trong database
-            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
+            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token, $pin));
         }else{
             ResetPasswordToken::create($tokenData);
-            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
+            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token, $pin));
         }
         flash('Đã gửi tin nhắn đến mail của bạn vui lòng kiểm tra mail')->success();
         return back();
@@ -143,10 +144,12 @@ class AuthController extends Controller
         $request->validate([
             'pin' => ['required', 'digits:6']
         ]);
-        $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
-        $pin = $request->pin;
-        $checkPin = ResetPasswordToken::where('pin', $pin)->exists();
+        $checkPin = ResetPasswordToken::where('token', $token)->where('pin', $request->pin)->first();
         if($checkPin){
+            $timeDifference = Carbon::now()->diffInMinutes($checkPin->updated_at);
+            if ($timeDifference > 3) {
+                return back()->with('error','Mã pin của bạn đã hết hạn vui lòng gửi lại email.');
+            }
             return view('web.auth.resetPassword', compact('token'));
         }
         return back()->with('error','Bạn đã nhập sai mã PIN vui lòng thử lại.');
@@ -164,9 +167,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ];
         $user->update($data);
-        $tokenNew = \Str::random(40);
-        $pinNew = rand(100000, 999999);
-        ResetPasswordToken::where('token', $token)->update(['token' => $tokenNew,'pin' => $pinNew]); // Đổi lại token sau khi update thành công (form dùng 1 lần)
+        ResetPasswordToken::where('token', $token)->delete(); // Đổi lại token sau khi update thành công (form dùng 1 lần)
         return redirect()->route('web.login');
     }
 }

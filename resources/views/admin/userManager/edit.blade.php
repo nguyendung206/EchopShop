@@ -1,6 +1,8 @@
 @extends('admin.layout.app')
 @section('title')
     @lang('user.create_customers')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 @endsection
 @section('content')
 <div class="backnow">
@@ -190,7 +192,7 @@
                         <input type="file" class="form-control" name="uploadFile" onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
                     </div>
                     <div class="form-group">
-                        <img id="Photo" src="{{  asset('storage/upload/users/' . ($user->avatar ?? 'nophoto.png')) }}" class="img img-bordered" style="width:200px" />
+                        <img id="Photo" src="{{  getImage('upload/users/', $user->avatar) }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group mb-0 text-right">
@@ -214,57 +216,7 @@
         });
 
     </script>
-    <script>
-        $(document).ready(function() {
-        $('#province_select').change(function() {
-            var provinceId = $(this).val(); // Lấy giá trị được chọn
-
-            $.ajax({
-                url: '{{ route('web.district') }}', 
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}', 
-                    provinceId: provinceId 
-                },
-                success: function(response) {
-                    $('#district_select').empty().append('<option value="0">Quận/Huyện *</option>');
-
-                    $.each(response.districts, function(index, district) {
-                        $('#district_select').append('<option value="' + district.id + '">' + district.district_name + '</option>');
-                    });
-
-                    $('#ward_select').empty().append('<option value="0" >Phường/Thị xã *</option>');
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-
-        $('#district_select').change(function() {
-            var districtId = $(this).val(); // Lấy giá trị được chọn
-            $.ajax({
-                url: '{{ route('web.ward') }}', 
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}', 
-                    districtId: districtId 
-                },
-                success: function(response) {
-                    console.log(response.wards)
-                    $('#ward_select').empty().append('<option value="0">Phường/Thị xã *</option>');
-
-                    $.each(response.wards, function(index, ward) {
-                        $('#ward_select').append('<option value="' + ward.id + '">' + ward.ward_name + '</option>');
-                    });
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-    </script>
+    @include('admin.userManager.province')
 @endsection
 
 

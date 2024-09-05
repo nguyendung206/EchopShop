@@ -49,33 +49,20 @@ class UserRequest extends FormRequest
         return $rule;
     }
 
-    public function messages() {
+    public function attributes() {
         return [
-            'name.required' => "Vui lòng nhập tên người dùng",
-            'name.min' => "Tên phải có ít nhất 3 ký tự",
-            'name.max' => "Tên tối đa là 100 ký tự",
-            'password.required' => "Vui lòng nhập mật khẩu",
-            'password.min' => "Mật khẩu phải có ít nhất 3 ký tự",
-            'password.max' => "Mật khẩu tối đa là 300 ký tự",
-            'passwordConfirm.required' => "Vui lòng xác nhận mật khẩu",
-            "passwordConfirm.same" => "Mật khẩu xác nhận không trùng khớp",
-            "phone_number.required" => "Vui lòng nhập số diện thoại",
-            "phone_number.digits" => "Số điện thoại phải bao gồm 10 số",
-            "phone_number.numeric" => "Số điện thoại chỉ chứa số",
-            "email.required" => "Vui lòng nhập email",
-            "email.email" => "Vui lòng nhập đúng định dạng email", 
-            'citizen_identification_number.required' => "Vui lòng nhập căn cước công dân",
-            'citizen_identification_number.numeric' => "Căn cước công dân chỉ bao gồm số",
-            'citizen_identification_number.digits' => "Căn cước công dân bao gồm 12 số",
-            'place_of_issue.required' => "Vui lòng nhập nơi cấp căn cước công dân", 
-            'place_of_issue.min' => "Vui lòng nhập tối thiểu 3 ký tự",
-            'place_of_issue.max' => "Vui lòng nhập tối đa 255 ký tự",
-            'date_of_issue' => 'Vui lòng chọn ngày cấp',
-            'date_of_birth' => 'Vui lòng chọn ngày sinh',
-            'email.unique' => 'Email này đã tồn tại. Vui lòng chọn email khác',
-            'province_id.not_in' => "Vui lòng chọn thành phố",
-            'district_id.not_in' => "Vui lòng chọn quận/huyện",
-            'ward_id.not_in' => "Vui lòng chọn phường/thị xã",
+            'name' => 'Tên người dùng',
+            'email' => 'Địa chỉ email',
+            'password' => 'Mật khẩu',
+            'passwordConfirm' => 'Xác nhận mật khẩu',
+            'phone_number' => 'Số điện thoại',
+            'citizen_identification_number' => 'Căn cước công dân',
+            'place_of_issue' => 'Nơi cấp',
+            'date_of_issue' => 'Ngày cấp',
+            'date_of_birth' => 'Ngày sinh',
+            'province_id' => 'Thành phố',
+            'district_id' => 'Quận/huyện',
+            'ward_id' => 'Phường/thị xã',
         ];
     }
 }

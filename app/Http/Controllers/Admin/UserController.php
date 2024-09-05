@@ -103,7 +103,7 @@ class UserController extends Controller
             flash('Sửa thông tin thất bại')->error();
             return back();
         }
-        
+        $avatar = $user->avatar;
         try {
             $updateData = [
                 'name' => $request->name,
@@ -119,13 +119,18 @@ class UserController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
-                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', $avatar),
             ];
             if($request->has('password') && !empty($request->password)) {
                 $updateData['password'] = bcrypt($request->password);
             }
 
             $user->update($updateData);
+            
+            if($request->file('uploadFile')) {
+                deleteImage($avatar, 'upload/users','nophoto.png');
+            }
+
             flash('Sửa người dùng thành công')->success();
             return redirect()->route('manager-user.edit', $id);
         }  catch (QueryException $e) {
