@@ -2,13 +2,7 @@
 /public/build
 /public/hot
 /public/storage
-/public/storage/upload/
-/public/storage/upload/*.png
-/public/storage/upload/*.jpg
-/public/storage/upload/*.jpeg
-/public/storage/upload/*.gif
-/public/storage/upload/*.bmp
-/public/storage/upload/*.tiff
+/public/storage/upload/*
 /storage/*.key
 /vendor
 .env
