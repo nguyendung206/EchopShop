@@ -13,7 +13,7 @@ class Product extends Model
 
     protected $casts = [
         'status' => Status::class,
-        'list_photo' => 'array', 
+        'list_photo' => 'array',
     ];
 
     public function category()
@@ -24,6 +24,11 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
+    }
+
+    public function productdetail()
+    {
+        return $this->hasMany(ProductDetail::class, 'product_id', 'id');
     }
 
     public function sluggable(): array

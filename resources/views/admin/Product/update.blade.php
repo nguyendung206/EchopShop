@@ -103,6 +103,26 @@
                     </div>
 
                     <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Màu sắc')</label>
+                        <div class="col-sm-9">
+                            <div id="color_boxes">
+                                <!-- Các input cho màu sắc sẽ được thêm vào đây -->
+                            </div>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Thêm màu')</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Size')</label>
+                        <div class="col-sm-9">
+                            <div id="size_boxes">
+                                <!-- Các input cho kích thước sẽ được thêm vào đây -->
+                            </div>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addSizeBox()">+ @lang('Thêm size')</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh')</label>
                         <div class="col-sm-9">
                             <input type="hidden" name="old_photo" value="{{ $product->photo }}">
@@ -151,6 +171,80 @@
     </div>
 </div>
 <script>
+    function addColorBox(color = '', quantity = '') {
+        const colorBoxContainer = document.getElementById('color_boxes');
+        const newColorBox = document.createElement('div');
+        newColorBox.className = 'input-group mb-2';
+
+        const colorInput = document.createElement('input');
+        colorInput.type = 'text';
+        colorInput.name = 'colors[]';
+        colorInput.className = 'form-control';
+        colorInput.placeholder = 'Nhập màu';
+        colorInput.value = color; // Gán giá trị ban đầu
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.className = 'form-control ml-2';
+        quantityInput.placeholder = 'Nhập số lượng';
+        quantityInput.value = quantity; // Gán giá trị ban đầu
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-danger ml-2';
+        removeButton.textContent = 'X';
+        removeButton.onclick = function() {
+            colorBoxContainer.removeChild(newColorBox);
+        };
+
+        newColorBox.appendChild(colorInput);
+        newColorBox.appendChild(quantityInput);
+        newColorBox.appendChild(removeButton);
+        colorBoxContainer.appendChild(newColorBox);
+    }
+
+    // Hàm để thêm input cho kích thước (với giá trị ban đầu nếu có)
+    function addSizeBox(size = '', quantity = '') {
+        const sizeBoxContainer = document.getElementById('size_boxes');
+        const newSizeBox = document.createElement('div');
+        newSizeBox.className = 'input-group mb-2';
+
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.name = 'sizes[]';
+        sizeInput.className = 'form-control';
+        sizeInput.placeholder = 'Nhập size';
+        sizeInput.value = size; // Gán giá trị ban đầu
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.className = 'form-control ml-2';
+        quantityInput.placeholder = 'Nhập số lượng';
+        quantityInput.value = quantity; // Gán giá trị ban đầu
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-danger ml-2';
+        removeButton.textContent = 'X';
+        removeButton.onclick = function() {
+            sizeBoxContainer.removeChild(newSizeBox);
+        };
+
+        newSizeBox.appendChild(sizeInput);
+        newSizeBox.appendChild(quantityInput);
+        newSizeBox.appendChild(removeButton);
+        sizeBoxContainer.appendChild(newSizeBox);
+    }
+
+    // Tạo các input ban đầu dựa trên dữ liệu từ server
+    const existingColors = @json($colors);
+    const existingSizes = @json($sizes);
+
+    existingColors.forEach(item => addColorBox(item.name, item.quantity));
+    existingSizes.forEach(item => addSizeBox(item.name, item.quantity));
+
     function previewPhoto(input) {
         const preview = document.getElementById('photo_preview');
         if (input.files && input.files[0]) {
@@ -206,5 +300,37 @@
         deletePhotos.push(photoName);
         deletePhotosInput.value = JSON.stringify(deletePhotos);
     }
+</script>
+<script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.0.0/"
+        }
+    }
+</script>
+<script type="module">
+    import {
+        ClassicEditor,
+        Essentials,
+        Paragraph,
+        Bold,
+        Italic,
+        Font
+    } from 'ckeditor5';
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            plugins: [Essentials, Paragraph, Bold, Italic, Font],
+            toolbar: [
+                'undo', 'redo', '|', 'bold', 'italic', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+            ]
+        })
+        .then(editor => {
+            window.editor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
 @endsection

@@ -35,7 +35,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')</label>
                         <div class="col-sm-9">
-                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ $brand->description}}</textarea>
+                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ $brand->description}}</textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -107,5 +107,37 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+</script>
+<script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.0.0/"
+        }
+    }
+</script>
+<script type="module">
+    import {
+        ClassicEditor,
+        Essentials,
+        Paragraph,
+        Bold,
+        Italic,
+        Font
+    } from 'ckeditor5';
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            plugins: [Essentials, Paragraph, Bold, Italic, Font],
+            toolbar: [
+                'undo', 'redo', '|', 'bold', 'italic', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+            ]
+        })
+        .then(editor => {
+            window.editor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
 @endsection

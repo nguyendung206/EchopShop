@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductDetail;
 
 class ProductService
 {
@@ -48,6 +49,17 @@ class ProductService
 
         $product->save();
         return $product;
+    }
+    public function createProductDetail(array $data)
+    {
+        $productDetail = new ProductDetail();
+        $productDetail->product_id = $data['product_id'];
+        $productDetail->type = $data['type'];
+        $productDetail->name = $data['name'];
+        $productDetail->quantity = $data['quantity'];
+
+        $productDetail->save();
+        return $productDetail;
     }
 
     public function updateProduct(ProductRequest $request, $id)
@@ -94,7 +106,22 @@ class ProductService
         return $product;
     }
 
+    public function updateProductDetail(array $data, $productId)
+    {
+        ProductDetail::where('product_id', $productId)->delete();
 
+        foreach ($data as $detail) {
+            $productDetail = new ProductDetail();
+            $productDetail->product_id = $productId;
+            $productDetail->type = $detail['type'];
+            $productDetail->name = $detail['name'];
+            $productDetail->quantity = $detail['quantity'];
+
+            $productDetail->save();
+        }
+
+        return true;
+    }
 
     public function deleteProduct($id)
     {

@@ -27,11 +27,15 @@ class ProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'list_photo.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240', 
+            'list_photo.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
             'status' => 'required|integer|in:1,2',
             'description' => 'nullable|string',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'nullable|exists:categories,id',
+            'colors.*' => 'nullable|string',
+            'sizes.*' => 'nullable|string',
+            'quantities.*' => 'nullable|integer|min:0',
+            'types.*' => 'nullable|string|in:color,size',
         ];
     }
 
@@ -46,7 +50,7 @@ class ProductRequest extends FormRequest
             'name.required' => 'Vui lòng nhập tên sản phẩm.',
             'name.string' => 'Tên sản phẩm phải là một chuỗi ký tự.',
             'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
-            
+
             'price.required' => 'Vui lòng nhập giá sản phẩm.',
             'price.numeric' => 'Giá sản phẩm phải là một số.',
             'price.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0.',
@@ -66,8 +70,14 @@ class ProductRequest extends FormRequest
             'description.string' => 'Mô tả sản phẩm phải là một chuỗi ký tự.',
 
             'brand_id.exists' => 'Thương hiệu không tồn tại.',
-
             'category_id.exists' => 'Loại sản phẩm không tồn tại.',
+
+            'colors.*.string' => 'Mỗi màu sắc phải là một chuỗi ký tự.',
+            'sizes.*.string' => 'Mỗi kích thước phải là một chuỗi ký tự.',
+            'quantities.*.integer' => 'Số lượng phải là một số nguyên.',
+            'quantities.*.min' => 'Số lượng phải lớn hơn hoặc bằng 0.',
+            'types.*.string' => 'Loại phải là một chuỗi ký tự.',
+            'types.*.in' => 'Loại không hợp lệ.',
         ];
     }
 }
