@@ -1,6 +1,8 @@
 @extends('admin.layout.app')
 @section('title')
     @lang('user.create_customers')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 @endsection
 @section('content')
 <div class="backnow">
@@ -114,6 +116,47 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Thành Phố<span class="text-vali">&#9913;</span></label></label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500"  name="province_id" id="province_select" >
+                                <option class=" text-center" value="0">Tỉnh/Thành phố *</option>
+                                    @foreach($provinces as $province)
+                                        <option class=" text-center" value="{{$province->id}}">{{ $province->province_name }}</option>
+                                    @endforeach
+                            </select>
+                                @error('province_id')
+                                    <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Quận/Huyện <span class="text-vali">&#9913;</span></label></label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500" name="district_id" id="district_select" >
+                                <option value="0" class=" text-center">Quận/Huyện *</option>
+                                <option value="0" class=" text-center" disabled>Vui lòng chọn thành phố trước</option>
+                            </select>
+                                @error('district_id')
+                                <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Phường/Thị xã <span class="text-vali">&#9913;</span></label></label>
+                        <div class="col-sm-9">
+                            <select class="text-center form-control font-weight-500" name="ward_id" id="ward_select" >
+                                <option value="0" class=" text-center">Phường/Thị xã *</option>
+                                <option value="0" class=" text-center" disabled>Vui lòng chọn quận huyện trước</option>
+                            </select>
+                            @error('ward_id')
+                            <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Địa chỉ<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
@@ -149,7 +192,7 @@
                         <input type="file" class="form-control" name="uploadFile" onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
                     </div>
                     <div class="form-group">
-                        <img id="Photo" src="{{  asset('storage/upload/users/' . ($user->avatar ?? 'nophoto.png')) }}" class="img img-bordered" style="width:200px" />
+                        <img id="Photo" src="{{  getImage('upload/users/', $user->avatar) }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group mb-0 text-right">
@@ -173,6 +216,7 @@
         });
 
     </script>
+    @include('admin.userManager.province')
 @endsection
 
 

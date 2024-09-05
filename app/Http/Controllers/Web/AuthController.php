@@ -9,29 +9,25 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\EmailRequest;
 use Laracasts\Flash\Flash;
-use App\Services\UploadImageService;
 use App\Models\Users;
 use App\Models\District;
 use App\Models\Ward;
 use App\Models\Province;
 use App\Models\ResetPasswordToken;
 use  App\Mail\ForgotPasswordMail;
+use Carbon\Carbon;
 use Mail;
 
 class AuthController extends Controller
 {   
-    protected $uploadImageService;
 
-    public function __construct(UploadImageService $uploadImageService)
-    {
-        $this->uploadImageService = $uploadImageService;
-    }
+    
 
     public function index(Request $request) {
-        if (session()->has('user')) {
+        if (Auth::check()) {
             return redirect('/');
         }
-        return view('web.login');
+        return view('web.auth.login');
     }
 
     public function login(Request $request) {
@@ -51,9 +47,12 @@ class AuthController extends Controller
     }
 
     public function register() {
+        if (Auth::check()) {
+            return redirect('/');
+        }
         $provinces = Province::all();
 
-        return view('web.register', compact('provinces'));
+        return view('web.auth.register', compact('provinces'));
     }
 
     public function store (RegisterRequest $request) {
@@ -67,7 +66,7 @@ class AuthController extends Controller
                     'province_id' => $request->province_id,
                     'district_id' => $request->district_id,
                     'ward_id' => $request->ward_id,
-                    'avatar' => $this->uploadImageService->uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                    'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
                 ];
 
                 Users::create($userData);
@@ -103,47 +102,72 @@ class AuthController extends Controller
         ], 200);
     }
 
+    // Trang quên mật khẩu
     public function forgotPassword() {
-        return view('web.forgotPassword');
+        if (Auth::check()) {
+            return redirect('/');
+        }
+        return view('web.auth.forgotPassword');
     }
 
+    // Gửi mail 
     public function handleForgotPassword(EmailRequest $request) {
 
         $user = Users::where('email', $request->email)->first();
         $token = \Str::random(40);
+        $pin = rand(100000, 999999);
         $tokenData = [
             'email' => $request->email,
-            'token' => $token
+            'token' => $token,
+            'pin' => $pin,
         ];
         if(ResetPasswordToken::where('email',$request->email)->exists()) {
-            ResetPasswordToken::where('email', $request->email)->update(['token' => $token]); // update token mới nếu đã có email trong database
-            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token));
+            ResetPasswordToken::where('email', $request->email)->update(['token' => $token, 'pin' => $pin]); // update token mới nếu đã có email trong database
+            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
         }else{
             ResetPasswordToken::create($tokenData);
-            Mail::to('chiendeptrai2002@gmail.com')->send(new ForgotPasswordMail($user, $token));
+            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
         }
         flash('Đã gửi tin nhắn đến mail của bạn vui lòng kiểm tra mail')->success();
         return back();
     }
 
-    public function resetPassword(Request $request ,$token) {
-        $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
-        return view('web.resetPassword', compact('token'));
-    }
 
+    // Hiển thị trang nhập PIN
+    public function indexPinAuthentication($token) {
+        $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
+        $email = $tokenData->email;
+        return view('web.auth.pinCode', compact('token', 'email'));
+    }
+    // Kiểm tra PIN, đúng sẽ chuyển vào trang đổi mật khẩu
+    public function checkPinCode(Request $request, $token) {
+        $request->validate([
+            'pin' => ['required', 'digits:6']
+        ]);
+        $checkPin = ResetPasswordToken::where('token', $token)->where('pin', $request->pin)->first();
+        if($checkPin){
+            $timeDifference = Carbon::now()->diffInMinutes($checkPin->updated_at);
+            if ($timeDifference > 3) {
+                return back()->with('error','Mã pin của bạn đã hết hạn vui lòng gửi lại email.');
+            }
+            return view('web.auth.resetPassword', compact('token'));
+        }
+        return back()->with('error','Bạn đã nhập sai mã PIN vui lòng thử lại.');
+    }
+    // Xửa lý đổi mật khẩu
     public function handleResetPassword(Request $request, $token) {
         $request->validate([
             'password' => ['required', 'min:3', 'max:255'],
             'passwordConfirm' => ['required', 'same:password'],
         ]);
+
         $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
         $user = Users::where('email', $tokenData->email)->firstOrFail();
         $data = [
             'password' => bcrypt($request->password),
         ];
         $user->update($data);
-        $tokenChange = \Str::random(40);
-        ResetPasswordToken::where('token', $token)->update(['token' => $tokenChange]); // Đổi lại token sau khi update thành công (form dùng 1 lần)
+        ResetPasswordToken::where('token', $token)->delete(); // Đổi lại token sau khi update thành công (form dùng 1 lần)
         return redirect()->route('web.login');
     }
 }
