@@ -38,7 +38,7 @@
             <div class="row justify-content-between align-items-center p-14px">
                 <div class="hotline color-750000 col-md-6 col-6">
                     <i class="fa-regular fa-circle-question"></i>
-                    Hotline: <strong>{{'084 ' . substr($shop->hotline, 0, 3) . '-' . substr($shop->hotline, 3, 3) . '-' . substr($shop->hotline, 6)}}</strong>
+                    Hotline: <strong>084-123-123-123 </strong>
                 </div>
                 <div class="about col-md-6 col-6">
                     <div class="language color-750000 px-2">

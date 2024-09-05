@@ -1,7 +1,10 @@
-@extends('web.home.layout.app')
+@extends('web.layout.app')
+@section('title')
+    HOME
+@endsection
 @section('content')
 
-    @include('web.home.layout.carousel')
+    @include('web.layout.carousel')
 
     <div class="category pt-2">
         <div class="container">
@@ -416,6 +419,10 @@
     </div>
     <br>
     <hr>
+
+@section('script')
+    <script src="{{ asset('/js/text.js') }}"></script>
+@endsection
 @endsection
    
   
