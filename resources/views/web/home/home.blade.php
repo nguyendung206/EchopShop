@@ -6,29 +6,29 @@
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-
+        {{-- <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li> --}}
+        @foreach ($banners as $index => $banner)
+        <li data-target="#carouselExampleIndicators" data-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></li>
+        @endforeach
     </ol>
+
     <div class="carousel-inner">
-        <div class="carousel-item active">
+        @foreach($banners as $index => $banner)
+        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
             <div class="slideshow">
-                <img src="{{ asset('/img/image/slideshow.jpeg') }} " alt="">
+                <img src="{{ getImage('upload/banners/' , $banner->photo) }}" alt="">
+                @if($banner->has_content)
                 <div class="container">
                     <div class="slideshow-content">
-                        <h1 class="slideshow-heading"><span class="color-B10000">mua bán </span>& trao đổi</h1>
-                        <h5 class="slideshow-subheading">Hàng hoá đã qua sử dụng dễ dàng hơn
-                            với <span class="color-B10000">Echop</span></h5>
-                        <a href="#">Quà tặng hấp dẫn</a>
+                        <h1 class="slideshow-heading"><span class="color-B10000">{{ $banner->title }} </span></h1>
+                        <h5 class="slideshow-subheading">{{ $banner->description }}</h5>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
-        <div class="carousel-item">
-            <div class="slideshow">
-                <img src="{{ asset('/img/image/slideshow.jpeg') }} " alt="">
-            </div>
-        </div>
+        @endforeach
     </div>
     <a class="carousel-control-prev icon-hover" href="#carouselExampleIndicators" role="button" data-slide="prev">
         <i class="icon fa-solid fa-arrow-left" aria-hidden="true"></i>

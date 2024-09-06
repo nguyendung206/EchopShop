@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\BannerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,5 +69,15 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::put('/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('manager-user.updateStatus');
         Route::put('/update/{id}', [UserController::class, 'update'])->name('manager-user.update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('manager-user.destroy');
+    });
+    Route::prefix('/banner')->group(function () {
+        Route::get('/create', [BannerController::class, 'create'])->name('banner.create');
+        Route::post('/', [BannerController::class, 'store'])->name('banner.store');
+        Route::get('/', [BannerController::class, 'index'])->name('banner.index');
+        Route::get('/{id}', [BannerController::class, 'show'])->name('banner.show');
+        Route::get('/update/{id}/edit', [BannerController::class, 'edit'])->name('banner.edit');
+        Route::put('/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
+        Route::put('/update/{id}', [BannerController::class, 'update'])->name('banner.update');
+        Route::delete('/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
     });
 });

@@ -27,7 +27,7 @@ class UserController extends Controller
     public function index (Request $request) {
        
         $filters = [
-            'name' => $request->input('name'),
+            'search' => $request->input('search'),
             'status' => $request->input('status'),
             'gender' => $request->input('gender'),
         ];
