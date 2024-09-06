@@ -48,30 +48,30 @@
                 <ul class="footer-social row ml-1">
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/facebook.png')}}" alt="">
+                            <img src="{{getImage(null,'facebook.png')}}" alt="">
                         </a>
                     </li>
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/youtube.png')}}" alt="">
+                            <img src="{{getImage(null,'youtube.png')}}" alt="">
                         </a>
                     </li>
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/instagram.png')}}" alt="">
+                            <img src="{{getImage(null,'instagram.png')}}" alt="">
                         </a>
                     </li>
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/tiktok.png')}}" alt="">
+                            <img src="{{getImage(null,'tiktok.png')}}" alt="">
                         </a>
                     </li>
                 </ul>
                 <h1 class="footer-heading">Giao dịch của bạn</h1>
                 <div class="row">
-                    <img src="{{asset('/img/zalopay.png')}}" alt="" class="footer-zalo mx-1 ml-3">
-                    <img src="{{asset('/img/momo.png')}}" alt="" class="footer-momo mx-1">
-                    <img src="{{asset('/img/vnpay.jpeg')}}" alt="" class="footer-vnpay mx-1">
+                    <img src="{{getImage(null,'zalopay.png')}}" alt="" class="footer-zalo mx-1 ml-3">
+                    <img src="{{getImage(null,'momo.png')}}" alt="" class="footer-momo mx-1">
+                    <img src="{{getImage(null,'vnpay.jpeg')}}" alt="" class="footer-vnpay mx-1">
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
     <div class="footer-bottom">
         <div class="container-fluid">
             <div class="row justify-content-between align-items-center">
-                <img src="{{asset('/img/logo2.png')}}" alt="" class="m-2">
+                <img src="{{getImage(null,'logo2.png')}}" alt="" class="m-2">
                 <p class="m-2">Coppywrite VITPR 2023</p>
             </div>
         </div>

@@ -9,7 +9,7 @@
       <div class="content-wrap">
         <div class="row center-item">
           <div class="content-1">
-            <div class="login-form" style="margin-top: -300px">
+            <div class="login-form" style="margin-top: -200px">
               <form action="{{route('web.pinCode', $token)}}" id="pinForm" method="POST">
                 @csrf
                 <div>

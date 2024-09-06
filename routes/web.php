@@ -20,7 +20,7 @@ require __DIR__ . '/admin.php';
 
 //     return view('welcome');
 // });
-Route::get('/',[HomeController::class, 'index']);
+Route::get('/',[HomeController::class, 'index'])->name('home');
 Route::get('/getBrand', [HomeController::class, 'getBrand'])->name('web.getBrand');
 Route::get('/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/login', [AuthController::class, 'login'])->name('web.authentication');
@@ -35,3 +35,5 @@ Route::post('/forgotPassword', [AuthController::class, 'handleForgotPassword'])-
 Route::get('/pinAuthentication/{token}', [AuthController::class, 'indexPinAuthentication'])->name('web.pinAuthentication');  // url bên mail
 Route::post('/pinCode/{token}',[AuthController::class, 'checkPinCode'])->name('web.pinCode');
 Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPassword'])->name('web.handleResetPassword');
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');

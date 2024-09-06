@@ -112,6 +112,7 @@
                                 <div class="custom-checkbox"></div>
                                 <div class="term">
                                     Tôi đồng ý với <a href="#">Điều khoản sử dụng</a> và <a href="#">chính sách dịch vụ </a> của Echop</div>
+                                    Bạn đã có tài khoản? <a href="{{route('web.login')}}">Đăng nhập</a>
                                     <div class="c-1-button"><button type="submit">Đăng ký</button></div>
                                 </div>
                         </form>
