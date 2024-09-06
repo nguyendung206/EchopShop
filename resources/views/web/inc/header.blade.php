@@ -115,9 +115,9 @@
                             <!-- Nếu người dùng chưa đăng nhập -->
                             @guest
                             <div class="btn-post px-2">
-                                <a href="{{ route('web.register') }}">
+                                <a href="{{ route('web.login') }}">
                                     <i class="fa-solid fa-user-plus mr-2"></i>
-                                    <span>Đăng ký</span>
+                                    <span>Đăng nhập</span>
                                 </a>
                             </div>
                             @else
