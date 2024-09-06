@@ -14,7 +14,7 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">Thêm mới Banner'</h5>
+                <h5 class="mb-0 h6">Thêm mới Banner</h5>
             </div>
             <div class="card-body">
                 <form action="{{route('banner.store')}}" method="post" enctype="multipart/form-data">
