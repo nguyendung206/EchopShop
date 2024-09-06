@@ -30,7 +30,9 @@
         body {
             font-size: 12px;
         }
-
+        .invalid-feedback {
+            font-size: 12px;
+        }
         .load-wrapp {
            float: left;
             width: 100px;

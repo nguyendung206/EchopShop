@@ -24,6 +24,10 @@ class ProductService
             $query->where('status', $request->status);
         }
 
+        if ($request->has('type') && $request->type != '') {
+            $query->where('type', $request->type);
+        }
+
         return $query->paginate(10);
     }
 
@@ -34,6 +38,7 @@ class ProductService
         $product->description = $request->description;
         $product->status = $request->status;
         $product->price = $request->price;
+        $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 
@@ -69,6 +74,7 @@ class ProductService
         $product->description = $request->description;
         $product->status = $request->status;
         $product->price = $request->price;
+        $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 

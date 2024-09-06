@@ -51,6 +51,55 @@ if (! function_exists('uploadImage')) {
 if (! function_exists('deleteImage')) {
     function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
+        $filePath = storage_path('app/public/' . $path . '/' . $fileName);
+        if (file_exists($filePath) && $fileName !== $defaultImage) {
+            unlink($filePath);
+        }
+    }
+}
+
+if (! function_exists('uploadMultipleImages')) {
+    function uploadMultipleImages($files, $path = 'upload/product')
+    {
+        $fileNames = [];
+        if ($files && is_array($files)) {
+            foreach ($files as $file) {
+                $fileName = uploadImage($file, $path);
+                $fileNames[] = $fileName;
+            }
+        }
+        return $fileNames;
+    }
+}
+
+if (! function_exists('deleteMultipleImages')) {
+    function deleteMultipleImages($fileNames, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        if ($fileNames && is_array($fileNames)) {
+            foreach ($fileNames as $fileName) {
+                deleteImage($fileName, $path, $defaultImage);
+            }
+        }
+    }
+}
+
+if (! function_exists('uploadImage')) {
+    function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
+        if ($file) {
+            $fileName = time() . '-' . $file->getClientOriginalName();
+            $file->storeAs($path, $fileName, 'public');
+
+            return $fileName;
+        }
+
+        return $defaultImage;
+    }
+}
+
+if (! function_exists('deleteImage')) {
+    function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    {
         $filePath = storage_path('app/' . $path . '/' . $fileName);
         if (file_exists($filePath) && $fileName !== $defaultImage) {
             unlink($filePath);

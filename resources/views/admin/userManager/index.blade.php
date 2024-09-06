@@ -251,35 +251,26 @@
                     let form = $('#delete-form');
                     form.attr('action', delete_href);
                     form.submit();
-
-                    // var data = {
-                    //     "_token": "{{ csrf_token() }}",
-                    //     "id": delete_id,
-                    // };
-                    // $.ajax({
-                    //     type: "DELETE",
-                    //     url: delete_href,
-                    //     data: data,
-                    //     success: function (response){
-                    //         Swal.fire('Xoá thành công');
-                    //         location.reload();
-                    //     },
-                    //     error : function(err) {
-                    //         console.log(err.responseText);
-                    //         Swal.fire('Đã có lỗi xảy ra');
-                    //     }
-                    // });
                 }
             });
         });
 
+        // 
+        $(document).on('focus', '[id^=status-select]', function() {
+            let $select = $(this);
+            // Lưu giá trị hiện tại vào thuộc tính data-old-value khi thẻ select nhận được focus
+            $select.data('old-value', $select.val());
+        });
         $(document).on('change', '[id^=status-select]', function() {
+            let $select = $(this);
+            let oldValue = $select.data('old-value');
+            
             let selectedText = $(this).find("option:selected").text(); // Lấy text của tùy chọn đã chọn
             let userId = $(this).attr('id').replace('status-select', ''); // Lấy user ID từ id của thẻ select
             let form = $('#status-form-' + userId); // Lấy form theo user ID
             let formData = form.serialize(); // Lấy dữ liệu từ form, bao gồm cả CSRF token
             let updateHref = form.attr('action'); // Lấy URL action của form
-
+            
             Swal.fire({
                 title: 'Đổi trạng thái người dùng này',
                 text: `Bạn đã chọn trạng thái: ${selectedText}. Bạn có muốn tiếp tục?`,
@@ -310,10 +301,13 @@
                         });
                         }
                     });
+                }else {
+                        $select.val(oldValue);
                 }
 
             });
         });
+        //
 
 
         //Date

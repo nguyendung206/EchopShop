@@ -35,9 +35,14 @@
         </div>
         <div class="row gutters-5 mb-3 custom-change">
             <div class="col-md-3 ">
-                <input type="text" onkeypress='return event.charCode >=48 && event.charCode<=57' autocomplete="off" class="form-control custom-placeholder"
-                    name="joined_date" id="joined_date" placeholder="{{__('Ngày tạo')}}" value="{{ request('joined_date') }}">
-                <div class="custom-down"><i class="fas fa-chevron-down"></i></div>
+                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="types" name="type">
+                    <option value="">@lang('Kiểu sản phẩm')</option>
+                    @foreach (\App\Enums\TypeProduct::cases() as $type)
+                    <option value="{{ $type->value }}" @if(request('type')==$type->value) selected @endif>
+                        {{ $type->label() }}
+                    </option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3 res-status">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="status" name="status">
@@ -90,6 +95,7 @@
                     <th class="w-25">@lang('Tên sản phẩm')</th>
                     <th class="">@lang('Mô tả')</th>
                     <th class="">@lang('Giá')</th>
+                    <th class="">@lang('Kiểu sản phẩm')</th>
                     <th class="w-140">@lang('Trạng thái')</th>
                     <th class="" style="width: 15%;">@lang('Điều chỉnh')</th>
                 </tr>
@@ -105,6 +111,7 @@
                         <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
                         <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>
                         <td class="font-weight-400 align-middle">{{format_price($data->price)}}</td>
+                        <td>{{ $data->type->label()}}</td>
                         <td>{{ $data->status->label() }}</td>
                         <td class="text-right">
                             <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.show', ['id' => $data->id]) }}"  title="@lang('Show')">
@@ -283,55 +290,5 @@
             }
         });
     });
-
-
-    //Date
-    $('#joined_date').daterangepicker({
-    autoUpdateInput: false,
-    minDate: '1921/01/01',
-    singleDatePicker: true,
-    showDropdowns: true,
-    locale: {
-        format: 'YYYY/MM/DD',
-        applyLabel: "Ok",
-        cancelLabel: "Cancel",
-        "monthNames":[
-                "@lang('Tháng 1')",
-                "@lang('Tháng 2')",
-                "@lang('Tháng 3')",
-                "@lang('Tháng 4')",
-                "@lang('Tháng 5')",
-                "@lang('Tháng 6')",
-                "@lang('Tháng 7')",
-                "@lang('Tháng 8')",
-                "@lang('Tháng 9')",
-                "@lang('Tháng 10')",
-                "@lang('Tháng 11')",
-                "@lang('Tháng 12')",
-            ],
-            daysOfWeek:[
-                "@lang('Chủ nhật')",
-                "@lang('Thứ 2')",
-                "@lang('Thứ 3')",
-                "@lang('Thứ 4')",
-                "@lang('Thứ 5')",
-                "@lang('Thứ 6')",
-                "@lang('Thứ 7')",
-            ]
-        }
-    });
-    $('#joined_date').on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('YYYY/MM/DD'));
-    });
-
-    $('#joined_date').on('cancel.daterangepicker', function (ev, picker) {
-        $(this).val('');
-    });
-    
-    @if(request('joined_date'))
-    $('#joined_date').value("{{request('joined_date')}}");
-    @endif
-    $('input[name="joined_date"]').val('');
-
 </script>
 @endsection

@@ -1,4 +1,6 @@
 <div style="display: block;text-align: center;height: 200px">
-    <h3 style="margin: 15px 0;">Lấy lại mật khẩu của bạn</h3>
-    <a href="{{ route('web.resetPassword', $token)}}" style="background-color: rgba(117,0,0,1);padding: 8px 16px;color:white;text-decoration: none;border-radius:4px">Tạo mật khẩu mới</a>
+        @csrf
+        <h2 style="margin: 15px 0;color: rgba(117,0,0,1)">Lấy lại mật khẩu của bạn</h2>
+        <strong>Mã pin của bạn: <span style="color: rgba(117,0,0,1);font-weight: 700;">{{$pin}}</span> có hiệu lực trong 3 phút tính từ bây giờ.</strong>
+        <div> Vui lòng vào <a href="{{route('web.pinAuthentication',  $token)}}" style="color: rgba(117,0,0,1);font-weight: 700;text-decoration: none;"> tại đây </a> xác nhận để tiếp tục</div>
 </div>
