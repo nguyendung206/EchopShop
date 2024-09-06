@@ -7,7 +7,7 @@
                         <i class="fa-solid fa-xmark"></i>
                     </div>
                     <a href="#" class="nav-logo">
-                        <img src="{{asset('/img/logo.png')}}" alt="" class="nav-logo-img">
+                        <img src="{{asset('/img/image/logo.png')}}" alt="" class="nav-logo-img">
                     </a>
                 </div>
                 <ul class="nav-list" id="menu-toggle">
@@ -42,7 +42,7 @@
                 </div>
                 <div class="about col-md-6 col-6">
                     <div class="language color-750000 px-2">
-                        <img class="logo-vietnam" src="{{asset('/img/vietnam.png')}}" alt="">
+                        <img class="logo-vietnam" src="{{asset('/img/image/vietnam.png')}}" alt="">
                         <span class="mr-2">Việt Nam</span>
                         <i class="fa-solid fa-caret-down"></i>
                     </div>
@@ -59,8 +59,8 @@
             <div class="container py-3">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-lg-2 col-md-6 col-2 col-sm-2">
-                        <a href="home.html">
-                            <img class="logo" src="{{asset('/img/logo.png')}}" alt="">
+                        <a href="{{route('home')}}">
+                            <img class="logo" src="{{asset('/img/image/logo.png')}}" alt="">
                         </a>
                     </div>
                     <div class="col-lg-8 menu">
@@ -70,103 +70,24 @@
                                     aria-haspopup="true" aria-expanded="false" href="#">Danh mục sản phẩm<i
                                         class="fa-solid fa-caret-down pl-2"></i></a>
                                 <div class="dropdown-menu dropdown-menu-category dropright" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
+                                    @foreach ($categories as $category)
+                                    <a class=" dropdown dropdown-item category-{{$category->slug}}" type="button" data-toggle="dropdown" 
+                                        aria-haspopup="true" aria-expanded="false" href="#"  data-category-id="{{$category->id}}" data-target="#dropdownMenu{{$category->slug}}">
                                         <div class="row align-items-center">
-                                            <img src="{{asset('/img/dress.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Thời trang</p>
-
+                                            <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
+                                            
+                                            <p class="dropdown-title">{{$category->name}}</p>
                                         </div>
                                         <i class="fa-solid fa-caret-right"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-category">
-                                        <a class="dropdown-item" href="#">Áo quần <i
-                                                class="fa-solid fa-caret-right"></i></a>
-                                        <a class="dropdown-item" href="#">Giày dép <i
-                                                class="fa-solid fa-caret-right"></i></a>
-                                        <a class="dropdown-item" href="#">Túi sách <i
-                                                class="fa-solid fa-caret-right"></i></a>
-                                        <a class="dropdown-item" href="#">Váy đầm <i
-                                                class="fa-solid fa-caret-right"></i></a>
-                                        <a class="dropdown-item" href="#">Sản phẩm khác <i
-                                                class="fa-solid fa-caret-right"></i></a>
+                                    @endforeach
+                                    <div class="dropdown-menu sub-menu" id="dropdownMenu{{$category->slug}}" aria-labelledby="dropdownMenuButton{{$category->slug}}">
+                                        
                                     </div>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/dodientu.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Đồ điện tử</p>
 
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
+                                    <a class="dropdown-item-custom" type="button"  href="#">
                                         <div class="row align-items-center">
-                                            <img src="{{asset('/img/giadung.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Đồ gia dụng</p>
-
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/hoctap.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Học tập</p>
-
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/giaitri.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Giải trí</p>
-
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/xeco.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Xe cộ</p>
-
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/mypham.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Mỹ phẩm</p>
-
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/trangsuc.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Trang sức</p>
-
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/mevabe.png')}}" alt="" class="dropdown-img">
-                                            <p class="dropdown-title">Mẹ và bé</p>
-
-                                        </div>
-                                        <i class="fa-solid fa-caret-right"></i>
-                                    </a>
-                                    <a class="dropdown-item" type="button" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false" href="#">
-                                        <div class="row align-items-center">
-                                            <img src="{{asset('/img/khac.png')}}" alt="" class="dropdown-img">
+                                            <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
                                             <p class="dropdown-title">Khác</p>
 
                                         </div>
@@ -193,13 +114,7 @@
 
                             <!-- Nếu người dùng chưa đăng nhập -->
                             @guest
-                            <div class="btn-login px-2">
-                                <a href="{{ route('web.login') }}">
-                                    <i class="fa-solid fa-right-to-bracket mr-2"></i>
-                                    <span>Đăng nhập</span>
-                                </a>
-                            </div>
-                            <div class="btn-register px-2">
+                            <div class="btn-post px-2">
                                 <a href="{{ route('web.register') }}">
                                     <i class="fa-solid fa-user-plus mr-2"></i>
                                     <span>Đăng ký</span>
@@ -218,16 +133,12 @@
                                     <img class="avt" src="{{ getImage('upload/users/', optional(Auth::user())->avatar) }}" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="">
+                                    <a class="drop-user-item" href="">
                                         <i class="fa-solid fa-user mr-2"></i> Hồ sơ cá nhân
                                     </a>
-                                    <a class="dropdown-item" href=""
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <a class="drop-user-item" href="{{route('web.logout')}}">
                                         <i class="fa-solid fa-right-from-bracket mr-2"></i> Đăng xuất
                                     </a>
-                                    <form id="logout-form" action="" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
                                 </div>
                             </div>
                             @endguest
@@ -242,4 +153,36 @@
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.dropdown-item').click(function(e) {
+
+            e.preventDefault();
+            $('.sub-menu').html('');
+            $('.sub-menu').append('<a class="dropdown-item" href="#">Đang tải</a>');
+            var categoryId = $(this).data('category-id');
+            var target = $(this).data('target');
+
+            $.ajax({
+                url: "{{ route('web.getBrand') }}",
+                type: "GET",
+                data: { category_id: categoryId },
+                success: function(response) {
+                    $('.sub-menu').html('');
+                    response.brands.forEach(function(brand) {
+                        $('.sub-menu').append('<a class="dropdown-item" href="#">' + brand.name + '<i class="fa-solid fa-caret-right"></i></a>');
+                    });
+
+
+                    
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 </header>

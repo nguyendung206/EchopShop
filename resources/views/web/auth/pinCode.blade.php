@@ -4,16 +4,16 @@
 @endsection
 @section('content')
     <div class="login-page">
-      <img class="background-1" src="{{ getImage(null,'b1.png') }}" alt="b1" />
-      <img class="background-2" src="{{ getImage(null,'b2.png')}}" alt="b2" />
+      <img class="background-1" src="{{ asset('/img/image/b1.png') }}" alt="b1" />
+      <img class="background-2" src="{{ asset('/img/image/b2.png')}}" alt="b2" />
       <div class="content-wrap">
         <div class="row center-item">
           <div class="content-1">
-            <div class="login-form" style="margin-top: -300px">
+            <div class="login-form" style="margin-top: -200px">
               <form action="{{route('web.pinCode', $token)}}" id="pinForm" method="POST">
                 @csrf
                 <div>
-                  <img src="{{ getImage(null,'logo-2.png')}}" alt="logo" />
+                  <img src="{{ asset('/img/image/logo-2.png')}}" alt="logo" />
                 </div>
                 <div class="c-1-title">Xác thực email</div>
                 <div class="c-1-label">
@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="content-2 ">
-            <img src="{{ getImage(null,'Untitled-2.png')}}" class="c-img-2" alt="" />
+            <img src="{{ asset('/img/image/Untitled-2.png')}}" class="c-img-2" alt="" />
           </div>
         </div>
       </div>

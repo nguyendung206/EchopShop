@@ -170,4 +170,9 @@ class AuthController extends Controller
         ResetPasswordToken::where('token', $token)->delete(); // Đổi lại token sau khi update thành công (form dùng 1 lần)
         return redirect()->route('web.login');
     }
+
+    public function logout() {
+        Auth::logout();
+        return redirect()->route('web.login');
+    }
 }

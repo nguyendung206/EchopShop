@@ -515,6 +515,32 @@ a:hover {
     display: none;
 }
 
+.drop-user-item {
+    padding: 5px 0px;
+    padding-left: 10px;
+    display: block;
+    color: #535353;
+}
+.drop-user-item:hover {
+    color: #B10000;
+    background-color: #FFF5BC;
+}
+.drop-user-item i {
+    margin-right: 20px;
+    color: #B10000;
+    width: 16px;
+}
+.dropdown-item-custom {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: .25rem 1.5rem;
+}
+
+
+
 
 @media (min-width: 320px) and (max-width: 768px) {
 
