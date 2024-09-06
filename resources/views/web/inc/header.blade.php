@@ -194,13 +194,13 @@
                             <!-- Nếu người dùng chưa đăng nhập -->
                             @guest
                             <div class="btn-login px-2">
-                                <a href="{{ route('login') }}">
+                                <a href="{{ route('web.login') }}">
                                     <i class="fa-solid fa-right-to-bracket mr-2"></i>
                                     <span>Đăng nhập</span>
                                 </a>
                             </div>
                             <div class="btn-register px-2">
-                                <a href="{{ route('register') }}">
+                                <a href="{{ route('web.register') }}">
                                     <i class="fa-solid fa-user-plus mr-2"></i>
                                     <span>Đăng ký</span>
                                 </a>
