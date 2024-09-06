@@ -66,13 +66,12 @@
                     <div class="col-lg-8 menu">
                         <ul class="row">
                             <li class=" ml-3">
-                                <a class="" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" href="#">Danh mục sản phẩm<i
+                                <div class="dropdown">
+                                <a href="#" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh mục sản phẩm<i
                                         class="fa-solid fa-caret-down pl-2"></i></a>
-                                <div class="dropdown-menu dropdown-menu-category dropright" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu dropright" aria-labelledby="dropdownMenuButton" >
                                     @foreach ($categories as $category)
-                                    <a class=" dropdown dropdown-item category-{{$category->slug}}" type="button" data-toggle="dropdown" 
-                                        aria-haspopup="true" aria-expanded="false" href="#"  data-category-id="{{$category->id}}" data-target="#dropdownMenu{{$category->slug}}">
+                                    <a href="#" class=" dropdown-item dropdown-item-active" type="button" id="dropdownMenuButton-{{$category->slug}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div class="row align-items-center">
                                             <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
                                             
@@ -80,10 +79,15 @@
                                         </div>
                                         <i class="fa-solid fa-caret-right"></i>
                                     </a>
-                                    @endforeach
-                                    <div class="dropdown-menu sub-menu" id="dropdownMenu{{$category->slug}}" aria-labelledby="dropdownMenuButton{{$category->slug}}">
-                                        
+                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton-{{$category->slug}}" style="padding: 5px">
+                                     @foreach($category->activeBrands as $brand) 
+                                        <div>
+                                            <a href="#" class="dropdown-item dropdown-item-active">{{$brand->name}}</a>
+                                        </div>
+                                     @endforeach
                                     </div>
+                                   
+                                    @endforeach
 
                                     <a class="dropdown-item-custom" type="button"  href="#">
                                         <div class="row align-items-center">
@@ -94,6 +98,7 @@
                                         <i class="fa-solid fa-caret-right"></i>
                                     </a>
                                 </div>
+                            </div>
                             </li>
                             <li class="">
                                 <a href="#">Trao đổi hàng hóa</a>
@@ -116,7 +121,7 @@
                             @guest
                             <div class="btn-post px-2">
                                 <a href="{{ route('web.login') }}">
-                                    <i class="fa-solid fa-user-plus mr-2"></i>
+                                    <i class="fa-solid fa-right-to-bracket mr-2"></i>
                                     <span>Đăng nhập</span>
                                 </a>
                             </div>
@@ -154,35 +159,5 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('.dropdown-item').click(function(e) {
-
-            e.preventDefault();
-            $('.sub-menu').html('');
-            $('.sub-menu').append('<a class="dropdown-item" href="#">Đang tải</a>');
-            var categoryId = $(this).data('category-id');
-            var target = $(this).data('target');
-
-            $.ajax({
-                url: "{{ route('web.getBrand') }}",
-                type: "GET",
-                data: { category_id: categoryId },
-                success: function(response) {
-                    $('.sub-menu').html('');
-                    response.brands.forEach(function(brand) {
-                        $('.sub-menu').append('<a class="dropdown-item" href="#">' + brand.name + '<i class="fa-solid fa-caret-right"></i></a>');
-                    });
-
-
-                    
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-    });
-</script>
+   
 </header>

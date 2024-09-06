@@ -539,6 +539,12 @@ a:hover {
     padding: .25rem 1.5rem;
 }
 
+.dropdown-item-active:active {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+
 
 
 
