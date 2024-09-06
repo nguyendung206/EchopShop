@@ -5,8 +5,8 @@
 
 @section('content')
     <div class="login-page">
-        <img class="background-1" src="{{ getImage(null,'b1.png') }}" alt="b1">
-        <img class="background-2" src="{{ getImage(null,'b2.png') }}" alt="b2">
+        <img class="background-1" src="{{ asset('/img/image/b1.png') }}" alt="b1">
+        <img class="background-2" src="{{ asset('/img/image/b2.png') }}" alt="b2">
         
         <div class="center-large-item">
             <div class="row center-item">
@@ -16,14 +16,14 @@
                             @csrf
                             @method("POST")
                             <div>
-                                <img src="{{ getImage(null,'logo-2.png') }}" alt="logo">
+                                <img src="{{ asset('/img/image/logo-2.png') }}" alt="logo">
                             </div>
                             <div class="c-1-title">Đăng ký</div>
                             <div class="c-1-label-title">Nhập thông tin của bạn</div>
                             <div class="c-1-upload">
                                 <div>
-                                    {{-- <img src="{{ getImage(null,'upload.png') }}" id="triggerImage"  alt=""> --}}
-                                    <img id="Photo" src="{{ getImage(null,'upload.png') }}" class="img img-bordered" onclick="document.getElementById('file').click();" style="width:100px;border-radius: 50%;" />
+                                    {{-- <img src="{{ asset('/img/image/upload.png') }}" id="triggerImage"  alt=""> --}}
+                                    <img id="Photo" src="{{ asset('/img/image/upload.png') }}" class="img img-bordered" onclick="document.getElementById('file').click();" style="width:100px;border-radius: 50%;" />
 
                                     <input type="file" id="file"  name="uploadFile" onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" style="display: none;"/>
                                 </div>
@@ -31,7 +31,7 @@
                             <div class="c-1-input c-1-name">
                                 <input type="text" placeholder="Tên *" name="name"
                                 class="@error('name') is-invalid  @enderror" value="{{ old('name') ? old('name') : null}}">
-                                <img src="{{ getImage(null,'user-icon.png') }}" alt="">
+                                <img src="{{ asset('/img/icon/user-icon.png') }}" alt="">
                                 @error('name')
                                     <div class="" style="color: rgba(117,0,0,1);text-align: left">{{ $message }}</div>
                                 @enderror
@@ -40,7 +40,7 @@
                             <div class="c-1-input c-1-email">
                                 <input type="text" placeholder="Email *" name="email" 
                                 class="@error('email') is-invalid  @enderror" value="{{ old('email') ? old('email') : null}}">
-                                <img src="{{ getImage(null,'sms-icon.png') }}" alt="" >
+                                <img src="{{ asset('/img/icon/sms-icon.png') }}" alt="" >
                             </div>
                             @error('email')
                                     <div class="" style="color: rgba(117,0,0,1);text-align: left">{{ $message }}</div>
@@ -48,7 +48,7 @@
                             <div class="c-1-input c-1-phone">
                                 <input type="text" placeholder="0123456789" class="text-phone" name="phone_number" 
                                 class="@error('phone_number') is-invalid  @enderror" value="{{ old('phone_number') ? old('phone_number') : null}}">
-                                <img src="{{ getImage(null,'phone-icon.png') }}" alt="">
+                                <img src="{{ asset('/img/icon/phone-icon.png') }}" alt="">
                             </div>
                             @error('phone_number')
                                     <div class="" style="color: rgba(117,0,0,1);text-align: left">{{ $message }}</div>
@@ -56,7 +56,7 @@
                             <div class="c-1-input c-1-email">
                                 <input type="password" placeholder="Mật khẩu *" name="password" 
                                 class="@error('password') is-invalid  @enderror" value="{{ old('password') ? old('password') : null}}">
-                                <img src="{{ getImage(null,'user-icon.png') }}" alt="" >
+                                <img src="{{ asset('/img/icon/user-icon.png') }}" alt="" >
                             </div>
                             @error('password')
                                     <div class="" style="color: rgba(117,0,0,1);text-align: left">{{ $message }}</div>
@@ -64,12 +64,12 @@
                             <div class="c-1-input c-1-email">
                                 <input type="password" placeholder="Xác nhận mật khẩu *" name="passwordConfirm" 
                                 class="@error('passwordConfirm') is-invalid  @enderror" value="{{ old('passwordConfirm') ? old('passwordConfirm') : null}}">
-                                <img src="{{ getImage(null,'user-icon.png') }}" alt="" >
+                                <img src="{{ asset('/img/icon/user-icon.png') }}" alt="" >
                             </div>
                             @error('passwordConfirm')
                                     <div class="" style="color: rgba(117,0,0,1);text-align: left">{{ $message }}</div>
                                 @enderror
-                            <div class="c-1-input c-1-location"><img src="{{ getImage(null,'location.png') }}" alt="">
+                            <div class="c-1-input c-1-location"><img src="{{ asset('/img/image/location.png') }}" alt="">
                                     @csrf
                                 <select class="text-center font-weight-500" name="province_id" id="province_select">
                                     <option value="0">Tỉnh/Thành phố *</option>
@@ -119,7 +119,7 @@
                     </div>
                 </div>
                 <div class="content-2">
-                        <img src="{{ getImage(null,'testbg.png') }}" class="c-img-2" alt="">
+                        <img src="{{ asset('/img/image/testbg.png') }}" class="c-img-2" alt="">
                 </div>
             </div>
     </div>

@@ -7,7 +7,7 @@
                         <i class="fa-solid fa-xmark"></i>
                     </div>
                     <a href="#" class="nav-logo">
-                        <img src="{{getImage(null,'logo.png')}}" alt="" class="nav-logo-img">
+                        <img src="{{asset('/img/image/logo.png')}}" alt="" class="nav-logo-img">
                     </a>
                 </div>
                 <ul class="nav-list" id="menu-toggle">
@@ -42,7 +42,7 @@
                 </div>
                 <div class="about col-md-6 col-6">
                     <div class="language color-750000 px-2">
-                        <img class="logo-vietnam" src="{{getImage(null,'vietnam.png')}}" alt="">
+                        <img class="logo-vietnam" src="{{asset('/img/image/vietnam.png')}}" alt="">
                         <span class="mr-2">Việt Nam</span>
                         <i class="fa-solid fa-caret-down"></i>
                     </div>
@@ -60,7 +60,7 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-lg-2 col-md-6 col-2 col-sm-2">
                         <a href="{{route('home')}}">
-                            <img class="logo" src="{{getImage(null,'logo.png')}}" alt="">
+                            <img class="logo" src="{{asset('/img/image/logo.png')}}" alt="">
                         </a>
                     </div>
                     <div class="col-lg-8 menu">
@@ -87,7 +87,7 @@
 
                                     <a class="dropdown-item-custom" type="button"  href="#">
                                         <div class="row align-items-center">
-                                            <img src="{{ getImage(null,'khac.png') }}" alt="" class="dropdown-img">
+                                            <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
                                             <p class="dropdown-title">Khác</p>
 
                                         </div>
