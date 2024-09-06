@@ -48,30 +48,30 @@
                 <ul class="footer-social row ml-1">
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/facebook.png')}}" alt="">
+                            <img src="{{asset('/img/icon/facebook.png')}}" alt="">
                         </a>
                     </li>
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/youtube.png')}}" alt="">
+                            <img src="{{asset('/img/icon/youtube.png')}}" alt="">
                         </a>
                     </li>
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/instagram.png')}}" alt="">
+                            <img src="{{asset('/img/icon/instagram.png')}}" alt="">
                         </a>
                     </li>
                     <li>
                         <a href="">
-                            <img src="{{asset('/img/tiktok.png')}}" alt="">
+                            <img src="{{asset('/img/icon/tiktok.png')}}" alt="">
                         </a>
                     </li>
                 </ul>
                 <h1 class="footer-heading">Giao dịch của bạn</h1>
                 <div class="row">
-                    <img src="{{asset('/img/zalopay.png')}}" alt="" class="footer-zalo mx-1 ml-3">
-                    <img src="{{asset('/img/momo.png')}}" alt="" class="footer-momo mx-1">
-                    <img src="{{asset('/img/vnpay.jpeg')}}" alt="" class="footer-vnpay mx-1">
+                    <img src="{{asset('/img/image/zalopay.png')}}" alt="" class="footer-zalo mx-1 ml-3">
+                    <img src="{{asset('/img/image/momo.png')}}" alt="" class="footer-momo mx-1">
+                    <img src="{{asset('/img/image/vnpay.jpeg')}}" alt="" class="footer-vnpay mx-1">
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
     <div class="footer-bottom">
         <div class="container-fluid">
             <div class="row justify-content-between align-items-center">
-                <img src="{{asset('/img/logo2.png')}}" alt="" class="m-2">
+                <img src="{{asset('/img/image/logo2.png')}}" alt="" class="m-2">
                 <p class="m-2">Coppywrite VITPR 2023</p>
             </div>
         </div>
