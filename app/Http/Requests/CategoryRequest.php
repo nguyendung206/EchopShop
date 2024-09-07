@@ -31,20 +31,13 @@ class CategoryRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function attributes()
     {
         return [
-            'name.required' => 'Tên loại hàng là bắt buộc.',
-            'name.string' => 'Tên loại hàng phải là chuỗi ký tự.',
-            'name.max' => 'Tên loại hàng không được vượt quá 255 ký tự.',
-            'description.required' => 'Mô tả loại hàng là bắt buộc.',
-            'description.string' => 'Mô tả phải là chuỗi ký tự.',
-            'description.max' => 'Mô tả không được vượt quá 1000 ký tự.',
-            'status.required' => 'Trạng thái là bắt buộc.',
-            'status.in' => 'Trạng thái không hợp lệ.',
-            'photo.image' => 'Tệp tải lên phải là hình ảnh.',
-            'photo.mimes' => 'Hình ảnh phải có định dạng jpg, jpeg hoặc png.',
-            'photo.max' => 'Hình ảnh không được lớn hơn 2MB.',
+            'name' => 'Tên loại hàng',
+            'photo' => 'Ảnh loại hàng đại diện',
+            'status' => 'Trạng thái loại hàng',
+            'description' => 'Mô tả loại hàng',
         ];
     }
 }

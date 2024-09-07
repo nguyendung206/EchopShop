@@ -23,7 +23,7 @@
                     @csrf
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên sản phẩm')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Tên sản phẩm')</label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="@lang('Tên sản phẩm')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ $product->name }}" required>
                             @error('name')
@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Giá')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Giá')</label>
                         <div class="col-sm-9">
                             <input type="number" placeholder="@lang('Giá sản phẩm')" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ $product->price }}" required>
                             @error('price')
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Mô tả')</label>
                         <div class="col-sm-9">
                             <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ $product->description }}</textarea>
                             @error('description')
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Loại sản phẩm')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Loại sản phẩm')</label>
                         <div class="col-sm-9">
                             <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
                                 <option value="" {{ old('category_id', $brand->category_id ?? null) === null ? 'selected' : '' }}>@lang('Chọn loại sản phẩm')</option>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Hãng sản phẩm')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Hãng sản phẩm')</label>
                         <div class="col-sm-9">
                             <select class="form-control @error('brand_id') is-invalid @enderror" name="brand_id">
                                 <option value="" {{ old('brand_id', $brand->brand_id ?? null) === null ? 'selected' : '' }}>@lang('Chọn hãng sản phẩm')</option>
@@ -87,23 +87,63 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Trạng thái')</label>
-                        <div class="col-sm-9">
-                            <select class="form-control @error('status') is-invalid @enderror" name="status">
-                                @foreach(\App\Enums\Status::cases() as $status)
-                                <option value="{{ $status->value }}" {{ old('status', $product->status->value ?? null) === $status->value ? 'selected' : '' }}>
-                                    {{ $status->label() }}
-                                </option>
-                                @endforeach
-                            </select>
-                            @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Kiểu sản phẩm')</label>
+                        <div class="col-sm-9 mt-2">
+                            @foreach(\App\Enums\TypeProduct::cases() as $type)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input @error('type') is-invalid @enderror" type="radio" name="type" id="type_{{ $type->value }}" value="{{ $type->value }}"
+                                    {{ old('type', $product->type->value ?? null) === $type->value ? 'checked' : '' }}>
+                                <label style="font-size: 1rem;" class="form-check-label" for="type_{{ $type->value }}">
+                                    {{ $type->label() }}
+                                </label>
+                            </div>
+                            @endforeach
+                            @error('type')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Trạng thái')</label>
+                        <div class="col-sm-9 mt-2">
+                            @foreach(\App\Enums\Status::cases() as $status)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input @error('status') is-invalid @enderror" type="radio" name="status" id="status_{{ $status->value }}" value="{{ $status->value }}"
+                                    {{ old('status', $product->status->value ?? null) === $status->value ? 'checked' : '' }}>
+                                <label style="font-size: 1rem;" class="form-check-label" for="status_{{ $status->value }}">
+                                    {{ $status->label() }}
+                                </label>
+                            </div>
+                            @endforeach
+                            @error('status')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Màu sắc')</label>
+                        <div class="col-sm-9">
+                            <div id="color_boxes">
+                                <!-- Các input cho màu sắc sẽ được thêm vào đây -->
+                            </div>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Thêm màu')</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Size')</label>
+                        <div class="col-sm-9">
+                            <div id="size_boxes">
+                                <!-- Các input cho kích thước sẽ được thêm vào đây -->
+                            </div>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addSizeBox()">+ @lang('Thêm size')</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh')</label>
                         <div class="col-sm-9">
                             <input type="hidden" name="old_photo" value="{{ $product->photo }}">
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)">
@@ -114,11 +154,11 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ $product->photo ? asset('storage/upload/product/' . $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ $product->photo ? getImage('upload/product/', $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh khác')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh khác')</label>
                         <div class="col-sm-9">
                             <input type="file" class="form-control @error('list_photo') is-invalid @enderror" name="list_photo[]" multiple onchange="previewListPhotos(this)">
                             @error('list_photo')
@@ -132,7 +172,7 @@
                             @if($product->list_photo)
                             @foreach(json_decode($product->list_photo) as $index => $photo)
                             <div class="position-relative m-2">
-                                <img src="{{ asset('storage/upload/product/' . $photo) }}" class="img img-bordered" style="width:100px; height: 150px;" />
+                                <img src="{{ getImage('upload/product/', $photo) }}" class="img img-bordered" style="width:100px; height: 150px;" />
                                 <button type="button" class="btn btn-danger btn-sm position-absolute" style="top:0; right:0;" onclick="removePhoto(this, '{{ $photo }}')">X</button>
                                 <input type="hidden" name="photos_to_keep[]" value="{{ $photo }}">
                             </div>
@@ -151,6 +191,80 @@
     </div>
 </div>
 <script>
+    function addColorBox(color = '', quantity = '') {
+        const colorBoxContainer = document.getElementById('color_boxes');
+        const newColorBox = document.createElement('div');
+        newColorBox.className = 'input-group mb-2';
+
+        const colorInput = document.createElement('input');
+        colorInput.type = 'text';
+        colorInput.name = 'colors[]';
+        colorInput.className = 'form-control';
+        colorInput.placeholder = 'Nhập màu';
+        colorInput.value = color; // Gán giá trị ban đầu
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.className = 'form-control ml-2';
+        quantityInput.placeholder = 'Nhập số lượng';
+        quantityInput.value = quantity; // Gán giá trị ban đầu
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-danger ml-2';
+        removeButton.textContent = 'X';
+        removeButton.onclick = function() {
+            colorBoxContainer.removeChild(newColorBox);
+        };
+
+        newColorBox.appendChild(colorInput);
+        newColorBox.appendChild(quantityInput);
+        newColorBox.appendChild(removeButton);
+        colorBoxContainer.appendChild(newColorBox);
+    }
+
+    // Hàm để thêm input cho kích thước (với giá trị ban đầu nếu có)
+    function addSizeBox(size = '', quantity = '') {
+        const sizeBoxContainer = document.getElementById('size_boxes');
+        const newSizeBox = document.createElement('div');
+        newSizeBox.className = 'input-group mb-2';
+
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.name = 'sizes[]';
+        sizeInput.className = 'form-control';
+        sizeInput.placeholder = 'Nhập size';
+        sizeInput.value = size; // Gán giá trị ban đầu
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.className = 'form-control ml-2';
+        quantityInput.placeholder = 'Nhập số lượng';
+        quantityInput.value = quantity; // Gán giá trị ban đầu
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-danger ml-2';
+        removeButton.textContent = 'X';
+        removeButton.onclick = function() {
+            sizeBoxContainer.removeChild(newSizeBox);
+        };
+
+        newSizeBox.appendChild(sizeInput);
+        newSizeBox.appendChild(quantityInput);
+        newSizeBox.appendChild(removeButton);
+        sizeBoxContainer.appendChild(newSizeBox);
+    }
+
+    // Tạo các input ban đầu dựa trên dữ liệu từ server
+    const existingColors = @json($product -> colors);
+    const existingSizes = @json($product -> sizes);
+
+    existingColors.forEach(item => addColorBox(item.name, item.quantity));
+    existingSizes.forEach(item => addSizeBox(item.name, item.quantity));
+
     function previewPhoto(input) {
         const preview = document.getElementById('photo_preview');
         if (input.files && input.files[0]) {
@@ -206,5 +320,37 @@
         deletePhotos.push(photoName);
         deletePhotosInput.value = JSON.stringify(deletePhotos);
     }
+</script>
+<script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.0.0/"
+        }
+    }
+</script>
+<script type="module">
+    import {
+        ClassicEditor,
+        Essentials,
+        Paragraph,
+        Bold,
+        Italic,
+        Font
+    } from 'ckeditor5';
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            plugins: [Essentials, Paragraph, Bold, Italic, Font],
+            toolbar: [
+                'undo', 'redo', '|', 'bold', 'italic', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+            ]
+        })
+        .then(editor => {
+            window.editor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
 @endsection

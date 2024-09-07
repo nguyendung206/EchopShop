@@ -21,14 +21,14 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
-if(! function_exists('getImage')) {
-    function getImage($path = null, $file = null, $defaultImage = 'nophoto.png') {
-        
-        if(!$file) {
-            return asset('img/'. $defaultImage);
+if (! function_exists('getImage')) {
+    function getImage($path = null, $file = null, $defaultImage = 'nophoto.png')
+    {
+        if (!$file) {
+            return asset('img/' . $defaultImage);
         }
-        if(!$path) {
-            return asset('img/'. $file);
+        if (!$path) {
+            return asset('img/' . $file);
         }
         return Storage::url($path . $file);
     }
