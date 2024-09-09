@@ -124,22 +124,12 @@
                     </div>
 
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Màu sắc')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Số lượng')</label>
                         <div class="col-sm-9">
                             <div id="color_boxes">
                                 <!-- Dynamic color inputs will be added here -->
                             </div>
-                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Thêm màu')</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Size')</label>
-                        <div class="col-sm-9">
-                            <div id="size_boxes">
-                                <!-- Dynamic size inputs will be added here -->
-                            </div>
-                            <button type="button" class="btn btn-secondary mt-2" onclick="addSizeBox()">+ @lang('Thêm size')</button>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Chi tiết')</button>
                         </div>
                     </div>
 
@@ -244,13 +234,19 @@
         colorInput.className = 'form-control';
         colorInput.placeholder = 'Nhập màu';
 
+        // Input để nhập kích cở
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.name = 'sizes[]';
+        sizeInput.className = 'form-control ml-2';
+        sizeInput.placeholder = 'Nhập kích cở';
+
         // Input để nhập số lượng
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
         quantityInput.name = 'quantities[]';
         quantityInput.className = 'form-control ml-2';
         quantityInput.placeholder = 'Nhập số lượng';
-
         // Nút xóa
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
@@ -262,50 +258,12 @@
 
         // Thêm các input vào thẻ div mới
         newColorBox.appendChild(colorInput);
+        newColorBox.appendChild(sizeInput);
         newColorBox.appendChild(quantityInput);
         newColorBox.appendChild(removeButton);
 
         // Thêm thẻ div mới vào container
         colorBoxContainer.appendChild(newColorBox);
-    }
-
-    function addSizeBox() {
-        const sizeBoxContainer = document.getElementById('size_boxes');
-
-        const newSizeBox = document.createElement('div');
-        newSizeBox.className = 'input-group mb-2';
-
-        // Input để nhập size
-        const sizeInput = document.createElement('input');
-        sizeInput.type = 'text';
-        sizeInput.name = 'sizes[]';
-        sizeInput.className = 'form-control';
-        sizeInput.placeholder = 'Nhập size';
-
-        // Input để nhập số lượng
-        const quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.name = 'quantities[]';
-        quantityInput.className = 'form-control ml-2';
-        quantityInput.placeholder = 'Nhập số lượng';
-
-
-        // Nút xóa
-        const removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.className = 'btn btn-danger ml-2';
-        removeButton.textContent = 'X';
-        removeButton.onclick = function() {
-            sizeBoxContainer.removeChild(newSizeBox);
-        };
-
-        // Thêm các input vào thẻ div mới
-        newSizeBox.appendChild(sizeInput);
-        newSizeBox.appendChild(quantityInput);
-        newSizeBox.appendChild(removeButton);
-
-        // Thêm thẻ div mới vào container
-        sizeBoxContainer.appendChild(newSizeBox);
     }
 </script>
 <script type="importmap">

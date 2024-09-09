@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Enums\Status;
-use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 
 class StatusService

@@ -8,7 +8,6 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductUnit;
 use App\Services\ProductService;
 use App\Services\StatusService;
 use Illuminate\Http\Request;
@@ -16,6 +15,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     protected $productService;
+
     protected $statusService;
 
     public function __construct(ProductService $productService, StatusService $statusService)
@@ -27,6 +27,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $datas = $this->productService->getProducts($request);
+
         return view('admin.product.index', compact('datas'));
     }
 
@@ -34,6 +35,7 @@ class ProductController extends Controller
     {
         $categories = Category::where('status', Status::ACTIVE)->get();
         $brands = Brand::where('status', Status::ACTIVE)->get();
+
         return view('admin.product.create', compact('categories', 'brands'));
     }
 
@@ -50,29 +52,23 @@ class ProductController extends Controller
                 foreach ($colors as $index => $color) {
                     $this->productService->createProductUnit([
                         'product_id' => $product->id,
-                        'type' => 'color',
-                        'name' => $color,
-                        'quantity' => $quantities[$index] ?? 0,
-                    ]);
-                }
-
-                foreach ($sizes as $index => $size) {
-                    $this->productService->createProductUnit([
-                        'product_id' => $product->id,
-                        'type' => 'size',
-                        'name' => $size,
+                        'color' => $color ?? '',
+                        'size' => $sizes[$index] ?? '',
                         'quantity' => $quantities[$index] ?? 0,
                     ]);
                 }
 
                 flash('Thêm mới sản phẩm thành công!')->success();
+
                 return redirect()->route('product.index');
             } else {
                 flash('Không thể tạo sản phẩm, vui lòng thử lại.')->error();
+
                 return redirect()->back()->withInput();
             }
         } catch (\Exception $e) {
             flash('Đã xảy ra lỗi, vui lòng thử lại.')->error();
+
             return redirect()->back()->withInput();
         }
     }
@@ -80,7 +76,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::where('id', $id)->first();
-        if (!$product) {
+        if (! $product) {
             return redirect()->back()->with('error', 'Product not found.');
         }
 
@@ -103,33 +99,27 @@ class ProductController extends Controller
                 $details = [];
                 foreach ($colors as $index => $color) {
                     $details[] = [
-                        'type' => 'color',
-                        'name' => $color,
-                        'quantity' => $quantities[$index] ?? 0
+                        'color' => $color ?? '',
+                        'size' => $sizes[$index] ?? '',
+                        'quantity' => $quantities[$index] ?? 0,
                     ];
                 }
-                foreach ($sizes as $index => $size) {
-                    $details[] = [
-                        'type' => 'size',
-                        'name' => $size,
-                        'quantity' => $quantities[$index + count($colors)] ?? 0
-                    ];
-                }
-
                 $this->productService->updateProductUnit($details, $id);
 
                 flash('Cập nhật sản phẩm thành công!')->success();
+
                 return redirect()->route('product.index');
             } else {
                 flash('Không thể cập nhật sản phẩm, vui lòng thử lại.')->error();
+
                 return redirect()->back()->withInput();
             }
         } catch (\Exception $e) {
             flash('Đã xảy ra lỗi, vui lòng thử lại.')->error();
+
             return redirect()->back()->withInput();
         }
     }
-
 
     public function destroy($id)
     {
@@ -150,6 +140,7 @@ class ProductController extends Controller
             flash('Thay đổi trạng thái thành công')->success();
         } catch (\Exception $e) {
             flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
+
             return redirect()->route('product.index');
         }
 
@@ -159,6 +150,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::where('id', $id)->first();
+
         return view('admin.product.show', compact('product'));
     }
 }

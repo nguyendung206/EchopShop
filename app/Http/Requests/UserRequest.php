@@ -24,17 +24,19 @@ class UserRequest extends FormRequest
     public function rules()
     {
         $rule = [
-                'name' => ['required', 'min:3', 'max:100'],
-                'phone_number' => ['required', 'numeric','digits: 10'],
-                'email' => ['required','email','unique:users,email,' . $this->route('id'),],
-                'citizen_identification_number' => ['required','numeric', 'digits:12'],
-                'address' => ['required', 'min: 3', 'max: 255'],
-                'place_of_issue' => ['required', 'min:3', 'max:255'],
-                'date_of_issue' => ['required'],
-                'date_of_birth' => ['required'],
-                'province_id' => ['not_in:0'],
-                'district_id' => ['not_in:0'],
-                'ward_id' => ['not_in:0'],
+            'name' => ['required', 'min:3', 'max:100'],
+            'phone_number' => ['required', 'numeric', 'digits:10'],
+            'email' => ['required', 'email', 'unique:users,email,'.$this->id],
+            'citizen_identification_number' => ['required', 'numeric', 'digits:12'],
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'identification_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'address' => ['required', 'min:3', 'max:255'],
+            'place_of_issue' => ['required', 'min:3', 'max:255'],
+            'date_of_issue' => ['required'],
+            'date_of_birth' => ['required'],
+            'province_id' => ['not_in:0'],
+            'district_id' => ['not_in:0'],
+            'ward_id' => ['not_in:0'],
         ];
         if ($this->has('password')) {
             $rule['password'] = ['required', 'min:3', 'max:255'];
@@ -45,11 +47,13 @@ class UserRequest extends FormRequest
             $rule['password'] = [];
             $rule['passwordConfirm'] = [];
         }
+
         // dd($rule);
         return $rule;
     }
 
-    public function attributes() {
+    public function attributes()
+    {
         return [
             'name' => 'Tên người dùng',
             'email' => 'Địa chỉ email',
@@ -63,8 +67,7 @@ class UserRequest extends FormRequest
             'province_id' => 'Thành phố',
             'district_id' => 'Quận/huyện',
             'ward_id' => 'Phường/thị xã',
+            'address' => 'Địa chỉ chi tiết',
         ];
     }
 }
-
-

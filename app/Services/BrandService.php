@@ -14,8 +14,8 @@ class BrandService
         if ($request->has('search') && $request->search != '') {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
             });
         }
 
@@ -28,7 +28,7 @@ class BrandService
 
     public function createBrand(BrandRequest $request)
     {
-        $brand = new Brand();
+        $brand = new Brand;
         $brand->name = $request->name;
         $brand->description = $request->description;
         $brand->status = $request->status;
@@ -71,6 +71,7 @@ class BrandService
             }
 
             $brand->delete();
+
             return true;
         } catch (\Exception $e) {
             return false;

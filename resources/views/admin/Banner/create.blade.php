@@ -29,9 +29,19 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Liên kết</label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="Liên kết" name="link" class="form-control @error('link') is-invalid @enderror" value="{{ old('link') }}">
+                            @error('link')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Mô tả</label>
                         <div class="col-sm-9">
-                        <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}
+                        </textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -40,15 +50,16 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái</label>
                         <div class="col-sm-9">
-                            <select class="text-center font-weight-500 form-control" name="status" >
-                                @foreach(\App\Enums\BannerStatus::cases() as $status)
-                                <option value="{{ $status->value }}" {{old('status') ? old('status') == $status->value ? 'selected' : '' : ''}}>
-                                    @lang($status->label())
+                            <select class="text-center font-weight-500 form-control @error('status') is-invalid  @enderror" name="status" >
+                                <option value="{{ StatusEnums::ACTIVE->value }}" {{old('status') ? old('status') == StatusEnums::ACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(StatusEnums::ACTIVE->label())
                                 </option>
-                                @endforeach
+                                <option value="{{ StatusEnums::INACTIVE->value }}" {{old('status') ? old('status') == StatusEnums::INACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(StatusEnums::INACTIVE->label())
+                                </option>
                             </select>
                             @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -75,7 +86,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ old('old_photo') ? getImage('upload/banners/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ getImage('nobanner.png')}}" class="img img-bordered" style="width:200px" />
                     </div>
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('banner.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>

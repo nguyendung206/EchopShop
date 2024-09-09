@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('price', 10, 2);
             $table->string('photo')->nullable();
-            $table->text('list_photo')->nullable(); 
+            $table->text('list_photo')->nullable();
             $table->integer('status');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();

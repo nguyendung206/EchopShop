@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
 use App\Models\Admin;
-use Laracasts\Flash\Flash;
 
 class ProfileController extends Controller
 {
     public function index($id)
     {
         $profile = Admin::where('id', $id)->first();
+
         return view('admin.profile', compact('profile'));
     }
 
@@ -30,9 +30,11 @@ class ProfileController extends Controller
             }
             $profile->save();
             flash('Cập nhật thông tin thành công!')->success();
+
             return redirect()->route('profile.index', ['id' => $request->id]);
         } else {
             flash('Không tìm thấy hồ sơ.')->error();
+
             return redirect()->back();
         }
     }

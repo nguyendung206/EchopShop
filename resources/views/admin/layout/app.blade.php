@@ -30,11 +30,13 @@
         body {
             font-size: 12px;
         }
+
         .invalid-feedback {
             font-size: 12px;
         }
+
         .load-wrapp {
-           float: left;
+            float: left;
             width: 100px;
             height: 100px;
             margin: 0 10px 10px 0;
@@ -48,9 +50,10 @@
             left: 0;
             width: 100vw;
             opacity: 0;
-            
+
             height: 100vh;
         }
+
         .load-wrapp.active {
             opacity: 0.5;
             z-index: 99;
@@ -66,13 +69,13 @@
             background-color: #fff;
         }
 
-          .load-wrapp .load-3 {
-                transform: translate(-50%, -50%);
-                margin: auto;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-          }
+        .load-wrapp .load-3 {
+            transform: translate(-50%, -50%);
+            margin: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
 
         .load-3 .line:nth-last-child(1) {
             animation: loadingC 0.6s 0.1s linear infinite;
@@ -135,14 +138,14 @@
 </head>
 
 <body class="">
-   
+
     @if (session()->has('flash_notification'))
-        <div class="flash-message {{ session('flash_notification.class') }}">
-            {{ session('flash_notification.message') }}
-        </div>
+    <div class="flash-message {{ session('flash_notification.class') }}">
+        {{ session('flash_notification.message') }}
+    </div>
     @endif
 
- <div class="load-wrapp" id="loadPage">
+    <div class="load-wrapp" id="loadPage">
         <div class="load-3">
 
             <div class="line"></div>
@@ -165,7 +168,7 @@
             </div><!-- .aiz-main-content -->
         </div><!-- .aiz-content-wrapper -->
     </div><!-- .aiz-main-wrapper -->
-    
+
     @yield('modal')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"
         referrerpolicy="no-referrer"></script>
@@ -180,24 +183,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.3.2/js/lightgallery.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    
+
     @yield('script')
 
 
     <script type="text/javascript">
-        @foreach (session('flash_notification', collect())->toArray() as $message)
-            AIZ.plugins.notify('{{ $message["level"] }}', '{{ $message["message"] }}');
+        @foreach(session('flash_notification', collect()) -> toArray() as $message)
+        AIZ.plugins.notify('{{ $message["level"] }}', '{{ $message["message"] }}');
         @endforeach
     </script>
-    
-		<!-- A friendly reminder to run on a server, remove this during the integration. -->
-		<script>
-			window.onload = function() {
-				if ( window.location.protocol === 'file:' ) {
-					alert( 'This sample requires an HTTP server. Please serve this file with a web server.' );
-				}
-			};
-		</script>
+
+    <!-- A friendly reminder to run on a server, remove this during the integration. -->
+    <script>
+        window.onload = function() {
+            if (window.location.protocol === 'file:') {
+                alert('This sample requires an HTTP server. Please serve this file with a web server.');
+            }
+        };
+    </script>
 </body>
 
 </html>

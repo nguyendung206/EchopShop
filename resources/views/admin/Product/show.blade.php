@@ -90,56 +90,29 @@
                     @endif
                 </div>
 
-                <!-- Hiển thị màu sắc và số lượng -->
-                @if($product->colors->count() > 0)
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500 mt-2" style="font-size: 1rem;">@lang('Màu sắc:')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500 mt-2" style="font-size: 1rem;">@lang('Số lượng:')</label>
                     <div class="col-sm-9">
                         <table class="table table-bordered" style="font-size: 1rem;">
                             <thead>
                                 <tr>
                                     <th>@lang('Màu sắc')</th>
+                                    <th>@lang('Kích cở')</th>
                                     <th>@lang('Số lượng')</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($product->colors as $color)
+                                @foreach($product->productUnits as $unit)
                                 <tr>
-                                    <td>{{ $color->name }}</td>
-                                    <td>{{ $color->quantity }}</td>
+                                    <td>{{ $unit->color }}</td>
+                                    <td>{{ $unit->size }}</td>
+                                    <td>{{ $unit->quantity }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-                @endif
-
-                <!-- Hiển thị kích cỡ và số lượng -->
-                @if($product->sizes->count() > 0)
-                <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500 mt-2" style="font-size: 1rem;">@lang('Kích cỡ:')</label>
-                    <div class="col-sm-9">
-                        <table class="table table-bordered" style="font-size: 1rem;">
-                            <thead>
-                                <tr>
-                                    <th>@lang('Kích cỡ')</th>
-                                    <th>@lang('Số lượng')</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($product->sizes as $size)
-                                <tr>
-                                    <td>{{ $size->name }}</td>
-                                    <td>{{ $size->quantity }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                @endif
-
 
                 <div class="form-group mb-0 text-right">
                     <a href="{{ route('product.index') }}" class="btn btn-light mr-2">@lang('Quay về')</a>

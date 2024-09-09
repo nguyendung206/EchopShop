@@ -123,24 +123,22 @@
                     </div>
 
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Màu sắc')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Số lượng')</label>
                         <div class="col-sm-9">
                             <div id="color_boxes">
-                                <!-- Các input cho màu sắc sẽ được thêm vào đây -->
+                                @foreach ($product->productUnits as $unit)
+                                <div class="input-group mb-2">
+                                    <input type="text" name="colors[]" class="form-control" value="{{ $unit->color }}" placeholder="Nhập màu">
+                                    <input type="text" name="sizes[]" class="form-control ml-2" value="{{ $unit->size }}" placeholder="Nhập kích cỡ">
+                                    <input type="number" name="quantities[]" class="form-control ml-2" value="{{ $unit->quantity }}" placeholder="Nhập số lượng">
+                                    <button type="button" class="btn btn-danger ml-2" onclick="removeColorBox(this)">X</button>
+                                </div>
+                                @endforeach
                             </div>
-                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Thêm màu')</button>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Chi tiết')</button>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Size')</label>
-                        <div class="col-sm-9">
-                            <div id="size_boxes">
-                                <!-- Các input cho kích thước sẽ được thêm vào đây -->
-                            </div>
-                            <button type="button" class="btn btn-secondary mt-2" onclick="addSizeBox()">+ @lang('Thêm size')</button>
-                        </div>
-                    </div>
 
                     <div class="form-group row">
                         <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh')</label>
@@ -191,8 +189,9 @@
     </div>
 </div>
 <script>
-    function addColorBox(color = '', quantity = '') {
+    function addColorBox() {
         const colorBoxContainer = document.getElementById('color_boxes');
+
         const newColorBox = document.createElement('div');
         newColorBox.className = 'input-group mb-2';
 
@@ -201,14 +200,18 @@
         colorInput.name = 'colors[]';
         colorInput.className = 'form-control';
         colorInput.placeholder = 'Nhập màu';
-        colorInput.value = color; // Gán giá trị ban đầu
+
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.name = 'sizes[]';
+        sizeInput.className = 'form-control ml-2';
+        sizeInput.placeholder = 'Nhập kích cỡ';
 
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
         quantityInput.name = 'quantities[]';
         quantityInput.className = 'form-control ml-2';
         quantityInput.placeholder = 'Nhập số lượng';
-        quantityInput.value = quantity; // Gán giá trị ban đầu
 
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
@@ -219,48 +222,13 @@
         };
 
         newColorBox.appendChild(colorInput);
+        newColorBox.appendChild(sizeInput);
         newColorBox.appendChild(quantityInput);
         newColorBox.appendChild(removeButton);
+
         colorBoxContainer.appendChild(newColorBox);
     }
 
-    // Hàm để thêm input cho kích thước (với giá trị ban đầu nếu có)
-    function addSizeBox(size = '', quantity = '') {
-        const sizeBoxContainer = document.getElementById('size_boxes');
-        const newSizeBox = document.createElement('div');
-        newSizeBox.className = 'input-group mb-2';
-
-        const sizeInput = document.createElement('input');
-        sizeInput.type = 'text';
-        sizeInput.name = 'sizes[]';
-        sizeInput.className = 'form-control';
-        sizeInput.placeholder = 'Nhập size';
-        sizeInput.value = size; // Gán giá trị ban đầu
-
-        const quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.name = 'quantities[]';
-        quantityInput.className = 'form-control ml-2';
-        quantityInput.placeholder = 'Nhập số lượng';
-        quantityInput.value = quantity; // Gán giá trị ban đầu
-
-        const removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.className = 'btn btn-danger ml-2';
-        removeButton.textContent = 'X';
-        removeButton.onclick = function() {
-            sizeBoxContainer.removeChild(newSizeBox);
-        };
-
-        newSizeBox.appendChild(sizeInput);
-        newSizeBox.appendChild(quantityInput);
-        newSizeBox.appendChild(removeButton);
-        sizeBoxContainer.appendChild(newSizeBox);
-    }
-
-    // Tạo các input ban đầu dựa trên dữ liệu từ server
-    const existingColors = @json($product -> colors);
-    const existingSizes = @json($product -> sizes);
 
     existingColors.forEach(item => addColorBox(item.name, item.quantity));
     existingSizes.forEach(item => addSizeBox(item.name, item.quantity));

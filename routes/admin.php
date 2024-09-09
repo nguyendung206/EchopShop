@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\BannerController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +19,6 @@ use App\Http\Controllers\Admin\BannerController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 
 Route::get('admin/login', [AuthController::class, 'Index'])->name('admin.login');
 Route::post('admin/login', [AuthController::class, 'Login'])->name('admin.login');
@@ -60,24 +59,24 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::get('/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
         Route::get('/show/{id}', [ProductController::class, 'show'])->name('product.show');
     });
-    Route::prefix('/manager-user')->group(function () {
-        Route::get('/create', [UserController::class, 'create'])->name('manager-user.create');
-        Route::post('/', [UserController::class, 'store'])->name('manager-user.store');
-        Route::get('/', [UserController::class, 'index'])->name('manager-user.index');
-        Route::get('/{id}', [UserController::class, 'show'])->name('manager-user.show');
-        Route::get('/update/{id}/edit', [UserController::class, 'edit'])->name('manager-user.edit');
-        Route::put('/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('manager-user.updateStatus');
-        Route::put('/update/{id}', [UserController::class, 'update'])->name('manager-user.update');
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('manager-user.destroy');
+    Route::prefix('/manager-user')->name('manager-user.')->group(function () {
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/{id}', [UserController::class, 'show'])->name('show');
+        Route::get('/update/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('updateStatus');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
-    Route::prefix('/banner')->group(function () {
-        Route::get('/create', [BannerController::class, 'create'])->name('banner.create');
-        Route::post('/', [BannerController::class, 'store'])->name('banner.store');
-        Route::get('/', [BannerController::class, 'index'])->name('banner.index');
-        Route::get('/{id}', [BannerController::class, 'show'])->name('banner.show');
-        Route::get('/update/{id}/edit', [BannerController::class, 'edit'])->name('banner.edit');
-        Route::put('/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
-        Route::put('/update/{id}', [BannerController::class, 'update'])->name('banner.update');
-        Route::delete('/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
+    Route::prefix('/banner')->name('banner.')->group(function () {
+        Route::get('/create', [BannerController::class, 'create'])->name('create');
+        Route::post('/', [BannerController::class, 'store'])->name('store');
+        Route::get('/', [BannerController::class, 'index'])->name('index');
+        Route::get('/{id}', [BannerController::class, 'show'])->name('show');
+        Route::get('/update/{id}/edit', [BannerController::class, 'edit'])->name('edit');
+        Route::put('/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('updateStatus');
+        Route::put('/update/{id}', [BannerController::class, 'update'])->name('update');
+        Route::delete('/{id}', [BannerController::class, 'destroy'])->name('destroy');
     });
 });

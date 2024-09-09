@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('districts', function (Blueprint $table) {
             $table->id();
             $table->string('district_name')->nullable();
-            $table->unsignedBigInteger('province_id'); 
+            $table->unsignedBigInteger('province_id');
             $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
             $table->timestamps();
         });

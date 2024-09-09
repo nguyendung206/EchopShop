@@ -42,11 +42,13 @@
             <div class="col-md-3 res-status">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="status" name="status">
                     <option value="">Trạng thái</option>
-                    @foreach (\App\Enums\BannerStatus::cases() as $status)
-                    <option value="{{ $status->value }}" @if(request('status') == $status->value) selected @endif>
-                        {{ $status->label() }}
+                    <option value="{{ StatusEnums::ACTIVE->value }}" @if(request('status') == StatusEnums::ACTIVE->value) selected @endif>
+                        {{ StatusEnums::ACTIVE->label() }}
                     </option>
-                    @endforeach
+                    <option value="{{ StatusEnums::INACTIVE->value }}" @if(request('status') == StatusEnums::INACTIVE->value) selected @endif>
+                        {{ StatusEnums::INACTIVE->label() }}
+                    </option>
+                    
                 </select>
             </div>
             <div class="col-md-6 d-flex">
@@ -100,7 +102,7 @@
                     <tr class="text-center">
                         <td class="font-weight-800 align-middle">{{ ($key + 1) + ($banners->currentPage() - 1) * $banners->perPage() }}</td>
                         <td class="font-weight-400 align-middle">
-                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="/storage/upload/banners/{{ $banner->photo }}">
+                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ getImage($banner->photo) }}">
                         </td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($banner)->title}}</td>
                         <td class="font-weight-400 align-middle">{{strip_tags($banner->description)}}</td>
@@ -110,11 +112,12 @@
                             @csrf
                             @method("PUT")
                             <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$banner->id}}">
-                                @foreach(\App\Enums\BannerStatus::cases() as $status)
-                                <option value="{{ $status->value }}" {{ $banner->status->value == $status->value ? 'selected' : '' }}>
-                                    @lang($status->label())
+                                <option value="{{ StatusEnums::ACTIVE->value }}" {{ $banner->status->value == StatusEnums::ACTIVE->value ? 'selected' : '' }} >
+                                    @lang(StatusEnums::ACTIVE->label())
                                 </option>
-                                @endforeach
+                                <option value="{{ StatusEnums::INACTIVE->value }}" {{ $banner->status->value == StatusEnums::INACTIVE->value ? 'selected' : '' }}>
+                                    @lang(StatusEnums::INACTIVE->label())
+                                </option>
                             </select>
 
                         </form>
@@ -123,10 +126,13 @@
 
                         <td>{{optional($banner)->display_order}}</td>
                         <td class="text-center">
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"  href="{{ route("banner.show", $banner->id)}}"  >
+                                <i class="las la-list"></i>
+                            </a>
                             <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route("banner.edit", $banner->id)}}" >
                                 <i class="las la-edit"></i>
                             </a>
-                            <a href="javascript:void(0)" data-href="{{ route('banner.destroy', $banner->id) }}" data-id="{{$banner->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                            <a href="javascript:void(0)" data-href="{{ route('banner.destroy', $banner->id) }}" data-id="{{$banner->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('banner.delete')">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>
@@ -147,30 +153,6 @@
 @section('script')
 <script type="text/javascript">
 
-    function sort_customers(el){
-        $('#sort_customers').submit();
-    }
-    $(document).on('click','.btn_import',function(){
-        $('#file').click();
-    })
-    $(document).on('change','#file',function(ev){
-        let file,form = $('#form-import');
-        if (file = ev.currentTarget.files[0]) {
-        if (file instanceof File) {
-            if (['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'].includes(file.type)) {
-            form.submit();
-            } else{
-            AIZ.plugins.notify('danger', "Something wrong");
-            }
-        }
-        }
-        ev.currentTarget.value = null;
-    })
-    @foreach (session('errors', collect())->toArray() as $message)
-        AIZ.plugins.notify('danger', '{{ $message[0] }}');
-    @endforeach
-    // active popup
-  
 
   
     //deletee
@@ -206,6 +188,7 @@
                         });
                     },
                     error: function(err) {
+                        
                         Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Banner.', 'error');
                     }
                 });

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('wards', function (Blueprint $table) {
             $table->id();
             $table->string('ward_name')->nullable();
-            $table->unsignedBigInteger('district_id'); 
+            $table->unsignedBigInteger('district_id');
             $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
             $table->timestamps();
         });

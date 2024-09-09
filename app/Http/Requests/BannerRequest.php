@@ -22,18 +22,26 @@ class BannerRequest extends FormRequest
      * @return array<string, mixed>
      */
     public function rules()
-    {   $rule = [
-        'photo' => ['required']
+    {
+        $rule = [
+            'title' => ['required', 'max: 255'],
+            'description' => ['required', 'max: 255'],
+            'link' => ['required', 'max:255'],
+            'photo' => ['file', 'max:10240'],
+            'status' => ['required', 'in:1,2'],
         ];
-        $method = $this->method();
-        if ($method == 'PUT') {
-            $rule['photo'] = [];
-        }
+
         return $rule;
     }
-    public function attributes() {
+
+    public function attributes()
+    {
         return [
-            'photo' => 'Ảnh hiển thị'
+            'title' => 'Tiêu đề',
+            'description' => 'Mô tả',
+            'link' => 'Liên kết',
+            'photo' => 'Ảnh hiển thị',
+            'status' => 'Trạng thái',
         ];
     }
 }
