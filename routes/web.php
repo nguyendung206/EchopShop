@@ -1,12 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\HomeController;
-use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\ProfileUserController;
+use Illuminate\Support\Facades\Route;
 
-require __DIR__ . '/admin.php';
+require __DIR__.'/admin.php';
 /*
 |--------------------------------------------------------------------------
 | Web Routes

@@ -24,15 +24,18 @@ class EmailRequest extends FormRequest
     public function rules()
     {
         $rule = [
-            'email' => ['required','email','exists:users'],
+            'email' => ['required', 'email', 'exists:users'],
         ];
-    return $rule;
+
+        return $rule;
     }
-    public function messages() {
+
+    public function messages()
+    {
         return [
-            "email.required" => "Vui lòng nhập email",
-            "email.email" => "Vui lòng nhập đúng định dạng email", 
-            "email.exists" => "Email chưa được đăng ký",
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Vui lòng nhập đúng định dạng email',
+            'email.exists' => 'Email chưa được đăng ký',
         ];
     }
 }

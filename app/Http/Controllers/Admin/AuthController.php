@@ -35,10 +35,12 @@ class AuthController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             Session::put('admin', Auth::guard('admin')->user());
             flash()->success('Đăng nhập thành công');
+
             return redirect()->route('admin.index');
         } else {
             // Đăng nhập thất bại
             flash()->error('Đăng nhập thất bại');
+
             return redirect()->back()->with('error', 'Email hoặc mật khẩu không đúng.');
         }
     }
@@ -47,6 +49,7 @@ class AuthController extends Controller
     {
         Auth::guard('admin')->logout();
         Session::flush();
+
         return redirect()->route('admin.login');
     }
 }

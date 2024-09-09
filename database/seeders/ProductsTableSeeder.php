@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -25,8 +24,8 @@ class ProductsTableSeeder extends Seeder
         // Lặp qua và tạo 20 sản phẩm
         for ($i = 0; $i < 20; $i++) {
             DB::table('products')->insert([
-                'slug' => Str::slug('Product ' . $i),
-                'name' => 'Product ' . $i,
+                'slug' => Str::slug('Product '.$i),
+                'name' => 'Product '.$i,
                 'price' => $faker->randomFloat(2, 10, 1000),
                 'type' => rand(1, 3), 
                 'photo' => 'noproduct.png', 

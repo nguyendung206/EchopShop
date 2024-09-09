@@ -2,14 +2,12 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Storage;
-
 class ImageService
 {
     public function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
         if ($file) {
-            $fileName = time() . '-' . $file->getClientOriginalName();
+            $fileName = time().'-'.$file->getClientOriginalName();
             $file->storeAs($path, $fileName, 'public');
 
             return $fileName;
@@ -18,15 +16,13 @@ class ImageService
         return $defaultImage;
     }
 
-
     public function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
-        $filePath = storage_path('app/' . $path . '/' . $fileName);
+        $filePath = storage_path('app/'.$path.'/'.$fileName);
         if (file_exists($filePath) && $fileName !== $defaultImage) {
             unlink($filePath);
         }
     }
-
 
     public function uploadMultipleImages($files, $path = 'upload/product')
     {
@@ -37,8 +33,10 @@ class ImageService
                 $fileNames[] = $fileName;
             }
         }
+
         return $fileNames;
     }
+
     public function deleteMultipleImages($fileNames, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
         if ($fileNames && is_array($fileNames)) {

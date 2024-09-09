@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Province;
-use App\Models\User;
 use App\Models\Users;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 
 class ProfileUserController extends Controller
 {
@@ -16,6 +13,7 @@ class ProfileUserController extends Controller
     {
         $profile = Users::where('id', $id)->first();
         $provinces = Province::all();
+
         return view('web.profile', compact('profile', 'provinces'));
     }
 

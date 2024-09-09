@@ -68,7 +68,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        
+
         'admins' => [ // Provider cho admin
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
