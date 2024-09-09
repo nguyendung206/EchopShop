@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\Users;
 
 class UserService
@@ -9,15 +10,16 @@ class UserService
     {
 
         $query = Users::query();
-        if(!empty($filters['search'])){
-            $query->where('name','like', '%'.$filters['search'].'%');
+        if (! empty($filters['search'])) {
+            $query->where('name', 'like', '%'.$filters['search'].'%');
         }
-        if(isset($filters['status'])){
+        if (isset($filters['status'])) {
             $query->where('status', $filters['status']);
         }
-        if(isset($filters['gender'])) {
-            $query->where('gender', $filters['gender'] );
+        if (isset($filters['gender'])) {
+            $query->where('gender', $filters['gender']);
         }
+
         return $query->paginate(5);
     }
 }

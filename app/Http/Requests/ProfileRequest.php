@@ -25,7 +25,7 @@ class ProfileRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:admins,email,' . $this->id,
+            'email' => 'required|email|unique:admins,email,'.$this->id,
             'uploadPhoto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }

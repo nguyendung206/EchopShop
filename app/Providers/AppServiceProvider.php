@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use App\Models\Category;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('MyTesting', function($app) {
+        $this->app->bind('MyTesting', function ($app) {
             return new \App\Test;
         });
     }
@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $categories =  Category::query()->where('status', 1)->with('brands')->get();
+        $categories = Category::query()->where('status', 1)->with('brands')->get();
         View::share('categories', $categories);
     }
 }

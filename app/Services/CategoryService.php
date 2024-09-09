@@ -14,8 +14,8 @@ class CategoryService
         if ($request->has('search') && $request->search != '') {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
             });
         }
 
@@ -28,7 +28,7 @@ class CategoryService
 
     public function createCategory(CategoryRequest $request)
     {
-        $category = new Category();
+        $category = new Category;
         $category->name = $request->name;
         $category->description = $request->description;
         $category->status = $request->status;
@@ -69,9 +69,10 @@ class CategoryService
             }
 
             $category->delete();
-            return true; 
+
+            return true;
         } catch (\Exception $e) {
-            return false; 
+            return false;
         }
     }
 }

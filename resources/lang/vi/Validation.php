@@ -22,4 +22,3 @@ return [
     'not_in' => ':attribute không hợp lệ.',
     'unique' => ':attribute đã tồn tại. Vui lòng chọn :attribute khác.',
 ];
-

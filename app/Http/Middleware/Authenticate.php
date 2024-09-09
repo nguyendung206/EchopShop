@@ -16,7 +16,7 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (!$request->expectsJson()) {
+        if (! $request->expectsJson()) {
             if (Route::is('admin.*')) {
                 return route('admin.login');
             }
@@ -28,10 +28,11 @@ class Authenticate extends Middleware
 
     public function handle($request, Closure $next, ...$guards)
     {
-        if (!$request->user() && $request->header('platform') == 'web') {
+        if (! $request->user() && $request->header('platform') == 'web') {
             return $next($request);
         }
         $this->authenticate($request, $guards);
+
         return $next($request);
     }
 }

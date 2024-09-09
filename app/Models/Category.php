@@ -21,7 +21,8 @@ class Category extends Model
         return $this->hasMany(Brand::class, 'category_id', 'id');
     }
 
-    public function activeBrands() {
+    public function activeBrands()
+    {
         return $this->hasMany(Brand::class, 'category_id', 'id')->where('status', 1);
     }
 
@@ -34,8 +35,8 @@ class Category extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
 }
