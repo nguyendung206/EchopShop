@@ -27,47 +27,40 @@ class ProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'list_photo.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240', 
+            'list_photo.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
             'status' => 'required|integer|in:1,2',
+            'type' => 'required|integer|in:1,2,3',
             'description' => 'nullable|string',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'nullable|exists:categories,id',
+            'colors.*' => 'nullable|string',
+            'sizes.*' => 'nullable|string',
+            'quantities.*' => 'nullable|integer|min:0',
+            'types.*' => 'nullable|string|in:color,size',
         ];
     }
 
     /**
-     * Get custom messages for validation errors.
+     * Get custom attribute names for validation errors.
      *
      * @return array
      */
-    public function messages()
+    public function attributes()
     {
         return [
-            'name.required' => 'Vui lòng nhập tên sản phẩm.',
-            'name.string' => 'Tên sản phẩm phải là một chuỗi ký tự.',
-            'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
-            
-            'price.required' => 'Vui lòng nhập giá sản phẩm.',
-            'price.numeric' => 'Giá sản phẩm phải là một số.',
-            'price.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0.',
-
-            'photo.image' => 'Ảnh sản phẩm phải là một hình ảnh.',
-            'photo.mimes' => 'Ảnh sản phẩm phải có định dạng jpg, jpeg, png, hoặc gif.',
-            'photo.max' => 'Ảnh sản phẩm không được vượt quá 2MB.',
-
-            'list_photo.*.image' => 'Mỗi ảnh trong danh sách ảnh phải là một hình ảnh.',
-            'list_photo.*.mimes' => 'Mỗi ảnh trong danh sách ảnh phải có định dạng jpg, jpeg, png, hoặc gif.',
-            'list_photo.*.max' => 'Mỗi ảnh trong danh sách ảnh không được vượt quá 10MB.',
-
-            'status.required' => 'Vui lòng chọn trạng thái sản phẩm.',
-            'status.integer' => 'Trạng thái sản phẩm phải là một số nguyên.',
-            'status.in' => 'Trạng thái sản phẩm không hợp lệ.',
-
-            'description.string' => 'Mô tả sản phẩm phải là một chuỗi ký tự.',
-
-            'brand_id.exists' => 'Thương hiệu không tồn tại.',
-
-            'category_id.exists' => 'Loại sản phẩm không tồn tại.',
+            'name' => 'Tên sản phẩm',
+            'price' => 'Giá sản phẩm',
+            'photo' => 'Ảnh sản phẩm chính',
+            'list_photo.*' => 'Ảnh sản phẩm khác',
+            'status' => 'Trạng thái sản phẩm',
+            'type' => 'Kiểu sản phẩm',
+            'description' => 'Mô tả sản phẩm',
+            'brand_id' => 'Thương hiệu',
+            'category_id' => 'Loại sản phẩm',
+            'colors.*' => 'Màu sắc',
+            'sizes.*' => 'Kích thước',
+            'quantities.*' => 'Số lượng',
+            'types.*' => 'Loại',
         ];
     }
 }

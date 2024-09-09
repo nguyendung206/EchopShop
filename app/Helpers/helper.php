@@ -21,16 +21,18 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
-if(! function_exists('getImage')) {
-    function getImage($path = null) {
-        
-        if(!$path) {
+
+if (! function_exists('getImage')) {
+    function getImage($path = null)
+    {
+
+        if (!$path) {
             return asset('img/image/nophoto.png');
         }
-        if(strpos($path, 'upload') !== false) {
+        if (strpos($path, 'upload') !== false) {
             return Storage::url($path);
-        } 
-        return asset('img/image/'.$path);
+        }
+        return asset('img/image/' . $path);
     }
 }
 
