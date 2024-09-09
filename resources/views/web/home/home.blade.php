@@ -100,70 +100,16 @@
         </div>
         <div class="container">
             <div class="row">
+                @foreach($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <img class="product-img" src="{{ asset('/img/image/secondhand1.jpeg') }} " alt="">
                     <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Chân váy dài</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
+                    <p class="product-name pt-2">{{$product->name}}</p>
+                    <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
                 </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand2.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Bộ mỹ phẩm</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand3.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Nước hoa Dior</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand4.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Điện thoại Xiaomi</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand5.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Giày AF1</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand6.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Hoodie</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand7.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Giày cao gót nữ</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand8.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Điện thoại IP 14 Pro Max</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
+                @endforeach
             </div>
             <div class="text-center py-5">
                 <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
