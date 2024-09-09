@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Models\Category;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
-use App\Models\Category;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(Schema::hasTable('categories')) {
-            $categories =  Category::query()->where('status', 1)->with('brands')->get();
+        if (Schema::hasTable('categories')) {
+            $categories = Category::query()->where('status', 1)->with('brands')->get();
             View::share('categories', $categories);
         }
     }
