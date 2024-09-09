@@ -9,8 +9,8 @@ class UserService
     {
 
         $query = Users::query();
-        if(!empty($filters['name'])){
-            $query->where('name','like', '%'.$filters['name'].'%');
+        if(!empty($filters['search'])){
+            $query->where('name','like', '%'.$filters['search'].'%');
         }
         if(isset($filters['status'])){
             $query->where('status', $filters['status']);

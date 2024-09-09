@@ -129,25 +129,7 @@
                         <td class="font-weight-400 align-middle">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</td>
                         <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>
                         <td class="">
-                            {{-- <form action="" method="POST" class="mr-2" id="form-active-user">
-                                <input type="hidden" name="status" value="{{ $user->status == 1? '2':'1'}}">
-                                    @csrf
-                                    @if ($user->status==2)
-                                        <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" href="#" id="active-popup" title="@lang('user.deactivate')">
-                                            <i class="las la-ban"></i>
-                                        </a>
-                                    @else
-                                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" href="#" id="inactive-popup" title="@lang('user.active')">
-                                            <i class="las la-ban"></i>
-                                        </a>
-                                    @endif
-                                    <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('manager-user.edit',$user->id) }}" title="@lang('user.edit')">
-                                        <i class="las la-edit"></i>
-                                    </a>
-                                    <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
-                                        <i class="las la-trash"></i>
-                                    </a>
-                            </form> --}}
+                           
                             <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"  href="{{ route("manager-user.show", $user->id)}}"  >
                                 <i class="las la-list"></i>
                             </a>
