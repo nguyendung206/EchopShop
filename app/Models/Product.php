@@ -28,14 +28,9 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
-    public function colors()
+    public function productUnits()
     {
-        return $this->hasMany(ProductUnit::class)->where('type', 'color');
-    }
-
-    public function sizes()
-    {
-        return $this->hasMany(ProductUnit::class)->where('type', 'size');
+        return $this->hasMany(ProductUnit::class, 'product_id', 'id');
     }
 
     public function sluggable(): array

@@ -50,17 +50,8 @@ class ProductController extends Controller
                 foreach ($colors as $index => $color) {
                     $this->productService->createProductUnit([
                         'product_id' => $product->id,
-                        'type' => 'color',
-                        'name' => $color,
-                        'quantity' => $quantities[$index] ?? 0,
-                    ]);
-                }
-
-                foreach ($sizes as $index => $size) {
-                    $this->productService->createProductUnit([
-                        'product_id' => $product->id,
-                        'type' => 'size',
-                        'name' => $size,
+                        'color' => $color ?? '',
+                        'size' => $sizes[$index] ?? '',
                         'quantity' => $quantities[$index] ?? 0,
                     ]);
                 }
@@ -103,19 +94,11 @@ class ProductController extends Controller
                 $details = [];
                 foreach ($colors as $index => $color) {
                     $details[] = [
-                        'type' => 'color',
-                        'name' => $color,
+                        'color' => $color ?? '',
+                        'size' => $sizes[$index] ?? '',
                         'quantity' => $quantities[$index] ?? 0
                     ];
                 }
-                foreach ($sizes as $index => $size) {
-                    $details[] = [
-                        'type' => 'size',
-                        'name' => $size,
-                        'quantity' => $quantities[$index + count($colors)] ?? 0
-                    ];
-                }
-
                 $this->productService->updateProductUnit($details, $id);
 
                 flash('Cập nhật sản phẩm thành công!')->success();

@@ -59,8 +59,8 @@ class ProductService
     {
         $productUnit = new ProductUnit();
         $productUnit->product_id = $data['product_id'];
-        $productUnit->type = $data['type'];
-        $productUnit->name = $data['name'];
+        $productUnit->color = $data['color'];
+        $productUnit->size = $data['size'];
         $productUnit->quantity = $data['quantity'];
 
         $productUnit->save();
@@ -119,8 +119,8 @@ class ProductService
         foreach ($data as $detail) {
             $productUnit = new ProductUnit();
             $productUnit->product_id = $productId;
-            $productUnit->type = $detail['type'];
-            $productUnit->name = $detail['name'];
+            $productUnit->color = $detail['color'];
+            $productUnit->size = $detail['size'];
             $productUnit->quantity = $detail['quantity'];
 
             $productUnit->save();
