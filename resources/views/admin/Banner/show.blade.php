@@ -16,7 +16,7 @@
                         <div class="col-md-12 gradient-custom text-center text-white"
                         style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
                         <img src="{{ getImage('upload/banners/',$banner->photo, 'nobanner.png')}}"
-                        alt="Avatar" class="img-fluid my-5" style="width: 100%;" />
+                        alt="Avatar" class="img-fluid my-5" style="width: 100%;height: 230px;" />
                         </div>
                     </div>
                     <div class="row g-0">
