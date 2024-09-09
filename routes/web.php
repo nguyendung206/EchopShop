@@ -23,6 +23,8 @@ require __DIR__ . '/admin.php';
 //     return view('welcome');
 // });
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/moreSecondhand', [HomeController::class, 'moreSecondHand'])->name('home.moreSecondHand');
+
 Route::get('/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/login', [AuthController::class, 'login'])->name('web.authentication');
 

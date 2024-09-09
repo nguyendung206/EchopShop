@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row secondhand-list">
                 @foreach($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
@@ -111,8 +111,11 @@
                 </div>
                 @endforeach
             </div>
-            <div class="text-center py-5">
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+            <div class="text-center py-5 divMoreSecondhand">
+                <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-right"></i></a>
+            </div>
+            <div class="text-center py-5 end-of-products" style="display: none;color:rgb(177,0,0);">
+                <p>Hết sản phẩm</p>
             </div>
         </div>
     </div>
@@ -401,6 +404,49 @@
 
 @section('script')
     <script src="{{ asset('/js/text.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var moreSecondhand = {{ $moreSecondhand ?? 1 }};
+            
+            $('#btnMoreSecondhand').click(function(event) {
+                event.preventDefault();
+                moreSecondhand++;
+                
+                $.ajax({
+                    url: '{{ route("home.moreSecondHand") }}',
+                    method: 'GET',
+                    data: {
+                        moreSecondhand: moreSecondhand
+                    },
+                    success: function(response) {
+                        var productsHtml = '';
+                        $.each(response.products, function(index, product) {
+                            productsHtml += `
+                                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
+                                    <img class="product-img" src="{{ getImage('${product.photo}') }}" alt="">
+                                    <i class="fa-regular fa-heart fa-heart-home"></i>
+                                    <p class="product-name pt-2">${product.name}</p>
+                                    <p class="price color-B10000 pt-2">${product.price} đ</p>
+                                    <br>
+                                    <a href="#" class="buy">Mua ngay</a>
+                                </div>
+                            `;
+                        });
+                        $('.secondhand-list').append(productsHtml); 
+                        if (response.endPoint) {
+                            $('.divMoreSecondhand').hide(); 
+                            $('.end-of-products').show(); 
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                }
+                });
+            });
+        });
+    </script>
+
 @endsection
 @endsection
    
