@@ -7,7 +7,7 @@
                     <div class="card text-left">
                         <div class="card-body">
                             <div class="mb-5 text-center">
-                                <img src="{{ asset('img/logo-2.png') }}" class="mw-100 mb-4" height="80">
+                                <img src="{{ asset('img/image/logo-2.png') }}" class="mw-100 mb-4" height="80">
                                 <p>{{ translate('Login to your account.') }}</p>
                             </div>
                             <form class="pad-hor" method="POST" role="form" action="{{ route('admin.login') }}">
