@@ -28,7 +28,7 @@ class BannerService
             'status' => $request->status,
             'display_order'=>$display_order,
             'link' => $request->link,
-            'photo' => uploadImage($request->file('photo'), 'upload/banners', 'nobanner.png'),
+            'photo' => uploadImage($request->file('photo'), 'upload/banners/', 'nobanner.png'),
         ];
         return  Banner::create($bannerData);
     }
@@ -48,11 +48,12 @@ class BannerService
             'status' => $request->status,
             'display_order'=>$display_order,
             'link' => $request->link,
-            'photo' => uploadImage($request->file('photo'), 'upload/banners', $photo),
+            'photo' => uploadImage($request->file('photo'), 'upload/banners/', $photo),
         ];
         $banner->update($bannerData);
         if($request->file('photo')) {
-            deleteImage($photo, 'upload/banners');
+            deleteImage($photo, 'nobanner.png');
+
         }
         return $banner;
     }
@@ -60,8 +61,11 @@ class BannerService
     public function destroy($id) {
         try {
             $banner = Banner::findOrFail($id);
-            deleteImage($banner->photo, 'upload/banners', 'nobanner.png');
-            return $banner->delete();;
+            $check = $banner->delete();
+            if($check) {
+                deleteImage($banner->photo, 'nobanner.png');
+            }
+            return $check;
         } catch (Exception $e) {
             return false;
         }

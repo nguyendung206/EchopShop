@@ -50,15 +50,16 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái</label>
                         <div class="col-sm-9">
-                            <select class="text-center font-weight-500 form-control" name="status" >
-                                @foreach(\App\Enums\Status::cases() as $status)
-                                <option value="{{ $status->value }}" {{old('status') ? old('status') == $status->value ? 'selected' : '' : ''}}>
-                                    @lang($status->label())
+                            <select class="text-center font-weight-500 form-control @error('status') is-invalid  @enderror" name="status" >
+                                <option value="{{ \App\Enums\Status::ACTIVE->value }}" {{old('status') ? old('status') == \App\Enums\Status::ACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(\App\Enums\Status::ACTIVE->label())
                                 </option>
-                                @endforeach
+                                <option value="{{ \App\Enums\Status::INACTIVE->value }}" {{old('status') ? old('status') == \App\Enums\Status::INACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(\App\Enums\Status::INACTIVE->label())
+                                </option>
                             </select>
                             @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -85,7 +86,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ old('old_photo') ? getImage('upload/banners/' . old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ getImage('nobanner.png')}}" class="img img-bordered" style="width:200px" />
                     </div>
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('banner.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>

@@ -22,15 +22,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 if(! function_exists('getImage')) {
-    function getImage($path = null, $file = null, $defaultImage = 'nophoto.png') {
+    function getImage($path = null) {
         
-        if(!$file || $file == $defaultImage) {
-            return asset('img/image/'. $defaultImage);
-        }
         if(!$path) {
-            return asset('img/image/'. $file);
+            return asset('img/image/nophoto.png');
         }
-        return Storage::url($path . $file);
+        if(strpos($path, 'upload') !== false) {
+            return Storage::url($path);
+        } 
+        return asset('img/image/'.$path);
     }
 }
 
@@ -40,8 +40,7 @@ if (! function_exists('uploadImage')) {
         if ($file) {
             $fileName = time() . '-' . $file->getClientOriginalName();
             $file->storeAs($path, $fileName, 'public');
-
-            return $fileName;
+            return $path . $fileName;
         }
 
         return $defaultImage;
@@ -49,10 +48,10 @@ if (! function_exists('uploadImage')) {
 }
 
 if (! function_exists('deleteImage')) {
-    function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
+    function deleteImage($path = 'upload/product')
     {
-        $filePath = storage_path('app/public/' . $path . '/' . $fileName);
-        if (file_exists($filePath) && $fileName !== $defaultImage) {
+        $filePath = storage_path('app/public/' . $path);
+        if (file_exists($filePath) && strpos($path, 'upload') !== false) {
             unlink($filePath);
         }
     }

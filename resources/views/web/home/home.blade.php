@@ -17,7 +17,7 @@
         @foreach($banners as $index => $banner)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
             <div class="slideshow">
-                <img src="{{ getImage('upload/banners/' , $banner->photo, 'nobanner.png') }}" alt="">
+                <img src="{{ getImage($banner->photo) }}" alt="">
                 <div class="container">
                     <div class="slideshow-content">
                         <h1 class="slideshow-heading"><span class="color-B10000">{{ $banner->title }} </span></h1>

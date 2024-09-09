@@ -100,7 +100,7 @@
                     <tr class="text-center">
                         <td class="font-weight-800 align-middle">{{ ($key + 1) + ($banners->currentPage() - 1) * $banners->perPage() }}</td>
                         <td class="font-weight-400 align-middle">
-                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ getImage( 'upload/banners/',$banner->photo, 'nobanner.png') }}">
+                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ getImage($banner->photo) }}">
                         </td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($banner)->title}}</td>
                         <td class="font-weight-400 align-middle">{{strip_tags($banner->description)}}</td>
@@ -110,11 +110,12 @@
                             @csrf
                             @method("PUT")
                             <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$banner->id}}">
-                                @foreach(\App\Enums\Status::cases() as $status)
-                                <option value="{{ $status->value }}" {{ $banner->status->value == $status->value ? 'selected' : '' }}>
-                                    @lang($status->label())
+                                <option value="{{ \App\Enums\Status::ACTIVE->value }}" {{ $banner->status->value == \App\Enums\Status::ACTIVE->value ? 'selected' : '' }} >
+                                    @lang(\App\Enums\Status::ACTIVE->label())
                                 </option>
-                                @endforeach
+                                <option value="{{ \App\Enums\Status::INACTIVE->value }}" {{ $banner->status->value == \App\Enums\Status::INACTIVE->value ? 'selected' : '' }}>
+                                    @lang(\App\Enums\Status::INACTIVE->label())
+                                </option>
                             </select>
 
                         </form>
@@ -150,30 +151,6 @@
 @section('script')
 <script type="text/javascript">
 
-    function sort_customers(el){
-        $('#sort_customers').submit();
-    }
-    $(document).on('click','.btn_import',function(){
-        $('#file').click();
-    })
-    $(document).on('change','#file',function(ev){
-        let file,form = $('#form-import');
-        if (file = ev.currentTarget.files[0]) {
-        if (file instanceof File) {
-            if (['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'].includes(file.type)) {
-            form.submit();
-            } else{
-            AIZ.plugins.notify('danger', "Something wrong");
-            }
-        }
-        }
-        ev.currentTarget.value = null;
-    })
-    @foreach (session('errors', collect())->toArray() as $message)
-        AIZ.plugins.notify('danger', '{{ $message[0] }}');
-    @endforeach
-    // active popup
-  
 
   
     //deletee

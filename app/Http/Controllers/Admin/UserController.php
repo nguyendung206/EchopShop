@@ -72,7 +72,7 @@ class UserController extends Controller
                     'address' => $request->address,
                     'gender' => $request->gender,
                     'status' => $request->status,
-                    'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                    'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', 'nophoto.png'),
                 ];
 
                 Users::create($userData);
@@ -119,7 +119,7 @@ class UserController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'status' => $request->status,
-                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', $avatar),
+                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', $avatar),
             ];
             if($request->has('password') && !empty($request->password)) {
                 $updateData['password'] = bcrypt($request->password);
@@ -128,7 +128,7 @@ class UserController extends Controller
             $user->update($updateData);
             
             if($request->file('uploadFile')) {
-                deleteImage($avatar, 'upload/users','nophoto.png');
+                deleteImage($avatar);
             }
 
             flash('Sửa người dùng thành công')->success();
@@ -151,7 +151,7 @@ class UserController extends Controller
         }
         
         $result = $user->delete();
-        deleteImage($user->avatar, 'upload/users','nophoto.png');
+        deleteImage($user->avatar);
         if($result){
             flash('Xoá người dùng thành công')->success();
             return  redirect()->route('manager-user.index');

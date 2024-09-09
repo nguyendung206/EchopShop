@@ -26,6 +26,8 @@ class BannerRequest extends FormRequest
         'title' => ['required', 'max: 255'],
         'description' => ['required', 'max: 255'],
         'link' => ['required', 'max:255'],
+        'photo' => ['file','max:10240'],
+        'status' => ['required','in:1,2']
         ];
         return $rule;
     }
@@ -33,7 +35,9 @@ class BannerRequest extends FormRequest
         return [
             'title' => 'Tiêu đề',
             'description' => 'Mô tả',
-            'link' => 'liên kết',
+            'link' => 'Liên kết',
+            'photo' => 'Ảnh hiển thị',
+            'status' => 'Trạng thái'
         ];
     }
 }
