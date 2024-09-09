@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductUnit;
 
 class ProductService
 {
@@ -23,6 +24,10 @@ class ProductService
             $query->where('status', $request->status);
         }
 
+        if ($request->has('type') && $request->type != '') {
+            $query->where('type', $request->type);
+        }
+
         return $query->paginate(10);
     }
 
@@ -33,6 +38,7 @@ class ProductService
         $product->description = $request->description;
         $product->status = $request->status;
         $product->price = $request->price;
+        $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 
@@ -49,6 +55,17 @@ class ProductService
         $product->save();
         return $product;
     }
+    public function createProductUnit(array $data)
+    {
+        $productUnit = new ProductUnit();
+        $productUnit->product_id = $data['product_id'];
+        $productUnit->color = $data['color'];
+        $productUnit->size = $data['size'];
+        $productUnit->quantity = $data['quantity'];
+
+        $productUnit->save();
+        return $productUnit;
+    }
 
     public function updateProduct(ProductRequest $request, $id)
     {
@@ -57,6 +74,7 @@ class ProductService
         $product->description = $request->description;
         $product->status = $request->status;
         $product->price = $request->price;
+        $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 
@@ -94,7 +112,22 @@ class ProductService
         return $product;
     }
 
+    public function updateProductUnit(array $data, $productId)
+    {
+        ProductUnit::where('product_id', $productId)->delete();
 
+        foreach ($data as $detail) {
+            $productUnit = new ProductUnit();
+            $productUnit->product_id = $productId;
+            $productUnit->color = $detail['color'];
+            $productUnit->size = $detail['size'];
+            $productUnit->quantity = $detail['quantity'];
+
+            $productUnit->save();
+        }
+
+        return true;
+    }
 
     public function deleteProduct($id)
     {

@@ -8,6 +8,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductUnit;
 use App\Services\ProductService;
 use App\Services\StatusService;
 use Illuminate\Http\Request;
@@ -42,6 +43,19 @@ class ProductController extends Controller
             $product = $this->productService->createProduct($request);
 
             if ($product) {
+                $colors = $request->input('colors', []);
+                $sizes = $request->input('sizes', []);
+                $quantities = $request->input('quantities', []);
+
+                foreach ($colors as $index => $color) {
+                    $this->productService->createProductUnit([
+                        'product_id' => $product->id,
+                        'color' => $color ?? '',
+                        'size' => $sizes[$index] ?? '',
+                        'quantity' => $quantities[$index] ?? 0,
+                    ]);
+                }
+
                 flash('Thêm mới sản phẩm thành công!')->success();
                 return redirect()->route('product.index');
             } else {
@@ -57,8 +71,13 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::where('id', $id)->first();
+        if (!$product) {
+            return redirect()->back()->with('error', 'Product not found.');
+        }
+
         $categories = Category::where('status', Status::ACTIVE)->get();
         $brands = Brand::where('status', Status::ACTIVE)->get();
+
         return view('admin.product.update', compact('product', 'categories', 'brands'));
     }
 
@@ -68,6 +87,20 @@ class ProductController extends Controller
             $product = $this->productService->updateProduct($request, $id);
 
             if ($product) {
+                $colors = $request->input('colors', []);
+                $sizes = $request->input('sizes', []);
+                $quantities = $request->input('quantities', []);
+
+                $details = [];
+                foreach ($colors as $index => $color) {
+                    $details[] = [
+                        'color' => $color ?? '',
+                        'size' => $sizes[$index] ?? '',
+                        'quantity' => $quantities[$index] ?? 0
+                    ];
+                }
+                $this->productService->updateProductUnit($details, $id);
+
                 flash('Cập nhật sản phẩm thành công!')->success();
                 return redirect()->route('product.index');
             } else {
@@ -79,6 +112,7 @@ class ProductController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
 
     public function destroy($id)
     {
@@ -105,7 +139,8 @@ class ProductController extends Controller
         return redirect()->route('product.index');
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $product = Product::where('id', $id)->first();
         return view('admin.product.show', compact('product'));
     }

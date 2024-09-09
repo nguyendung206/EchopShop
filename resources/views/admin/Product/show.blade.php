@@ -20,63 +20,98 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tên sản phẩm')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tên sản phẩm:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->name }}</p>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Giá')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Giá:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ format_price($product->price) }}</p>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Mô tả')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Kiểu sản phấm:')</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->type->label() }}</p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Mô tả:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{strip_tags($product->description)}}</p>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Loại sản phẩm')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Loại sản phẩm:')</label>
                     <div class="col-sm-9">
-                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->category->name }}</p>
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->category->name ?? ""}}</p>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Hãng sản phẩm')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Hãng sản phẩm:')</label>
                     <div class="col-sm-9">
-                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->brand->name }}</p>
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->brand->name ?? ""}}</p>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Trạng thái')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Trạng thái:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->status->label() }}</p>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Ảnh')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Ảnh:')</label>
                     <div class="col-sm-9">
-                        <img src="{{ $product->photo ? asset('storage/upload/product/' . $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img src="{{ $product->photo ? getImage('upload/product/', $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
                 </div>
 
                 <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Thư viện ảnh:')</label>
                     @if($product->list_photo)
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Thư viện ảnh')</label>
                     <div class="col-sm-9 d-flex flex-wrap">
                         @foreach(json_decode($product->list_photo) as $index => $photo)
-                        <img src="{{ asset('storage/upload/product/' . $photo) }}" class="img img-bordered m-2" style="width:100px; height: 150px;" />
+                        <img src="{{ getImage('upload/product/', $photo) }}" class="img img-bordered m-2" style="width:100px; height: 150px;" />
                         @endforeach
                     </div>
+                    @else
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">Chưa có ảnh nào</p>
+                    </div>
                     @endif
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500 mt-2" style="font-size: 1rem;">@lang('Số lượng:')</label>
+                    <div class="col-sm-9">
+                        <table class="table table-bordered" style="font-size: 1rem;">
+                            <thead>
+                                <tr>
+                                    <th>@lang('Màu sắc')</th>
+                                    <th>@lang('Kích cở')</th>
+                                    <th>@lang('Số lượng')</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($product->productUnits as $unit)
+                                <tr>
+                                    <td>{{ $unit->color }}</td>
+                                    <td>{{ $unit->size }}</td>
+                                    <td>{{ $unit->quantity }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="form-group mb-0 text-right">
