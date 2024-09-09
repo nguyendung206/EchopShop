@@ -24,6 +24,7 @@
 }
 
 .profile-img {
+    object-fit: cover;
     display: block;
     margin: 24px auto;
     width: 100px;
@@ -121,10 +122,11 @@
 }
 
 .profile-update-btn-2 {
-    margin-left: 24px;
+    margin-left: 0px;
 }
 
 .profile-img-2 {
+    object-fit: cover;
     width: 140px;
     height: 140px;
     margin-top: 0;
@@ -212,10 +214,21 @@ label {
     font-weight: 500;
 }
 
+.form-btn button {
+    padding: 8px 40px;
+    border: 1px solid #B10000;
+    cursor: pointer;
+}
+
 .form-btn a {
     padding: 8px 40px;
     border: 1px solid #B10000;
     cursor: pointer;
+}
+
+.form-btn button:hover {
+    background-color: #4f0000;
+    color: #fff !important;
 }
 
 .form-btn a:hover {
@@ -228,7 +241,7 @@ a.form-btn-cancel {
     background-color: #fff;
 }
 
-a.form-btn-save {
+button.form-btn-save {
     color: #fff !important;
     background-color: #B10000;
 }
@@ -255,7 +268,7 @@ a.form-btn-save {
     .profile-update-btn-2 {
         margin-left: 0;
     }
-    
+
     .profile-list {
         display: none;
     }

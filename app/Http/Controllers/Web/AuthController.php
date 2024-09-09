@@ -16,6 +16,7 @@ use App\Models\Province;
 use App\Models\ResetPasswordToken;
 use  App\Mail\ForgotPasswordMail;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Mail;
 
 class AuthController extends Controller
