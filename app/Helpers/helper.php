@@ -36,13 +36,13 @@ if (! function_exists('getImage')) {
     }
 }
 
-if (! function_exists('uploadImage')) {
+if (!function_exists('uploadImage')) {
     function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
         if ($file) {
             $fileName = time() . '-' . $file->getClientOriginalName();
-            $file->storeAs($path, $fileName, 'public');
-            return $path . $fileName;
+            $filePath = $file->storeAs($path, $fileName, 'public'); 
+            return $filePath;
         }
 
         return $defaultImage;

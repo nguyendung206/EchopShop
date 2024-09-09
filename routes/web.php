@@ -38,6 +38,7 @@ Route::post('/pinCode/{token}', [AuthController::class, 'checkPinCode'])->name('
 Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPassword'])->name('web.handleResetPassword');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
+
 Route::middleware(['auth:web'])->prefix('web')->group(function () {
     Route::prefix('/profile')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');

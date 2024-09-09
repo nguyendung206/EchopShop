@@ -43,7 +43,7 @@ class ProductService
         $product->brand_id = $request->brand_id;
 
         if ($request->hasFile('photo')) {
-            $product->photo = uploadImage($request->file('photo'));
+            $product->photo = uploadImage($request->file('photo'),'upload/product');
         } else {
             $product->photo = 'noproduct.png';
         }
@@ -82,7 +82,7 @@ class ProductService
             if ($product->photo && $product->photo !== 'noproduct.png') {
                 deleteImage($product->photo, 'upload/product');
             }
-            $product->photo = uploadImage($request->file('photo'), 'upload/product', 'noproduct.png');
+            $product->photo = uploadImage($request->file('photo'), 'upload/product', $product->photo);
         }
 
         $oldPhotos = json_decode($product->list_photo, true) ?: [];

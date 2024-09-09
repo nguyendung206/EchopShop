@@ -35,15 +35,16 @@ class BrandService
         $brand->category_id = $request->category_id;
 
         if ($request->hasFile('photo')) {
-            $brand->photo = uploadImage($request->file('photo'));
+            $brand->photo = uploadImage($request->file('photo'), 'upload/product'); 
         } else {
-            $brand->photo = 'noproduct.png';
+            $brand->photo = 'noproduct.png'; 
         }
 
         $brand->save();
 
         return $brand;
     }
+
 
     public function updateBrand(BrandRequest $request, $id)
     {

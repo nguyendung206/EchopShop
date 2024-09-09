@@ -28,7 +28,7 @@ class ProductsTableSeeder extends Seeder
                 'slug' => Str::slug('Product ' . $i),
                 'name' => 'Product ' . $i,
                 'price' => $faker->randomFloat(2, 10, 1000),
-                'status' => rand(1, 2, 3), 
+                'type' => rand(1, 2, 3), 
                 'photo' => 'noproduct.png', 
                 'list_photo' => json_encode([$faker->imageUrl(200, 200)]), 
                 'status' => rand(1, 2), 

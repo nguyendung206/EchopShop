@@ -99,7 +99,7 @@
                     <tr class="text-center">
                         <td class="font-weight-800 align-middle">{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
                         <td class="font-weight-400 align-middle">
-                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ getImage('upload/product/',$data->photo) }}">
+                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ getImage($data->photo) }}">
                         </td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
                         <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>

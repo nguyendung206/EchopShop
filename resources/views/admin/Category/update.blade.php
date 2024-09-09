@@ -70,8 +70,9 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{ $category->photo ? getImage('upload/product/' . $category->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img id="photo_preview" src="{{ getImage($category->photo) }}" alt="Ảnh danh mục" class="img img-bordered" style="width:200px" />
                     </div>
+
 
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('category.index') }}" class="btn btn-light mr-2">@lang('Hủy')</a>
