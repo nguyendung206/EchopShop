@@ -51,11 +51,11 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái</label>
                         <div class="col-sm-9">
                             <select class="text-center font-weight-500 form-control @error('status') is-invalid  @enderror" name="status" >
-                                <option value="{{ \App\Enums\Status::ACTIVE->value }}" {{old('status') ? old('status') == \App\Enums\Status::ACTIVE->value ? 'selected' : '' : ''}}>
-                                    @lang(\App\Enums\Status::ACTIVE->label())
+                                <option value="{{ StatusEnums::ACTIVE->value }}" {{old('status') ? old('status') == StatusEnums::ACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(StatusEnums::ACTIVE->label())
                                 </option>
-                                <option value="{{ \App\Enums\Status::INACTIVE->value }}" {{old('status') ? old('status') == \App\Enums\Status::INACTIVE->value ? 'selected' : '' : ''}}>
-                                    @lang(\App\Enums\Status::INACTIVE->label())
+                                <option value="{{ StatusEnums::INACTIVE->value }}" {{old('status') ? old('status') == StatusEnums::INACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(StatusEnums::INACTIVE->label())
                                 </option>
                             </select>
                             @error('status')

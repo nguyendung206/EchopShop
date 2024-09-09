@@ -42,11 +42,13 @@
             <div class="col-md-3 res-status">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="status" name="status">
                     <option value="">Trạng thái</option>
-                    @foreach (\App\Enums\Status::cases() as $status)
-                    <option value="{{ $status->value }}" @if(request('status') == $status->value) selected @endif>
-                        {{ $status->label() }}
+                    <option value="{{ StatusEnums::ACTIVE->value }}" @if(request('status') == StatusEnums::ACTIVE->value) selected @endif>
+                        {{ StatusEnums::ACTIVE->label() }}
                     </option>
-                    @endforeach
+                    <option value="{{ StatusEnums::INACTIVE->value }}" @if(request('status') == StatusEnums::INACTIVE->value) selected @endif>
+                        {{ StatusEnums::INACTIVE->label() }}
+                    </option>
+                    
                 </select>
             </div>
             <div class="col-md-6 d-flex">
@@ -110,11 +112,11 @@
                             @csrf
                             @method("PUT")
                             <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$banner->id}}">
-                                <option value="{{ \App\Enums\Status::ACTIVE->value }}" {{ $banner->status->value == \App\Enums\Status::ACTIVE->value ? 'selected' : '' }} >
-                                    @lang(\App\Enums\Status::ACTIVE->label())
+                                <option value="{{ StatusEnums::ACTIVE->value }}" {{ $banner->status->value == StatusEnums::ACTIVE->value ? 'selected' : '' }} >
+                                    @lang(StatusEnums::ACTIVE->label())
                                 </option>
-                                <option value="{{ \App\Enums\Status::INACTIVE->value }}" {{ $banner->status->value == \App\Enums\Status::INACTIVE->value ? 'selected' : '' }}>
-                                    @lang(\App\Enums\Status::INACTIVE->label())
+                                <option value="{{ StatusEnums::INACTIVE->value }}" {{ $banner->status->value == StatusEnums::INACTIVE->value ? 'selected' : '' }}>
+                                    @lang(StatusEnums::INACTIVE->label())
                                 </option>
                             </select>
 
