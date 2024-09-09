@@ -138,7 +138,7 @@
                                     <img class="avt" src="{{ asset('storage/upload/users/'. optional(Auth::user())->avatar) }}" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                    <a class="drop-user-item" href="">
+                                    <a class="drop-user-item" href="{{route('web.profile.index', Session::get('user')->id)}}">
                                         <i class="fa-solid fa-user mr-2"></i> Hồ sơ cá nhân
                                     </a>
                                     <a class="drop-user-item" href="{{route('web.logout')}}">

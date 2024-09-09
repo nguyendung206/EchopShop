@@ -56,6 +56,7 @@ a:hover {
 }
 
 .avt {
+    object-fit: cover;
     width: 34px;
     height: 34px;
     border-radius: 50%;
