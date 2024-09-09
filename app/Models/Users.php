@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\UserGenger;
-
 
 class Users extends Model
 {
     use HasFactory;
+
     protected $table = 'users';
+
     protected $fillable = [
         'name',
         'password',
@@ -35,17 +35,14 @@ class Users extends Model
     protected $hidden = [
         'password',
     ];
+
     public function statusText()
     {
         return $this->status == 0 ? 'Hoạt động' : 'Đã bị khoá';
     }
+
     public function genderText()
     {
         return $this->status == 0 ? 'Nam' : 'Nữ';
     }
-
-
 }
-
-
-

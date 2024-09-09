@@ -28,7 +28,7 @@ class BrandRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
-            'status' => ['required', Rule::in([Status::ACTIVE->value, Status::INACTIVE->value])], 
+            'status' => ['required', Rule::in([Status::ACTIVE->value, Status::INACTIVE->value])],
             'photo' => 'image|mimes:jpg,jpeg,png|max:2048',
             'category_id' => 'nullable|exists:categories,id',
         ];

@@ -14,8 +14,8 @@ class BrandService
         if ($request->has('search') && $request->search != '') {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
             });
         }
 
@@ -28,23 +28,22 @@ class BrandService
 
     public function createBrand(BrandRequest $request)
     {
-        $brand = new Brand();
+        $brand = new Brand;
         $brand->name = $request->name;
         $brand->description = $request->description;
         $brand->status = $request->status;
         $brand->category_id = $request->category_id;
 
         if ($request->hasFile('photo')) {
-            $brand->photo = uploadImage($request->file('photo'), 'upload/product'); 
+            $brand->photo = uploadImage($request->file('photo'), 'upload/product');
         } else {
-            $brand->photo = 'noproduct.png'; 
+            $brand->photo = 'noproduct.png';
         }
 
         $brand->save();
 
         return $brand;
     }
-
 
     public function updateBrand(BrandRequest $request, $id)
     {
@@ -72,6 +71,7 @@ class BrandService
             }
 
             $brand->delete();
+
             return true;
         } catch (\Exception $e) {
             return false;

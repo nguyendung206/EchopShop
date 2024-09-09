@@ -21,28 +21,29 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
-
 if (! function_exists('getImage')) {
     function getImage($path = null)
     {
 
-        if (!$path) {
+        if (! $path) {
             return asset('img/image/nophoto.png');
         }
         if (strpos($path, 'upload') !== false) {
             return Storage::url($path);
         }
-        return asset('img/image/' . $path);
+
+        return asset('img/image/'.$path);
     }
 }
 
-if (!function_exists('uploadImage')) {
+if (! function_exists('uploadImage')) {
     function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
         if ($file) {
-            $fileName = time() . '-' . $file->getClientOriginalName();
-            $filePath = $file->storeAs($path, $fileName, 'public'); 
-            return $filePath;
+            $fileName = time().'-'.$file->getClientOriginalName();
+            $file->storeAs($path, $fileName, 'public');
+
+            return $path.$fileName;
         }
 
         return $defaultImage;
@@ -52,7 +53,7 @@ if (!function_exists('uploadImage')) {
 if (! function_exists('deleteImage')) {
     function deleteImage($path = 'upload/product')
     {
-        $filePath = storage_path('app/public/' . $path);
+        $filePath = storage_path('app/public/'.$path);
         if (file_exists($filePath) && strpos($path, 'upload') !== false) {
             unlink($filePath);
         }
@@ -69,6 +70,7 @@ if (! function_exists('uploadMultipleImages')) {
                 $fileNames[] = $fileName;
             }
         }
+
         return $fileNames;
     }
 }
@@ -88,7 +90,7 @@ if (! function_exists('uploadImage')) {
     function uploadImage($file, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
         if ($file) {
-            $fileName = time() . '-' . $file->getClientOriginalName();
+            $fileName = time().'-'.$file->getClientOriginalName();
             $file->storeAs($path, $fileName, 'public');
 
             return $fileName;
@@ -101,7 +103,7 @@ if (! function_exists('uploadImage')) {
 if (! function_exists('deleteImage')) {
     function deleteImage($fileName, $path = 'upload/product', $defaultImage = 'noproduct.png')
     {
-        $filePath = storage_path('app/' . $path . '/' . $fileName);
+        $filePath = storage_path('app/'.$path.'/'.$fileName);
         if (file_exists($filePath) && $fileName !== $defaultImage) {
             unlink($filePath);
         }
@@ -118,6 +120,7 @@ if (! function_exists('uploadMultipleImages')) {
                 $fileNames[] = $fileName;
             }
         }
+
         return $fileNames;
     }
 }
@@ -219,7 +222,7 @@ if (! function_exists('format_price')) {
     {
         $fomated_price = number_format($price, 0, '', ',');
 
-        return $fomated_price . ' VNĐ';
+        return $fomated_price.' VNĐ';
     }
 }
 //format no VNĐ
@@ -349,7 +352,7 @@ if (! function_exists('no_asset')) {
 if (! function_exists('isHttps')) {
     function isHttps()
     {
-        return ! empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS']);
+        return ! empty($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on');
     }
 }
 
@@ -367,7 +370,7 @@ if (! function_exists('getFileBaseURL')) {
     function getFileBaseURL()
     {
         if (env('FILESYSTEM_DRIVER') == 's3') {
-            return env('AWS_URL') . '/';
+            return env('AWS_URL').'/';
         } else {
             return getBaseURL();
         }
@@ -432,7 +435,7 @@ if (! function_exists('formatBytes')) {
         $bytes /= pow(1024, $pow);
         // $bytes /= (1 << (10 * $pow));
 
-        return round($bytes, $precision) . ' ' . $units[$pow];
+        return round($bytes, $precision).' '.$units[$pow];
     }
 }
 
@@ -675,7 +678,7 @@ if (! function_exists('replaceEmailOrPhone')) {
                 }
                 $result[] = $chars[$i];
             }
-            $result = implode('', $result) . '@' . $last_name;
+            $result = implode('', $result).'@'.$last_name;
         } else {
             $chars = preg_split('//', $email_or_phone, -1, PREG_SPLIT_NO_EMPTY);
             for ($i = 0; $i < count($chars); $i++) {
@@ -730,7 +733,7 @@ if (! function_exists('showInfoForTooltip')) {
         $stringInfo = '';
         foreach ($item->combo->foods as $list_food) {
             $weight = $list_food->pivot->quantity * $list_food->weight;
-            $stringInfo .= ' ' . $weight . ' ' . optional($list_food->unit)->unit . ' ' . $list_food->name . "<br \>";
+            $stringInfo .= ' '.$weight.' '.optional($list_food->unit)->unit.' '.$list_food->name."<br \>";
         }
 
         return $stringInfo;
@@ -743,7 +746,7 @@ if (! function_exists('showInfoForTooltipCombo')) {
         $stringInfo = '';
         foreach ($combo->foods as $list_food) {
             $weight = $list_food->pivot->quantity * $list_food->weight;
-            $stringInfo .= ' ' . $weight . ' ' . optional($list_food->unit)->unit . ' ' . $list_food->name . "<br \>";
+            $stringInfo .= ' '.$weight.' '.optional($list_food->unit)->unit.' '.$list_food->name."<br \>";
         }
 
         return $stringInfo;
@@ -757,7 +760,7 @@ if (! function_exists('showFirstTooltipCombo')) {
         foreach ($combo->foods as $list_food) {
             if ($list_food == reset($list_food)) {
                 $weight = $list_food->pivot->quantity * $list_food->weight;
-                $stringInfo = $weight . ' ' . optional($list_food->unit)->unit . ' ' . $list_food->name;
+                $stringInfo = $weight.' '.optional($list_food->unit)->unit.' '.$list_food->name;
 
                 return $stringInfo;
             }
@@ -769,7 +772,7 @@ if (! function_exists('getMainFood')) {
     function getMainFood($food)
     {
         if ($food->pivot->food_type == FoodTypeCombo::MAIN) {
-            return $food->weight . ' ' . optional($food->unit)->unit . ' ' . $food->name;
+            return $food->weight.' '.optional($food->unit)->unit.' '.$food->name;
         }
     }
 }
@@ -1007,7 +1010,7 @@ if (! function_exists('getContent')) {
         <style type="text/css">img{max-width:100%!important;width:100%!important;}</style>
         </head>
         <body>
-        ' . $data . '
+        '.$data.'
         </body>
         </html>
         ';

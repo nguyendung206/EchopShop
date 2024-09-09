@@ -14,7 +14,7 @@ class AddTypeToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('type')->after('price'); 
+            $table->integer('type')->after('price');
         });
     }
 

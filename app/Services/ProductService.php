@@ -15,8 +15,8 @@ class ProductService
         if ($request->has('search') && $request->search != '') {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('description', 'like', '%' . $searchTerm . '%');
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
             });
         }
 
@@ -33,7 +33,7 @@ class ProductService
 
     public function createProduct(ProductRequest $request)
     {
-        $product = new Product();
+        $product = new Product;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->status = $request->status;
@@ -43,7 +43,7 @@ class ProductService
         $product->brand_id = $request->brand_id;
 
         if ($request->hasFile('photo')) {
-            $product->photo = uploadImage($request->file('photo'),'upload/product');
+            $product->photo = uploadImage($request->file('photo'), 'upload/product');
         } else {
             $product->photo = 'noproduct.png';
         }
@@ -53,17 +53,20 @@ class ProductService
         }
 
         $product->save();
+
         return $product;
     }
+
     public function createProductUnit(array $data)
     {
-        $productUnit = new ProductUnit();
+        $productUnit = new ProductUnit;
         $productUnit->product_id = $data['product_id'];
         $productUnit->color = $data['color'];
         $productUnit->size = $data['size'];
         $productUnit->quantity = $data['quantity'];
 
         $productUnit->save();
+
         return $productUnit;
     }
 
@@ -89,7 +92,7 @@ class ProductService
         $photosToKeep = $request->input('photos_to_keep', []);
 
         foreach ($oldPhotos as $oldPhoto) {
-            if (!in_array($oldPhoto, $photosToKeep)) {
+            if (! in_array($oldPhoto, $photosToKeep)) {
                 deleteImage($oldPhoto, 'upload/product');
             }
         }
@@ -109,6 +112,7 @@ class ProductService
         }
 
         $product->save();
+
         return $product;
     }
 
@@ -117,7 +121,7 @@ class ProductService
         ProductUnit::where('product_id', $productId)->delete();
 
         foreach ($data as $detail) {
-            $productUnit = new ProductUnit();
+            $productUnit = new ProductUnit;
             $productUnit->product_id = $productId;
             $productUnit->color = $detail['color'];
             $productUnit->size = $detail['size'];
@@ -138,6 +142,7 @@ class ProductService
             }
 
             $product->delete();
+
             return true;
         } catch (\Exception $e) {
             return false;

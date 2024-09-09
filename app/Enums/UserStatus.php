@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Enums;
 
 use BenSampo\Enum\Enum;
@@ -11,6 +12,6 @@ use BenSampo\Enum\Enum;
 final class UserStatus extends Enum
 {
     const Active = 0;
+
     const Block = 1;
-    
 }
