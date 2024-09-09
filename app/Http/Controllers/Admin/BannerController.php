@@ -34,7 +34,7 @@ class BannerController extends Controller
         try {
             $this->bannerService->store($request);
             flash('Thêm Banner thành công')->success();
-            return redirect()->route('banner.create');
+            return redirect()->route('banner.index');
         } catch (Exception $e) {
             flash('Thêm Banner thất bại')->error();
             return redirect()->route('Banner.create');
@@ -44,7 +44,11 @@ class BannerController extends Controller
     
     public function show($id)
     {
-        //
+        $banner = Banner::findOrFail($id);
+        if(!$banner) {
+            return back()->with('message', 'Không có Banner tương ứng');
+        }
+        return view('admin.Banner.show', compact('banner'));
     }
 
    
@@ -58,7 +62,7 @@ class BannerController extends Controller
     }
 
    
-    public function update(Request $request, $id)
+    public function update(BannerRequest $request, $id)
     {
         try {
             $banner = $this->bannerService->update($request, $id);
@@ -74,7 +78,8 @@ class BannerController extends Controller
     public function destroy($id)
     {
         try {
-            if ($this->bannerService->destroy($id)) {
+            $check = $this->bannerService->destroy($id); 
+            if ($check) {
                 flash('Xóa Banner thành công!')->success();
             } else {
                 flash('Đã xảy ra lỗi khi xóa Banner!')->error();
@@ -99,12 +104,7 @@ class BannerController extends Controller
                 'status' => 'success',
                 'message' => 'Sửa thông tin thành công.'
             ], 200);
-        }  catch (QueryException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Sửa thông tin thất bại.'
-            ], 500);
-        } catch (\Exception $e) {
+            } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Sửa thông tin thất bại.'

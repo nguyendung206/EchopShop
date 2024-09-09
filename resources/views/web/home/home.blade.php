@@ -17,16 +17,17 @@
         @foreach($banners as $index => $banner)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
             <div class="slideshow">
-                <img src="{{ getImage('upload/banners/' , $banner->photo) }}" alt="">
-                @if($banner->has_content)
+                <img src="{{ getImage('upload/banners/' , $banner->photo, 'nobanner.png') }}" alt="">
                 <div class="container">
                     <div class="slideshow-content">
                         <h1 class="slideshow-heading"><span class="color-B10000">{{ $banner->title }} </span></h1>
-                        <h5 class="slideshow-subheading">{{ $banner->description }}</h5>
+                        <h5 class="slideshow-subheading">{{ strip_tags($banner->description) }}</h5>
+                        <button class="c-1-button" style="border: none;background-color:transparent">
+                            <a href="http://127.0.0.1:8000/{{$banner->link}}">Đi đến liên kết</a>
+                        </button>
                     </div>
                 </div>
-                @endif
-            </div>
+                </div>
         </div>
         @endforeach
     </div>

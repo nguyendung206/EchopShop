@@ -24,11 +24,11 @@ use Illuminate\Support\Facades\Storage;
 if(! function_exists('getImage')) {
     function getImage($path = null, $file = null, $defaultImage = 'nophoto.png') {
         
-        if(!$file) {
-            return asset('img/'. $defaultImage);
+        if(!$file || $file == $defaultImage) {
+            return asset('img/image/'. $defaultImage);
         }
         if(!$path) {
-            return asset('img/'. $file);
+            return asset('img/image/'. $file);
         }
         return Storage::url($path . $file);
     }

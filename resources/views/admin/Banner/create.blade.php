@@ -29,9 +29,19 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Liên kết</label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="Liên kết" name="link" class="form-control @error('link') is-invalid @enderror" value="{{ old('link') }}">
+                            @error('link')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Mô tả</label>
                         <div class="col-sm-9">
-                        <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}
+                        </textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -41,7 +51,7 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái</label>
                         <div class="col-sm-9">
                             <select class="text-center font-weight-500 form-control" name="status" >
-                                @foreach(\App\Enums\BannerStatus::cases() as $status)
+                                @foreach(\App\Enums\Status::cases() as $status)
                                 <option value="{{ $status->value }}" {{old('status') ? old('status') == $status->value ? 'selected' : '' : ''}}>
                                     @lang($status->label())
                                 </option>

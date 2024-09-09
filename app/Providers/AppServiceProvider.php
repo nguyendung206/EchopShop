@@ -5,7 +5,6 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Category;
-use App\Models\Banner;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,9 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $categories =  Category::query()->where('status', 1)->with('brands')->limit(9)->get();
-        $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
+        $categories =  Category::query()->where('status', 1)->with('brands')->get();
         View::share('categories', $categories);
-        View::share('banners', $banners);
     }
 }
