@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Enums\TypeProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Product;
@@ -21,7 +20,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
-        $secondhandProducts = Product::query()->where('status', 1)->where('type', TypeProduct::SECONDHAND->value)->paginate(8);
+        $secondhandProducts = Product::query()->where('status', 1)->paginate(8);
         $currentPage = $secondhandProducts->currentPage();
 
         return view('web.home.home', compact('banners', 'secondhandProducts', 'currentPage'));
