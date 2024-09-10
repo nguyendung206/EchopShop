@@ -112,7 +112,7 @@
                 @endforeach
             </div>
             <div class="text-center py-5 divMoreSecondhand">
-                <a id="btnMoreSecondhand" class="all color-B10000" href="#" data-page="{{ $currentPage }}">Xem thêm <i class="fa-solid fa-angles-right"></i></a>
+                <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-right"></i></a>
             </div>
             <div class="text-center py-5 end-of-products" style="display: none;color:rgb(177,0,0);">
                 <p>Hết sản phẩm</p>
@@ -405,19 +405,17 @@
 @section('script')
 
 <script src="{{ asset('/js/text.js') }}"></script>
-@endsection
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            var currentPage = {{ $secondhandProducts->currentPage() }};
+            var currentPage = 1;
             
             $('#btnMoreSecondhand').click(function(event) {
                 event.preventDefault();
                 currentPage++;
                 
                 $.ajax({
-                    url: '{{ route("home.moreSecondHand") }}',
+                    url: '{{ route("home") }}',
                     method: 'GET',
                     data: {
                         page: currentPage
@@ -439,6 +437,7 @@
             });
         });
     </script>
+@endsection
 
 @endsection
    
