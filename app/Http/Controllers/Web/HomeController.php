@@ -22,22 +22,22 @@ class HomeController extends Controller
     {
         $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
         $secondhandProducts = Product::query()->where('status', 1)->where('type', TypeProduct::SECONDHAND->value)->paginate(8);
-        $hasMorePages = !$secondhandProducts->hasMorePages();
-        
-        if ($request->ajax() || $request->wantsJson()){
+        $hasMorePages = ! $secondhandProducts->hasMorePages();
+
+        if ($request->ajax() || $request->wantsJson()) {
             $secondhandProduct = $this->homeService->moreSecondhand($request);
             $productHtml = '';
-            foreach($secondhandProducts as $product) {
+            foreach ($secondhandProducts as $product) {
                 $productHtml .= view('web.home.moreSecondhand', compact('product'))->render();
             }
+
             return response()->json([
                 'products' => $productHtml,
                 'endPoint' => $hasMorePages,
             ]);
 
         }
+
         return view('web.home.home', compact('banners', 'secondhandProducts'));
     }
-
-    
 }
