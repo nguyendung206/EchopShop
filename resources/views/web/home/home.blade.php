@@ -403,7 +403,9 @@
     <hr>
 
 @section('script')
-    <script src="{{ asset('/js/text.js') }}"></script>
+
+<script src="{{ asset('/js/text.js') }}"></script>
+@endsection
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
@@ -438,7 +440,6 @@
         });
     </script>
 
-@endsection
 @endsection
    
   
