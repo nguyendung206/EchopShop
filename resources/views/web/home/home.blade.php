@@ -108,11 +108,17 @@
                 </div>
                 @endforeach
             </div>
+            @if($secondhandProducts->count()) 
             <div class="text-center py-5 divMoreSecondhand">
                 <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 <span class="end-of-products-secondhand" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
                 <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
+            @else
+            <div class="text-center py-5">
+                <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+            </div>
+            @endif
         </div>
     </div>
     <div class="brand">
@@ -171,12 +177,17 @@
                 </div>
                 @endforeach
             </div>
+            @if($exchangeProducts->count()) 
             <div class="text-center py-5 divMoreExchange">
                 <a id="btnMoreExchange" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 <span class="end-of-products-exchange" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
                 <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
-           
+            @else
+            <div class="text-center py-5">
+                <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+            </div>
+           @endif
         </div>
     </div>
     <div class="app">
