@@ -38,9 +38,12 @@ Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPasswo
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 
-Route::middleware(['auth:web'])->prefix('web')->group(function () {
+Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/profile')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
         Route::put('/save', [ProfileUserController::class, 'update'])->name('web.profile.save');
+    });
+    Route::get('/product-detail', function () {
+        return view('web.product.productdetail');
     });
 });

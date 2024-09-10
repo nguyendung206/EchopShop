@@ -73,7 +73,7 @@
                                     @foreach ($categories as $category)
                                     <a href="#" class=" dropdown-item dropdown-item-active" type="button" id="dropdownMenuButton-{{$category->slug}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div class="row align-items-center">
-                                            <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
+                                            <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
                                             
                                             <p class="dropdown-title">{{$category->name}}</p>
                                         </div>
