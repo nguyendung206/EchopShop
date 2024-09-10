@@ -65,44 +65,6 @@
                     </div>
                     <div class="col-lg-8 menu">
                         <ul class="row">
-                            {{-- <li class=" ml-3">
-                                <div class="dropdown">
-                                    <a href="#" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Danh mục sản phẩm<i
-                                            class="fa-solid fa-caret-down pl-2"></i></a>
-                                    <div class="dropdown-menu dropright" aria-labelledby="dropdownMenuButton" >
-                                        @if(isset($categories)) 
-                                            @foreach ($categories as $category)
-                                            <a href="#" class=" dropdown-item dropdown-item-active" type="button" id="dropdownMenuButton-{{$category->slug}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <div class="row align-items-center">
-                                                    <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
-                                                    
-                                                    <p class="dropdown-title">{{$category->name}}</p>
-                                                </div>
-                                                <i class="fa-solid fa-caret-right"></i>
-                                                <div class="dropdown-menu " aria-labelledby="dropdownMenuButton-{{$category->slug}}" style="padding: 5px">
-                                                    @foreach($category->activeBrands as $brand) 
-                                                        <div>
-                                                            <a href="#" class="dropdown-item dropdown-item-active">{{$brand->name}}</a>
-                                                        </div>
-                                                    @endforeach
-                                                    </div>
-                                            </a>
-                                            
-                                        
-                                            @endforeach
-                                        @endif
-                                        <a class="dropdown-item-custom" type="button"  href="#">
-                                            <div class="row align-items-center">
-                                                <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
-                                                <p class="dropdown-title">Khác</p>
-
-                                            </div>
-                                            <i class="fa-solid fa-caret-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </li> --}}
-
                             <li class="ml-3">
                                   <div class="dropdown">
                                       <a href='#' class="" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -128,6 +90,13 @@
                                             @endif
                                           </li>
                                         @endforeach
+                                            <li class="dropdown-submenu" tabindex="-1"  href="#">
+                                                <a  class="dropdown-item dropdown-item-custom" tabindex="-1" href="#">
+                                                    <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
+                                                    <p class="dropdown-title">Khác</p>
+                                                </a>
+                                            </li>
+
                                         </ul>
                                         @endif
                               </div>

@@ -97,7 +97,7 @@
         </div>
         <div class="container">
             <div class="row secondhand-list">
-                @foreach($secondhandProducts as $product)
+                @forelse($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
                     <i class="fa-regular fa-heart fa-heart-home"></i>
@@ -106,17 +106,17 @@
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
                 </div>
-                @endforeach
+                @empty 
+                    <div class="text-center w-100 py-5">
+                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                    </div>
+                @endforelse
             </div>
-            @if($secondhandProducts->count()) 
+            @if($secondhandProducts->isNotEmpty())
             <div class="text-center py-5 divMoreSecondhand">
                 <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 <span class="end-of-products-secondhand" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
                 <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
-            </div>
-            @else
-            <div class="text-center py-5">
-                <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
             </div>
             @endif
         </div>
@@ -166,7 +166,7 @@
         </div>
         <div class="container">
             <div class="row exchange-list">
-                @foreach($exchangeProducts as $product)
+                @forelse($exchangeProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
                     <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
@@ -175,19 +175,20 @@
                     <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
                     <a href="#" class="buy">Trao đổi</a>
                 </div>
-                @endforeach
+                @empty 
+                    <div class="text-center w-100 py-5">
+                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                    </div>
+                @endforelse
             </div>
-            @if($exchangeProducts->count()) 
+            @if($exchangeProducts->isNotEmpty())
             <div class="text-center py-5 divMoreExchange">
                 <a id="btnMoreExchange" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 <span class="end-of-products-exchange" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
                 <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
-            @else
-            <div class="text-center py-5">
-                <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-            </div>
-           @endif
+            @endif
+            
         </div>
     </div>
     <div class="app">
