@@ -112,7 +112,7 @@
                 @endforeach
             </div>
             <div class="text-center py-5 divMoreSecondhand">
-                <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-right"></i></a>
+                <a id="btnMoreSecondhand" class="all color-B10000" href="#" data-page="{{ $currentPage }}">Xem thêm <i class="fa-solid fa-angles-right"></i></a>
             </div>
             <div class="text-center py-5 end-of-products" style="display: none;color:rgb(177,0,0);">
                 <p>Hết sản phẩm</p>
@@ -408,21 +408,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            var moreSecondhand = {{ $moreSecondhand ?? 1 }};
+            var currentPage = {{ $secondhandProducts->currentPage() }};
             
             $('#btnMoreSecondhand').click(function(event) {
                 event.preventDefault();
-                moreSecondhand++;
+                currentPage++;
                 
                 $.ajax({
                     url: '{{ route("home.moreSecondHand") }}',
                     method: 'GET',
                     data: {
-                        moreSecondhand: moreSecondhand
+                        page: currentPage
                     },
                     success: function(response) {
                         var productsHtml = '';
-                        $.each(response.products, function(index, product) {
+                        console.log(response.products);
+                        
+                        $.each(response.products.data, function(index, product) {
                             productsHtml += `
                                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                                     <img class="product-img" src="{{ getImage('${product.photo}') }}" alt="">
@@ -441,6 +443,8 @@
                         }
                     },
                     error: function(xhr, status, error) {
+                        console.log(error);
+                        
                 }
                 });
             });

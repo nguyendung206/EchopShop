@@ -21,10 +21,10 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
-        $secondhandProducts = Product::query()->where('status', 1)->where('type', TypeProduct::SECONDHAND->value)->limit(8)->get();
-        $moreSecondhand = $request->query('moreSecondhand', 1);
+        $secondhandProducts = Product::query()->where('status', 1)->where('type', TypeProduct::SECONDHAND->value)->paginate(8);
+        $currentPage = $secondhandProducts->currentPage();
 
-        return view('web.home.home', compact('banners', 'secondhandProducts', 'moreSecondhand'));
+        return view('web.home.home', compact('banners', 'secondhandProducts', 'currentPage'));
     }
 
     public function moreSecondhand(Request $request)
