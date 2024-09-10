@@ -424,7 +424,7 @@
                         var productsHtml = '';
                         
                         $('.secondhand-list').append(response.products); 
-                        if (response.endPoint) {
+                        if (response.hasMorePage) {
                             $('.divMoreSecondhand').hide(); 
                             $('.end-of-products').show(); 
                         }
