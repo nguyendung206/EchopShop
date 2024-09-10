@@ -92,15 +92,12 @@
                         <hr>
                     </div>
                 </div>
-                <div class="icon-test">
-                    <i class="fa-solid fa-arrow-left color-B10000"></i>
-                    <i class="fa-solid fa-arrow-right color-fff"></i>
-                </div>
+                
             </div>
         </div>
         <div class="container">
             <div class="row secondhand-list">
-                @foreach($secondhandProducts as $product)
+                @forelse($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
                     <i class="fa-regular fa-heart fa-heart-home"></i>
@@ -109,14 +106,19 @@
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
                 </div>
-                @endforeach
+                @empty 
+                    <div class="text-center w-100 py-5">
+                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                    </div>
+                @endforelse
             </div>
+            @if($secondhandProducts->isNotEmpty())
             <div class="text-center py-5 divMoreSecondhand">
-                <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-right"></i></a>
+                <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
+                <span class="end-of-products-secondhand" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
+                <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
-            <div class="text-center py-5 end-of-products" style="display: none;color:rgb(177,0,0);">
-                <p>Hết sản phẩm</p>
-            </div>
+            @endif
         </div>
     </div>
     <div class="brand">
@@ -160,82 +162,33 @@
                         <hr>
                     </div>
                 </div>
-                <div class="icon-test">
-                    <i class="fa-solid fa-arrow-left color-B10000"></i>
-                    <i class="fa-solid fa-arrow-right color-fff"></i>
-                </div>
             </div>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row exchange-list">
+                @forelse($exchangeProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand1.jpeg') }}" alt="">
+                    <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
                     <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Chân váy dài</p>
+                    <p class="product-name pt-2">{{$product->name}}</p>
                     <br>
                     <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
                     <a href="#" class="buy">Trao đổi</a>
                 </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand2.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Bộ mỹ phẩm</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand3.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Nước hoa Dior</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand4.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Điện thoại Xiaomi</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand5.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Giày AF1</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand6.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Hoodie</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand7.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Giày cao gót nữ</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand8.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Điện thoại IP 14 Pro Max</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
+                @empty 
+                    <div class="text-center w-100 py-5">
+                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                    </div>
+                @endforelse
             </div>
-            <div class="text-center py-5">
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+            @if($exchangeProducts->isNotEmpty())
+            <div class="text-center py-5 divMoreExchange">
+                <a id="btnMoreExchange" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
+                <span class="end-of-products-exchange" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
+                <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
+            @endif
+            
         </div>
     </div>
     <div class="app">
@@ -408,29 +361,54 @@
 
     <script>
         $(document).ready(function() {
-            var currentPage = 1;
+            var currentSecondhandPage = 1;
+            var currentExchangePage = 1;
             
             $('#btnMoreSecondhand').click(function(event) {
                 event.preventDefault();
-                currentPage++;
+                currentSecondhandPage++;
                 
                 $.ajax({
                     url: '{{ route("home") }}',
                     method: 'GET',
                     data: {
-                        page: currentPage
+                        secondhandPage: currentSecondhandPage
                     },
                     success: function(response) {
                         var productsHtml = '';
                         
                         $('.secondhand-list').append(response.products); 
                         if (response.hasMorePage) {
-                            $('.divMoreSecondhand').hide(); 
-                            $('.end-of-products').show(); 
+                            $('#btnMoreSecondhand').hide(); 
+                            $('.end-of-products-secondhand').show(); 
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.log(error);
+                        
+                }
+                });
+            });
+
+            $('#btnMoreExchange').click(function(event) {
+                event.preventDefault();
+                currentExchangePage++;
+                
+                $.ajax({
+                    url: '{{ route("home") }}',
+                    method: 'GET',
+                    data: {
+                        exchangePage: currentExchangePage
+                    },
+                    success: function(response) {
+                        var productsHtml = '';
+                        
+                        $('.exchange-list').append(response.products); 
+                        if (response.hasMorePage) {
+                            $('#btnMoreExchange').hide(); 
+                            $('.end-of-products-exchange').show(); 
+                        }
+                    },
+                    error: function(xhr, status, error) {
                         
                 }
                 });
