@@ -99,74 +99,23 @@
             </div>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row secondhand-list">
+                @foreach($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand1.jpeg') }} " alt="">
+                    <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
                     <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Chân váy dài</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
+                    <p class="product-name pt-2">{{$product->name}}</p>
+                    <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
                 </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand2.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Bộ mỹ phẩm</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand3.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Nước hoa Dior</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand4.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Điện thoại Xiaomi</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand5.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Giày AF1</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand6.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Hoodie</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand7.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Giày cao gót nữ</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand8.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
-                    <p class="product-name pt-2">Điện thoại IP 14 Pro Max</p>
-                    <p class="price color-B10000 pt-2">150.000 đ</p>
-                    <br>
-                    <a href="#" class="buy">Mua ngay</a>
-                </div>
+                @endforeach
             </div>
-            <div class="text-center py-5">
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+            <div class="text-center py-5 divMoreSecondhand">
+                <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-right"></i></a>
+            </div>
+            <div class="text-center py-5 end-of-products" style="display: none;color:rgb(177,0,0);">
+                <p>Hết sản phẩm</p>
             </div>
         </div>
     </div>
@@ -454,8 +403,42 @@
     <hr>
 
 @section('script')
-    <script src="{{ asset('/js/text.js') }}"></script>
+
+<script src="{{ asset('/js/text.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            var currentPage = 1;
+            
+            $('#btnMoreSecondhand').click(function(event) {
+                event.preventDefault();
+                currentPage++;
+                
+                $.ajax({
+                    url: '{{ route("home") }}',
+                    method: 'GET',
+                    data: {
+                        page: currentPage
+                    },
+                    success: function(response) {
+                        var productsHtml = '';
+                        
+                        $('.secondhand-list').append(response.products); 
+                        if (response.hasMorePage) {
+                            $('.divMoreSecondhand').hide(); 
+                            $('.end-of-products').show(); 
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                        
+                }
+                });
+            });
+        });
+    </script>
 @endsection
+
 @endsection
    
   
