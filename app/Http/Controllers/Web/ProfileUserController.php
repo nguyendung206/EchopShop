@@ -6,15 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Province;
 use App\Models\Users;
+use App\Services\FavoriteService;
+use Illuminate\Http\Request;
 
 class ProfileUserController extends Controller
 {
-    public function index($id)
+    protected $favoriteService;
+    public function __construct(FavoriteService $favoriteService) {
+        $this->favoriteService = $favoriteService;
+    }
+
+    public function index(Request $request,$id)
     {
         $profile = Users::where('id', $id)->first();
         $provinces = Province::all();
 
-        return view('web.profile', compact('profile', 'provinces'));
+        $favorites = $this->favoriteService->getProduct(8);
+        if ($request->ajax() || $request->wantsJson()) {
+            $productHtml = view('web.moreFavorite', compact('favorites'))->render();
+            $hasMorePage = ! $favorites->hasMorePages();
+            return response()->json([
+                'products' => $productHtml,
+                'hasMorePage' => $hasMorePage,
+            ]);
+
+        }
+
+        return view('web.profile', compact('profile', 'provinces', 'favorites'));
     }
 
     public function update(UserRequest $request)

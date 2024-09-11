@@ -318,4 +318,5 @@
     });
 </script>
 @include('admin.userManager.province')
+@include('web.favorites')
 @endsection

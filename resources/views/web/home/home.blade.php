@@ -100,7 +100,11 @@
                 @forelse($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-                    <i class="fa-regular fa-heart fa-heart-home"></i>
+                    @auth
+                        <a href="#" class='product-heart {{$favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{$favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
+                    @else
+                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                    @endauth
                     <p class="product-name pt-2">{{$product->name}}</p>
                     <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
                     <br>
@@ -114,8 +118,9 @@
             </div>
             @if($secondhandProducts->isNotEmpty())
             <div class="text-center py-5 divMoreSecondhand">
+                @if($secondhandProducts->count() >= 8)
                 <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
-                <span class="end-of-products-secondhand" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
+                @endif
                 <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
@@ -169,7 +174,11 @@
                 @forelse($exchangeProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
+                    @auth
+                        <a href="#" class='product-heart {{$favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{$favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
+                    @else
+                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                    @endauth
                     <p class="product-name pt-2">{{$product->name}}</p>
                     <br>
                     <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
@@ -183,8 +192,9 @@
             </div>
             @if($exchangeProducts->isNotEmpty())
             <div class="text-center py-5 divMoreExchange">
+                @if($exchangeProducts->count() >= 8)
                 <a id="btnMoreExchange" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
-                <span class="end-of-products-exchange" style="display: none;color:rgb(177,0,0);">Hết sản phẩm</span>
+                @endif
                 <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
@@ -357,8 +367,9 @@
 
 @section('script')
 
-<script src="{{ asset('/js/text.js') }}"></script>
+<script src="{{ asset('/js/favorite.js')}}"></script>
 
+<script src="{{ asset('/js/text.js') }}"></script>
     <script>
         $(document).ready(function() {
             var currentSecondhandPage = 1;
@@ -413,8 +424,9 @@
                 }
                 });
             });
+            
         });
-    </script>
+        </script>
 @endsection
 
 @endsection

@@ -45,4 +45,8 @@ class Users extends Model
     {
         return $this->status == 0 ? 'Nam' : 'Nữ';
     }
+
+    public function favorites() {
+        return $this->hasMany(Favorite::class, 'user_id', 'id');
+    }
 }
