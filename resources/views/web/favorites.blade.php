@@ -27,9 +27,9 @@
         @endforelse
     </div>
     @if(auth()->user()->load('favorites')->favorites->isNotEmpty())
-    <div class="text-center py-5 divMoreSecondhand">
+    <div class="text-center py-5 divMoreFavorite">
         @if(auth()->user()->load('favorites')->favorites->count() >= 8)
-        <a id="btnMoreSecondhand" class="all color-B10000" href="#" data-url ='{{route('web.profile.index', Session::get('user')->id)}}' >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
+        <a id="btnMoreFavorite" class="all color-B10000" href="#" data-url ='{{route('web.profile.index', Session::get('user')->id)}}' >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
         @endif
         <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
     </div>
@@ -41,7 +41,7 @@
 
 <script>
             var currentPage = 1;
-            $('#btnMoreSecondhand').click(function(event) {
+            $('#btnMoreFavorite').click(function(event) {
                 var url = $(this).data('url');
                 event.preventDefault();
                 currentPage++;
@@ -57,8 +57,8 @@
                         
                         $('.favorite-list').append(response.products); 
                         if (response.hasMorePage) {
-                            $('#btnMoreSecondhand').hide(); 
-                            $('.end-of-products-secondhand').show(); 
+                            $('#btnMoreFavorite').hide(); 
+                            $('.end-of-products-Favorite').show(); 
                         }
                     },
                     error: function(xhr, status, error) {
