@@ -6,30 +6,33 @@ use App\Models\Favorite;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteService
-{   
+{
     public function getProduct($perPage)
     {
         try {
-            if(!Auth::check()) return [];
+            if (! Auth::check()) {
+                return [];
+            }
             $user = Auth::user();
             $favorites = Favorite::query()->where('user_id', Auth::id())->with('product')->paginate($perPage);
+
             return $favorites;
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return [];
         }
     }
 
     public function store($request)
-    {   
+    {
         try {
-            if(Auth::check()) {
+            if (Auth::check()) {
                 $newFavorite = Favorite::create([
                     'user_id' => Auth::id(),
-                    'product_id' => $request->productId
+                    'product_id' => $request->productId,
                 ]);
 
                 return $newFavorite;
-                
+
             } else {
                 return false;
             }
@@ -38,16 +41,17 @@ class FavoriteService
         }
     }
 
-    public function destroy($productId) 
-    {   
+    public function destroy($productId)
+    {
         try {
-            if(Auth::check()) {
+            if (Auth::check()) {
                 $favorite = Favorite::where('product_id', $productId)
-                            ->where('user_id', Auth::id())
-                            ->firstOrFail();
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
                 $result = $favorite->delete();
+
                 return $result;
-            }else {
+            } else {
                 return false;
             }
         } catch (\Exception $e) {

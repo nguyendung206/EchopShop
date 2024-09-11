@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\FavoriteService;
+use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
     protected $favoriteService;
-    public function __construct (FavoriteService $favoriteService) {
+
+    public function __construct(FavoriteService $favoriteService)
+    {
         $this->favoriteService = $favoriteService;
     }
 
@@ -18,21 +20,23 @@ class FavoriteController extends Controller
         //
     }
 
-
     public function store(Request $request)
     {
-            $result = $this->favoriteService->store($request);
-            if($result) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Thêm yêu thích thành công',
-                ], 200);
-            }
+        $result = $this->favoriteService->store($request);
+        if ($result) {
+            flash('Thêm yêu thích thành công')->success();
+
             return response()->json([
-                'status' => 'fail',
-                'message' => 'Đã có lỗi xảy ra',
-            ], 500);
-                
+                'status' => 'success',
+                'message' => 'Thêm yêu thích thành công',
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Đã có lỗi xảy ra',
+        ], 500);
+
     }
 
     public function show($id)
@@ -54,7 +58,6 @@ class FavoriteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -72,15 +75,16 @@ class FavoriteController extends Controller
     public function destroy($id)
     {
         $result = $this->favoriteService->destroy($id);
-            if($result) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Xoá yêu thích thành công',
-                ], 200);
-            }
+        if ($result) {
             return response()->json([
-                'status' => 'fail',
-                'message' => 'Đã có lỗi xảy ra',
-            ], 500);
+                'status' => 'success',
+                'message' => 'Xoá yêu thích thành công',
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Đã có lỗi xảy ra',
+        ], 500);
     }
 }

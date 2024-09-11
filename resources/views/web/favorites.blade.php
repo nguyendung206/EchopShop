@@ -26,9 +26,9 @@
             </div>
         @endforelse
     </div>
-    @if($favorites->isNotEmpty())
+    @if(auth()->user()->load('favorites')->favorites->isNotEmpty())
     <div class="text-center py-5 divMoreSecondhand">
-        @if($favorites->count() >= 8)
+        @if(auth()->user()->load('favorites')->favorites->count() >= 8)
         <a id="btnMoreSecondhand" class="all color-B10000" href="#" data-url ='{{route('web.profile.index', Session::get('user')->id)}}' >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
         @endif
         <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
