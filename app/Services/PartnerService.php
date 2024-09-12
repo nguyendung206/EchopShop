@@ -8,15 +8,15 @@ class PartnerService
 {
     public function index($request)
     {
-        // $query = Partner::query();
-        // if (! empty($request->search)) {
-        //     $query->where('title', 'like', '%'.$request->search.'%');
-        // }
-        // if (isset($request->status)) {
-        //     $query->where('status', $request->status);
-        // }
+        $query = Partner::query();
+        if (! empty($request->search)) {
+            $query->where('company_name', 'like', '%'.$request->search.'%');
+        }
+        if (isset($request->status)) {
+            $query->where('status', $request->status);
+        }
 
-        // return $query->paginate(5);
+        return $query->paginate(5);
     }
 
     public function store($request)

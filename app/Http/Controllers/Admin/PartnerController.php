@@ -18,10 +18,11 @@ class PartnerController extends Controller
         $this->partnerService = $partnerService;
     }
 
-    public function index()
+    public function index(Request $request)
     {   
-        $partners = Partner::query()->paginate(5);
-        return view('admin.Partner.index', compact('partners'));
+        $partners = $this->partnerService->index($request);
+
+        return view('admin.partner.index', compact('partners'));
     }
 
     
@@ -45,23 +46,18 @@ class PartnerController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
-        //
+        $partner = Partner::findOrFail($id);
+        if (! $partner) {
+            return back()->with('message', 'Không có đối tác tương ứng');
+        }
+
+        return view('admin.Partner.show', compact('partner'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
         $partner = Partner::findOrFail($id);
@@ -72,13 +68,7 @@ class PartnerController extends Controller
         return view('admin.partner.edit', compact('partner'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(PartnerRequest $request, $id)
     {
         try {
@@ -93,12 +83,7 @@ class PartnerController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         try {
