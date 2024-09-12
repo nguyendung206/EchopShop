@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PartnerRequest;
 use App\Models\Partner;
 use App\Services\PartnerService;
 use Illuminate\Http\Request;
-use App\Http\Requests\PartnerRequest;
 
 class PartnerController extends Controller
 {
-    
     protected $partnerService;
 
     public function __construct(PartnerService $partnerService)
@@ -19,19 +18,17 @@ class PartnerController extends Controller
     }
 
     public function index(Request $request)
-    {   
+    {
         $partners = $this->partnerService->index($request);
 
         return view('admin.partner.index', compact('partners'));
     }
 
-    
     public function create()
     {
         return view('admin.Partner.create');
     }
 
-   
     public function store(PartnerRequest $request)
     {
         try {
@@ -46,7 +43,6 @@ class PartnerController extends Controller
         }
     }
 
-    
     public function show($id)
     {
         $partner = Partner::findOrFail($id);
@@ -57,7 +53,6 @@ class PartnerController extends Controller
         return view('admin.Partner.show', compact('partner'));
     }
 
-   
     public function edit($id)
     {
         $partner = Partner::findOrFail($id);
@@ -68,7 +63,6 @@ class PartnerController extends Controller
         return view('admin.partner.edit', compact('partner'));
     }
 
-   
     public function update(PartnerRequest $request, $id)
     {
         try {
@@ -82,7 +76,6 @@ class PartnerController extends Controller
             return redirect()->back()->withInput();
         }
     }
-
 
     public function destroy($id)
     {

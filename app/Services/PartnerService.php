@@ -28,6 +28,7 @@ class PartnerService
             'photo' => uploadImage($request->file('photo'), 'upload/Partners/', 'nophoto.png'),
             'status' => $request->status,
         ];
+
         return Partner::create($PartnerData);
     }
 
@@ -46,6 +47,7 @@ class PartnerService
         if ($request->file('photo')) {
             deleteImage($photo, 'nophoto.png');
         }
+
         return $partner;
     }
 
@@ -54,11 +56,12 @@ class PartnerService
         try {
             $partner = Partner::findOrFail($id);
             $check = $partner->delete();
-            if($check) {
+            if ($check) {
                 deleteImage($partner->photo, 'nophoto.png');
             }
+
             return $check;
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

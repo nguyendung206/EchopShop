@@ -31,6 +31,7 @@ class PartnerRequest extends FormRequest
             'status' => ['required', 'in:1,2'],
         ];
     }
+
     public function attributes()
     {
         return [
