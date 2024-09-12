@@ -1,4 +1,4 @@
-@foreach($secondhandProducts as $product)
+@foreach($exchangeProducts as $product)
 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
     <a href="{{ route('web.productdetail.index', ['id' => $product->id]) }}">
         <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
@@ -8,9 +8,9 @@
         <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
         @endauth
         <p class="product-name pt-2">{{$product->name}}</p>
-        <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
     </a>
     <br>
-    <a href="#" class="buy">Mua ngay</a>
+    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
+    <a href="#" class="buy">Trao đổi</a>
 </div>
 @endforeach

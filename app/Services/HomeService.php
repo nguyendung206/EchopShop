@@ -2,16 +2,15 @@
 
 namespace App\Services;
 
-use App\Enums\TypeProduct;
 use App\Models\Product;
 
 class HomeService
 {
-    public function moreSecondhand($request)
+    public function getProduct($type, $perPage, $pageName)
     {
         $query = Product::query();
-        $secondhandProducts = $query->where('status', 1)->where('type', TypeProduct::SECONDHAND->value)->paginate(8);
+        $products = $query->where('status', 1)->where('type', $type)->paginate($perPage, ['*'], $pageName);
 
-        return $secondhandProducts;
+        return $products;
     }
 }

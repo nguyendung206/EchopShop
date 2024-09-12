@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\District;
 use App\Models\Province;
-use App\Models\Users;
+use App\Models\User;
 use App\Models\Ward;
 use App\Services\UserService;
 use Illuminate\Database\QueryException;
@@ -37,7 +37,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = Users::find($id);
+        $user = User::find($id);
         if (! $user) {
             flash('Không có người dùng tương ứng')->error();
 
@@ -81,7 +81,7 @@ class UserController extends Controller
                 'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', 'nophoto.png'),
             ];
 
-            Users::create($userData);
+            User::create($userData);
             flash('Thêm người dùng thành công')->success();
 
             return redirect()->route('manager-user.create');
@@ -99,7 +99,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $provinces = Province::all();
-        $user = Users::find($id);
+        $user = User::find($id);
         if (! $user) {
             return back()->with('message', 'Không có người dùng tương ứng');
         }
@@ -109,7 +109,7 @@ class UserController extends Controller
 
     public function update(UserRequest $request, $id)
     {
-        $user = Users::find($id);
+        $user = User::find($id);
         if (! $user) {
             flash('Sửa thông tin thất bại')->error();
 
@@ -159,7 +159,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = Users::find($id);
+        $user = User::find($id);
         if (! $user) {
             flash('Không có người dùng tương ứng')->error();
 
@@ -181,7 +181,7 @@ class UserController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $user = Users::find($id);
+        $user = User::find($id);
         if (! $user) {
             flash('Sửa thông tin thất bại')->error();
 

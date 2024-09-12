@@ -77,25 +77,35 @@ HOME
         </div>
         <div class="container">
             <div class="row secondhand-list">
-                @foreach($secondhandProducts as $product)
+                @forelse($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
                     <a href="{{ route('web.productdetail.index', ['id' => $product->id]) }}">
                         <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-                        <i class="fa-regular fa-heart fa-heart-home"></i>
+                        @auth
+                        <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
+                        @else
+                        <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                        @endauth
                         <p class="product-name pt-2">{{$product->name}}</p>
                         <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
                     </a>
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
                 </div>
-                @endforeach
+                @empty
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                </div>
+                @endforelse
             </div>
+            @if($secondhandProducts->isNotEmpty())
             <div class="text-center py-5 divMoreSecondhand">
-                <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-right"></i></a>
+                @if($secondhandProducts->count() >= 8)
+                <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
+                @endif
+                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
-            <div class="text-center py-5 end-of-products" style="display: none;color:rgb(177,0,0);">
-                <p>Hết sản phẩm</p>
-            </div>
+            @endif
         </div>
     </div>
     <div class="brand">
@@ -139,82 +149,38 @@ HOME
                         <hr>
                     </div>
                 </div>
-                <div class="icon-test">
-                    <i class="fa-solid fa-arrow-left color-B10000"></i>
-                    <i class="fa-solid fa-arrow-right color-fff"></i>
-                </div>
             </div>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row exchange-list">
+                @forelse($exchangeProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand1.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Chân váy dài</p>
+                    <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
+                    @auth
+                    <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
+                    @else
+                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                    @endauth
+                    <p class="product-name pt-2">{{$product->name}}</p>
                     <br>
                     <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
                     <a href="#" class="buy">Trao đổi</a>
                 </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand2.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Bộ mỹ phẩm</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
+                @empty
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
                 </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand3.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Nước hoa Dior</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand4.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Điện thoại Xiaomi</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand5.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Giày AF1</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand6.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Hoodie</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand7.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Giày cao gót nữ</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
-                <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ asset('/img/image/secondhand8.jpeg') }}" alt="">
-                    <i class="fa-regular fa-heart fa-heart-home icon-change"></i>
-                    <p class="product-name pt-2">Điện thoại IP 14 Pro Max</p>
-                    <br>
-                    <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                    <a href="#" class="buy">Trao đổi</a>
-                </div>
+                @endforelse
             </div>
-            <div class="text-center py-5">
+            @if($exchangeProducts->isNotEmpty())
+            <div class="text-center py-5 divMoreExchange">
+                @if($exchangeProducts->count() >= 8)
+                <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
+                @endif
                 <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
+            @endif
+
         </div>
     </div>
     <div class="app">
@@ -381,39 +347,107 @@ HOME
 <hr>
 
 @section('script')
-<script src="{{ asset('/js/text.js') }}"></script>
+<<<<<<< HEAD
+    <script src="{{ asset('/js/text.js') }}">
+    </script>
 
-<script>
-    $(document).ready(function() {
-        var currentPage = 1;
+    <script>
+        $(document).ready(function() {
+                    var currentPage = 1;
 
-        $('#btnMoreSecondhand').click(function(event) {
-            event.preventDefault();
-            currentPage++;
+                    $('#btnMoreSecondhand').click(function(event) {
+                                event.preventDefault();
+                                currentPage++;
 
-            $.ajax({
-                url: '{{ route("home") }}',
-                method: 'GET',
-                data: {
-                    page: currentPage
-                },
-                success: function(response) {
-                    var productsHtml = '';
+                                $.ajax({
+                                            url: '{{ route("home") }}',
+                                            method: 'GET',
+                                            data: {
+                                                page: currentPage
+                                            },
+                                            success: function(response) {
+                                                var productsHtml = '';
 
-                    $('.secondhand-list').append(response.products);
-                    if (response.hasMorePage) {
-                        $('.divMoreSecondhand').hide();
-                        $('.end-of-products').show();
+                                                $('.secondhand-list').append(response.products);
+                                                if (response.hasMorePage) {
+                                                    $('.divMoreSecondhand').hide();
+                                                    $('.end-of-products').show();
+                                                }
+                                            },
+                                            error: function(xhr, status, error) {
+                                                    console.log(error);
+
+                                                    ===
+                                                    === =
+
+                                                    <
+                                                    script src = "{{ asset('/js/favorite.js')}}" >
+    </script>
+
+    <script src="{{ asset('/js/text.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            var currentSecondhandPage = 1;
+            var currentExchangePage = 1;
+
+            $('#btnMoreSecondhand').click(function(event) {
+                event.preventDefault();
+                currentSecondhandPage++;
+
+                $.ajax({
+                    url: '{{ route("home") }}',
+                    method: 'GET',
+                    data: {
+                        secondhandPage: currentSecondhandPage
+                    },
+                    success: function(response) {
+                        var productsHtml = '';
+
+                        $('.secondhand-list').append(response.products);
+                        if (response.hasMorePage) {
+                            $('#btnMoreSecondhand').hide();
+                            $('.end-of-products-secondhand').show();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+
+                        >>>
+                        >>> > c8dd25f58fbe44dec935d59bc435dcc5c132cc87
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
+                });
 
-                }
-            });
+                $('#btnMoreExchange').click(function(event) {
+                    event.preventDefault();
+                    currentExchangePage++;
+
+                    $.ajax({
+                        url: '{{ route("home") }}',
+                        method: 'GET',
+                        data: {
+                            exchangePage: currentExchangePage
+                        },
+                        success: function(response) {
+                            var productsHtml = '';
+
+                            $('.exchange-list').append(response.products);
+                            if (response.hasMorePage) {
+                                $('#btnMoreExchange').hide();
+                                $('.end-of-products-exchange').show();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+
+                        }
+                    });
+                });
+
+            }); <<
+            << << < HEAD
         });
-    });
-</script>
-@endsection
+    </script>
+    =======
+    </script>
+    >>>>>>> c8dd25f58fbe44dec935d59bc435dcc5c132cc87
+    @endsection
 
-@endsection
+    @endsection

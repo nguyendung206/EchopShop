@@ -55,7 +55,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-3 profile-list">
-            <img src="{{getImage('upload/users/'.$profile->avatar)}}" alt="" class="profile-img">
+            <img src="{{getImage($profile->avatar)}}" alt="" class="profile-img">
             <p class="profile-name text-center">{{$profile->name}}</p>
             <a class="profile-update-btn text-center">
                 <i class="fa-regular fa-pen-to-square"></i>
@@ -113,7 +113,7 @@
 
                 <div class="row">
                     <div class="col-lg-3 col-sm-12 col-12 text-center mb-4">
-                        <img id="profileImage" src="{{ getImage('upload/users/'. $profile->avatar) }}" alt="Avatar" class="profile-img profile-img-2">
+                        <img id="profileImage" src="{{ getImage($profile->avatar) }}" alt="Avatar" class="profile-img profile-img-2">
                         <input type="file" id="fileInput" name="avatar" style="display: none;" accept="image/*" onchange="previewImage(event)">
                         <a href="#" id="uploadButton" class="profile-update-btn profile-update-btn-2 text-center">
                             <i class="fa-regular fa-pen-to-square"></i> Chỉnh sửa
@@ -318,4 +318,5 @@
     });
 </script>
 @include('admin.userManager.province')
+@include('web.favorites')
 @endsection

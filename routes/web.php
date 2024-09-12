@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\web\ProductDetailController;
 use App\Http\Controllers\Web\ProfileUserController;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__ . '/admin.php';
+require __DIR__.'/admin.php';
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,4 +48,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
         Route::put('/save', [ProfileUserController::class, 'update'])->name('web.profile.save');
     });
+});
+Route::prefix('/favorite')->name('favorite.')->group(function () {
+    Route::post('/', [FavoriteController::class, 'store'])->name('store');
+    Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('destroy');
 });

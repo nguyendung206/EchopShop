@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (Schema::hasTable('categories')) {
-            $categories = Category::query()->where('status', 1)->with('brands')->get();
+            $categories = Category::query()->where('status', 1)->with('activeBrands')->get();
             View::share('categories', $categories);
         }
     }

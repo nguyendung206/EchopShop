@@ -2,43 +2,56 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'users';
+
     protected $fillable = [
         'name',
+        'password',
         'email',
-        'password',
+        'avatar',
+        'phone_number',
+        'citizen_identification_number',
+        'date_of_issue',
+        'place_of_issue',
+        'date_of_birth',
+        'gender',
+        'rank_id',
+        'address',
+        'province_id',
+        'district_id',
+        'ward_id',
+        'status',
+        'shop_id',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    public function statusText()
+    {
+        return $this->status == 0 ? 'Hoạt động' : 'Đã bị khoá';
+    }
+
+    public function genderText()
+    {
+        return $this->status == 0 ? 'Nam' : 'Nữ';
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'user_id', 'id');
+    }
 }
