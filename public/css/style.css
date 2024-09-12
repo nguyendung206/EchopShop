@@ -7,10 +7,6 @@ body {
     display: none;
 }
 
-img {
-    width: 100%;
-}
-
 a:hover {
     text-decoration: none;
 }
@@ -171,6 +167,7 @@ a:hover {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    object-fit: cover;
 }
 
 .category-name {

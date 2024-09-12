@@ -66,40 +66,40 @@
                     <div class="col-lg-8 menu">
                         <ul class="row">
                             <li class="ml-3">
-                                  <div class="dropdown">
-                                      <a href='#' class="" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="dropdown">
+                                    <a href='#' class="" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Danh mục sản phẩm<i
-                                        class="fa-solid fa-caret-down pl-2"></i></a>
-                                      </a>
-                                      @if(isset($categories)) 
-                                      <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                            class="fa-solid fa-caret-down pl-2"></i></a>
+                                    </a>
+                                    @if(isset($categories))
+                                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                                         @foreach($categories as $category)
-                                          <li class="dropdown-submenu">
-                                            <a  class="dropdown-item dropdown-item-custom" tabindex="-1" href="#">
-                                                    <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
-                                                    <p class="dropdown-title">{{$category->name}}</p>
+                                        <li class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-item-custom" tabindex="-1" href="#">
+                                                <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
+                                                <p class="dropdown-title">{{$category->name}}</p>
                                             </a>
                                             @if($category->activeBrands->count())
-                                                <ul class="dropdown-menu">
-                                                    @foreach($category->activeBrands as $brand) 
-                                                        <li class="dropdown-item">
-                                                            <a href="#" >{{$brand->name}}</a>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+                                            <ul class="dropdown-menu">
+                                                @foreach($category->activeBrands as $brand)
+                                                <li class="dropdown-item">
+                                                    <a href="#">{{$brand->name}}</a>
+                                                </li>
+                                                @endforeach
+                                            </ul>
                                             @endif
-                                          </li>
+                                        </li>
                                         @endforeach
-                                            <li class="dropdown-submenu" tabindex="-1"  href="#">
-                                                <a  class="dropdown-item dropdown-item-custom" tabindex="-1" href="#">
-                                                    <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
-                                                    <p class="dropdown-title">Khác</p>
-                                                </a>
-                                            </li>
+                                        <li class="dropdown-submenu" tabindex="-1" href="#">
+                                            <a class="dropdown-item dropdown-item-custom" tabindex="-1" href="#">
+                                                <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
+                                                <p class="dropdown-title">Khác</p>
+                                            </a>
+                                        </li>
 
-                                        </ul>
-                                        @endif
-                              </div>
+                                    </ul>
+                                    @endif
+                                </div>
                             </li>
 
 
@@ -162,5 +162,5 @@
         </div>
     </div>
 
-   
+
 </header>
