@@ -1,6 +1,6 @@
-@forelse($favorites as $favorite)
+@foreach($favorites as $favorite)
         @php
-            $product = $favorite->product; // Truy cập đối tượng product liên quan
+            $product = $favorite->product;
         @endphp
     <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
         <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
@@ -10,8 +10,5 @@
         <br>
         <a href="#" class="buy">Mua ngay</a>
     </div>
-    @empty 
-        <div class="text-center w-100 py-5">
-            <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-    </div>
-@endforelse
+    
+@endforeach
