@@ -58,17 +58,18 @@ HOME
             </div>
         </div>
     </div>
-</div>
-<div class="secondhand">
-    <div class="container">
-        <div class="row justify-content-between align-items-center">
-            <div class="category pt-2">
-                <div class="container">
-                    <br>
-                    <h1>Mua bán đồ secondhand</h1>
-                    <div class="test"></div>
-                    <hr>
+    <div class="secondhand">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="category pt-2">
+                    <div class="container">
+                        <br>
+                        <h1>Mua bán đồ secondhand</h1>
+                        <div class="test"></div>
+                        <hr>
+                    </div>
                 </div>
+
             </div>
             <div class="icon-test">
                 <i class="fa-solid fa-arrow-left color-B10000"></i>
@@ -79,7 +80,7 @@ HOME
             <div class="row secondhand-list">
                 @forelse($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <a href="{{ route('web.productdetail.index', ['id' => $product->id]) }}">
+                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
                         <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
                         @auth
                         <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
@@ -155,13 +156,15 @@ HOME
             <div class="row exchange-list">
                 @forelse($exchangeProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
-                    @auth
-                    <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
-                    @else
-                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
-                    @endauth
-                    <p class="product-name pt-2">{{$product->name}}</p>
+                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
+                        <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
+                        @auth
+                        <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
+                        @else
+                        <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                        @endauth
+                        <p class="product-name pt-2">{{$product->name}}</p>
+                    </a>
                     <br>
                     <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
                     <a href="#" class="buy">Trao đổi</a>
@@ -347,107 +350,66 @@ HOME
 <hr>
 
 @section('script')
-<<<<<<< HEAD
-    <script src="{{ asset('/js/text.js') }}">
-    </script>
 
-    <script>
-        $(document).ready(function() {
-                    var currentPage = 1;
+<script src="{{ asset('/js/favorite.js')}}"></script>
 
-                    $('#btnMoreSecondhand').click(function(event) {
-                                event.preventDefault();
-                                currentPage++;
+<script src="{{ asset('/js/text.js') }}"></script>
+<script>
+    $(document).ready(function() {
+                var currentSecondhandPage = 1;
+                var currentExchangePage = 1;
 
-                                $.ajax({
-                                            url: '{{ route("home") }}',
-                                            method: 'GET',
-                                            data: {
-                                                page: currentPage
-                                            },
-                                            success: function(response) {
-                                                var productsHtml = '';
-
-                                                $('.secondhand-list').append(response.products);
-                                                if (response.hasMorePage) {
-                                                    $('.divMoreSecondhand').hide();
-                                                    $('.end-of-products').show();
-                                                }
-                                            },
-                                            error: function(xhr, status, error) {
-                                                    console.log(error);
-
-                                                    ===
-                                                    === =
-
-                                                    <
-                                                    script src = "{{ asset('/js/favorite.js')}}" >
-    </script>
-
-    <script src="{{ asset('/js/text.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            var currentSecondhandPage = 1;
-            var currentExchangePage = 1;
-
-            $('#btnMoreSecondhand').click(function(event) {
-                event.preventDefault();
-                currentSecondhandPage++;
-
-                $.ajax({
-                    url: '{{ route("home") }}',
-                    method: 'GET',
-                    data: {
-                        secondhandPage: currentSecondhandPage
-                    },
-                    success: function(response) {
-                        var productsHtml = '';
-
-                        $('.secondhand-list').append(response.products);
-                        if (response.hasMorePage) {
-                            $('#btnMoreSecondhand').hide();
-                            $('.end-of-products-secondhand').show();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-
-                        >>>
-                        >>> > c8dd25f58fbe44dec935d59bc435dcc5c132cc87
-                    }
-                });
-
-                $('#btnMoreExchange').click(function(event) {
+                $('#btnMoreSecondhand').click(function(event) {
                     event.preventDefault();
-                    currentExchangePage++;
+                    currentSecondhandPage++;
 
                     $.ajax({
                         url: '{{ route("home") }}',
                         method: 'GET',
                         data: {
-                            exchangePage: currentExchangePage
+                            secondhandPage: currentSecondhandPage
                         },
                         success: function(response) {
                             var productsHtml = '';
 
-                            $('.exchange-list').append(response.products);
+                            $('.secondhand-list').append(response.products);
                             if (response.hasMorePage) {
-                                $('#btnMoreExchange').hide();
-                                $('.end-of-products-exchange').show();
+                                $('#btnMoreSecondhand').hide();
+                                $('.end-of-products-secondhand').show();
                             }
                         },
                         error: function(xhr, status, error) {
 
                         }
                     });
+
+                    $('#btnMoreExchange').click(function(event) {
+                        event.preventDefault();
+                        currentExchangePage++;
+
+                        $.ajax({
+                            url: '{{ route("home") }}',
+                            method: 'GET',
+                            data: {
+                                exchangePage: currentExchangePage
+                            },
+                            success: function(response) {
+                                var productsHtml = '';
+
+                                $('.exchange-list').append(response.products);
+                                if (response.hasMorePage) {
+                                    $('#btnMoreExchange').hide();
+                                    $('.end-of-products-exchange').show();
+                                }
+                            },
+                            error: function(xhr, status, error) {
+
+                            }
+                        });
+                    });
+
                 });
+</script>
+@endsection
 
-            }); <<
-            << << < HEAD
-        });
-    </script>
-    =======
-    </script>
-    >>>>>>> c8dd25f58fbe44dec935d59bc435dcc5c132cc87
-    @endsection
-
-    @endsection
+@endsection

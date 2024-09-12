@@ -5,11 +5,11 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 
-class ProductDetailController extends Controller
+class ProductController extends Controller
 {
-    public function index($id)
+    public function show($slug)
     {
-        $product = Product::where('id', $id)->first();
+        $product = Product::where('slug', $slug)->first();
 
         return view('web.product.productdetail', compact('product'));
     }

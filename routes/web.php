@@ -3,7 +3,7 @@
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
-use App\Http\Controllers\web\ProductDetailController;
+use App\Http\Controllers\web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,7 +41,7 @@ Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPasswo
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 Route::prefix('/product-detail')->group(function () {
-    Route::get('/{id}', [ProductDetailController::class, 'index'])->name('web.productdetail.index');
+    Route::get('/{slug}', [ProductController::class, 'show'])->name('web.productdetail.index');
 });
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/profile')->group(function () {
