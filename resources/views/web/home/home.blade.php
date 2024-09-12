@@ -282,60 +282,62 @@ HOME
 <script src="{{ asset('/js/text.js') }}"></script>
 <script>
     $(document).ready(function() {
-                var currentSecondhandPage = 1;
-                var currentExchangePage = 1;
+        var currentSecondhandPage = 1;
+        var currentExchangePage = 1;
+        
+        $('#btnMoreSecondhand').click(function(event) {
+            event.preventDefault();
+            currentSecondhandPage++;
+            
+            $.ajax({
+                url: '{{ route("home") }}',
+                method: 'GET',
+                data: {
+                    secondhandPage: currentSecondhandPage
+                },
+                success: function(response) {
+                    var productsHtml = '';
+                    
+                    $('.secondhand-list').append(response.products); 
+                    if (response.hasMorePage) {
+                        $('#btnMoreSecondhand').hide(); 
+                        $('.end-of-products-secondhand').show(); 
+                    }
+                },
+                error: function(xhr, status, error) {
+                    
+            }
+            });
+        });
 
-                $('#btnMoreSecondhand').click(function(event) {
-                    event.preventDefault();
-                    currentSecondhandPage++;
+        $('#btnMoreExchange').click(function(event) {
+            event.preventDefault();
+            currentExchangePage++;
+            
+            $.ajax({
+                url: '{{ route("home") }}',
+                method: 'GET',
+                data: {
+                    exchangePage: currentExchangePage
+                },
+                success: function(response) {
+                    var productsHtml = '';
+                    
+                    $('.exchange-list').append(response.products); 
+                    if (response.hasMorePage) {
+                        $('#btnMoreExchange').hide(); 
+                        $('.end-of-products-exchange').show(); 
+                    }
+                },
+                error: function(xhr, status, error) {
+                    
+            }
+            });
+        });
+        
+    });
+    </script>
 
-                    $.ajax({
-                        url: '{{ route("home") }}',
-                        method: 'GET',
-                        data: {
-                            secondhandPage: currentSecondhandPage
-                        },
-                        success: function(response) {
-                            var productsHtml = '';
-
-                            $('.secondhand-list').append(response.products);
-                            if (response.hasMorePage) {
-                                $('#btnMoreSecondhand').hide();
-                                $('.end-of-products-secondhand').show();
-                            }
-                        },
-                        error: function(xhr, status, error) {
-
-                        }
-                    });
-
-                    $('#btnMoreExchange').click(function(event) {
-                        event.preventDefault();
-                        currentExchangePage++;
-
-                        $.ajax({
-                            url: '{{ route("home") }}',
-                            method: 'GET',
-                            data: {
-                                exchangePage: currentExchangePage
-                            },
-                            success: function(response) {
-                                var productsHtml = '';
-
-                                $('.exchange-list').append(response.products);
-                                if (response.hasMorePage) {
-                                    $('#btnMoreExchange').hide();
-                                    $('.end-of-products-exchange').show();
-                                }
-                            },
-                            error: function(xhr, status, error) {
-
-                            }
-                        });
-                    });
-
-                });
-</script>
 @endsection
 
 @endsection

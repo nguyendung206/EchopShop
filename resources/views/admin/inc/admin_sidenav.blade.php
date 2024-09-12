@@ -51,6 +51,11 @@
                                 <span class="aiz-side-nav-text">Banner</span>
                             </a>
                         </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route('partner.index')}}" class="aiz-side-nav-link ">
+                                <span class="aiz-side-nav-text">Đối tác</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

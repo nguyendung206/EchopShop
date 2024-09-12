@@ -16,7 +16,7 @@ class PartnerService
             $query->where('status', $request->status);
         }
 
-        return $query->paginate(5);
+        return $query->paginate(10);
     }
 
     public function store($request)

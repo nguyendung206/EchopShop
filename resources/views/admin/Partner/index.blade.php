@@ -89,10 +89,10 @@
                 <tr class="text-center">
                     <th class="w-60 font-weight-800">STT</th>
                     <th class="w-60">@lang('Ảnh')</th>
-                    <th class="w-25">@lang('Tiêu đề')</th>
-                    <th class="">@lang('Mô tả')</th>
+                    <th class="w-25">@lang('Tên công ty')</th>
+                    <th class="">@lang('Email')</th>
+                    <th class="w-140">@lang('Số điện thoại')</th>
                     <th class="w-140">@lang('Trạng thái')</th>
-                    <th class="w-140">@lang('Thứ tự hiển thị')</th>
                     <th class="w-150">@lang('Điều chỉnh')</th>
                 </tr>
             </thead>
