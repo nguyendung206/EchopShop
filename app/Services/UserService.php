@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Users;
+use App\Models\User;
 
 class UserService
 {
     public function filter($filters)
     {
 
-        $query = Users::query();
+        $query = User::query();
         if (! empty($filters['search'])) {
             $query->where('name', 'like', '%'.$filters['search'].'%');
         }

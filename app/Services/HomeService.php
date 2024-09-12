@@ -14,4 +14,3 @@ class HomeService
         return $products;
     }
 }
-
