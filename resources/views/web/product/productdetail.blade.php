@@ -8,14 +8,21 @@ HOME
 @endsection
 @section('content')
 @php
-$breadcrumbItems = [
-['label' => 'Echop', 'href' => route('home')],
-['label' => $product->type->label(), 'href' => ''],
-['label' => $product->name]
+$items = [
+    [
+        'label' => 'Echop',
+        'href' => route('home')
+    ],
+    [
+        'label' => $product->type->label(),
+        'href' => ''
+    ],
+    [
+        'label' => $product->name,
+    ]
 ];
 @endphp
-<x-breadcrumb :items="$breadcrumbItems" />
-
+@include('components.breadcrumb', ['items' => $items])
 <div class="content">
     <div class="row">
         <div class="col-md-7">

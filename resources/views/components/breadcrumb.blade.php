@@ -10,9 +10,9 @@
             </a>
             @endif
             @if (!$loop->last)
-                <div class="arrow"></div>
+            <div class="arrow"></div>
             @else
-                <div class="arrow last-arrow"></div>
+            <div class="arrow last-arrow"></div>
             @endif
         </div>
         @endforeach
