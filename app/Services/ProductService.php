@@ -43,7 +43,7 @@ class ProductService
         $product->brand_id = $request->brand_id;
 
         if ($request->hasFile('photo')) {
-            $product->photo = uploadImage($request->file('photo'), 'upload/product');
+            $product->photo = uploadImage($request->file('photo'), 'upload/product/');
         } else {
             $product->photo = 'noproduct.png';
         }
@@ -83,9 +83,9 @@ class ProductService
 
         if ($request->hasFile('photo')) {
             if ($product->photo && $product->photo !== 'noproduct.png') {
-                deleteImage($product->photo, 'upload/product');
+                deleteImage($product->photo, 'upload/product/');
             }
-            $product->photo = uploadImage($request->file('photo'), 'upload/product', $product->photo);
+            $product->photo = uploadImage($request->file('photo'), 'upload/product/', $product->photo);
         }
 
         $oldPhotos = json_decode($product->list_photo, true) ?: [];
@@ -93,19 +93,19 @@ class ProductService
 
         foreach ($oldPhotos as $oldPhoto) {
             if (! in_array($oldPhoto, $photosToKeep)) {
-                deleteImage($oldPhoto, 'upload/product');
+                deleteImage($oldPhoto, 'upload/product/');
             }
         }
 
         $photosToDelete = json_decode($request->input('delete_photos', '[]'), true);
         foreach ($photosToDelete as $photoToDelete) {
             if (in_array($photoToDelete, $oldPhotos)) {
-                deleteImage($photoToDelete, 'upload/product');
+                deleteImage($photoToDelete, 'upload/product/');
             }
         }
 
         if ($request->hasFile('list_photo')) {
-            $newPhotos = uploadMultipleImages($request->file('list_photo'), 'upload/product');
+            $newPhotos = uploadMultipleImages($request->file('list_photo'), 'upload/product/');
             $product->list_photo = json_encode(array_merge($photosToKeep, $newPhotos));
         } else {
             $product->list_photo = json_encode($photosToKeep);

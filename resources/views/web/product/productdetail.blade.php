@@ -5,8 +5,6 @@ HOME
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/product.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/product-detail.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}" />
 @endsection
 @section('content')
 
@@ -32,82 +30,53 @@ HOME
     </div>
 </div>
 <div class="content">
-    <div class="content-wrap">
-        <div class="main">
-            <!--w-c-1 -->
-            <div class=" slider slider-nav">
-                <div>
-                    <img src="{{asset('/img/image/p-1.png')}}" alt="" />
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row w-100">
+                <div class="slider-nav col-md-3">
+                    <div>
+                        <img src="{{ getImage($product->photo) }}" alt="" class="thumbnail" onclick="changeMainImage('{{ getImage($product->photo) }}')" />
+                    </div>
+                    @if ($product->list_photo)
+                    @foreach (json_decode($product->list_photo) as $index => $photo)
+                    <div>
+                        <img src="{{ getImage($photo) }}" alt="" class="thumbnail" onclick="changeMainImage('{{ getImage($photo) }}')" />
+                    </div>
+                    @endforeach
+                    @endif
                 </div>
-                <div>
-                    <img src="{{asset('/img/image/p-2.png')}}" alt="" />
-                </div>
-                <div>
-                    <img src="{{asset('/img/image/p-3.png')}}" alt="" />
-                </div>
-                <div>
-                    <img src="{{asset('/img/image/p-4.png')}}" alt="" />
-                </div>
-            </div>
-            <!-- w-c-4 -->
-            <div class=" slider slider-for">
-                <div>
-                    <h3><img src="{{asset('/img/image/main-product.png')}}" alt="" /></h3>
-                </div>
-                <div>
-                    <h3><img src="{{asset('/img/image/p-2.png')}}" alt="" /></h3>
-                </div>
-                <div>
-                    <h3><img src="{{asset('/img/image/p-3.png')}}" alt="" /></h3>
-                </div>
-                <div>
-                    <h3><img src="{{asset('/img/image/p-4.png')}}" alt="" /></h3>
+
+                <div class="slider-for col-md-9">
+                    <img class="" style="object-fit: cover;" id="main-image" src="{{ getImage($product->photo) }}" alt="Main Product Image" />
                 </div>
             </div>
 
         </div>
-        <div class="w-c-5 information-product">
+
+        <div class="information-product col-md-5">
             <div class="wrap-heart">
                 <img src="{{asset('/img/icon/heart-icon.png')}}" alt="" />
             </div>
             <div class="name-product">
-                Son Thỏi MAC Mịn Lì Nhẹ Môi 935 Ruby New - Đỏ Thuần 3g Powder Kiss
-                Lipstick.
+                {{$product->name}}
             </div>
-            <div class="price-product">600.000 VNĐ</div>
+            <div class="price-product">{{format_price($product->price)}}</div>
             <div class="detail-product">
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" /> Chất son kem lì mềm
-                mại, che phủ tối đa các khuyết điểm của đôi môi và dễ tán.
-            </div>
-            <div class="detail-product">
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" /> Chất son lì với lớp
-                lót đặc biệt cho độ lên màu cao mà không bị bóng.
-            </div>
-            <div class="detail-product">
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" /> Màu sắc chuẩn, sắc
-                nét, thời gian bám màu rất tốt, giữ được màu từ 5-6h.
-            </div>
-            <div class="detail-product">
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" /> Công thức đặc biệt
-                của M.A.C giúp son lên màu cực kì chuẩn & sắc nét.
-            </div>
-            <div class="detail-product">
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" /> Có chứa các thành
-                phần làm mềm, chất tạo độ lì Silica, vitamin E.
-            </div>
-            <div class="detail-product">
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" /> Bảng màu son mang đậm
-                phong cách quyến rũ và phong phú.
-            </div>
-            <div class="detail-product">
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" /> Thiết kế đơn giản với
-                vỏ đen kinh điển của M.A.C và kiểu dáng gọn gàng, vừa vặn.
+                <p>{!! $product->description !!}</p>
             </div>
             <div class="product-button">
+                @if($product->type->value == 1)
                 <button>Trao đổi</button>
+                @elseif($product->type->value == 2)
+                <button>Mua hàng</button>
+                <button>Thêm vào giỏ hàng</button>
+                @elseif($product->type->value == 3)
+                <button>Nhận quà tặng</button>
+                @endif
             </div>
+
             <div class="product-share">
-                <div>chia sẻ</div>
+                <div>Chia sẻ</div>
                 <div class="icon-wrap">
                     <div><img src="{{asset('/img/image/logos_facebook.png')}}" alt="" /></div>
                     <div><img src="{{asset('/img/image/logos_instagram.png')}}" alt="" /></div>
@@ -115,23 +84,6 @@ HOME
                     <div><img src="{{asset('/img/image/logos_messenger.png')}}" alt="" /></div>
                 </div>
             </div>
-        </div>
-
-
-
-    </div>
-    <div class=" slider slider-nav slider-nav-2">
-        <div>
-            <h3><img src="{{asset('/img/image/p-1.png')}}" alt="" /></h3>
-        </div>
-        <div>
-            <h3><img src="{{asset('/img/image/p-2.png')}}" alt="" /></h3>
-        </div>
-        <div>
-            <h3><img src="{{asset('/img/image/p-3.png')}}" alt="" /></h3>
-        </div>
-        <div>
-            <h3><img src="{{asset('/img/image/p-4.png')}}" alt="" /></h3>
         </div>
     </div>
 </div>
@@ -176,65 +128,7 @@ HOME
 <div class="content-3">
     <div class="content-3-title">Mô tả sản phẩm</div>
     <div class="content-3-wrap container">
-        <div class="content-3-first">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text ever
-            since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s with
-            the release of Letraset sheets containing Lorem Ipsum passages Lorem
-            Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled it
-            to make a type specimen book. It has survived not only five centuries,
-            but also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of
-        </div>
-        <div class="content-3-index">
-            <div>
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" />
-                <span>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy</span>
-            </div>
-            <div>
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" />
-                <span>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy</span>
-            </div>
-            <div>
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" />
-                <span>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever</span>
-            </div>
-            <div>
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" />
-                <span>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever</span>
-            </div>
-            <div>
-                <img src="{{asset('/img/icon/dot-index.png')}}" alt="" />
-                <span>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever</span>
-            </div>
-        </div>
-        <div class="content-3-last">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text ever
-            since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was Lorem Ipsum passages Lorem
-            Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the
-            1500s, when an unknown printer took a galley of type and scrambled it
-            to make a type specimen book. It has survived not only five centuries,
-            but also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of
-        </div>
+        <p>{!! $product->description !!}</p>
     </div>
 </div>
 <div class="content-4">
@@ -826,26 +720,31 @@ HOME
 </script>
 
 <script>
-    $(".slider-for").slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        fade: true,
-        asNavFor: ".slider-nav",
-    });
-    $(".slider-nav").slick({
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        asNavFor: ".slider-for",
-        dots: true,
-        focusOnSelect: true,
+    $(document).ready(function() {
+        $(".slider-nav").slick({
+            slidesToShow: 4,
+            slidesToScroll: 2,
+            vertical: true,
+            verticalSwiping: true,
+            dots: false,
+            focusOnSelect: true,
+            infinite: false,
+            arrows: false,
+        });
+
+        $(".slider-nav").on('wheel', function(e) {
+            e.preventDefault();
+            if (e.originalEvent.deltaY < 0) {
+                $(this).slick('slickPrev');
+            } else {
+                $(this).slick('slickNext');
+            }
+        });
     });
 
-    $("a[data-slide]").click(function(e) {
-        e.preventDefault();
-        var slideno = $(this).data("slide");
-        $(".slider-nav").slick("slickGoTo", slideno - 1);
-    });
+    function changeMainImage(imageSrc) {
+        document.getElementById('main-image').src = imageSrc;
+    }
 </script>
 @endsection
 @endsection

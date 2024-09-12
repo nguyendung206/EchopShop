@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\web\ProductDetailController;
 use App\Http\Controllers\Web\ProfileUserController;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/admin.php';
+require __DIR__ . '/admin.php';
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,13 +39,12 @@ Route::post('/pinCode/{token}', [AuthController::class, 'checkPinCode'])->name('
 Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPassword'])->name('web.handleResetPassword');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
-
+Route::prefix('/product-detail')->group(function () {
+    Route::get('/{id}', [ProductDetailController::class, 'index'])->name('web.productdetail.index');
+});
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/profile')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
         Route::put('/save', [ProfileUserController::class, 'update'])->name('web.profile.save');
-    });
-    Route::get('/product-detail', function () {
-        return view('web.product.productdetail');
     });
 });
