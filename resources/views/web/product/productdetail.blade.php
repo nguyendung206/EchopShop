@@ -11,20 +11,17 @@ HOME
 <div class="breakcrumb-1 my-4">
     <div class="breakcrumb-wrap container">
         <div class="breakcrumb-item">
-            Echop
-            <div class="arrow"></div>
-        </div>
-
-        <div class="breakcrumb-item">
-            Mỹ phẩm
-            <div class="arrow"></div>
+            <a style="color: rgba(177, 0, 0, 1);" href="{{ route('home') }}">Echop
+                <div class="arrow"></div>
         </div>
         <div class="breakcrumb-item">
-            Son môi
-            <div class="arrow"></div>
+            <a style="color: rgba(177, 0, 0, 1);" href="">
+                {{$product->type->label()}}
+                <div class="arrow"></div>
         </div>
+        </a>
         <div class="breakcrumb-item breakcrumb-last-item">
-            Son MAC
+            {{ $product->name }}
             <div class="arrow last-arrow"></div>
         </div>
     </div>
@@ -45,17 +42,21 @@ HOME
                     @endforeach
                     @endif
                 </div>
-
                 <div class="slider-for col-md-9">
                     <img class="" style="object-fit: cover;" id="main-image" src="{{ getImage($product->photo) }}" alt="Main Product Image" />
                 </div>
             </div>
-
         </div>
 
         <div class="information-product col-md-5">
             <div class="wrap-heart">
-                <img src="{{asset('/img/icon/heart-icon.png')}}" alt="" />
+                @auth
+                <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}">
+                    <i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home " style="position: relative; bottom:0; right:0; font-size:24px;"></i>
+                </a>
+                @else
+                <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                @endauth
             </div>
             <div class="name-product">
                 {{$product->name}}
@@ -745,6 +746,59 @@ HOME
     function changeMainImage(imageSrc) {
         document.getElementById('main-image').src = imageSrc;
     }
+</script>
+<script src="{{ asset('/js/favorite.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        var currentSecondhandPage = 1;
+        var currentExchangePage = 1;
+
+        $('#btnMoreSecondhand').click(function(event) {
+            event.preventDefault();
+            currentSecondhandPage++;
+
+            $.ajax({
+                url: '{{ route("home") }}',
+                method: 'GET',
+                data: {
+                    secondhandPage: currentSecondhandPage
+                },
+                success: function(response) {
+                    $('.secondhand-list').append(response.products);
+                    if (!response.hasMorePage) {
+                        $('#btnMoreSecondhand').hide();
+                        $('.end-of-products-secondhand').show();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
+        });
+
+        $('#btnMoreExchange').click(function(event) {
+            event.preventDefault();
+            currentExchangePage++;
+
+            $.ajax({
+                url: '{{ route("home") }}',
+                method: 'GET',
+                data: {
+                    exchangePage: currentExchangePage
+                },
+                success: function(response) {
+                    $('.exchange-list').append(response.products);
+                    if (!response.hasMorePage) {
+                        $('#btnMoreExchange').hide();
+                        $('.end-of-products-exchange').show();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
+        });
+    });
 </script>
 @endsection
 @endsection

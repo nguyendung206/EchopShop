@@ -88,7 +88,7 @@ HOME
                         <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
                         @endauth
                         <p class="product-name pt-2">{{$product->name}}</p>
-                        <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
+                        <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
                     </a>
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
@@ -356,60 +356,57 @@ HOME
 <script src="{{ asset('/js/text.js') }}"></script>
 <script>
     $(document).ready(function() {
-                var currentSecondhandPage = 1;
-                var currentExchangePage = 1;
+        var currentSecondhandPage = 1;
+        var currentExchangePage = 1;
 
-                $('#btnMoreSecondhand').click(function(event) {
-                    event.preventDefault();
-                    currentSecondhandPage++;
+        $('#btnMoreSecondhand').click(function(event) {
+            event.preventDefault();
+            currentSecondhandPage++;
 
-                    $.ajax({
-                        url: '{{ route("home") }}',
-                        method: 'GET',
-                        data: {
-                            secondhandPage: currentSecondhandPage
-                        },
-                        success: function(response) {
-                            var productsHtml = '';
+            $.ajax({
+                url: '{{ route("home") }}',
+                method: 'GET',
+                data: {
+                    secondhandPage: currentSecondhandPage
+                },
+                success: function(response) {
+                    $('.secondhand-list').append(response.products);
+                    if (!response.hasMorePage) {
+                        $('#btnMoreSecondhand').hide();
+                        $('.end-of-products-secondhand').show();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
+        });
 
-                            $('.secondhand-list').append(response.products);
-                            if (response.hasMorePage) {
-                                $('#btnMoreSecondhand').hide();
-                                $('.end-of-products-secondhand').show();
-                            }
-                        },
-                        error: function(xhr, status, error) {
+        $('#btnMoreExchange').click(function(event) {
+            event.preventDefault();
+            currentExchangePage++;
 
-                        }
-                    });
-
-                    $('#btnMoreExchange').click(function(event) {
-                        event.preventDefault();
-                        currentExchangePage++;
-
-                        $.ajax({
-                            url: '{{ route("home") }}',
-                            method: 'GET',
-                            data: {
-                                exchangePage: currentExchangePage
-                            },
-                            success: function(response) {
-                                var productsHtml = '';
-
-                                $('.exchange-list').append(response.products);
-                                if (response.hasMorePage) {
-                                    $('#btnMoreExchange').hide();
-                                    $('.end-of-products-exchange').show();
-                                }
-                            },
-                            error: function(xhr, status, error) {
-
-                            }
-                        });
-                    });
-
-                });
+            $.ajax({
+                url: '{{ route("home") }}',
+                method: 'GET',
+                data: {
+                    exchangePage: currentExchangePage
+                },
+                success: function(response) {
+                    $('.exchange-list').append(response.products);
+                    if (!response.hasMorePage) {
+                        $('#btnMoreExchange').hide();
+                        $('.end-of-products-exchange').show();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
+        });
+    });
 </script>
+
 @endsection
 
 @endsection
