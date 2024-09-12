@@ -9,7 +9,7 @@ use App\Mail\ForgotPasswordMail;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\ResetPasswordToken;
-use App\Models\Users;
+use App\Models\User;
 use App\Models\Ward;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
@@ -72,7 +72,7 @@ class AuthController extends Controller
                 'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
             ];
 
-            Users::create($userData);
+            User::create($userData);
             $request->session()->regenerate();
             $user = Auth::user();
             Session::put('user', $user);
@@ -126,7 +126,7 @@ class AuthController extends Controller
     public function handleForgotPassword(EmailRequest $request)
     {
 
-        $user = Users::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
         $token = \Str::random(40);
         $pin = rand(100000, 999999);
         $tokenData = [
@@ -183,7 +183,7 @@ class AuthController extends Controller
         ]);
 
         $tokenData = ResetPasswordToken::where('token', $token)->firstOrFail();
-        $user = Users::where('email', $tokenData->email)->firstOrFail();
+        $user = User::where('email', $tokenData->email)->firstOrFail();
         $data = [
             'password' => bcrypt($request->password),
         ];

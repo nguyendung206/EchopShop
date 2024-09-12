@@ -71,7 +71,7 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Ảnh:')</label>
                     <div class="col-sm-9">
-                        <img src="{{ $product->photo ? getImage('upload/product/', $product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
+                        <img src="{{ $product->photo ? getImage($product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@
                     @if($product->list_photo)
                     <div class="col-sm-9 d-flex flex-wrap">
                         @foreach(json_decode($product->list_photo) as $index => $photo)
-                        <img src="{{ getImage('upload/product/', $photo) }}" class="img img-bordered m-2" style="width:100px; height: 150px;" />
+                        <img src="{{ getImage($photo) }}" class="img img-bordered m-2" style="width:100px; height: 150px;" />
                         @endforeach
                     </div>
                     @else

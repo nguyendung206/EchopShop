@@ -5,21 +5,42 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Province;
-use App\Models\Users;
+use App\Models\User;
+use App\Services\FavoriteService;
+use Illuminate\Http\Request;
 
 class ProfileUserController extends Controller
 {
-    public function index($id)
+    protected $favoriteService;
+
+    public function __construct(FavoriteService $favoriteService)
     {
-        $profile = Users::where('id', $id)->first();
+        $this->favoriteService = $favoriteService;
+    }
+
+    public function index(Request $request, $id)
+    {
+        $profile = User::where('id', $id)->first();
         $provinces = Province::all();
 
-        return view('web.profile', compact('profile', 'provinces'));
+        $favorites = $this->favoriteService->getProduct(8);
+        if ($request->ajax() || $request->wantsJson()) {
+            $productHtml = view('web.moreFavorite', compact('favorites'))->render();
+            $hasMorePage = ! $favorites->hasMorePages();
+
+            return response()->json([
+                'products' => $productHtml,
+                'hasMorePage' => $hasMorePage,
+            ]);
+
+        }
+
+        return view('web.profile', compact('profile', 'provinces', 'favorites'));
     }
 
     public function update(UserRequest $request)
     {
-        $profile = Users::findOrFail($request->id);
+        $profile = User::findOrFail($request->id);
         if ($profile) {
             $profile->email = $request->email;
             $profile->name = $request->name;
@@ -39,14 +60,14 @@ class ProfileUserController extends Controller
                     deleteImage($profile->avatar, 'upload/users');
                 }
 
-                $profile->avatar = uploadImage($request->file('avatar'), 'upload/users');
+                $profile->avatar = uploadImage($request->file('avatar'), 'upload/users/');
             }
 
             if ($request->hasFile('identification_image')) {
                 if ($profile->identification_image && $profile->avatar !== 'nophoto.png') {
                     deleteImage($profile->identification_image, 'upload/users');
                 }
-                $profile->identification_image = uploadImage($request->file('identification_image'), 'upload/users');
+                $profile->identification_image = uploadImage($request->file('identification_image'), 'upload/users/');
             }
             $profile->save();
 

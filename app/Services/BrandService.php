@@ -35,7 +35,7 @@ class BrandService
         $brand->category_id = $request->category_id;
 
         if ($request->hasFile('photo')) {
-            $brand->photo = uploadImage($request->file('photo'));
+            $brand->photo = uploadImage($request->file('photo'), 'upload/product');
         } else {
             $brand->photo = 'noproduct.png';
         }
