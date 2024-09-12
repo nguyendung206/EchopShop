@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Enums\TypeProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\Partner;
+use App\Models\Product;
 use App\Services\HomeService;
 use Illuminate\Http\Request;
 
@@ -22,16 +24,18 @@ class HomeController extends Controller
         $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
         $secondhandProducts = $this->homeService->getProduct(TypeProduct::SECONDHAND->value, 8, 'secondhandPage');
         $exchangeProducts = $this->homeService->getProduct(TypeProduct::EXCHANGE->value, 8, 'exchangePage');
+        $partners = Partner::query()->where('status', 1)->get();
+        $giveawayProducts = Product::query()->where('status', 1)->where('type', TypeProduct::GIVEAWAY)->get();
 
         if ($request->ajax() || $request->wantsJson()) {
             $productHtml = '';
             $hasMorePage = false;
             if ($request->query('secondhandPage')) {
-                $productHtml = view('web.home.moreSecondhand', compact('secondhandProducts', 'favorites'))->render();
+                $productHtml = view('web.home.moreSecondhand', compact('secondhandProducts'))->render();
                 $hasMorePage = ! $secondhandProducts->hasMorePages();
             }
             if ($request->query('exchangePage')) {
-                $productHtml = view('web.home.moreExchange', compact('exchangeProducts', 'favorites'))->render();
+                $productHtml = view('web.home.moreExchange', compact('exchangeProducts'))->render();
                 $hasMorePage = ! $exchangeProducts->hasMorePages();
             }
 
@@ -42,6 +46,6 @@ class HomeController extends Controller
 
         }
 
-        return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts'));
+        return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'partners'));
     }
 }

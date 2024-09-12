@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PartnerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,5 +79,16 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::put('/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('updateStatus');
         Route::put('/update/{id}', [BannerController::class, 'update'])->name('update');
         Route::delete('/{id}', [BannerController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('/partner')->name('partner.')->group(function () {
+        Route::get('/create', [PartnerController::class, 'create'])->name('create');
+        Route::post('/', [PartnerController::class, 'store'])->name('store');
+        Route::get('/', [PartnerController::class, 'index'])->name('index');
+        Route::get('/{id}', [PartnerController::class, 'show'])->name('show');
+        Route::get('/update/{id}/edit', [PartnerController::class, 'edit'])->name('edit');
+        Route::put('/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('updateStatus');
+        Route::put('/update/{id}', [PartnerController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
     });
 });

@@ -74,8 +74,8 @@ $('.gift-list').slick({
     speed: 300,
     slidesToShow: 5,
     slidesToScroll: 2,
-    prevArrow: $('.slick-prev'),
-    nextArrow: $('.slick-next'),
+    prevArrow: $('.slick-prev-gift'),
+    nextArrow: $('.slick-next-gift'),
     responsive: [
         {
             breakpoint: 1024,

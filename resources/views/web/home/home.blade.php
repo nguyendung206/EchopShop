@@ -129,30 +129,15 @@
     <div class="brand">
         <div class="container">
             <div class="list-brand slider">
+                @forelse($partners as $partner)
                 <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand1.png') }}" alt="" class="brand-img">
+                    <img src="{{ getImage($partner->photo) }}" alt="" class="brand-img">
                 </div>
-                <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand2.png') }}" alt="" class="brand-img">
+                @empty
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có thông tin để hiển thị.</span>
                 </div>
-                <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand3.png') }}" alt="" class="brand-img">
-                </div>
-                <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand4.png') }}" alt="" class="brand-img">
-                </div>
-                <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand5.jpeg') }}" alt="" class="brand-img">
-                </div>
-                <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand5.jpeg') }}" alt="" class="brand-img">
-                </div>
-                <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand5.jpeg') }}" alt="" class="brand-img">
-                </div>
-                <div class="brand-item p-5">
-                    <img src="{{ asset('/img/image/brand5.jpeg') }}" alt="" class="brand-img">
-                </div>
+                @endforelse
             </div>
         </div>
     </div>
@@ -254,20 +239,25 @@
                     </div>
                 </div>
                 <div class="icon-test">
-                    <i class="fa-solid fa-arrow-left color-B10000 slick-prev"></i>
-                    <i class="fa-solid fa-arrow-right color-fff slick-next"></i>
+                    <i class="fa-solid fa-arrow-left color-B10000 slick-prev slick-prev-gift"></i>
+                    <i class="fa-solid fa-arrow-right color-fff slick-next slick-next-gift"></i>
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="gift-list slider">
+                @forelse($giveawayProducts as $product)
                 <div class="gift-item m-2">
-                    <img src="{{ asset('/img/image/aoquan.jpeg') }}" alt="" class="gift-img">
+                    <img src="{{ getImage($product->photo) }}" alt="" class="gift-img">
                     <div class="layer">
                         <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
                         <p>Free</p>
                     </div>
-                    <i class="fa-regular fa-heart fa-heart-home icon-change-2"></i>
+                    @auth
+                        <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home icon-change-2"></i></a>
+                    @else
+                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home icon-change-2"></i></a>
+                    @endauth
                     <div class="gift-hover">
                         <div class="layout"></div>
                         <a href="#" class="gift-btn">
@@ -275,90 +265,11 @@
                         </a>
                     </div>
                 </div>
-                <div class="gift-item m-2">
-                    <img src="{{ asset('/img/image/mypham.jpeg') }}" alt="" class="gift-img">
-                    <div class="layer">
-                        <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                        <p>Free</p>
+                @empty
+                    <div class="text-center w-100 py-5">
+                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
                     </div>
-                    <i class="fa-regular fa-heart fa-heart-home icon-change-2"></i>
-                    <div class="gift-hover">
-                        <div class="layout"></div>
-                        <a href="#" class="gift-btn">
-                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
-                        </a>
-                    </div>
-                </div>
-                <div class="gift-item m-2">
-                    <img src="{{ asset('/img/image/nuochoa.jpeg') }}" alt="" class="gift-img">
-                    <div class="layer">
-                        <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                        <p>Free</p>
-                    </div>
-                    <i class="fa-regular fa-heart fa-heart-home icon-change-2"></i>
-                    <div class="gift-hover">
-                        <div class="layout"></div>
-                        <a href="#" class="gift-btn">
-                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
-                        </a>
-                    </div>
-                </div>
-                <div class="gift-item m-2">
-                    <img src="{{ asset('/img/image/nuochoa.jpeg') }}" alt="" class="gift-img">
-                    <div class="layer">
-                        <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                        <p>Free</p>
-                    </div>
-                    <i class="fa-regular fa-heart fa-heart-home icon-change-2"></i>
-                    <div class="gift-hover">
-                        <div class="layout"></div>
-                        <a href="#" class="gift-btn">
-                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
-                        </a>
-                    </div>
-                </div>
-                <div class="gift-item m-2">
-                    <img src="{{ asset('/img/image/nuochoa.jpeg') }}" alt="" class="gift-img">
-                    <div class="layer">
-                        <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                        <p>Free</p>
-                    </div>
-                    <i class="fa-regular fa-heart fa-heart-home icon-change-2"></i>
-                    <div class="gift-hover">
-                        <div class="layout"></div>
-                        <a href="#" class="gift-btn">
-                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
-                        </a>
-                    </div>
-                </div>
-                <div class="gift-item m-2">
-                    <img src="{{ asset('/img/image/phukien.jpeg') }}" alt="" class="gift-img">
-                    <div class="layer">
-                        <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                        <p>Free</p>
-                    </div>
-                    <i class="fa-regular fa-heart fa-heart-home icon-change-2"></i>
-                    <div class="gift-hover">
-                        <div class="layout"></div>
-                        <a href="#" class="gift-btn">
-                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
-                        </a>
-                    </div>
-                </div>
-                <div class="gift-item m-2">
-                    <img src="{{ asset('/img/image/giaydep.jpeg') }}" alt="" class="gift-img">
-                    <div class="layer">
-                        <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                        <p>Free</p>
-                    </div>
-                    <i class="fa-regular fa-heart fa-heart-home icon-change-2"></i>
-                    <div class="gift-hover">
-                        <div class="layout"></div>
-                        <a href="#" class="gift-btn">
-                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
-                        </a>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>
