@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +40,10 @@ Route::post('/pinCode/{token}', [AuthController::class, 'checkPinCode'])->name('
 Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPassword'])->name('web.handleResetPassword');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
-Route::middleware(['auth:web'])->prefix('web')->group(function () {
+Route::prefix('/product-detail')->group(function () {
+    Route::get('/{slug}', [ProductController::class, 'show'])->name('web.productdetail.index');
+});
+Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/profile')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
         Route::put('/save', [ProfileUserController::class, 'update'])->name('web.profile.save');

@@ -1,3 +1,37 @@
+$('.gift-list').slick({
+    dots: true,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 5,
+    slidesToScroll: 2,
+    prevArrow: $('.slick-prev-gift'),
+    nextArrow: $('.slick-next-gift'),
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                infinite: true,
+                dots: true
+            }
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 3
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 3
+            }
+        }
+    ]
+});
 $('.responsive').slick({
     dots: true,
     infinite: false,
@@ -32,6 +66,7 @@ $('.responsive').slick({
         }
     ]
 });
+
 
 $('.list-brand').slick({
     dots: true,
@@ -68,40 +103,7 @@ $('.list-brand').slick({
     ]
 });
 
-$('.gift-list').slick({
-    dots: true,
-    infinite: false,
-    speed: 300,
-    slidesToShow: 5,
-    slidesToScroll: 2,
-    prevArrow: $('.slick-prev-gift'),
-    nextArrow: $('.slick-next-gift'),
-    responsive: [
-        {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3,
-                infinite: true,
-                dots: true
-            }
-        },
-        {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 3
-            }
-        },
-        {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 3
-            }
-        }
-    ]
-});
+
 
 const showMenu = (toggleId, navbarId, bodyId, overlayId, closeId) => {
     const toggle = document.getElementById(toggleId),

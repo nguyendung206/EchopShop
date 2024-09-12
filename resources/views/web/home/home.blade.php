@@ -1,6 +1,6 @@
 @extends('web.layout.app')
 @section('title')
-    HOME
+HOME
 @endsection
 @section('content')
 
@@ -27,7 +27,7 @@
                         </button>
                     </div>
                 </div>
-                </div>
+            </div>
         </div>
         @endforeach
     </div>
@@ -39,45 +39,22 @@
     </a>
 </div>
 
-    <div class="category pt-2">
+<div class="category pt-2">
+    <div class="container">
+        <br>
+        <h1>Danh mục sản phẩm</h1>
+        <div class="test"></div>
+        <hr>
+    </div>
+    <div class="list-category mb-5">
         <div class="container">
-            <br>
-            <h1>Danh mục sản phẩm</h1>
-            <div class="test"></div>
-            <hr>
-        </div>
-        <div class="list-category mb-5">
-            <div class="container">
-                <div class="responsive slider">
-                    <div class="">
-                        <img class="category-img" src="{{ asset('/img/image/aoquan.jpeg') }}" alt="">
-                        <p class="category-name">Áo quần</p>
-                    </div>
-                    <div class="">
-                        <img class="category-img" src="{{ asset('/img/image/giaydep.jpeg') }}" alt="">
-                        <p class="category-name">Giày dép</p>
-                    </div>
-                    <div class="">
-                        <img class="category-img" src="{{ asset('/img/image/phukien.jpeg') }}" alt="">
-                        <p class="category-name">Phụ kiện</p>
-                    </div>
-                    <div class="">
-                        <img class="category-img" src="{{ asset('/img/image/sachvo.jpeg') }}" alt="">
-                        <p class="category-name">Sách vở</p>
-                    </div>
-                    <div class="">
-                        <img class="category-img" src="{{ asset('/img/image/mypham.jpeg') }}" alt="">
-                        <p class="category-name">Mỹ phẩm</p>
-                    </div>
-                    <div class="">
-                        <img class="category-img" src="{{ asset('/img/image/nuochoa.jpeg') }}" alt="">
-                        <p class="category-name">Nước hoa</p>
-                    </div>
-                    <div class="">
-                        <img class="category-img" src="{{ asset('/img/image/nuochoa.jpeg') }}" alt="">
-                        <p class="category-name">Nước hoa</p>
-                    </div>
+            <div class="responsive slider">
+                @foreach ($categories as $category)
+                <div class="">
+                    <img class="category-img" src="{{ getImage($category->photo) }}" alt="">
+                    <p class="category-name">{{$category->name}}</p>
                 </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -92,36 +69,42 @@
                         <hr>
                     </div>
                 </div>
-                
+
+            </div>
+            <div class="icon-test">
+                <i class="fa-solid fa-arrow-left color-B10000"></i>
+                <i class="fa-solid fa-arrow-right color-fff"></i>
             </div>
         </div>
         <div class="container">
             <div class="row secondhand-list">
                 @forelse($secondhandProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-                    @auth
+                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
+                        <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
+                        @auth
                         <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
-                    @else
-                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
-                    @endauth
-                    <p class="product-name pt-2">{{$product->name}}</p>
-                    <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
+                        @else
+                        <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                        @endauth
+                        <p class="product-name pt-2">{{$product->name}}</p>
+                        <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
+                    </a>
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
                 </div>
-                @empty 
-                    <div class="text-center w-100 py-5">
-                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-                    </div>
+                @empty
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                </div>
                 @endforelse
             </div>
             @if($secondhandProducts->isNotEmpty())
             <div class="text-center py-5 divMoreSecondhand">
                 @if($secondhandProducts->count() >= 8)
-                <a id="btnMoreSecondhand" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
+                <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
         </div>
@@ -158,32 +141,34 @@
             <div class="row exchange-list">
                 @forelse($exchangeProducts as $product)
                 <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
-                    <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
-                    @auth
+                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
+                        <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
+                        @auth
                         <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
-                    @else
-                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
-                    @endauth
-                    <p class="product-name pt-2">{{$product->name}}</p>
+                        @else
+                        <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                        @endauth
+                        <p class="product-name pt-2">{{$product->name}}</p>
+                    </a>
                     <br>
                     <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
                     <a href="#" class="buy">Trao đổi</a>
                 </div>
-                @empty 
-                    <div class="text-center w-100 py-5">
-                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-                    </div>
+                @empty
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                </div>
                 @endforelse
             </div>
             @if($exchangeProducts->isNotEmpty())
             <div class="text-center py-5 divMoreExchange">
                 @if($exchangeProducts->count() >= 8)
-                <a id="btnMoreExchange" class="all color-B10000" href="#" >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
+                <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
-            
+
         </div>
     </div>
     <div class="app">
@@ -219,24 +204,37 @@
                                 <img src="{{ asset('/img/image/ggplay.png') }}" alt="" class="ggplay">
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
+        </div>
 
+    </div>
+</div>
+<div class="gift">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="category pt-2">
+                <div class="container">
+                    <br>
+                    <h1>Hàng cũ đem tặng</h1>
+                    <div class="test"></div>
+                    <hr>
+                </div>
+            </div>
+            <div class="icon-test">
+                <i class="fa-solid fa-arrow-left color-B10000 slick-prev"></i>
+                <i class="fa-solid fa-arrow-right color-fff slick-next"></i>
+            </div>
         </div>
     </div>
-    <div class="gift">
-        <div class="container">
-            <div class="row justify-content-between align-items-center">
-                <div class="category pt-2">
-                    <div class="container">
-                        <br>
-                        <h1>Hàng cũ đem tặng</h1>
-                        <div class="test"></div>
-                        <hr>
-                    </div>
+    <div class="container">
+        <div class="gift-list slider">
+            <div class="gift-item m-2">
+                <img src="{{ asset('/img/image/aoquan.jpeg') }}" alt="" class="gift-img">
+                <div class="layer">
+                    <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
+                    <p>Free</p>
                 </div>
                 <div class="icon-test">
                     <i class="fa-solid fa-arrow-left color-B10000 slick-prev slick-prev-gift"></i>
@@ -273,73 +271,71 @@
             </div>
         </div>
     </div>
-    <br>
-    <hr>
+</div>
+<br>
+<hr>
 
 @section('script')
 
 <script src="{{ asset('/js/favorite.js')}}"></script>
 
 <script src="{{ asset('/js/text.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            var currentSecondhandPage = 1;
-            var currentExchangePage = 1;
-            
-            $('#btnMoreSecondhand').click(function(event) {
-                event.preventDefault();
-                currentSecondhandPage++;
-                
-                $.ajax({
-                    url: '{{ route("home") }}',
-                    method: 'GET',
-                    data: {
-                        secondhandPage: currentSecondhandPage
-                    },
-                    success: function(response) {
-                        var productsHtml = '';
-                        
-                        $('.secondhand-list').append(response.products); 
-                        if (response.hasMorePage) {
-                            $('#btnMoreSecondhand').hide(); 
-                            $('.end-of-products-secondhand').show(); 
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        
-                }
-                });
-            });
+<script>
+    $(document).ready(function() {
+                var currentSecondhandPage = 1;
+                var currentExchangePage = 1;
 
-            $('#btnMoreExchange').click(function(event) {
-                event.preventDefault();
-                currentExchangePage++;
-                
-                $.ajax({
-                    url: '{{ route("home") }}',
-                    method: 'GET',
-                    data: {
-                        exchangePage: currentExchangePage
-                    },
-                    success: function(response) {
-                        var productsHtml = '';
-                        
-                        $('.exchange-list').append(response.products); 
-                        if (response.hasMorePage) {
-                            $('#btnMoreExchange').hide(); 
-                            $('.end-of-products-exchange').show(); 
+                $('#btnMoreSecondhand').click(function(event) {
+                    event.preventDefault();
+                    currentSecondhandPage++;
+
+                    $.ajax({
+                        url: '{{ route("home") }}',
+                        method: 'GET',
+                        data: {
+                            secondhandPage: currentSecondhandPage
+                        },
+                        success: function(response) {
+                            var productsHtml = '';
+
+                            $('.secondhand-list').append(response.products);
+                            if (response.hasMorePage) {
+                                $('#btnMoreSecondhand').hide();
+                                $('.end-of-products-secondhand').show();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        
-                }
+                    });
+
+                    $('#btnMoreExchange').click(function(event) {
+                        event.preventDefault();
+                        currentExchangePage++;
+
+                        $.ajax({
+                            url: '{{ route("home") }}',
+                            method: 'GET',
+                            data: {
+                                exchangePage: currentExchangePage
+                            },
+                            success: function(response) {
+                                var productsHtml = '';
+
+                                $('.exchange-list').append(response.products);
+                                if (response.hasMorePage) {
+                                    $('#btnMoreExchange').hide();
+                                    $('.end-of-products-exchange').show();
+                                }
+                            },
+                            error: function(xhr, status, error) {
+
+                            }
+                        });
+                    });
+
                 });
-            });
-            
-        });
-        </script>
+</script>
 @endsection
 
 @endsection
-   
-  

@@ -60,14 +60,14 @@ class ProfileUserController extends Controller
                     deleteImage($profile->avatar, 'upload/users');
                 }
 
-                $profile->avatar = uploadImage($request->file('avatar'), 'upload/users');
+                $profile->avatar = uploadImage($request->file('avatar'), 'upload/users/');
             }
 
             if ($request->hasFile('identification_image')) {
                 if ($profile->identification_image && $profile->avatar !== 'nophoto.png') {
                     deleteImage($profile->identification_image, 'upload/users');
                 }
-                $profile->identification_image = uploadImage($request->file('identification_image'), 'upload/users');
+                $profile->identification_image = uploadImage($request->file('identification_image'), 'upload/users/');
             }
             $profile->save();
 
