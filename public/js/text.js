@@ -4,8 +4,8 @@ $('.gift-list').slick({
     speed: 300,
     slidesToShow: 5,
     slidesToScroll: 2,
-    prevArrow: $('.slick-prev'),
-    nextArrow: $('.slick-next'),
+    prevArrow: $('.slick-prev-gift'),
+    nextArrow: $('.slick-next-gift'),
     responsive: [
         {
             breakpoint: 1024,
@@ -102,6 +102,8 @@ $('.list-brand').slick({
         }
     ]
 });
+
+
 
 const showMenu = (toggleId, navbarId, bodyId, overlayId, closeId) => {
     const toggle = document.getElementById(toggleId),

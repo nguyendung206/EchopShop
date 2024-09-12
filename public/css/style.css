@@ -1003,3 +1003,17 @@ a:hover {
 .dropdown-submenu>a:after {
     margin-top: 0px;
 }
+
+
+.slick-next-gift {
+    background-color: #fff !important;
+    color: #B10000;
+}
+.slick-next-gift:hover {
+    color: #fff; /* Màu sắc của biểu tượng khi hover */
+    background-color: #B10000 !important;
+}
+.slick-prev-gift:hover {
+    color: #fff; /* Màu sắc của biểu tượng khi hover */
+    background-color: #B10000 !important;
+}
