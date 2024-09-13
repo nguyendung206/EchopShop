@@ -16,7 +16,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/css/resetcss.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
     @yield('css')
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">

@@ -71,10 +71,7 @@ HOME
                 </div>
 
             </div>
-            <div class="icon-test">
-                <i class="fa-solid fa-arrow-left color-B10000"></i>
-                <i class="fa-solid fa-arrow-right color-fff"></i>
-            </div>
+           
         </div>
         <div class="container">
             <div class="row secondhand-list">
@@ -91,7 +88,7 @@ HOME
                         <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
                     </a>
                     <br>
-                    <a href="#" class="buy">Mua ngay</a>
+                    <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
                 </div>
                 @empty
                 <div class="text-center w-100 py-5">
@@ -165,7 +162,7 @@ HOME
                 @if($exchangeProducts->count() >= 8)
                 <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="{{route('filterProducts')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
 

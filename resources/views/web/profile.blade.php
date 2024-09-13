@@ -1,4 +1,7 @@
 @extends('web.layout.app')
+@section('css')
+<link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
+@endsection
 @section('content')
 <div class="profile-slider">
     <h1 class="profile-heading text-center">hồ sơ của tôi</h1>
