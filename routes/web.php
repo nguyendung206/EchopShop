@@ -3,27 +3,18 @@
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
-use App\Http\Controllers\web\ProductController;
+use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
+use App\Http\Controllers\Web\ShopController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/admin.php';
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
-// Route::get('/', function () {
-
-//     return view('welcome');
-// });
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name('exchangeProduct');
+Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
+Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
+Route::get('/favoriteProduct', [HomeController::class, 'filterProducts'])->name('favoriteProduct');
 
 Route::get('/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/login', [AuthController::class, 'login'])->name('web.authentication');
@@ -46,7 +37,12 @@ Route::prefix('/product-detail')->group(function () {
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/profile')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
-        Route::put('/save', [ProfileUserController::class, 'update'])->name('web.profile.save');
+        Route::put('/saveprofile', [ProfileUserController::class, 'updateProfile'])->name('web.profile.save');
+        Route::put('/saveidentification', [ProfileUserController::class, 'updateIdentification'])->name('web.identification.save');
+    });
+    Route::prefix('/registershop')->group(function () {
+        Route::get('/', [ShopController::class, 'create'])->name('web.registershop.create');
+        Route::post('/save', [ShopController::class, 'store'])->name('web.registershop.store');
     });
 });
 Route::prefix('/favorite')->name('favorite.')->group(function () {

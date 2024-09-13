@@ -127,7 +127,6 @@
     object-fit: cover;
     width: 140px;
     height: 140px;
-    margin-top: 0;
 }
 
 label {
@@ -219,7 +218,7 @@ label {
 }
 
 .form-btn a {
-    padding: 8px 40px;
+    padding: 6px 40px;
     border: 1px solid #B10000;
     cursor: pointer;
 }
@@ -260,6 +259,12 @@ button.form-btn-save {
 
 #category-profile {
     display: none;
+}
+
+.active-profile {
+    background-color: #FFF4F4;
+    color: #B10000 !important;
+    border-left: 2px solid #B10000;
 }
 
 @media (min-width: 320px) and (max-width: 768px) {

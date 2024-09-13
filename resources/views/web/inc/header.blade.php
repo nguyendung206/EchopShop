@@ -76,7 +76,7 @@
                                         @foreach($categories as $category)
                                         <li class="dropdown-submenu">
                                             <a class="dropdown-item dropdown-item-custom" tabindex="-1" href="#">
-                                                <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
+                                                <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
                                                 <p class="dropdown-title">{{$category->name}}</p>
                                             </a>
                                             @if($category->activeBrands->count())
@@ -141,7 +141,7 @@
                                     <img class="avt" src="{{ getImage(optional(Auth::user())->avatar) }}" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                    <a class="drop-user-item" href="{{route('web.profile.index', Session::get('user')->id)}}">
+                                    <a class="drop-user-item profile-tab" href="{{route('web.profile.index', Session::get('user')->id)}}" data-tab="profile" >
                                         <i class="fa-solid fa-user mr-2"></i> Hồ sơ cá nhân
                                     </a>
                                     <a class="drop-user-item" href="{{route('web.logout')}}">

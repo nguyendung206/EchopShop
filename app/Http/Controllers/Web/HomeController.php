@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Partner;
 use App\Models\Product;
+use App\Models\Province;
 use App\Services\HomeService;
 use Illuminate\Http\Request;
 
@@ -47,5 +48,46 @@ class HomeController extends Controller
         }
 
         return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'partners'));
+    }
+
+    public function filterProducts(Request $request)
+    {
+        $type = null;
+        $currentUrl = $request->url();
+        $viewDefault = '';
+        $viewList = '';
+        switch (true) {
+            case stripos($currentUrl, 'exchange') !== false:
+                $type = TypeProduct::EXCHANGE;
+                $viewDefault = 'web.product.exchangeProduct';
+                $viewList = 'web.product.listExchangeProduct';
+                break;
+            case stripos($currentUrl, 'secondhand') !== false:
+                $type = TypeProduct::SECONDHAND;
+                $viewDefault = 'web.product.secondhandProduct';
+                $viewList = 'web.product.listSecondhandProduct';
+                break;
+            case stripos($currentUrl, 'giveaway') !== false:
+                $type = TypeProduct::GIVEAWAY;
+                $viewDefault = 'web.product.giveawayProduct';
+                $viewList = 'web.product.listGiveawayProduct';
+                break;
+            case stripos($currentUrl, 'favorite') !== false:
+                $viewDefault = 'web.product.favoriteProduct';
+                $viewList = 'web.product.listFavoriteProduct';
+                break;
+            default:
+                break;
+        }
+
+        $products = $this->homeService->filterProducts($request, $type);
+        $provinces = Province::query()->get();
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'productHtml' => view($viewList, compact('products'))->render(),
+            ]);
+        }
+
+        return view($viewDefault, compact('products', 'provinces'));
     }
 }

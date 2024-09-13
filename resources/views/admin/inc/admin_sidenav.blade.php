@@ -36,11 +36,15 @@
                             </a>
                         </li>
                         <li class="aiz-side-nav-item">
-                            <a href="{{route("manager-user.index")}}"  class="aiz-side-nav-link ">
+                            <a href="{{route("manager-user.index")}}" class="aiz-side-nav-link ">
                                 <span class="aiz-side-nav-text">Người dùng</span>
                             </a>
                         </li>
-
+                        <li class="aiz-side-nav-item">
+                            <a href="{{route("shop.index")}}" class="aiz-side-nav-link ">
+                                <span class="aiz-side-nav-text">Đăng ký bán hàng</span>
+                            </a>
+                        </li>
                         <li class="aiz-side-nav-item">
                             <a href="{{route('product.index')}}" class="aiz-side-nav-link ">
                                 <span class="aiz-side-nav-text">Sản phẩm</span>

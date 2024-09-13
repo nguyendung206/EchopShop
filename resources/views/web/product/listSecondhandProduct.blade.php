@@ -1,7 +1,7 @@
-@foreach($secondhandProducts as $product)
-<div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
+@forelse($products as $product)
+<div class="col-lg-4 product-item col-6 text-center py-3">
     <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
-        <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
+        <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
         @auth
         <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
         @else
@@ -11,6 +11,10 @@
         <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
     </a>
     <br>
-    <a href="#" class="buy">Mua ngay</a>
+    <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
 </div>
-@endforeach
+    @empty
+        <div class="text-center w-100 py-5">
+            <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+        </div>
+    @endforelse

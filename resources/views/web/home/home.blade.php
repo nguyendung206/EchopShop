@@ -71,10 +71,7 @@ HOME
                 </div>
 
             </div>
-            <div class="icon-test">
-                <i class="fa-solid fa-arrow-left color-B10000"></i>
-                <i class="fa-solid fa-arrow-right color-fff"></i>
-            </div>
+           
         </div>
         <div class="container">
             <div class="row secondhand-list">
@@ -88,10 +85,10 @@ HOME
                         <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
                         @endauth
                         <p class="product-name pt-2">{{$product->name}}</p>
-                        <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
+                        <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
                     </a>
                     <br>
-                    <a href="#" class="buy">Mua ngay</a>
+                    <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
                 </div>
                 @empty
                 <div class="text-center w-100 py-5">
@@ -104,7 +101,7 @@ HOME
                 @if($secondhandProducts->count() >= 8)
                 <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="{{route("secondhandProduct")}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
         </div>
@@ -165,7 +162,7 @@ HOME
                 @if($exchangeProducts->count() >= 8)
                 <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="{{route('exchangeProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
 
@@ -222,26 +219,13 @@ HOME
                     <hr>
                 </div>
             </div>
-            <div class="icon-test">
-                <i class="fa-solid fa-arrow-left color-B10000 slick-prev"></i>
-                <i class="fa-solid fa-arrow-right color-fff slick-next"></i>
+            <div class="icon-test icon-test-custom">
+                <i class="fa-solid fa-arrow-left color-B10000 slick-prev-gift"></i>
+                <i class="fa-solid fa-arrow-right color-fff slick-next-gift"></i>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="gift-list slider">
-            <div class="gift-item m-2">
-                <img src="{{ asset('/img/image/aoquan.jpeg') }}" alt="" class="gift-img">
-                <div class="layer">
-                    <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                    <p>Free</p>
-                </div>
-                <div class="icon-test">
-                    <i class="fa-solid fa-arrow-left color-B10000 slick-prev slick-prev-gift"></i>
-                    <i class="fa-solid fa-arrow-right color-fff slick-next slick-next-gift"></i>
-                </div>
-            </div>
-        </div>
+    
         <div class="container">
             <div class="gift-list slider">
                 @forelse($giveawayProducts as $product)
@@ -252,25 +236,29 @@ HOME
                         <p>Free</p>
                     </div>
                     @auth
-                        <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home icon-change-2"></i></a>
+                    <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home icon-change-2"></i></a>
                     @else
                     <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home icon-change-2"></i></a>
                     @endauth
                     <div class="gift-hover">
                         <div class="layout"></div>
-                        <a href="#" class="gift-btn">
+                        <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="gift-btn">
                             <i class="fa-solid fa-gift"></i> Nhận quà tặng
                         </a>
                     </div>
                 </div>
                 @empty
-                    <div class="text-center w-100 py-5">
-                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-                    </div>
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                </div>
                 @endforelse
+                @if($giveawayProducts->isNotEmpty() )
+                <div class="gift-item m-2" style="position: absolute;top: 50%;right:-40px">
+                    <a class="all color-B10000" href="{{route('giveawayProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                </div>
+                @endif
             </div>
         </div>
-    </div>
 </div>
 <br>
 <hr>
@@ -284,11 +272,11 @@ HOME
     $(document).ready(function() {
         var currentSecondhandPage = 1;
         var currentExchangePage = 1;
-        
+
         $('#btnMoreSecondhand').click(function(event) {
             event.preventDefault();
             currentSecondhandPage++;
-            
+
             $.ajax({
                 url: '{{ route("home") }}',
                 method: 'GET',
@@ -297,23 +285,23 @@ HOME
                 },
                 success: function(response) {
                     var productsHtml = '';
-                    
-                    $('.secondhand-list').append(response.products); 
+
+                    $('.secondhand-list').append(response.products);
                     if (response.hasMorePage) {
-                        $('#btnMoreSecondhand').hide(); 
-                        $('.end-of-products-secondhand').show(); 
+                        $('#btnMoreSecondhand').hide();
+                        $('.end-of-products-secondhand').show();
                     }
                 },
                 error: function(xhr, status, error) {
-                    
-            }
+
+                }
             });
         });
 
         $('#btnMoreExchange').click(function(event) {
             event.preventDefault();
             currentExchangePage++;
-            
+
             $.ajax({
                 url: '{{ route("home") }}',
                 method: 'GET',
@@ -322,21 +310,21 @@ HOME
                 },
                 success: function(response) {
                     var productsHtml = '';
-                    
-                    $('.exchange-list').append(response.products); 
+
+                    $('.exchange-list').append(response.products);
                     if (response.hasMorePage) {
-                        $('#btnMoreExchange').hide(); 
-                        $('.end-of-products-exchange').show(); 
+                        $('#btnMoreExchange').hide();
+                        $('.end-of-products-exchange').show();
                     }
                 },
                 error: function(xhr, status, error) {
-                    
-            }
+
+                }
             });
         });
-        
+
     });
-    </script>
+</script>
 
 @endsection
 

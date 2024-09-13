@@ -16,7 +16,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/css/resetcss.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
     @yield('css')
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
@@ -90,10 +89,9 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
-
+    <script src="{{asset('/js/text.js')}}"></script>
     @yield('script')
 
     <script>
@@ -124,7 +122,6 @@
         });
         @endif
     </script>
-
 </body>
 
 </html>
