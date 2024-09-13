@@ -18,8 +18,8 @@ class ProductsTableSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        $categoryIds = \App\Models\Category::pluck('id')->toArray();
-        $brandIds = \App\Models\Brand::pluck('id')->toArray();
+        $categoryIds = \App\Models\Category::where('status', 1)->pluck('id')->toArray();
+        $brandIds = \App\Models\Brand::where('status', 1)->pluck('id')->toArray();
 
         // Lặp qua và tạo 20 sản phẩm
         for ($i = 0; $i < 20; $i++) {
@@ -27,10 +27,9 @@ class ProductsTableSeeder extends Seeder
                 'slug' => Str::slug('Product '.$i),
                 'name' => 'Product '.$i,
                 'price' => $faker->randomFloat(2, 10, 1000),
-                'type' => rand(1, 2, 3),
+                'type' => $faker->randomElement([1, 2, 3]),
                 'photo' => 'noproduct.png',
-                'list_photo' => json_encode([$faker->imageUrl(200, 200)]),
-                'status' => rand(1, 2),
+                'status' => $faker->randomElement([1, 2]),
                 'description' => 'Description for Category '.$i,
                 'brand_id' => $faker->randomElement($brandIds),
                 'category_id' => $faker->randomElement($categoryIds),

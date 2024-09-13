@@ -8,7 +8,7 @@
         <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
         @endauth
         <p class="product-name pt-2">{{$product->name}}</p>
-        <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
+        <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
     </a>
     <br>
     <a href="#" class="buy">Mua ngay</a>

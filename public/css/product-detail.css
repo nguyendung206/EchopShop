@@ -24,7 +24,7 @@ body {
 .breakcrumb-item {
     background-color: white;
     height: 49px;
-    width: 142px;
+    width: 160px;
     font-size: 16px;
     line-height: 49px;
     text-align: center;
@@ -103,7 +103,7 @@ body {
     content: "";
     position: absolute;
     bottom: -3.5px;
-    right: 115px;
+    right: 135px;
     width: 0;
     height: 0;
     border-left: 25px solid transparent;

@@ -88,7 +88,7 @@ HOME
                         <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
                         @endauth
                         <p class="product-name pt-2">{{$product->name}}</p>
-                        <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
+                        <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
                     </a>
                     <br>
                     <a href="#" class="buy">Mua ngay</a>
@@ -252,7 +252,7 @@ HOME
                         <p>Free</p>
                     </div>
                     @auth
-                        <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home icon-change-2"></i></a>
+                    <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home icon-change-2"></i></a>
                     @else
                     <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home icon-change-2"></i></a>
                     @endauth
@@ -264,9 +264,9 @@ HOME
                     </div>
                 </div>
                 @empty
-                    <div class="text-center w-100 py-5">
-                        <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-                    </div>
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                </div>
                 @endforelse
             </div>
         </div>
@@ -284,11 +284,11 @@ HOME
     $(document).ready(function() {
         var currentSecondhandPage = 1;
         var currentExchangePage = 1;
-        
+
         $('#btnMoreSecondhand').click(function(event) {
             event.preventDefault();
             currentSecondhandPage++;
-            
+
             $.ajax({
                 url: '{{ route("home") }}',
                 method: 'GET',
@@ -297,23 +297,23 @@ HOME
                 },
                 success: function(response) {
                     var productsHtml = '';
-                    
-                    $('.secondhand-list').append(response.products); 
+
+                    $('.secondhand-list').append(response.products);
                     if (response.hasMorePage) {
-                        $('#btnMoreSecondhand').hide(); 
-                        $('.end-of-products-secondhand').show(); 
+                        $('#btnMoreSecondhand').hide();
+                        $('.end-of-products-secondhand').show();
                     }
                 },
                 error: function(xhr, status, error) {
-                    
-            }
+
+                }
             });
         });
 
         $('#btnMoreExchange').click(function(event) {
             event.preventDefault();
             currentExchangePage++;
-            
+
             $.ajax({
                 url: '{{ route("home") }}',
                 method: 'GET',
@@ -322,21 +322,21 @@ HOME
                 },
                 success: function(response) {
                     var productsHtml = '';
-                    
-                    $('.exchange-list').append(response.products); 
+
+                    $('.exchange-list').append(response.products);
                     if (response.hasMorePage) {
-                        $('#btnMoreExchange').hide(); 
-                        $('.end-of-products-exchange').show(); 
+                        $('#btnMoreExchange').hide();
+                        $('.end-of-products-exchange').show();
                     }
                 },
                 error: function(xhr, status, error) {
-                    
-            }
+
+                }
             });
         });
-        
+
     });
-    </script>
+</script>
 
 @endsection
 
