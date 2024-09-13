@@ -1,3 +1,28 @@
+@php
+    $currentUrl = url()->current();
+    $route = '';
+
+    switch (true) {
+        case strpos($currentUrl, 'secondhand') !== false:
+            $route = route('secondhandProduct');
+            break;
+        case strpos($currentUrl, 'exchange') !== false:
+            $route = route('exchangeProduct');
+            break;
+            case strpos($currentUrl, 'giveaway') !== false:
+            $route = route('giveawayProduct');
+            break;
+        default:
+            $route = '#'; // Giá trị mặc định nếu không khớp với bất kỳ trường hợp nào
+            break;
+    }
+@endphp
+
+<div class="col-lg-3 col-12 category-title-wrap-1">
+<div class="category-title-wrap">
+    <div class="category-title">Danh mục sản phẩm</div>
+    <div class="open-icon"><i class="fa-solid fa-arrow-down"></i></div>
+</div>
 <div class="category-wrap">
     <div class="category-1">
         @forelse($categories as $category)
@@ -5,7 +30,7 @@
             <label>{{$category->name}}</label><img src="{{ asset('/img/icon/extend.png') }}" alt="" />
             <div class="category-item-wrap">
                 @forelse($category->activeBrands as $brand)
-                <div><a href="#" id="brandFilter" data-url="{{ route('filterProducts') }}" data-brandid="{{$brand->id}}">{{$brand->name}}</a></div>
+                <div><a href="#" id="brandFilter" data-url="{{ $route }}" data-brandid="{{$brand->id}}">{{$brand->name}}</a></div>
                 @empty
                 @endforelse
             </div>
@@ -59,12 +84,14 @@
             </div>
 
             <div class="group-button-category-4">
-                <button id="destroy-filter-button" data-url="{{ route('filterProducts') }}">Huỷ</button>
-                <button id="filter-button" data-url="{{ route('filterProducts') }}">Lọc</button>
+                <button id="destroy-filter-button" data-url="{{ $route }}">Huỷ</button>
+                <button id="filter-button" data-url="{{ $route }}">Lọc</button>
             </div>
         </div>
     </div>
 </div>
+</div>
+
 
 
 
