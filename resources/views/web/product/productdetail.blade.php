@@ -7,25 +7,22 @@ HOME
 <link rel="stylesheet" href="{{ asset('/css/product-detail.css') }}">
 @endsection
 @section('content')
-
-<div class="breakcrumb-1 my-4">
-    <div class="breakcrumb-wrap container">
-        <div class="breakcrumb-item">
-            <a style="color: rgba(177, 0, 0, 1);" href="{{ route('home') }}">Echop
-                <div class="arrow"></div>
-        </div>
-        <div class="breakcrumb-item">
-            <a style="color: rgba(177, 0, 0, 1);" href="">
-                {{$product->type->label()}}
-                <div class="arrow"></div>
-        </div>
-        </a>
-        <div class="breakcrumb-item breakcrumb-last-item">
-            {{ $product->name }}
-            <div class="arrow last-arrow"></div>
-        </div>
-    </div>
-</div>
+@php
+$items = [
+    [
+        'label' => 'Echop',
+        'href' => route('home')
+    ],
+    [
+        'label' => $product->type->label(),
+        'href' => ''
+    ],
+    [
+        'label' => $product->name,
+    ]
+];
+@endphp
+@include('components.breadcrumb', ['items' => $items])
 <div class="content">
     <div class="row">
         <div class="col-md-7">
@@ -748,57 +745,5 @@ HOME
     }
 </script>
 <script src="{{ asset('/js/favorite.js')}}"></script>
-<script>
-    $(document).ready(function() {
-        var currentSecondhandPage = 1;
-        var currentExchangePage = 1;
-
-        $('#btnMoreSecondhand').click(function(event) {
-            event.preventDefault();
-            currentSecondhandPage++;
-
-            $.ajax({
-                url: '{{ route("home") }}',
-                method: 'GET',
-                data: {
-                    secondhandPage: currentSecondhandPage
-                },
-                success: function(response) {
-                    $('.secondhand-list').append(response.products);
-                    if (!response.hasMorePage) {
-                        $('#btnMoreSecondhand').hide();
-                        $('.end-of-products-secondhand').show();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Xử lý lỗi nếu cần
-                }
-            });
-        });
-
-        $('#btnMoreExchange').click(function(event) {
-            event.preventDefault();
-            currentExchangePage++;
-
-            $.ajax({
-                url: '{{ route("home") }}',
-                method: 'GET',
-                data: {
-                    exchangePage: currentExchangePage
-                },
-                success: function(response) {
-                    $('.exchange-list').append(response.products);
-                    if (!response.hasMorePage) {
-                        $('#btnMoreExchange').hide();
-                        $('.end-of-products-exchange').show();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Xử lý lỗi nếu cần
-                }
-            });
-        });
-    });
-</script>
 @endsection
 @endsection
