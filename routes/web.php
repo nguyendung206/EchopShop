@@ -33,7 +33,8 @@ Route::prefix('/product-detail')->group(function () {
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/profile')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
-        Route::put('/save', [ProfileUserController::class, 'update'])->name('web.profile.save');
+        Route::put('/saveprofile', [ProfileUserController::class, 'updateProfile'])->name('web.profile.save');
+        Route::put('/saveidentification', [ProfileUserController::class, 'updateIdentification'])->name('web.identification.save');
     });
 });
 Route::prefix('/favorite')->name('favorite.')->group(function () {
