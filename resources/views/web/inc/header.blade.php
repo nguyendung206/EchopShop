@@ -76,7 +76,7 @@
                                         @foreach($categories as $category)
                                         <li class="dropdown-submenu">
                                             <a class="dropdown-item dropdown-item-custom" tabindex="-1" href="#">
-                                                <img src="{{ getImage('upload/product/', $category->photo) }}" alt="" class="dropdown-img">
+                                                <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
                                                 <p class="dropdown-title">{{$category->name}}</p>
                                             </a>
                                             @if($category->activeBrands->count())

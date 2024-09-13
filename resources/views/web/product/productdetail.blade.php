@@ -7,28 +7,22 @@ HOME
 <link rel="stylesheet" href="{{ asset('/css/product-detail.css') }}">
 @endsection
 @section('content')
-
-<div class="breakcrumb-1 my-4">
-    <div class="breakcrumb-wrap container">
-        <div class="breakcrumb-item">
-            Echop
-            <div class="arrow"></div>
-        </div>
-
-        <div class="breakcrumb-item">
-            Mỹ phẩm
-            <div class="arrow"></div>
-        </div>
-        <div class="breakcrumb-item">
-            Son môi
-            <div class="arrow"></div>
-        </div>
-        <div class="breakcrumb-item breakcrumb-last-item">
-            Son MAC
-            <div class="arrow last-arrow"></div>
-        </div>
-    </div>
-</div>
+@php
+$items = [
+    [
+        'label' => 'Echop',
+        'href' => route('home')
+    ],
+    [
+        'label' => $product->type->label(),
+        'href' => ''
+    ],
+    [
+        'label' => $product->name,
+    ]
+];
+@endphp
+@include('components.breadcrumb', ['items' => $items])
 <div class="content">
     <div class="row">
         <div class="col-md-7">
@@ -45,17 +39,21 @@ HOME
                     @endforeach
                     @endif
                 </div>
-
                 <div class="slider-for col-md-9">
                     <img class="" style="object-fit: cover;" id="main-image" src="{{ getImage($product->photo) }}" alt="Main Product Image" />
                 </div>
             </div>
-
         </div>
 
         <div class="information-product col-md-5">
             <div class="wrap-heart">
-                <img src="{{asset('/img/icon/heart-icon.png')}}" alt="" />
+                @auth
+                <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}">
+                    <i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home " style="position: relative; bottom:0; right:0; font-size:24px;"></i>
+                </a>
+                @else
+                <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                @endauth
             </div>
             <div class="name-product">
                 {{$product->name}}
@@ -746,5 +744,6 @@ HOME
         document.getElementById('main-image').src = imageSrc;
     }
 </script>
+<script src="{{ asset('/js/favorite.js')}}"></script>
 @endsection
 @endsection
