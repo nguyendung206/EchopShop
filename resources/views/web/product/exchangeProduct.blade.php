@@ -1,6 +1,6 @@
 @extends('web.layout.app')
 @section('title')
-    EXCHANGEPRODUCT
+    Trao đổi hàng hoá
 @endsection
 
 @section('css')

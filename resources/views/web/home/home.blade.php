@@ -252,10 +252,11 @@ HOME
                     <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
                 </div>
                 @endforelse
+                @if($giveawayProducts->isNotEmpty() )
                 <div class="gift-item m-2" style="position: absolute;top: 50%;right:-40px">
                     <a class="all color-B10000" href="{{route('giveawayProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
-
                 </div>
+                @endif
             </div>
         </div>
 </div>
