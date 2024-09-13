@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Enums\TypeProduct;
-use App\Models\Product;
 use App\Models\Favorite;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
 class HomeService
@@ -20,7 +19,6 @@ class HomeService
     public function filterProducts($request, $type)
     {
 
-
         $rangeInputMin = $request->query('rangeInputMin') !== null ? (float) $request->query('rangeInputMin') : 0;
         $rangeInputMax = $request->query('rangeInputMax') !== null ? (float) $request->query('rangeInputMax') : PHP_INT_MAX;
         $brandId = $request->query('brandId');
@@ -32,19 +30,21 @@ class HomeService
             })
             ->where('type', $type)->get();
 
-        if(stripos($request->url(), 'favorite')){
-            if(!Auth::check()) return redirect()->route('web.login');
+        if (stripos($request->url(), 'favorite')) {
+            if (! Auth::check()) {
+                return redirect()->route('web.login');
+            }
             $products = Favorite::where('user_id', Auth::id())
-                            ->whereHas('product', function ($query) use ($rangeInputMin, $rangeInputMax, $brandId) {
-                                $query->where('status', 1)
-                                    ->where('price', '>=', $rangeInputMin)
-                                    ->where('price', '<=', $rangeInputMax)
-                                    ->when($brandId, function ($query, $brandId) {
-                                        return $query->where('brand_id', $brandId);
-                                    });
-                            })
-                            ->with('product')
-                            ->get();
+                ->whereHas('product', function ($query) use ($rangeInputMin, $rangeInputMax, $brandId) {
+                    $query->where('status', 1)
+                        ->where('price', '>=', $rangeInputMin)
+                        ->where('price', '<=', $rangeInputMax)
+                        ->when($brandId, function ($query, $brandId) {
+                            return $query->where('brand_id', $brandId);
+                        });
+                })
+                ->with('product')
+                ->get();
         }
 
         return $products;
