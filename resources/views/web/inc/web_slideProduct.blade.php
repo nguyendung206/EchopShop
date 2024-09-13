@@ -33,7 +33,7 @@
     <div class="category-3">
         <div class="box">
             <div class="slider">
-                <input type="range" id="rangeInput" min="100000" max="1000000" value="100000" />
+                <input type="range" id="rangeInput" min="0" max="1000000" value="100000" />
                 <input type="range" id="rangeInput2" min="1000000" max="2000000" value="1000000" />
             </div>
             <div class="value">
@@ -66,7 +66,11 @@
     </div>
 </div>
 
-@section('script')
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         const rangeInput = document.getElementById("rangeInput");
         const rangeInput2 = document.getElementById("rangeInput2");
@@ -99,24 +103,13 @@
         updateRangeInput2();
     </script>
 
-    <script>
-        document
-            .querySelector(".responsive-menu-icon")
-            .addEventListener("click", function() {
-                var menu = document.querySelector(".responsive-menu");
-                if (menu.style.display === "block") {
-                    menu.style.display = "none";
-                } else {
-                    menu.style.display = "block";
-                }
-            });
-    </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const categoryImages = document.querySelectorAll(".category-item");
 
             categoryImages.forEach((item) => {
-                item.addEventListener("click", function() {
+                item?.addEventListener("click", function() {
                     const img = this.querySelector("img");
                     if (img.src.includes("extend.png")) {
                         img.src = "{{ asset('/img/icon/close.png') }}";
@@ -259,4 +252,3 @@
             })
         });
     </script>
-@endsection

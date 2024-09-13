@@ -71,10 +71,7 @@ HOME
                 </div>
 
             </div>
-            <div class="icon-test">
-                <i class="fa-solid fa-arrow-left color-B10000"></i>
-                <i class="fa-solid fa-arrow-right color-fff"></i>
-            </div>
+           
         </div>
         <div class="container">
             <div class="row secondhand-list">
@@ -91,7 +88,7 @@ HOME
                         <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
                     </a>
                     <br>
-                    <a href="#" class="buy">Mua ngay</a>
+                    <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
                 </div>
                 @empty
                 <div class="text-center w-100 py-5">

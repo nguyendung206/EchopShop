@@ -50,14 +50,14 @@ class HomeController extends Controller
         return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'partners'));
     }
 
-    public function filterProducts(Request $request) {
-        $data = $this->homeService->filterProducts($request);
-        $products = $data['products'];
+    public function filterProducts(Request $request)
+    {
+        $products = $this->homeService->filterProducts($request);
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
-            return response()->json(
-                $data
-            );
+            return response()->json([
+                'productHtml' => view('web.product.listProduct', compact('products'))->render(),
+            ]);
         }
 
         return view('web.product.exchangeProduct', compact('products', 'provinces'));

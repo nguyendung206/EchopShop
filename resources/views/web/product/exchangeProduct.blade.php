@@ -1,13 +1,15 @@
 @extends('web.layout.app')
 @section('title')
-    HOME
+    EXCHANGEPRODUCT
 @endsection
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('/css/product.css') }}">
 @endsection
+
 @section('content')
     <div class="title-line">
-        <div class="title-text">MUA BÁN ĐỒ SECONDHAND</div>
+        <div class="title-text">Trao đổi hàng hoá</div>
     </div>
 
     <div class="content container">
@@ -23,19 +25,18 @@
                 <div class="row list-product">
                     @forelse($products as $product)
                         <div class="col-lg-4 product-item col-6">
-                            <div class="product-content">
-                                <div class="img-product">
-
-                                    <img src="{{ getImage($product->photo) }}" alt="p1"
-                                        style="width: 100%; height: 330px" />
-                                    <img src="{{ asset('/img/icon/heart-icon.png') }}" alt="h" />
-                                </div>
-                                <span class="name-item">{{$product->name}}</span>
-                                <span class="price-item">{{$product->price}} đ</span>
-                                <div>
-                                    <button>Mua ngay</button>
-                                </div>
-                            </div>
+                            <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
+                                <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
+                                @auth
+                                <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
+                                @else
+                                <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                                @endauth
+                                <p class="product-name pt-2">{{$product->name}}</p>
+                            </a>
+                            <br>
+                            <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
+                            <a href="#" class="buy">Trao đổi</a>
                         </div>
                     @empty
                         <div class="text-center w-100 py-5">
@@ -46,6 +47,12 @@
             </div>
         </div>
     </div>
+
+@section('script')
+<script src="{{ asset('/js/favorite.js')}}"></script>
 @endsection
+
+@endsection
+
 
 

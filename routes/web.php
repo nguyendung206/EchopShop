@@ -12,7 +12,6 @@ require __DIR__.'/admin.php';
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name('filterProducts');
 
-
 Route::get('/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/login', [AuthController::class, 'login'])->name('web.authentication');
 
@@ -41,4 +40,3 @@ Route::prefix('/favorite')->name('favorite.')->group(function () {
     Route::post('/', [FavoriteController::class, 'store'])->name('store');
     Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('destroy');
 });
-

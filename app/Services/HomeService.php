@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Product;
 use App\Enums\TypeProduct;
-
+use App\Models\Product;
 
 class HomeService
 {
@@ -16,8 +15,9 @@ class HomeService
         return $products;
     }
 
-    public function filterProducts($request) {
-        $type = TypeProduct::EXCHANGE;; // Giá trị mặc định
+    public function filterProducts($request)
+    {
+        $type = TypeProduct::EXCHANGE; // Giá trị mặc định
         $currentUrl = $request->url();
 
         switch (true) {
@@ -38,18 +38,13 @@ class HomeService
         $rangeInputMax = $request->query('rangeInputMax') !== null ? (float) $request->query('rangeInputMax') : PHP_INT_MAX;
         $brandId = $request->query('brandId');
         $products = Product::query()->where('status', 1)
-                                    ->where('price', '>=',$rangeInputMin)
-                                    ->where('price', '<=',$rangeInputMax)
-                                    ->when($brandId, function($query, $brandId) {
-                                        return $query->where('brand_id', $brandId);
-                                    })
-                                    ->where('type', $type)->get();
-        $data = ['products' => $products,
-                'productHtml' => view('web.product.listProduct', compact('products'))->render(),
-                'provinceIds' => $request->query('provinceIds'),
-                'rangeInputMin' => $request->query('rangeInputMin'),
-                'rangeInputMax' => $request->query('rangeInputMax'),
-                'option' => $request->query('option'),];
-        return $data;
+            ->where('price', '>=', $rangeInputMin)
+            ->where('price', '<=', $rangeInputMax)
+            ->when($brandId, function ($query, $brandId) {
+                return $query->where('brand_id', $brandId);
+            })
+            ->where('type', $type)->get();
+
+        return $products;
     }
 }
