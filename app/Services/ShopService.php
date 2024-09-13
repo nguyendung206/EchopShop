@@ -7,6 +7,25 @@ use App\Models\Shop;
 
 class ShopService
 {
+    public function getShops($request)
+    {
+        $query = Shop::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('hotline', 'like', '%'.$searchTerm.'%');
+            });
+        }
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        return $query->paginate(10);
+    }
+
     public function createShop(ShopRequest $request)
     {
         $shop = new Shop;

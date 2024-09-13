@@ -142,11 +142,11 @@ $(document).ready(function () {
     var activeTab = localStorage.getItem('activeTab');
 
     if (activeTab) {
-        $('.list a[data-tab="' + activeTab + '"]').addClass('active-profile');
+        $('.profile-tab[data-tab="' + activeTab + '"]').addClass('active-profile');
     }
 
-    $('.list a').on('click', function () {
-        $('.list a').removeClass('active-profile');
+    $('.profile-tab').on('click', function () {
+        $('.profile-tab').removeClass('active-profile');
 
         $(this).addClass('active-profile');
 
@@ -154,4 +154,5 @@ $(document).ready(function () {
         localStorage.setItem('activeTab', tab);
     });
 });
+
 

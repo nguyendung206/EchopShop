@@ -17,7 +17,7 @@
             <div class="col-12">
                 <nav class="category-profile" id="category-profile">
                     <ul class="list text-center">
-                        <a href="{{route('web.profile.index', Session::get('user')->id)}} data-tab=" profile">
+                        <a href="{{route('web.profile.index', Session::get('user')->id)}}" data-tab="profile">
                             <i class="fa-regular fa-circle-user mr-1"></i>
                             Hồ sơ của tôi
                         </a>

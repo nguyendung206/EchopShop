@@ -127,7 +127,6 @@
     object-fit: cover;
     width: 140px;
     height: 140px;
-    margin-top: 0;
 }
 
 label {
@@ -219,7 +218,7 @@ label {
 }
 
 .form-btn a {
-    padding: 8px 40px;
+    padding: 6px 40px;
     border: 1px solid #B10000;
     cursor: pointer;
 }
