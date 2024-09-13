@@ -1,5 +1,5 @@
 @forelse($products as $product)
-<div class="col-lg-4 product-item col-6">
+<div class="col-lg-4 product-item col-6 text-center py-3">
     <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
         <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
         @auth
