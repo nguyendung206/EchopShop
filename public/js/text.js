@@ -138,3 +138,20 @@ $(document).ready(function () {
         $('#category-profile').slideToggle();
     });
 })
+$(document).ready(function () {
+    var activeTab = localStorage.getItem('activeTab');
+
+    if (activeTab) {
+        $('.list a[data-tab="' + activeTab + '"]').addClass('active-profile');
+    }
+
+    $('.list a').on('click', function () {
+        $('.list a').removeClass('active-profile');
+
+        $(this).addClass('active-profile');
+
+        var tab = $(this).data('tab');
+        localStorage.setItem('activeTab', tab);
+    });
+});
+

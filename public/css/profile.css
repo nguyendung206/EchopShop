@@ -262,6 +262,12 @@ button.form-btn-save {
     display: none;
 }
 
+.active-profile {
+    background-color: #FFF4F4;
+    color: #B10000 !important;
+    border-left: 2px solid #B10000;
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
     .profile-update-btn-2 {
         margin-left: 0;
