@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -90,5 +91,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::put('/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('updateStatus');
         Route::put('/update/{id}', [PartnerController::class, 'update'])->name('update');
         Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('shop')->group(function () {
+        Route::get('/', [ShopController::class, 'index'])->name('shop.index');
+        Route::get('/{id}', [ShopController::class, 'show'])->name('shop.show');
+        Route::get('/changestatus/{id}', [ShopController::class, 'status'])->name('shop.changestatus');
     });
 });

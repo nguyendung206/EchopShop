@@ -1,16 +1,16 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Sản phẩm')
+@lang('Đăng ký bán hàng')
 @endsection
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="align-items-center">
-        <h1 class="h3"><strong>@lang('Sản phẩm')</strong></h1>
+        <h1 class="h3"><strong>@lang('Đăng ký bán hàng')</strong></h1>
     </div>
 </div>
 <div class="filter">
-    <form class="" id="food" action="{{ route('product.index') }}" method="GET">
+    <form class="" id="food" action="{{ route('shop.index') }}" method="GET">
         <div class="row gutters-5 mb-2">
             <div class="col-md-6 d-flex search">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -19,7 +19,7 @@
                 <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
-                <a href="{{route('product.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
+                <a href="" class="btn btn-info btn-add-food d-flex justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -35,14 +35,9 @@
         </div>
         <div class="row gutters-5 mb-3 custom-change">
             <div class="col-md-3 ">
-                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="types" name="type">
-                    <option value="">@lang('Kiểu sản phẩm')</option>
-                    @foreach (\App\Enums\TypeProduct::cases() as $type)
-                    <option value="{{ $type->value }}" @if(request('type')==$type->value) selected @endif>
-                        {{ $type->label() }}
-                    </option>
-                    @endforeach
-                </select>
+                <input type="text" onkeypress='return event.charCode >=48 && event.charCode<=57' autocomplete="off" class="form-control custom-placeholder"
+                    name="joined_date" id="joined_date" placeholder="{{__('Ngày tạo')}}" value="{{ request('joined_date') }}">
+                <div class="custom-down"><i class="fas fa-chevron-down"></i></div>
             </div>
             <div class="col-md-3 res-status">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="status" name="status">
@@ -91,11 +86,11 @@
             <thead>
                 <tr class="text-center">
                     <th class="w-60 font-weight-800">STT</th>
-                    <th class="w-60">@lang('Ảnh')</th>
-                    <th class="w-25">@lang('Tên sản phẩm')</th>
-                    <th class="">@lang('Mô tả')</th>
-                    <th class="">@lang('Giá')</th>
-                    <th class="">@lang('Kiểu sản phẩm')</th>
+                    <th class="w-60">@lang('Logo')</th>
+                    <th class="w-25">@lang('Tên cửa hàng')</th>
+                    <th>@lang('Địa chỉ')</th>
+                    <th>@lang('Hotline')</th>
+                    <th>@lang('Email')</th>
                     <th class="w-140">@lang('Trạng thái')</th>
                     <th class="" style="width: 15%;">@lang('Điều chỉnh')</th>
                 </tr>
@@ -106,34 +101,28 @@
                 <tr class="text-center">
                     <td class="font-weight-800 align-middle">{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
                     <td class="font-weight-400 align-middle">
-                        <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ getImage($data->photo) }}">
+                        <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{ getImage($data->logo) }}">
                     </td>
                     <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
-                    <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>
-                    <td class="font-weight-400 align-middle">{{format_price($data->price)}}</td>
-                    <td>{{ $data->type->label()}}</td>
+                    <td class="font-weight-400 align-middle">{{ $data->address }}</td>
+                    <td class="font-weight-400 align-middle">{{ $data->hotline }}</td>
+                    <td class="font-weight-400 align-middle">{{ $data->email }}</td>
                     <td>{{ $data->status->label() }}</td>
-                    <td class="text-right">
-                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.show', ['id' => $data->id]) }}" title="@lang('Show')">
+                    <td class="text-center">
+                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('shop.show', ['id' => $data->id]) }}" title="@lang('Xem chi tiết')">
                             <i class="las la-bars"></i>
                         </a>
                         @if ($data->status->value == 1)
                         <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('product.changestatus', ['id' => $data->id]) }}" id="active-popup" title="@lang('user.deactivate')">
+                            data-href="{{ route('shop.changestatus', ['id' => $data->id]) }}" id="active-popup" title="@lang('Vô hiệu hóa')">
                             <i class="las la-ban"></i>
                         </a>
                         @else
                         <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('product.changestatus', ['id' => $data->id]) }}" id="inactive-popup" title="@lang('user.active')">
+                            data-href="{{ route('shop.changestatus', ['id' => $data->id]) }}" id="inactive-popup" title="@lang('Kích hoạt')">
                             <i class="las la-check-circle"></i>
                         </a>
                         @endif
-                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.edit', ['id' => $data->id]) }}" title="@lang('Update')">
-                            <i class="las la-edit"></i>
-                        </a>
-                        <a href="javascript:void(0)" data-href="{{ route('product.delete', ['id' => $data->id]) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
-                            <i class="las la-trash"></i>
-                        </a>
                     </td>
                 </tr>
                 @endforeach
@@ -142,12 +131,12 @@
         </table>
     </div>
 </div>
-<div class="pagination-us">
-    <div class="aiz-pagination">
-        {{ $datas->appends(request()->input())->links("pagination::bootstrap-4") }}
-    </div>
+<div class="aiz-pagination mt-4">
+    {{ $datas->appends(request()->input())->links("pagination::bootstrap-4") }}
 </div>
+
 @endsection
+
 
 @section('script')
 <script type="text/javascript">
@@ -170,7 +159,7 @@
         }
         ev.currentTarget.value = null;
     })
-    @foreach(session('errors', collect()) - > toArray() as $message)
+    @foreach(session('errors', collect()) -> toArray() as $message)
     AIZ.plugins.notify('danger', '{{ $message[0] }}');
     @endforeach
     // active popup
@@ -180,7 +169,7 @@
 
         Swal.fire({
             title: '@lang("Kích hoạt")',
-            text: '@lang("Bạn muốn kích hoạt Danh mục này?")',
+            text: '@lang("Bạn muốn kích hoạt Cửa hàng này?")',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
             showCancelButton: true,
@@ -218,7 +207,7 @@
 
         Swal.fire({
             title: '@lang("Vô hiêu hóa")',
-            text: '@lang("Bạn muốn vô hiệu hóa Danh mục này")',
+            text: '@lang("Bạn muốn vô hiệu hóa Cửa hàng này")',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
             showCancelButton: true,
@@ -244,46 +233,6 @@
                     },
                     error: function(err) {
                         Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
-                    }
-                });
-            }
-        });
-    });
-
-    //deletee
-    $(document).on('click', '.btn-delete', function() {
-        let delete_id = $(this).attr('data-id');
-        let delete_href = $(this).attr('data-href');
-
-        Swal.fire({
-            title: '@lang("Xóa Sản phẩm")',
-            text: '@lang("Bạn có muốn xóa Sản phẩm này không ?")',
-            icon: 'warning',
-            confirmButtonText: '@lang("Có")',
-            cancelButtonText: '@lang("Không")',
-            showCancelButton: true,
-            showCloseButton: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "POST",
-                    url: delete_href,
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "_method": "DELETE",
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            title: 'Xóa thành công!',
-                            text: 'Sản phẩm đã được xóa.',
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    },
-                    error: function(err) {
-                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Sản phẩm.', 'error');
                     }
                 });
             }

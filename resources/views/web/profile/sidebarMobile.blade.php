@@ -17,27 +17,27 @@
             <div class="col-12">
                 <nav class="category-profile" id="category-profile">
                     <ul class="list text-center">
-                        <a href="{{route('web.profile.index', Session::get('user')->id)}}">
+                        <a href="{{route('web.profile.index', Session::get('user')->id)}}" data-tab="profile">
                             <i class="fa-regular fa-circle-user mr-1"></i>
                             Hồ sơ của tôi
                         </a>
-                        <a href="#">
+                        <a href="#" data-tab="orders">
                             <i class="fa-solid fa-cart-plus mr-1"></i>
                             Đơn hàng của tôi
                         </a>
-                        <a href="#">
+                        <a href="#" data-tab="chat">
                             <i class="fa-regular fa-comment-dots mr-1"></i>
                             Lịch sử chat
                         </a>
-                        <a href="#">
+                        <a href="#" data-tab="posts">
                             <i class="fa-regular fa-file-lines mr-1"></i>
                             Quản lý bài đăng
                         </a>
-                        <a href="#">
-                            <i class="fa-solid fa-crown mr-1"></i>
-                            Gói cước của tôi
+                        <a href="{{route('web.registershop.create')}}" data-tab="shop">
+                            <i class="fa-solid fa-store"></i>
+                            Đăng ký bán hàng
                         </a>
-                        <a href="#">
+                        <a href="#" data-tab="favorites">
                             <i class="fa-regular fa-heart mr-1"></i>
                             Đã thích
                         </a>

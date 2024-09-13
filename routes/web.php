@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
+use App\Http\Controllers\Web\ShopController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/admin.php';
@@ -38,6 +39,10 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
         Route::put('/saveprofile', [ProfileUserController::class, 'updateProfile'])->name('web.profile.save');
         Route::put('/saveidentification', [ProfileUserController::class, 'updateIdentification'])->name('web.identification.save');
+    });
+    Route::prefix('/registershop')->group(function () {
+        Route::get('/', [ShopController::class, 'create'])->name('web.registershop.create');
+        Route::post('/save', [ShopController::class, 'store'])->name('web.registershop.store');
     });
 });
 Route::prefix('/favorite')->name('favorite.')->group(function () {
