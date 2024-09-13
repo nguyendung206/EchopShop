@@ -52,14 +52,43 @@ class HomeController extends Controller
 
     public function filterProducts(Request $request)
     {
-        $products = $this->homeService->filterProducts($request);
+        $type = null;
+        $currentUrl = $request->url();
+        $viewDefault = '';
+        $viewList = '';
+        switch (true) {
+            case stripos($currentUrl, 'exchange') !== false:
+                $type = TypeProduct::EXCHANGE;
+                $viewDefault = 'web.product.exchangeProduct';
+                $viewList = 'web.product.listExchangeProduct';
+                break;
+            case stripos($currentUrl, 'secondhand') !== false:
+                $type = TypeProduct::SECONDHAND;
+                $viewDefault = 'web.product.secondhandProduct';
+                $viewList = 'web.product.listSecondhandProduct';
+                break;
+            case stripos($currentUrl, 'giveaway') !== false:
+                $type = TypeProduct::GIVEAWAY;
+                $viewDefault = 'web.product.giveawayProduct';
+                $viewList = 'web.product.listGiveawayProduct';
+                break;
+            case stripos($currentUrl, 'favorite') !== false:
+                $viewDefault = 'web.product.favoriteProduct';
+                $viewList = 'web.product.listFavoriteProduct';
+                break;
+            default:
+                break;
+        }
+
+
+        $products = $this->homeService->filterProducts($request, $type);
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
-                'productHtml' => view('web.product.listProduct', compact('products'))->render(),
+                'productHtml' => view($viewList, compact('products'))->render(),
             ]);
         }
 
-        return view('web.product.exchangeProduct', compact('products', 'provinces'));
+        return view($viewDefault, compact('products', 'provinces'));
     }
 }

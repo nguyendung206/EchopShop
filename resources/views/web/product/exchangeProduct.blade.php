@@ -14,13 +14,7 @@
 
     <div class="content container">
         <div class="row">
-            <div class="col-lg-3 col-12 category-title-wrap-1">
-                <div class="category-title-wrap">
-                    <div class="category-title">Danh mục sản phẩm</div>
-                    <div class="open-icon"><i class="fa-solid fa-arrow-down"></i></div>
-                </div>
-                @include('web.inc.web_slideProduct')
-            </div>
+            @include('web.inc.web_slideProduct')
             <div class="col-lg-9 col-12">
                 <div class="row list-product">
                     @forelse($products as $product)

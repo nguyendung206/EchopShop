@@ -1,4 +1,4 @@
-@foreach($favorites as $favorite)
+@forelse($products as $favorite)
         @php
             $product = $favorite->product;
         @endphp
@@ -10,5 +10,8 @@
         <br>
         <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="buy">Mua ngay</a>
     </div>
-    
-@endforeach
+    @empty
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                </div>
+@endforelse

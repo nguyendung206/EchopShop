@@ -18,7 +18,7 @@
             <p class="product-name pt-2">{{$product->name}}</p>
             <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
             <br>
-            <a href="#" class="buy">Mua ngay</a>
+            <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="buy">Mua ngay</a>
         </div>
         @empty 
             <div class="text-center w-100 py-5">
@@ -31,7 +31,7 @@
         @if(auth()->user()->load('favorites')->favorites->count() > 8)
         <a id="btnMoreFavorite" class="all color-B10000" href="#" data-url ='{{route('web.profile.index', Session::get('user')->id)}}' >Xem thêm <i class="fa-solid fa-angles-down"></i></a>
         @endif
-        <a class="all color-B10000" href="#" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+        <a class="all color-B10000" href="{{ route('favoriteProduct')}}" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
     </div>
     @endif
 </div>

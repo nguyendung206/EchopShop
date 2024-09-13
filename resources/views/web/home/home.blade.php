@@ -101,7 +101,7 @@ HOME
                 @if($secondhandProducts->count() >= 8)
                 <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="{{route("secondhandProduct")}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
         </div>
@@ -162,7 +162,7 @@ HOME
                 @if($exchangeProducts->count() >= 8)
                 <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="{{route('filterProducts')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="{{route('exchangeProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
 
@@ -219,26 +219,13 @@ HOME
                     <hr>
                 </div>
             </div>
-            <div class="icon-test">
-                <i class="fa-solid fa-arrow-left color-B10000 slick-prev"></i>
-                <i class="fa-solid fa-arrow-right color-fff slick-next"></i>
+            <div class="icon-test icon-test-custom">
+                <i class="fa-solid fa-arrow-left color-B10000 slick-prev-gift"></i>
+                <i class="fa-solid fa-arrow-right color-fff slick-next-gift"></i>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="gift-list slider">
-            <div class="gift-item m-2">
-                <img src="{{ asset('/img/image/aoquan.jpeg') }}" alt="" class="gift-img">
-                <div class="layer">
-                    <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                    <p>Free</p>
-                </div>
-                <div class="icon-test">
-                    <i class="fa-solid fa-arrow-left color-B10000 slick-prev slick-prev-gift"></i>
-                    <i class="fa-solid fa-arrow-right color-fff slick-next slick-next-gift"></i>
-                </div>
-            </div>
-        </div>
+    
         <div class="container">
             <div class="gift-list slider">
                 @forelse($giveawayProducts as $product)
@@ -255,7 +242,7 @@ HOME
                     @endauth
                     <div class="gift-hover">
                         <div class="layout"></div>
-                        <a href="#" class="gift-btn">
+                        <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="gift-btn">
                             <i class="fa-solid fa-gift"></i> Nhận quà tặng
                         </a>
                     </div>
@@ -265,9 +252,12 @@ HOME
                     <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
                 </div>
                 @endforelse
+                <div class="gift-item m-2" style="position: absolute;top: 50%;right:-40px">
+                    <a class="all color-B10000" href="{{route('giveawayProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+
+                </div>
             </div>
         </div>
-    </div>
 </div>
 <br>
 <hr>
