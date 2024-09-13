@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Partner;
 use App\Models\Product;
+use App\Models\Province;
 use App\Services\HomeService;
 use Illuminate\Http\Request;
 
@@ -47,5 +48,18 @@ class HomeController extends Controller
         }
 
         return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'partners'));
+    }
+
+    public function filterProducts(Request $request) {
+        $data = $this->homeService->filterProducts($request);
+        $products = $data['products'];
+        $provinces = Province::query()->get();
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(
+                $data
+            );
+        }
+
+        return view('web.product.exchangeProduct', compact('products', 'provinces'));
     }
 }

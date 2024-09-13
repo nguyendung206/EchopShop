@@ -165,7 +165,7 @@ HOME
                 @if($exchangeProducts->count() >= 8)
                 <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000" href="#">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <a class="all color-B10000" href="{{route('web.exchangeProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
 
