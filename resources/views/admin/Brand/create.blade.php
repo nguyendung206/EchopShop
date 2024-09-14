@@ -17,7 +17,7 @@
                 <h5 class="mb-0 h6">@lang('Thêm mới loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{route('admin.brand.add.save')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('admin.brand.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên hãng hàng')<span class="text-vali">&#9913;</span></label>

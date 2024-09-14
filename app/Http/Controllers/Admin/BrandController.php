@@ -71,7 +71,7 @@ class BrandController extends Controller
             $categories = Category::where('status', Status::ACTIVE)->get();
             $brand = Brand::findOrFail($id);
 
-            return view('admin.brand.update', compact('brand', 'categories'));
+            return view('admin.brand.edit', compact('brand', 'categories'));
         } catch (ModelNotFoundException $e) {
             flash('Thương hiệu không tồn tại!')->error();
 

@@ -50,7 +50,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái</label>
                         <div class="col-sm-9">
-                            <select class="text-center font-weight-500 form-control" name="status" >
+                            <select class="font-weight-500 form-control" name="status" >
                                 <option value="{{ StatusEnums::ACTIVE->value }}" {{ $banner->status->value == StatusEnums::ACTIVE->value ? 'selected' : '' }} {{old('status') ? old('status') == StatusEnums::ACTIVE->value ? 'selected' : '' : ''}}>
                                     @lang(StatusEnums::ACTIVE->label())
                                 </option>
@@ -80,14 +80,12 @@
                         <div class="col-sm-9">
                             <input type="hidden" name="old_photo" value="{{ old('old_photo') }}" />
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)" />
+                            <img id="photo_preview" src="{{ old('old_photo') ? getImage(old('old_photo')) : getImage($banner->photo) }}" class="img img-bordered mt-4" style="width:200px" />
+
                             @error('photo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <img id="photo_preview" src="{{ old('old_photo') ? getImage(old('old_photo')) : getImage($banner->photo) }}" class="img img-bordered" style="width:200px" />
                     </div>
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('admin.banner.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>

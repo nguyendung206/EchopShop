@@ -65,13 +65,13 @@
 
                         <li class="aiz-side-nav-item">
                             <a href="#" class="aiz-side-nav-link ">
+                                <i class="las la-home aiz-side-nav-icon"></i>
                                 <span class="aiz-side-nav-text">Quản trị viên</span>
                             </a>
                         </li>
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('admin.shop.index') }}" class="aiz-side-nav-link ">
                                 <i class="las la-home aiz-side-nav-icon"></i>
-
                                 <span class="aiz-side-nav-text">Shop</span>
                             </a>
                         </li>

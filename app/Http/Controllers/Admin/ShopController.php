@@ -36,10 +36,10 @@ class ShopController extends Controller
         } catch (\Exception $e) {
             flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
 
-            return redirect()->route('shop.index');
+            return redirect()->route('admin.shop.index');
         }
 
-        return redirect()->route('shop.index');
+        return redirect()->route('admin.shop.index');
     }
 
     public function show($id)

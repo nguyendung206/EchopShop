@@ -19,9 +19,9 @@
                 <h5 class="mb-0 h6">@lang('Cập nhật Loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.brand.edit.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.brand.update', $brand->id) }}" method="POST" enctype="multipart/form-data">
+                    @method('PUT')
                     @csrf
-
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên loại hàng')</label>
                         <div class="col-sm-9">
@@ -60,7 +60,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Loại hàng')</label>
                         <div class="col-sm-9">
-                            <select class="text-center form-control font-weight-500" name="category_id">
+                            <select class=" form-control font-weight-500" name="category_id">
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id', $brand->category_id ?? null) == $category->id ? 'selected' : '' }}>
                                     @lang($category->name)
@@ -77,6 +77,7 @@
                         <div class="col-sm-9">
                             <input type="hidden" name="old_photo" value="{{ $brand->photo }}">
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)">
+                        <img id="photo_preview" src="{{getImage($brand->photo)}}" class="img img-bordered mt-4" style="width:200px" />
                             @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -84,7 +85,6 @@
                     </div>
 
                     <div class="form-group">
-                        <img id="photo_preview" src="{{getImage($brand->photo)}}" class="img img-bordered" style="width:200px" />
                     </div>
 
                     <div class="form-group mb-0 text-right">

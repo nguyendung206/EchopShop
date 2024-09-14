@@ -19,7 +19,7 @@
                 <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
-                <a href="{{route('admin.product.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
+                <a href="{{route('admin.product.create')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -114,24 +114,24 @@
                     <td>{{ $data->type->label()}}</td>
                     <td>{{ $data->status->label() }}</td>
                     <td class="text-right">
-                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.show', ['id' => $data->id]) }}" title="@lang('Show')">
+                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.product.show', $data->id) }}" title="@lang('Show')">
                             <i class="las la-bars"></i>
                         </a>
                         @if ($data->status->value == 1)
                         <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('product.changestatus', ['id' => $data->id]) }}" id="active-popup" title="@lang('user.deactivate')">
+                            data-href="{{ route('admin.product.changestatus', $data->id) }}" id="active-popup" title="@lang('user.deactivate')">
                             <i class="las la-ban"></i>
                         </a>
                         @else
                         <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('product.changestatus', ['id' => $data->id]) }}" id="inactive-popup" title="@lang('user.active')">
+                            data-href="{{ route('admin.product.changestatus', $data->id) }}" id="inactive-popup" title="@lang('user.active')">
                             <i class="las la-check-circle"></i>
                         </a>
                         @endif
-                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('product.edit', ['id' => $data->id]) }}" title="@lang('Update')">
+                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.product.edit',$data->id) }}" title="@lang('Update')">
                             <i class="las la-edit"></i>
                         </a>
-                        <a href="javascript:void(0)" data-href="{{ route('product.delete', ['id' => $data->id]) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                        <a href="javascript:void(0)" data-href="{{ route('admin.product.destroy',  $data->id) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
                             <i class="las la-trash"></i>
                         </a>
                     </td>

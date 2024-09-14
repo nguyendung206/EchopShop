@@ -79,14 +79,11 @@
                         <div class="col-sm-9">
                             <input type="hidden" name="old_photo" value="{{ old('old_photo') }}" />
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)" />
+                            <img id="photo_preview" src="{{ getImage('nobanner.png')}}" class="img img-bordered mt-4" style="width:200px" />
                             @error('photo')
                               <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <img id="photo_preview" src="{{ getImage('nobanner.png')}}" class="img img-bordered" style="width:200px" />
                     </div>
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('banner.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>

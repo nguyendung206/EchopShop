@@ -22,11 +22,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('admin/login', [AuthController::class, 'Index'])->name('admin.login');
-Route::post('admin/login', [AuthController::class, 'Login'])->name('admin.login');
-Route::get('admin/logout', [AuthController::class, 'Logout'])->name('admin.logout');
 
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    
+
     Route::get('/', [AuthController::class, 'index'])->name('index');
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
@@ -35,7 +39,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //category
     Route::resource('/category', CategoryController::class);
-    Route::get('category/changestatus/{id}', [CategoryController::class, 'status'])->name('category.changestatus');
+    Route::post('category/changestatus/{id}', [CategoryController::class, 'status'])->name('category.changestatus');
 
     //customer
     Route::resource('/customer', UserController::class);
@@ -45,52 +49,20 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::resource('/partner', PartnerController::class);
     Route::put('partner/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('partner.updateStatus');
 
-    Route::prefix('brand')->group(function () {
-        Route::get('/', [BrandController::class, 'index'])->name('brand.index');
-        Route::get('add', [BrandController::class, 'create'])->name('brand.add');
-        Route::post('add', [BrandController::class, 'store'])->name('brand.add.save');
-        Route::get('/edit/{id}', [BrandController::class, 'edit'])->name('brand.edit');
-        Route::post('/edit/{id}', [BrandController::class, 'update'])->name('brand.edit.save');
-        Route::delete('/delete/{id}', [BrandController::class, 'destroy'])->name('brand.delete');
-        Route::get('/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
-    });
+    //shop
+    Route::resource('/shop', ShopController::class);
+    Route::put('shop/changestatus/{id}', [ShopController::class , 'changestatus'])->name('shop.changestatus');
 
-    Route::prefix('product')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('product.index');
-        Route::get('add', [ProductController::class, 'create'])->name('product.add');
-        Route::post('add', [ProductController::class, 'store'])->name('product.add.save');
-        Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
-        Route::post('/edit/{id}', [ProductController::class, 'update'])->name('product.edit.save');
-        Route::delete('/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
-        Route::get('/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
-        Route::get('/show/{id}', [ProductController::class, 'show'])->name('product.show');
-    });
+    //banner
+    Route::resource('/banner', BannerController::class);
+    Route::put('banner/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
 
-    Route::prefix('/banner')->name('banner.')->group(function () {
-        Route::get('/create', [BannerController::class, 'create'])->name('create');
-        Route::post('/', [BannerController::class, 'store'])->name('store');
-        Route::get('/', [BannerController::class, 'index'])->name('index');
-        Route::get('/{id}', [BannerController::class, 'show'])->name('show');
-        Route::get('/update/{id}/edit', [BannerController::class, 'edit'])->name('edit');
-        Route::put('/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('updateStatus');
-        Route::put('/update/{id}', [BannerController::class, 'update'])->name('update');
-        Route::delete('/{id}', [BannerController::class, 'destroy'])->name('destroy');
-    });
+    //banner
+    Route::resource('/brand', BrandController::class);
+    Route::put('brand/changestatus/{id}', [BrandController::class, 'changestatus'])->name('brand.changestatus');
 
-    // Route::prefix('/partner')->name('partner.')->group(function () {
-    //     Route::get('/create', [PartnerController::class, 'create'])->name('create');
-    //     Route::post('/', [PartnerController::class, 'store'])->name('store');
-    //     Route::get('/', [PartnerController::class, 'index'])->name('index');
-    //     Route::get('/{id}', [PartnerController::class, 'show'])->name('show');
-    //     Route::get('/update/{id}/edit', [PartnerController::class, 'edit'])->name('edit');
-    //     Route::put('/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('updateStatus');
-    //     Route::put('/update/{id}', [PartnerController::class, 'update'])->name('update');
-    //     Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
-    // });
+    //banner
+    Route::resource('/product', ProductController::class);
+    Route::put('product/changestatus/{id}', [ProductController::class, 'changestatus'])->name('product.changestatus');
 
-    Route::prefix('shop')->group(function () {
-        Route::get('/', [ShopController::class, 'index'])->name('shop.index');
-        Route::get('/{id}', [ShopController::class, 'show'])->name('shop.show');
-        Route::get('/changestatus/{id}', [ShopController::class, 'status'])->name('shop.changestatus');
-    });
 });

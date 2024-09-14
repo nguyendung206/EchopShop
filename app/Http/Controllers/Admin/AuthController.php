@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function Index()
+    public function index()
     {
         if (Auth::guard('admin')->check()) {
             return view('admin.index');
@@ -22,7 +22,7 @@ class AuthController extends Controller
         return view('admin.login');
     }
 
-    public function Login(Request $request)
+    public function login(Request $request)
     {
 
         $request->validate([
@@ -45,7 +45,7 @@ class AuthController extends Controller
         }
     }
 
-    public function Logout()
+    public function logout()
     {
         Auth::guard('admin')->logout();
         Session::flush();
