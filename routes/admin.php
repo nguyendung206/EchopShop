@@ -26,21 +26,25 @@ Route::get('admin/login', [AuthController::class, 'Index'])->name('admin.login')
 Route::post('admin/login', [AuthController::class, 'Login'])->name('admin.login');
 Route::get('admin/logout', [AuthController::class, 'Logout'])->name('admin.logout');
 
-Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
-    Route::get('/', [AuthController::class, 'index'])->name('admin.index');
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AuthController::class, 'index'])->name('index');
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/save', [ProfileController::class, 'update'])->name('profile.save');
     });
-    Route::prefix('category')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('category.index');
-        Route::get('add', [CategoryController::class, 'create'])->name('category.add');
-        Route::post('add', [CategoryController::class, 'store'])->name('category.add.save');
-        Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
-        Route::post('/edit/{id}', [CategoryController::class, 'update'])->name('category.edit.save');
-        Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('category.delete');
-        Route::get('/changestatus/{id}', [CategoryController::class, 'status'])->name('category.changestatus');
-    });
+
+    //category
+    Route::resource('/category', CategoryController::class);
+    Route::get('category/changestatus/{id}', [CategoryController::class, 'status'])->name('category.changestatus');
+
+    //customer
+    Route::resource('/customer', UserController::class);
+    Route::put('customer/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('customer.updateStatus');
+
+    //partner
+    Route::resource('/partner', PartnerController::class);
+    Route::put('partner/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('partner.updateStatus');
+
     Route::prefix('brand')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('brand.index');
         Route::get('add', [BrandController::class, 'create'])->name('brand.add');
@@ -61,16 +65,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::get('/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
         Route::get('/show/{id}', [ProductController::class, 'show'])->name('product.show');
     });
-    Route::prefix('/manager-user')->name('manager-user.')->group(function () {
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/', [UserController::class, 'store'])->name('store');
-        Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/{id}', [UserController::class, 'show'])->name('show');
-        Route::get('/update/{id}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::put('/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('updateStatus');
-        Route::put('/update/{id}', [UserController::class, 'update'])->name('update');
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
-    });
+
     Route::prefix('/banner')->name('banner.')->group(function () {
         Route::get('/create', [BannerController::class, 'create'])->name('create');
         Route::post('/', [BannerController::class, 'store'])->name('store');
@@ -82,16 +77,16 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::delete('/{id}', [BannerController::class, 'destroy'])->name('destroy');
     });
 
-    Route::prefix('/partner')->name('partner.')->group(function () {
-        Route::get('/create', [PartnerController::class, 'create'])->name('create');
-        Route::post('/', [PartnerController::class, 'store'])->name('store');
-        Route::get('/', [PartnerController::class, 'index'])->name('index');
-        Route::get('/{id}', [PartnerController::class, 'show'])->name('show');
-        Route::get('/update/{id}/edit', [PartnerController::class, 'edit'])->name('edit');
-        Route::put('/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('updateStatus');
-        Route::put('/update/{id}', [PartnerController::class, 'update'])->name('update');
-        Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
-    });
+    // Route::prefix('/partner')->name('partner.')->group(function () {
+    //     Route::get('/create', [PartnerController::class, 'create'])->name('create');
+    //     Route::post('/', [PartnerController::class, 'store'])->name('store');
+    //     Route::get('/', [PartnerController::class, 'index'])->name('index');
+    //     Route::get('/{id}', [PartnerController::class, 'show'])->name('show');
+    //     Route::get('/update/{id}/edit', [PartnerController::class, 'edit'])->name('edit');
+    //     Route::put('/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('updateStatus');
+    //     Route::put('/update/{id}', [PartnerController::class, 'update'])->name('update');
+    //     Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
+    // });
 
     Route::prefix('shop')->group(function () {
         Route::get('/', [ShopController::class, 'index'])->name('shop.index');

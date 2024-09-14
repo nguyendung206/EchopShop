@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Services\CategoryService;
 use App\Services\StatusService;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -47,7 +46,7 @@ class CategoryController extends Controller
             $this->categoryService->createCategory($request);
             flash('Thêm mới loại hàng thành công!')->success();
 
-            return redirect()->route('category.index');
+            return redirect()->route('admin.category.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi thêm mới loại hàng!')->error();
 
@@ -60,15 +59,12 @@ class CategoryController extends Controller
         try {
             $category = Category::findOrFail($id);
 
-            return view('admin.category.update', compact('category'));
-        } catch (ModelNotFoundException $e) {
-            flash('Loại hàng không tồn tại!')->error();
+            return view('admin.category.edit', compact('category'));
 
-            return redirect()->route('category.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi tải thông tin loại hàng!')->error();
 
-            return redirect()->route('category.index');
+            return redirect()->route('admin.category.index');
         }
     }
 
@@ -78,11 +74,8 @@ class CategoryController extends Controller
             $this->categoryService->updateCategory($request, $id);
             flash('Cập nhật loại hàng thành công!')->success();
 
-            return redirect()->route('category.index');
-        } catch (ModelNotFoundException $e) {
-            flash('Loại hàng không tồn tại!')->error();
+            return redirect()->route('admin.category.index');
 
-            return redirect()->route('category.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi cập nhật loại hàng!')->error();
 
@@ -98,13 +91,11 @@ class CategoryController extends Controller
             } else {
                 flash('Đã xảy ra lỗi khi xóa loại hàng!')->error();
             }
-        } catch (ModelNotFoundException $e) {
-            flash('Loại hàng không tồn tại!')->error();
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi xóa loại hàng!')->error();
         }
 
-        return redirect()->route('category.index');
+        return redirect()->route('admin.category.index');
     }
 
     public function status($id)
@@ -113,12 +104,14 @@ class CategoryController extends Controller
             $category = Category::findOrFail($id);
             $this->statusService->changeStatus($category);
             flash('Thay đổi trạng thái thành công!')->success();
-        } catch (ModelNotFoundException $e) {
-            flash('Loại hàng không tồn tại!')->error();
+
+            return redirect()->route('admin.category.index');
+
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi thay đổi trạng thái!')->error();
+
+            return redirect()->route('admin.category.index');
         }
 
-        return redirect()->route('category.index');
     }
 }

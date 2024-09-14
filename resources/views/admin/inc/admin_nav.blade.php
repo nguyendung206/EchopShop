@@ -39,7 +39,7 @@
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-menu-md">
-                        <a href="{{route('profile.index', Session::get('admin')->id)}}" class="dropdown-item">
+                        <a href="{{route('admin.profile.index', Session::get('admin')->id)}}" class="dropdown-item">
                             <i class="las la-user-circle"></i>
                             <span>{{trans('Hồ sơ cá nhân')}}</span>
                         </a>

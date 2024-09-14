@@ -32,7 +32,7 @@ class UserController extends Controller
         ];
         $users = $this->userService->filter($filters);
 
-        return view('admin.userManager.index', compact('users'));
+        return view('admin.customer.index', compact('users'));
     }
 
     public function show($id)
@@ -50,14 +50,14 @@ class UserController extends Controller
         $ward = Ward::find($user->ward_id);
         $ward_name = $ward ? $ward->ward_name : 'Không xác định';
 
-        return view('admin.userManager.show', compact('user', 'province_name', 'district_name', 'ward_name'));
+        return view('admin.customer.show', compact('user', 'province_name', 'district_name', 'ward_name'));
     }
 
     public function create()
     {
         $provinces = Province::all();
 
-        return view('admin.userManager.create', compact('provinces'));
+        return view('admin.customer.create', compact('provinces'));
     }
 
     public function store(UserRequest $request)
@@ -84,15 +84,11 @@ class UserController extends Controller
             User::create($userData);
             flash('Thêm người dùng thành công')->success();
 
-            return redirect()->route('manager-user.create');
-        } catch (QueryException $e) {
-            flash('Thêm người dùng thất bại')->error();
-
-            return redirect()->route('manager-user.create');
+            return redirect()->route('admin.customer.index');
         } catch (\Exception $e) {
             flash('Thêm người dùng thất bại')->error();
 
-            return redirect()->route('manager-user.create');
+            return redirect()->back();
         }
     }
 
@@ -104,7 +100,7 @@ class UserController extends Controller
             return back()->with('message', 'Không có người dùng tương ứng');
         }
 
-        return view('admin.userManager.edit', compact('user', 'provinces'));
+        return view('admin.customer.edit', compact('user', 'provinces'));
     }
 
     public function update(UserRequest $request, $id)

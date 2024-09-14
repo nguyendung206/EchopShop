@@ -5,7 +5,7 @@
 @section('content')
 <div class="backnow">
     <div class="backpage">
-        <a href="{{ route('brand.index') }}" class="back btn">
+        <a href="{{ route('admin.brand.index') }}" class="back btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -19,7 +19,7 @@
                 <h5 class="mb-0 h6">@lang('Cập nhật Loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('brand.edit.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.brand.edit.save', $brand->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group row">
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="form-group mb-0 text-right">
-                        <a href="{{ route('brand.index') }}" class="btn btn-light mr-2">@lang('Hủy')</a>
+                        <a href="{{ route('admin.brand.index') }}" class="btn btn-light mr-2">@lang('Hủy')</a>
                         <button type="submit" class="btn btn-primary">@lang('Lưu')</button>
                     </div>
                 </form>

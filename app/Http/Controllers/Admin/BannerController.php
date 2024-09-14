@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BannerRequest;
 use App\Models\Banner;
 use App\Services\BannerService;
+use Exception;
 use Illuminate\Http\Request;
 
 class BannerController extends Controller
@@ -21,13 +22,13 @@ class BannerController extends Controller
     {
         $banners = $this->bannerService->index($request);
 
-        return view('admin.Banner.index', compact('banners'));
+        return view('admin.banner.index', compact('banners'));
 
     }
 
     public function create()
     {
-        return view('admin.Banner.create');
+        return view('admin.banner.create');
     }
 
     public function store(BannerRequest $request)
@@ -36,11 +37,11 @@ class BannerController extends Controller
             $this->bannerService->store($request);
             flash('Thêm Banner thành công')->success();
 
-            return redirect()->route('banner.index');
+            return redirect()->route('admin.banner.index');
         } catch (Exception $e) {
             flash('Thêm Banner thất bại')->error();
 
-            return redirect()->route('Banner.create');
+            return redirect()->route('admin.banner.create');
         }
     }
 
@@ -51,7 +52,7 @@ class BannerController extends Controller
             return back()->with('message', 'Không có Banner tương ứng');
         }
 
-        return view('admin.Banner.show', compact('banner'));
+        return view('admin.banner.show', compact('banner'));
     }
 
     public function edit($id)
@@ -61,7 +62,7 @@ class BannerController extends Controller
             return back()->with('message', 'Không có Banner tương ứng');
         }
 
-        return view('admin.Banner.edit', compact('banner'));
+        return view('admin.banner.edit', compact('banner'));
     }
 
     public function update(BannerRequest $request, $id)
@@ -70,7 +71,7 @@ class BannerController extends Controller
             $banner = $this->bannerService->update($request, $id);
             flash('Cập nhật Banner thành công!')->success();
 
-            return redirect()->route('banner.index');
+            return redirect()->route('admin.banner.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi cập nhật Banner!')->error();
 

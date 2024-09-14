@@ -57,7 +57,7 @@ class BrandController extends Controller
             $this->brandService->createBrand($request);
             flash('Thêm mới thương hiệu thành công!')->success();
 
-            return redirect()->route('brand.index');
+            return redirect()->route('admin.brand.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi thêm mới thương hiệu!')->error();
 
@@ -75,11 +75,11 @@ class BrandController extends Controller
         } catch (ModelNotFoundException $e) {
             flash('Thương hiệu không tồn tại!')->error();
 
-            return redirect()->route('brand.index');
+            return redirect()->route('admin.brand.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi tải thông tin thương hiệu!')->error();
 
-            return redirect()->route('brand.index');
+            return redirect()->route('admin.brand.index');
         }
     }
 
@@ -89,11 +89,11 @@ class BrandController extends Controller
             $this->brandService->updateBrand($request, $id);
             flash('Cập nhật thương hiệu thành công!')->success();
 
-            return redirect()->route('brand.index');
+            return redirect()->route('admin.brand.index');
         } catch (ModelNotFoundException $e) {
             flash('Thương hiệu không tồn tại!')->error();
 
-            return redirect()->route('brand.index');
+            return redirect()->route('admin.brand.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi cập nhật thương hiệu!')->error();
 
@@ -115,7 +115,7 @@ class BrandController extends Controller
             flash('Đã xảy ra lỗi khi xóa thương hiệu!')->error();
         }
 
-        return redirect()->route('brand.index');
+        return redirect()->route('admin.brand.index');
     }
 
     public function status($id)
@@ -130,6 +130,6 @@ class BrandController extends Controller
             flash('Đã xảy ra lỗi khi thay đổi trạng thái!')->error();
         }
 
-        return redirect()->route('brand.index');
+        return redirect()->route('admin.brand.index');
     }
 }

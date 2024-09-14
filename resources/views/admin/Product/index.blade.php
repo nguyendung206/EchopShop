@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="filter">
-    <form class="" id="food" action="{{ route('product.index') }}" method="GET">
+    <form class="" id="food" action="{{ route('admin.product.index') }}" method="GET">
         <div class="row gutters-5 mb-2">
             <div class="col-md-6 d-flex search">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -19,7 +19,7 @@
                 <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
-                <a href="{{route('product.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
+                <a href="{{route('admin.product.add')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -170,9 +170,6 @@
         }
         ev.currentTarget.value = null;
     })
-    @foreach(session('errors', collect()) - > toArray() as $message)
-    AIZ.plugins.notify('danger', '{{ $message[0] }}');
-    @endforeach
     // active popup
     $(document).on('click', '#inactive-popup', function() {
         let id = $(this).attr('data-id');
