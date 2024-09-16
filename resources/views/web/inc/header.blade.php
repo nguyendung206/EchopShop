@@ -130,7 +130,7 @@
                             </div>
                             @else
                             <!-- Nếu người dùng đã đăng nhập -->
-                            @if(optional(Auth::user()->shops->first())->status && optional(Auth::user()->shops->first())->status->value == 1)
+                            @if(optional(Auth::user()->shop)->status->value === 1)
                             <div class="btn-post px-2">
                                 <a href="#">
                                     <i class="fa-regular fa-file-lines mr-2"></i>
