@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BannerRequest;
 use App\Models\Banner;
 use App\Services\BannerService;
+use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,10 @@ class BannerController extends Controller
 {
     protected $bannerService;
 
-    public function __construct(BannerService $bannerService)
+    public function __construct(BannerService $bannerService, StatusService $statusService)
     {
         $this->bannerService = $bannerService;
+        $this->statusService = $statusService;
     }
 
     public function index(Request $request)
@@ -93,19 +95,12 @@ class BannerController extends Controller
         }
     }
 
-    public function updateStatus(Request $request, $id)
+    public function changeStatus(Request $request, $id)
     {
-        $banner = Banner::find($id);
-        if (! $banner) {
-            flash('Sửa thông tin thất bại')->error();
-
-            return back();
-        }
         try {
-            $updateData = [
-                'status' => $request->status,
-            ];
-            $banner->update($updateData);
+            $banner = Banner::findOrFail($id);
+            $this->statusService->changeStatus($banner);
+            flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([
                 'status' => 'success',
