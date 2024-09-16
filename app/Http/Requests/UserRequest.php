@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
         $rule = [
             'name' => ['required', 'min:3', 'max:100'],
             'phone_number' => ['required', 'numeric', 'digits:10'],
-            'email' => ['required', 'email', 'unique:users,email,'.$this->id],
+            'email' => ['required', 'email', 'unique:users,email,'.$this->route('customer')],
             'citizen_identification_number' => ['required', 'numeric', 'digits:12'],
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'identification_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',

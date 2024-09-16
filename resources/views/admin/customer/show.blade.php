@@ -81,15 +81,15 @@
                                 </div>
                         </div>
                         <div class="d-flex justify-content-start">
-                            <a class="btn btn-primary" style="color: white" href="{{ route('manager-user.edit', $user->id)}}">Sửa</a>
-                            <form action="{{ route('manager-user.destroy', $user->id)}}" method="POST"  style="display: inline-block;margin-bottom: 0px" id="delete-form">
+                            <a class="btn btn-primary" style="color: white" href="{{ route('admin.customer.edit', $user->id)}}">Sửa</a>
+                            <form action="{{ route('admin.customer.destroy', $user->id)}}" method="POST"  style="display: inline-block;margin-bottom: 0px" id="delete-form">
                                 @csrf
                                 @method("DELETE")
-                                <a href="javascript:void(0)" data-href="{{route('manager-user.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete  btn-danger confirm-delete" title="@lang('user.delete')" >
+                                <a href="javascript:void(0)" data-href="{{route('admin.customer.destroy',$user->id)}}" data-id="{{$user->id}}" class="btn btn-delete  btn-danger confirm-delete" title="@lang('user.delete')" >
                                     Xoá
                                 </a>
                             </form>
-                            <a class="btn btn-secondary" style="color: white" href="{{route("manager-user.index")}}">Trở về</a>
+                            <a class="btn btn-secondary" style="color: white" href="{{route("admin.customer.index")}}">Trở về</a>
                         </div>
                         </div>
                     </div>

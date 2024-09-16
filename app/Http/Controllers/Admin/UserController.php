@@ -41,7 +41,7 @@ class UserController extends Controller
         if (! $user) {
             flash('Không có người dùng tương ứng')->error();
 
-            return redirect()->route('manager-user.store');
+            return back();
         }
         $province = Province::find($user->province_id);
         $province_name = $province ? $province->province_name : 'Không xác định';
@@ -63,25 +63,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $userData = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'phone_number' => $request->phone_number,
-                'citizen_identification_number' => $request->citizen_identification_number,
-                'date_of_issue' => $request->date_of_issue,
-                'place_of_issue' => $request->place_of_issue,
-                'date_of_birth' => $request->date_of_birth,
-                'province_id' => $request->province_id,
-                'district_id' => $request->district_id,
-                'ward_id' => $request->ward_id,
-                'address' => $request->address,
-                'gender' => $request->gender,
-                'status' => $request->status,
-                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', 'nophoto.png'),
-            ];
-
-            User::create($userData);
+            $this->userService->store($request);
             flash('Thêm người dùng thành công')->success();
 
             return redirect()->route('admin.customer.index');
@@ -97,7 +79,9 @@ class UserController extends Controller
         $provinces = Province::all();
         $user = User::find($id);
         if (! $user) {
-            return back()->with('message', 'Không có người dùng tương ứng');
+            flash('Không có người dùng tương ứng')->error();
+
+            return back();
         }
 
         return view('admin.customer.edit', compact('user', 'provinces'));
@@ -105,84 +89,39 @@ class UserController extends Controller
 
     public function update(UserRequest $request, $id)
     {
-        $user = User::find($id);
-        if (! $user) {
-            flash('Sửa thông tin thất bại')->error();
-
-            return back();
-        }
-        $avatar = $user->avatar;
         try {
-            $updateData = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number,
-                'citizen_identification_number' => $request->citizen_identification_number,
-                'date_of_issue' => $request->date_of_issue,
-                'place_of_issue' => $request->place_of_issue,
-                'date_of_birth' => $request->date_of_birth,
-                'province_id' => $request->province_id,
-                'district_id' => $request->district_id,
-                'ward_id' => $request->ward_id,
-                'address' => $request->address,
-                'gender' => $request->gender,
-                'status' => $request->status,
-                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', $avatar),
-            ];
-            if ($request->has('password') && ! empty($request->password)) {
-                $updateData['password'] = bcrypt($request->password);
-            }
-
-            $user->update($updateData);
-
-            if ($request->file('uploadFile')) {
-                deleteImage($avatar);
-            }
-
+            $this->userService->update($request, $id);
             flash('Sửa người dùng thành công')->success();
 
-            return redirect()->route('manager-user.edit', $id);
+            return redirect()->route('admin.customer.index', $id);
         } catch (QueryException $e) {
             flash('Sửa người dùng thất bại')->error();
 
-            return redirect()->route('manager-user.edit', $id);
+            return redirect()->route('admin.customer.edit', $id);
         } catch (\Exception $e) {
             flash('Sửa người dùng thất bại')->error();
 
-            return redirect()->route('manager-user.edit', $id);
+            return redirect()->route('admin.customer.edit', $id);
         }
     }
 
     public function destroy($id)
     {
-        $user = User::find($id);
-        if (! $user) {
-            flash('Không có người dùng tương ứng')->error();
-
-            return back();
-        }
-
-        $result = $user->delete();
-        deleteImage($user->avatar);
+        $result = $this->userService->destroy($id);
         if ($result) {
             flash('Xoá người dùng thành công')->success();
 
-            return redirect()->route('manager-user.index');
+            return redirect()->route('admin.customer.index');
         } else {
             flash('Xoá người dùng thất bại')->error();
 
-            return redirect()->route('manager-user.index');
+            return redirect()->route('admin.customer.index');
         }
     }
 
     public function updateStatus(Request $request, $id)
     {
-        $user = User::find($id);
-        if (! $user) {
-            flash('Sửa thông tin thất bại')->error();
-
-            return back();
-        }
+        $user = User::findOrFail($id);
         try {
             $updateData = [
                 'status' => $request->status,
