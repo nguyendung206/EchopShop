@@ -1,4 +1,4 @@
-{{-- <div class="aiz-topbar px-15px px-lg-25px d-flex align-items-stretch justify-content-between">
+<div class="aiz-topbar px-15px px-lg-25px d-flex align-items-stretch justify-content-between">
     <div class="d-xl-none d-flex">
         <div class="aiz-topbar-nav-toggler d-flex align-items-center justify-content-start mr-2 mr-md-3" data-toggle="aiz-mobile-nav">
             <button class="aiz-mobile-toggler">
@@ -56,4 +56,4 @@
             </div><!-- .aiz-topbar-item -->
         </div>
     </div>
-</div><!-- .aiz-topbar --> --}}
+</div><!-- .aiz-topbar -->
