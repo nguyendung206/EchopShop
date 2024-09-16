@@ -26,7 +26,7 @@ class PartnerRequest extends FormRequest
         return [
             'company_name' => ['required', 'max: 255'],
             'phone_number' => ['required', 'numeric', 'digits:10'],
-            'email' => ['required', 'email', 'unique:partners,email,'.$this->id],
+            'email' => ['required', 'email', 'unique:partners,email,'.$this->route('partner')],
             'photo' => ['file', 'max:10240'],
             'status' => ['required', 'in:1,2'],
         ];

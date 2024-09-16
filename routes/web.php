@@ -30,11 +30,12 @@ Route::get('/pinAuthentication/{token}', [AuthController::class, 'indexPinAuthen
 Route::post('/pinCode/{token}', [AuthController::class, 'checkPinCode'])->name('web.pinCode');
 Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPassword'])->name('web.handleResetPassword');
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 Route::prefix('/product-detail')->group(function () {
     Route::get('/{slug}', [ProductController::class, 'show'])->name('web.productdetail.index');
 });
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
+
     Route::prefix('/profile')->group(function () {
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
         Route::put('/saveprofile', [ProfileUserController::class, 'updateProfile'])->name('web.profile.save');
@@ -44,8 +45,9 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::get('/', [ShopController::class, 'create'])->name('web.registershop.create');
         Route::post('/save', [ShopController::class, 'store'])->name('web.registershop.store');
     });
-});
-Route::prefix('/favorite')->name('favorite.')->group(function () {
-    Route::post('/', [FavoriteController::class, 'store'])->name('store');
-    Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('destroy');
+
+    Route::prefix('/favorite')->name('favorite.')->group(function () {
+        Route::post('/', [FavoriteController::class, 'store'])->name('store');
+        Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('destroy');
+    });
 });

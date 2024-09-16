@@ -42,8 +42,8 @@
                                 </div>
                         </div>
                         <div class="d-flex justify-content-start">
-                            <a class="btn btn-primary" style="color: white" href="{{ route('banner.edit', $banner->id)}}">Sửa</a>
-                            <a class="btn btn-secondary" style="color: white" href="{{route("banner.index")}}">Trở về</a>
+                            <a class="btn btn-primary" style="color: white" href="{{ route('admin.banner.edit', $banner->id)}}">Sửa</a>
+                            <a class="btn btn-secondary" style="color: white" href="{{route("admin.banner.index")}}">Trở về</a>
                         </div>
                         </div>
                     </div>

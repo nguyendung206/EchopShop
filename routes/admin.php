@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/login', [AuthController::class, 'index'])->name('admin.login');
+Route::post('/login', [AuthController::class, 'login'])->name('admin.login');
 
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/', [AuthController::class, 'index'])->name('index');
