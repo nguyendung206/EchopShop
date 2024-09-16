@@ -10,7 +10,7 @@
 	</div>
 </div>
 <div class="filter">
-    <form class="" id="food" action="{{ route('partner.index') }}" method="GET">
+    <form class="" id="food" action="{{ route('admin.partner.index') }}" method="GET">
         <div class="row gutters-5 mb-2">
             <div class="col-md-6 d-flex search">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -19,7 +19,7 @@
                 <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search" value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
             </div>
             <div class="col-md-3 text-md-right add-new ">
-                <a href="{{route('partner.create')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
+                <a href="{{route('admin.partner.create')}}" class="btn btn-info btn-add-food d-flex justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -108,7 +108,7 @@
                         <td class="font-weight-400 align-middle">{{optional($partner)->email}}</td>
                         <td class="font-weight-400 align-middle">{{optional($partner)->phone_number}}</td>
                         <td class="font-weight-400 align-middle">
-                        <form action="{{ route('partner.updateStatus', $partner->id)}}" id="status-form-{{$partner->id}}" method="POST"  style="display: inline-block">
+                        <form action="{{ route('admin.partner.updateStatus', $partner->id)}}" id="status-form-{{$partner->id}}" method="POST"  style="display: inline-block">
                             @csrf
                             @method("PUT")
                             <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$partner->id}}">
@@ -124,13 +124,13 @@
                         </td>
 
                         <td class="text-center">
-                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"  href="{{ route("partner.show", $partner->id)}}"  >
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"  href="{{ route("admin.partner.show", $partner->id)}}"  >
                                 <i class="las la-list"></i>
                             </a>
-                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route("partner.edit", $partner->id)}}" >
+                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route("admin.partner.edit", $partner->id)}}" >
                                 <i class="las la-edit"></i>
                             </a>
-                            <a href="javascript:void(0)" data-href="{{ route('partner.destroy', $partner->id) }}" data-id="{{$partner->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('partner.delete')">
+                            <a href="javascript:void(0)" data-href="{{ route('admin.partner.destroy', $partner->id) }}" data-id="{{$partner->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('partner.delete')">
                                 <i class="las la-trash"></i>
                             </a>
                         </td>

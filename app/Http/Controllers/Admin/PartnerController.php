@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PartnerRequest;
 use App\Models\Partner;
 use App\Services\PartnerService;
+use Exception;
 use Illuminate\Http\Request;
 
 class PartnerController extends Controller
@@ -26,7 +27,7 @@ class PartnerController extends Controller
 
     public function create()
     {
-        return view('admin.Partner.create');
+        return view('admin.partner.create');
     }
 
     public function store(PartnerRequest $request)
@@ -35,11 +36,11 @@ class PartnerController extends Controller
             $this->partnerService->store($request);
             flash('Thêm partner thành công')->success();
 
-            return redirect()->route('partner.index');
+            return redirect()->route('admin.partner.index');
         } catch (Exception $e) {
             flash('Thêm partner thất bại')->error();
 
-            return redirect()->route('partner.create');
+            return redirect()->route('admin.partner.create');
         }
     }
 
@@ -69,7 +70,7 @@ class PartnerController extends Controller
             $partner = $this->partnerService->update($request, $id);
             flash('Cập nhật đối tác thành công!')->success();
 
-            return redirect()->route('partner.index');
+            return redirect()->route('admin.partner.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi cập nhật đối tác!')->error();
 

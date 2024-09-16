@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShopRequest;
-use App\Models\Shop;
 use App\Services\ShopService;
 use Illuminate\Http\Request;
 
@@ -24,11 +23,7 @@ class ShopController extends Controller
 
     public function create()
     {
-        $shop = Shop::where('user_id', auth()->id())->first();
-
-        $shopStatus = $shop ? $shop->status->value : null;
-
-        return view('web.profile.registershop', compact('shopStatus'));
+        return view('web.profile.registershop');
     }
 
     public function store(ShopRequest $request)

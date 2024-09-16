@@ -60,7 +60,7 @@ class ProductController extends Controller
 
                 flash('Thêm mới sản phẩm thành công!')->success();
 
-                return redirect()->route('product.index');
+                return redirect()->route('admin.product.index');
             } else {
                 flash('Không thể tạo sản phẩm, vui lòng thử lại.')->error();
 
@@ -83,7 +83,7 @@ class ProductController extends Controller
         $categories = Category::where('status', Status::ACTIVE)->get();
         $brands = Brand::where('status', Status::ACTIVE)->get();
 
-        return view('admin.product.update', compact('product', 'categories', 'brands'));
+        return view('admin.product.edit', compact('product', 'categories', 'brands'));
     }
 
     public function update(ProductRequest $request, $id)
@@ -108,7 +108,7 @@ class ProductController extends Controller
 
                 flash('Cập nhật sản phẩm thành công!')->success();
 
-                return redirect()->route('product.index');
+                return redirect()->route('admin.product.index');
             } else {
                 flash('Không thể cập nhật sản phẩm, vui lòng thử lại.')->error();
 
@@ -141,10 +141,10 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
 
-            return redirect()->route('product.index');
+            return redirect()->route('admin.product.index');
         }
 
-        return redirect()->route('product.index');
+        return redirect()->route('admin.product.index');
     }
 
     public function show($id)

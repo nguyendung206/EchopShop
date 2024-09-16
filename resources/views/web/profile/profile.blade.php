@@ -232,5 +232,5 @@
     });
 </script>
 @include('web.favorites')
-@include('admin.userManager.province')
+@include('admin.customer.province')
 @endsection

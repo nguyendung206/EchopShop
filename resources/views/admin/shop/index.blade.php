@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="filter">
-    <form class="" id="food" action="{{ route('shop.index') }}" method="GET">
+    <form class="" id="food" action="{{ route('admin.shop.index') }}" method="GET">
         <div class="row gutters-5 mb-2">
             <div class="col-md-6 d-flex search">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,17 +109,17 @@
                     <td class="font-weight-400 align-middle">{{ $data->email }}</td>
                     <td>{{ $data->status->label() }}</td>
                     <td class="text-center">
-                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('shop.show', ['id' => $data->id]) }}" title="@lang('Xem chi tiết')">
+                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.shop.show', $data->id) }}" title="@lang('Xem chi tiết')">
                             <i class="las la-bars"></i>
                         </a>
                         @if ($data->status->value == 1)
                         <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('shop.changestatus', ['id' => $data->id]) }}" id="active-popup" title="@lang('Vô hiệu hóa')">
+                            data-href="{{ route('admin.shop.changestatus',$data->id) }}" id="active-popup" title="@lang('Vô hiệu hóa')">
                             <i class="las la-ban"></i>
                         </a>
                         @else
                         <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('shop.changestatus', ['id' => $data->id]) }}" id="inactive-popup" title="@lang('Kích hoạt')">
+                            data-href="{{ route('admin.shop.changestatus', $data->id) }}" id="inactive-popup" title="@lang('Kích hoạt')">
                             <i class="las la-check-circle"></i>
                         </a>
                         @endif

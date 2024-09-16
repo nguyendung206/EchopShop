@@ -130,7 +130,7 @@
                             </div>
                             @else
                             <!-- Nếu người dùng đã đăng nhập -->
-                            @if($shopStatus == 1)
+                            @if(optional(Auth::user()->shops->first())->status && optional(Auth::user()->shops->first())->status->value == 1)
                             <div class="btn-post px-2">
                                 <a href="#">
                                     <i class="fa-regular fa-file-lines mr-2"></i>
@@ -138,12 +138,13 @@
                                 </a>
                             </div>
                             @endif
+
                             <div class="dropdown">
                                 <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(optional(Auth::user())->avatar) }}" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                    <a class="drop-user-item profile-tab" href="{{route('web.profile.index', Session::get('user')->id)}}" data-tab="profile" >
+                                    <a class="drop-user-item profile-tab" href="{{route('web.profile.index', Session::get('user')->id)}}" data-tab="profile">
                                         <i class="fa-solid fa-user mr-2"></i> Hồ sơ cá nhân
                                     </a>
                                     <a class="drop-user-item" href="{{route('web.logout')}}">

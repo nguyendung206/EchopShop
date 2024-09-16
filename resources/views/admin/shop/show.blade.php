@@ -5,7 +5,7 @@
 @section('content')
 <div class="backnow">
     <div class="backpage">
-        <a href="{{ route('shop.index') }}" class="back btn">
+        <a href="{{ route('admin.shop.index') }}" class="back btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="form-group mb-0 text-right">
-                    <a href="{{ route('shop.index') }}" class="btn btn-light mr-2">@lang('Quay về')</a>
+                    <a href="{{ route('admin.shop.index') }}" class="btn btn-light mr-2">@lang('Quay về')</a>
                 </div>
             </div>
         </div>

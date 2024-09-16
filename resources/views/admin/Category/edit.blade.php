@@ -1,30 +1,33 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Tạo loại hàng')
+@lang('Cập nhật Loại hàng')
 @endsection
 @section('content')
 <div class="backnow">
     <div class="backpage">
-        <a href="{{route('admin.category.index')}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href="{{ route('admin.category.index') }}" class="back btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg></a>
+            </svg>
+        </a>
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-8 mx-auto">
+    <div class="col-lg-12 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">@lang('Thêm mới loại hàng')</h5>
+                <h5 class="mb-0 h6">@lang('Cập nhật Loại hàng')</h5>
             </div>
             <div class="card-body">
-                <form action="{{route('admin.category.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.category.update', $category->id) }}" method="POST" enctype="multipart/form-data">
+                    @method('PUT')
                     @csrf
 
                     @include('admin.category.components.form', [
-                        'name' => old('name'),
-                        'description' => old('description'),
-                        'status' => old('status'),
-                        'old_photo' => old('old_photo'),
+                        'name' =>  $category->id,
+                        'description' =>  $category->description,
+                        'status' =>  $category->status,
+                        'old_photo' =>  $category->photo,
                     ])
                 </form>
             </div>

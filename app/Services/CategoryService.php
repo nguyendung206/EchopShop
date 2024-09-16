@@ -34,7 +34,7 @@ class CategoryService
         $category->status = $request->status;
 
         if ($request->hasFile('photo')) {
-            $category->photo = uploadImage($request->file('photo'), 'upload/product');
+            $category->photo = uploadImage($request->file('photo'), 'upload/category/');
         } else {
             $category->photo = 'noproduct.png';
         }
@@ -52,7 +52,7 @@ class CategoryService
         $category->status = $request->status;
 
         if ($request->hasFile('photo')) {
-            $category->photo = uploadImage($request->file('photo'), 'upload/product', $category->photo);
+            $category->photo = uploadImage($request->file('photo'), 'upload/category/', $category->photo);
         }
 
         $category->save();

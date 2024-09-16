@@ -14,7 +14,9 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ url('assets/img/pukcom.png') }}">
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- google font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
@@ -113,25 +115,25 @@
     <script>
         var AIZ = AIZ || {};
         AIZ.local = {
-            nothing_found: '{{ trans("base.nothing_found") }}',
-            choose_file: '{{ translate("Choose file") }}',
-            file_selected: '{{ translate("File selected") }}',
-            files_selected: '{{ translate("Files selected") }}',
-            add_more_files: '{{ translate("Add more files") }}',
-            adding_more_files: '{{ translate("Adding more files") }}',
-            drop_files_here_paste_or: '{{ translate("Drop files here, paste or") }}',
-            browse: '{{ translate("Browse") }}',
-            upload_complete: '{{ translate("Upload complete") }}',
-            upload_paused: '{{ translate("Upload paused") }}',
-            resume_upload: '{{ translate("Resume upload") }}',
-            pause_upload: '{{ translate("Pause upload") }}',
-            retry_upload: '{{ translate("Retry upload") }}',
-            cancel_upload: '{{ translate("Cancel upload") }}',
-            uploading: '{{ translate("Uploading") }}',
-            processing: '{{ translate("Processing") }}',
-            complete: '{{ translate("Complete") }}',
-            file: '{{ translate("File") }}',
-            files: '{{ translate("Files") }}',
+            nothing_found: '{{ trans('base.nothing_found') }}',
+            choose_file: '{{ translate('Choose file') }}',
+            file_selected: '{{ translate('File selected') }}',
+            files_selected: '{{ translate('Files selected') }}',
+            add_more_files: '{{ translate('Add more files') }}',
+            adding_more_files: '{{ translate('Adding more files') }}',
+            drop_files_here_paste_or: '{{ translate('Drop files here, paste or') }}',
+            browse: '{{ translate('Browse') }}',
+            upload_complete: '{{ translate('Upload complete') }}',
+            upload_paused: '{{ translate('Upload paused') }}',
+            resume_upload: '{{ translate('Resume upload') }}',
+            pause_upload: '{{ translate('Pause upload') }}',
+            retry_upload: '{{ translate('Retry upload') }}',
+            cancel_upload: '{{ translate('Cancel upload') }}',
+            uploading: '{{ translate('Uploading') }}',
+            processing: '{{ translate('Processing') }}',
+            complete: '{{ translate('Complete') }}',
+            file: '{{ translate('File') }}',
+            files: '{{ translate('Files') }}',
         }
     </script>
 
@@ -140,9 +142,9 @@
 <body class="">
 
     @if (session()->has('flash_notification'))
-    <div class="flash-message {{ session('flash_notification.class') }}">
-        {{ session('flash_notification.message') }}
-    </div>
+        <div class="flash-message {{ session('flash_notification.class') }}">
+            {{ session('flash_notification.message') }}
+        </div>
     @endif
 
     <div class="load-wrapp" id="loadPage">
@@ -188,8 +190,8 @@
 
 
     <script type="text/javascript">
-        @foreach(session('flash_notification', collect()) -> toArray() as $message)
-        AIZ.plugins.notify('{{ $message["level"] }}', '{{ $message["message"] }}');
+        @foreach (session('flash_notification', collect())->toArray() as $message)
+            AIZ.plugins.notify('{{ $message['level'] }}', '{{ $message['message'] }}');
         @endforeach
     </script>
 
@@ -200,6 +202,11 @@
                 alert('This sample requires an HTTP server. Please serve this file with a web server.');
             }
         };
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     </script>
 </body>
 
