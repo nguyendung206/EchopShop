@@ -11,6 +11,9 @@
     <div class="row">
         @include('web.profile.sidebar')
         <div class="col-lg-9 col-sm-12 col-12 mt-4">
+            @if(optional(Auth::user()->shop)->status->value === 2)
+            <h1 class="profile-title text-center">Đang chờ phê duyệt</h1>
+            @else
             <div class="col-md-12">
                 <h1 class="profile-title">Thông tin Shop</h1>
                 <p class="profile-content">Những thông tin dưới đây đại diện cho Shop của bạn. Vui lòng nhập đầy đủ các thông tin.</p>
@@ -61,7 +64,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputOpen">Giờ mở cửa <span class="text-danger">*</span></label>
-                                <input value="{{old('open')}}" name="open" type="number" id="inputOpen" class="form-control @error('open') is-invalid @enderror" placeholder="Giờ mở cửa (0-24)">
+                                <input value="{{old('open')}}" name="open" type="time" id="inputOpen" class="form-control @error('open') is-invalid @enderror" placeholder="Giờ mở cửa (0-24)">
                                 @error('open')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -69,7 +72,7 @@
 
                             <div class="form-group col-md-6">
                                 <label for="inputClose">Giờ đóng cửa <span class="text-danger">*</span></label>
-                                <input value="{{old('close')}}" name="close" type="number" id="inputClose" class="form-control @error('close') is-invalid @enderror" placeholder="Giờ đóng cửa (0-24)">
+                                <input value="{{old('close')}}" name="close" type="time" id="inputClose" class="form-control @error('close') is-invalid @enderror" placeholder="Giờ đóng cửa (0-24)">
                                 @error('close')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -91,6 +94,7 @@
                     </div>
                 </div>
             </form>
+            @endif
         </div>
     </div>
 </div>

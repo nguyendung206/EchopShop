@@ -17,8 +17,8 @@ class ShopRequest extends FormRequest
             'name' => 'required|string|max:255',
             'hotline' => 'required|string|max:15',
             'email' => 'required|email|max:255',
-            'open' => 'required|integer|min:0|max:24',
-            'close' => 'required|integer|min:0|max:24',
+            'open' => 'required|date_format:H:i|before_or_equal:close',
+            'close' => 'required|date_format:H:i|after_or_equal:open',
             'address' => 'required|string|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];

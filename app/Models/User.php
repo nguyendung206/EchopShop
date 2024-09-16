@@ -55,8 +55,8 @@ class User extends Authenticatable
         return $this->hasMany(Favorite::class, 'user_id', 'id');
     }
 
-    public function shops()
+    public function shop()
     {
-        return $this->hasMany(Shop::class, 'user_id', 'id');
+        return $this->hasOne(Shop::class, 'user_id', 'id');
     }
 }
