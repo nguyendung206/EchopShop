@@ -14,10 +14,10 @@
                                 @csrf
                                 <div class="form-group">
                                     <input id="email" type="email"
-                                        class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
+                                        class="form-control{{ session('error') && $errors->has('email') ? ' is-invalid' : '' }}" name="email"
                                         value="{{ old('email') }}" required autofocus
                                         placeholder="{{ translate('Email') }}">
-                                    @if ($errors->has('email'))
+                                    @if (session('error') && $errors->has('email'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('email') }}</strong>
                                         </span>
@@ -25,9 +25,9 @@
                                 </div>
                                 <div class="form-group">
                                     <input id="password" type="password"
-                                        class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                        class="form-control{{ session('error') && $errors->has('password') ? ' is-invalid' : '' }}"
                                         name="password" required placeholder="{{ translate('Password') }}">
-                                    @if ($errors->has('password'))
+                                    @if (session('error') && $errors->has('password'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('password') }}</strong>
                                         </span>
