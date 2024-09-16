@@ -170,7 +170,7 @@
         }
         ev.currentTarget.value = null;
     })
-    @foreach(session('errors', collect()) - > toArray() as $message)
+    @foreach(session('errors', collect()) -> toArray() as $message)
     AIZ.plugins.notify('danger', '{{ $message[0] }}');
     @endforeach
     // active popup

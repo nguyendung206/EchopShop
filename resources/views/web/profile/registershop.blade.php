@@ -11,6 +11,11 @@
     <div class="row">
         @include('web.profile.sidebar')
         <div class="col-lg-9 col-sm-12 col-12 mt-4">
+            @if($shopStatus == 2)
+            <h1 class="profile-title text-center">Đang chờ phê duyệt</h1>
+            @elseif($shopStatus == 1)
+            <h1 class="profile-title text-center">Shop đang hoạt động</h1>
+            @else
             <div class="col-md-12">
                 <h1 class="profile-title">Thông tin Shop</h1>
                 <p class="profile-content">Những thông tin dưới đây đại diện cho Shop của bạn. Vui lòng nhập đầy đủ các thông tin.</p>
@@ -91,6 +96,7 @@
                     </div>
                 </div>
             </form>
+            @endif
         </div>
     </div>
 </div>

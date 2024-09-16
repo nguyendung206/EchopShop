@@ -116,7 +116,7 @@
                     </div>
                     <div class="col-lg-2 col-md-6 col-6 col-sm-6">
                         <div class="row justify-content-end align-items-center">
-                            <div class="search">
+                            <div class="search mr-2">
                                 <a href="#"><i class="color-750000 fa-solid fa-magnifying-glass"></i></a>
                             </div>
 
@@ -130,12 +130,14 @@
                             </div>
                             @else
                             <!-- Nếu người dùng đã đăng nhập -->
+                            @if($shopStatus == 1)
                             <div class="btn-post px-2">
                                 <a href="#">
                                     <i class="fa-regular fa-file-lines mr-2"></i>
                                     <span>Đăng bài</span>
                                 </a>
                             </div>
+                            @endif
                             <div class="dropdown">
                                 <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(optional(Auth::user())->avatar) }}" alt="">
