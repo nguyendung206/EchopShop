@@ -39,7 +39,7 @@
         <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo"
             onchange="previewPhoto(this)" />
         <img id="photo_preview"
-            src="{{ $old_photo ? getImage('upload/product/' . $old_photo) : '' }}"class="img img-bordered mt-4"
+            src="{{ $old_photo ? getImage($old_photo) : '' }}"class="img img-bordered mt-4"
             style="width:200px" />
         @error('photo')
             <div class="invalid-feedback">{{ $message }}</div>
