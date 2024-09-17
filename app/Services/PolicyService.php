@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Term;
+use App\Models\Policy;
 use Exception;
 
-class TermService
+class PolicyService
 {
     public function index($request)
     {
-        $query = Term::query();
+        $query = Policy::query();
         if (! empty($request->search)) {
             $query->where('description', 'like', '%'.$request->search.'%');
         }
@@ -22,32 +22,34 @@ class TermService
 
     public function store($request)
     {
-        $termData = [
+        $policyData = [
             'description' => $request->description,
             'status' => $request->status,
+            'type' => $request->type
         ];
 
-        return Term::create($termData);
+        return Policy::create($policyData);
     }
 
     public function update($request, $id)
     {
-        $term = Term::findOrFail($id);
+        $policy = Policy::findOrFail($id);
 
-        $termData = [
+        $policyData = [
             'description' => $request->description,
             'status' => $request->status,
+            'type' => $request->type
         ];
-        $term->update($termData);
+        $policy->update($policyData);
 
-        return $term;
+        return $policy;
     }
 
     public function destroy($id)
     {
         try {
-            $term = Term::findOrFail($id);
-            $check = $term->delete();
+            $policy = Policy::findOrFail($id);
+            $check = $policy->delete();
 
             return $check;
         } catch (Exception $e) {

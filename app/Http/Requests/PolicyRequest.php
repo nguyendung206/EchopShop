@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TermRequest extends FormRequest
+class PolicyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,15 @@ class TermRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => ['required', 'max: 1000']
+            'description' => ['required', 'max: 1000'],
+            'type' => ['required','integer','in:1,2,3,4,5'],
         ];
     }
     public function attributes()
     {
         return [
-            'description' => 'Mô tả'
+            'description' => 'Mô tả',
+            'type' => 'Kiểu chính sách',
         ];
     }
 }

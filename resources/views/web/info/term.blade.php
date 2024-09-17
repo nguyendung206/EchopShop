@@ -11,7 +11,7 @@ ABOUT
 </div>
 <div class="container content">
     <div class="row">
-    @foreach ($terms as $term)
+    @foreach ($policies as $term)
     <div class="col-12"  style="font-size: 16px; margin: 20px 0;font-weight: 400;line-height: 18.75px;color:#535353;">{{$term->description}}</div>
     @endforeach
 </div>

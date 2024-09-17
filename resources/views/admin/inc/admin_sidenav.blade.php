@@ -94,11 +94,19 @@
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
-                    <a href="{{ route('admin.term.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['admin.term.index']) }}">
-                        <i class="las la-home aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">Điều khoản</span>
+                    <a href="#" class="aiz-side-nav-link">
+                        <i class="las la-newspaper aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Chính sách</span>
+                        <span class="aiz-side-nav-arrow"></span>
                     </a>
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.policy.index') }}" class="aiz-side-nav-link ">
+                                <i class="las la-home aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">Điều khoản</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
         
                 

@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('terms', function (Blueprint $table) {
+        Schema::create('policies', function (Blueprint $table) {
             $table->id();
             $table->text('description')->nullable();
+            $table->integer('type');
             $table->integer('status');
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('terms');
+        Schema::dropIfExists('policies');
     }
 };

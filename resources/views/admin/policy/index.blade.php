@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 @section('title')
-   Điều khoản
+   Chính sách
 @endsection
 @section('content')
 
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="filter">
-        <form class="" id="food" action="{{ route('admin.term.index') }}" method="GET">
+        <form class="" id="food" action="{{ route('admin.policy.index') }}" method="GET">
             <div class="row gutters-5 mb-2">
                 <div class="col-md-6 d-flex search">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none"
@@ -22,7 +22,7 @@
                         value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
                 </div>
                 <div class="col-md-3 text-md-right add-new ">
-                    <a href="{{ route('admin.term.create') }}"
+                    <a href="{{ route('admin.policy.create') }}"
                         class="btn btn-info btn-add-food d-flex justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -108,51 +108,77 @@
                     <tr class="text-center">
                         <th class="w-60 font-weight-800">STT</th>
                         <th class="">@lang('Mô tả')</th>
+                        <th>@lang('Kiểu chính sách')</th>
                         <th class="w-140">@lang('Trạng thái')</th>
                         <th class="w-150">@lang('Điều chỉnh')</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (!empty($terms) && count($terms))
-                        @foreach ($terms as $key => $term)
+                    @if (!empty($policies) && count($policies))
+                        @foreach ($policies as $key => $policy)
                             <tr class="text-center">
                                 <td class="font-weight-800 align-middle">
-                                    {{ $key + 1 + ($terms->currentPage() - 1) * $terms->perPage() }}</td>
-                                <td class="font-weight-400 align-middle">{{ strip_tags($term->description) }}</td>
+                                    {{ $key + 1 + ($policies->currentPage() - 1) * $policies->perPage() }}</td>
+                                <td class="font-weight-400 align-middle">{{ strip_tags($policy->description) }}</td>
+                                <td>
+                                    @switch($policy->type)
+                                        @case(TypePolicyEnums::SECURITY)
+                                            {{TypePolicyEnums::SECURITY->label()}}
+                                            @break
 
+                                        @case(TypePolicyEnums::TERM)
+                                            {{TypePolicyEnums::TERM->label()}}
+                                            @break
+
+                                        @case(TypePolicyEnums::PROHIBITED)
+                                            {{TypePolicyEnums::PROHIBITED->label()}}
+                                            @break
+
+                                        @case(TypePolicyEnums::COMMUNICATE)
+                                            {{TypePolicyEnums::COMMUNICATE->label()}}
+                                            @break
+
+                                        @case(TypePolicyEnums::SAFETOUSE)
+                                            {{TypePolicyEnums::SAFETOUSE->label()}}
+                                            @break
+
+                                        @default
+                                            Không xác định
+                                    @endswitch
+                                </td>
                                 <td class="font-weight-400 align-middle">
-                                    {{StatusEnums::ACTIVE == $term->status ? 'Đang hoạt động' : 'Đã bị khoá'}}
+                                    {{StatusEnums::ACTIVE == $policy->status ? 'Đang hoạt động' : 'Đã bị khoá'}}
                                 </td>
                                 <td class="text-left">
-                                    @if ($term->status == StatusEnums::ACTIVE)
+                                    @if ($policy->status == StatusEnums::ACTIVE)
                                     <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
-                                        data-id="{{ $term->id }}"
-                                        data-href="{{ route('admin.term.changeStatus', ['id' => $term->id]) }}"
+                                        data-id="{{ $policy->id }}"
+                                        data-href="{{ route('admin.policy.changeStatus', ['id' => $policy->id]) }}"
                                         id="active-popup" >
                                         <i class="las la-ban"></i>
                                     </a>
                                 @else
                                     <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
-                                        data-id="{{ $term->id }}"
-                                        data-href="{{ route('admin.term.changeStatus', ['id' => $term->id]) }}"
+                                        data-id="{{ $policy->id }}"
+                                        data-href="{{ route('admin.policy.changeStatus', ['id' => $policy->id]) }}"
                                         id="inactive-popup" >
                                         <i class="las la-check-circle"></i>
                                     </a>
                                 @endif
 
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
-                                        href="{{ route('admin.term.show', $term->id) }}">
+                                        href="{{ route('admin.policy.show', $policy->id) }}">
                                         <i class="las la-list"></i>
                                     </a>
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
-                                        href="{{ route('admin.term.edit', $term->id) }}">
+                                        href="{{ route('admin.policy.edit', $policy->id) }}">
                                         <i class="las la-edit"></i>
                                     </a>
                                     <a href="javascript:void(0)"
-                                        data-href="{{ route('admin.term.destroy', $term->id) }}"
-                                        data-id="{{ $term->id }}"
+                                        data-href="{{ route('admin.policy.destroy', $policy->id) }}"
+                                        data-id="{{ $policy->id }}"
                                         class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
-                                        title="@lang('term.delete')">
+                                        title="@lang('policy.delete')">
                                         <i class="las la-trash"></i>
                                     </a>
                                 </td>
@@ -165,7 +191,7 @@
     </div>
     <div class="pagination-us">
         <div class="aiz-pagination">
-            {{ $terms->appends(request()->input())->links('pagination::bootstrap-4') }}
+            {{ $policies->appends(request()->input())->links('pagination::bootstrap-4') }}
         </div>
     </div>
 @endsection
@@ -178,8 +204,8 @@
             let delete_href = $(this).attr('data-href');
 
             Swal.fire({
-                title: '@lang('Xóa điều khoản')',
-                text: '@lang('Bạn có muốn xóa điều khoản này không ?')',
+                title: '@lang('Xóa chính sách')',
+                text: '@lang('Bạn có muốn xóa chính sách này không ?')',
                 icon: 'warning',
                 confirmButtonText: '@lang('Có')',
                 cancelButtonText: '@lang('Không')',
@@ -269,7 +295,7 @@
             
             Swal.fire({
                 title: '@lang('Trạng thái')',
-                text: '@lang('Bạn muốn thay đổi trạng thái điều khoản này?')',
+                text: '@lang('Bạn muốn thay đổi trạng thái này?')',
                 confirmButtonText: '@lang('Có')',
                 cancelButtonText: '@lang('Không')',
                 showCancelButton: true,

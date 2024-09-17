@@ -36,7 +36,7 @@
                 <h1 class="footer-heading">Chính sách</h1>
                 <ul>
                     <li><a href="#" class="footer-link">Chính sách bảo mật</a></li>
-                    <li><a href="{{route('info.term')}}" class="footer-link">Điều khoản dịch vụ</a></li>
+                    <li><a href="{{route('policy.term')}}" class="footer-link">Điều khoản dịch vụ</a></li>
                     <li><a href="#" class="footer-link">Hành vi bị cấm</a></li>
                     <li><a href="#" class="footer-link">Chính sách giao tiếp</a></li>
                     <li><a href="#" class="footer-link">Hướng dãn an toàn sử dụng</a></li>

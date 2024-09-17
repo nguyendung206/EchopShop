@@ -5,7 +5,7 @@
 @section('content')
 <div class="backnow">
     <div class="backpage">
-        <a href="{{route('admin.term.index')}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href="{{route('admin.policy.index')}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg></a>
     </div>
@@ -17,7 +17,7 @@
                 <h5 class="mb-0 h6">Sửa điều khoản</h5>
             </div>
             <div class="card-body">
-                <form action="{{route('admin.term.update', $term->id)}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('admin.policy.update', $policy->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group row">
@@ -35,10 +35,10 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái</label>
                         <div class="col-sm-9">
                             <select class="font-weight-500 form-control" name="status" >
-                                <option value="{{ StatusEnums::ACTIVE->value }}" {{ $term->status->value == StatusEnums::ACTIVE->value ? 'selected' : '' }} {{old('status') ? old('status') == StatusEnums::ACTIVE->value ? 'selected' : '' : ''}}>
+                                <option value="{{ StatusEnums::ACTIVE->value }}" {{ $policy->status->value == StatusEnums::ACTIVE->value ? 'selected' : '' }} {{old('status') ? old('status') == StatusEnums::ACTIVE->value ? 'selected' : '' : ''}}>
                                     @lang(StatusEnums::ACTIVE->label())
                                 </option>
-                                <option value="{{ StatusEnums::INACTIVE->value }}" {{ $term->status->value == StatusEnums::INACTIVE->value ? 'selected' : '' }} {{old('status') ? old('status') == StatusEnums::INACTIVE->value ? 'selected' : '' : ''}}>
+                                <option value="{{ StatusEnums::INACTIVE->value }}" {{ $policy->status->value == StatusEnums::INACTIVE->value ? 'selected' : '' }} {{old('status') ? old('status') == StatusEnums::INACTIVE->value ? 'selected' : '' : ''}}>
                                     @lang(StatusEnums::INACTIVE->label())
                                 </option>
 
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="form-group mb-0 text-right">
-                        <a href="{{ route('admin.term.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>
+                        <a href="{{ route('admin.policy.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>
                         <button type="submit" class="btn btn-primary">Sửa</button>
                     </div>
                 </form>

@@ -4,63 +4,64 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\TermRequest;
-use App\Models\Term;
-use App\Services\TermService;
+use App\Http\Requests\PolicyRequest;
+use App\Models\Policy;
+use App\Services\PolicyService;
 use App\Services\StatusService;
 
 
-class TermController extends Controller
+class PolicyController extends Controller
 {
-    protected $termService;
+    protected $policyService;
+    protected $statusService;
 
-    public function __construct(TermService $termService, StatusService $statusService)
+    public function __construct(PolicyService $policyService, StatusService $statusService)
     {
-        $this->termService = $termService;
+        $this->policyService = $policyService;
         $this->statusService = $statusService;
     }
 
     public function index(Request $request)
     {
-        $terms = $this->termService->index($request);
-        return view('admin.term.index',compact('terms'));
+        $policies = $this->policyService->index($request);
+        return view('admin.policy.index',compact('policies'));
     }
 
 
     public function create()
     {
-        return view('admin.term.create');
+        return view('admin.policy.create');
     }
 
     
-    public function store(TermRequest $request)
+    public function store(PolicyRequest $request)
     {
         try {
-            $this->termService->store($request);
+            $this->policyService->store($request);
             flash('Thêm điều khoản thành công')->success();
 
-            return redirect()->route('admin.term.index');
+            return redirect()->route('admin.policy.index');
         } catch (Exception $e) {
             flash('Thêm điều khoản thất bại')->error();
 
-            return redirect()->route('admin.term.create');
+            return redirect()->route('admin.policy.create');
         }
     }
     
     public function edit($id)
     {
-        $term = Term::findOrFail($id);
-        return view('admin.term.edit', compact('term'));
+        $policy = Policy::findOrFail($id);
+        return view('admin.policy.edit', compact('policy'));
     }
 
     
-    public function update(TermRequest $request, $id)
+    public function update(PolicyRequest $request, $id)
     {
         try {
-            $term = $this->termService->update($request, $id);
+            $policy = $this->policyService->update($request, $id);
             flash('Cập nhật điều khoản thành công!')->success();
 
-            return redirect()->route('admin.term.index');
+            return redirect()->route('admin.policy.index');
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi cập nhật điều khoản!')->error();
 
@@ -72,7 +73,7 @@ class TermController extends Controller
     public function destroy($id)
     {
         try {
-            $check = $this->termService->destroy($id);
+            $check = $this->policyService->destroy($id);
             if ($check) {
                 flash('Xóa điều khoản thành công!')->success();
             } else {
@@ -85,8 +86,8 @@ class TermController extends Controller
 
     public function changeStatus($id) {
         try {
-            $term = Term::findOrFail($id);
-            $this->statusService->changeStatus($term);
+            $policy = Policy::findOrFail($id);
+            $this->statusService->changeStatus($policy);
             flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([

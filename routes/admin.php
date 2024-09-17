@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\TermController;
+use App\Http\Controllers\Admin\PolicyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,7 +27,7 @@ Route::get('/admin/login', [AuthController::class, 'index'])->name('admin.login'
 Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('index');
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
@@ -35,8 +35,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     });
 
     //term
-    Route::resource('/term', TermController::class);
-    Route::put('customer/changeStatus/{id}', [TermController::class, 'changeStatus'])->name('term.changeStatus');
+    Route::resource('/policy', PolicyController::class);
+    Route::put('policy/changeStatus/{id}', [PolicyController::class, 'changeStatus'])->name('policy.changeStatus');
 
     //category
     Route::resource('/category', CategoryController::class);
