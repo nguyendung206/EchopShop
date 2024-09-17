@@ -13,8 +13,8 @@ class CreateShopsTable extends Migration
             $table->string('name');
             $table->string('hotline');
             $table->string('email');
-            $table->integer('open');
-            $table->integer('close');
+            $table->time('open');
+            $table->time('close');
             $table->string('logo')->nullable();
             $table->string('address');
             $table->integer('status')->default(2);

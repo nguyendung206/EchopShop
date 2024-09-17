@@ -113,13 +113,19 @@
                             <i class="las la-bars"></i>
                         </a>
                         @if ($data->status->value == 1)
-                        <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('admin.shop.changestatus',$data->id) }}" id="active-popup" title="@lang('Vô hiệu hóa')">
+                        <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
+                            data-id="{{ $data->id }}"
+                            data-href="{{ route('admin.shop.changestatus', ['id' => $data->id]) }}"
+                            data-status="{{$data->status}}"
+                            id="active-popup" title="@lang('user.deactivate')">
                             <i class="las la-ban"></i>
                         </a>
                         @else
-                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}"
-                            data-href="{{ route('admin.shop.changestatus', $data->id) }}" id="inactive-popup" title="@lang('Kích hoạt')">
+                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
+                            data-id="{{ $data->id }}"
+                            data-href="{{ route('admin.shop.changestatus', ['id' => $data->id]) }}"
+                            data-status="{{$data->status}}"
+                            id="inactive-popup" title="@lang('user.active')">
                             <i class="las la-check-circle"></i>
                         </a>
                         @endif
@@ -159,17 +165,17 @@
         }
         ev.currentTarget.value = null;
     })
-    @foreach(session('errors', collect()) -> toArray() as $message)
-    AIZ.plugins.notify('danger', '{{ $message[0] }}');
-    @endforeach
     // active popup
-    $(document).on('click', '#inactive-popup', function() {
+    $(document).on('click', '.changeStatus', function() {
         let id = $(this).attr('data-id');
         let href = $(this).attr('data-href');
+        let status = $(this).attr('data-status'); // Lấy trạng thái hiện tại
+        let titleText = status == 1 ? '@lang("Vô hiệu hóa")' : '@lang("Kích hoạt")'; // Kiểm tra trạng thái để thay đổi tiêu đề
+        let confirmText = status == 1 ? '@lang("Bạn muốn vô hiệu hóa Cửa hàng này?")' : '@lang("Bạn muốn kích hoạt Cửa hàng này?")';
 
         Swal.fire({
-            title: '@lang("Kích hoạt")',
-            text: '@lang("Bạn muốn kích hoạt Cửa hàng này?")',
+            title: titleText,
+            text: confirmText,
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
             showCancelButton: true,
@@ -177,54 +183,12 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: href,
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "_method": "GET",
-                    },
                     success: function(response) {
                         Swal.fire({
                             title: 'Thông báo!',
-                            text: 'Thay đổi trạng thái thành công!',
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    },
-                    error: function(err) {
-                        Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
-                    }
-                });
-            }
-        });
-    });
-
-    $(document).on('click', '#active-popup', function() {
-        let id = $(this).attr('data-id');
-        let href = $(this).attr('data-href');
-
-        Swal.fire({
-            title: '@lang("Vô hiêu hóa")',
-            text: '@lang("Bạn muốn vô hiệu hóa Cửa hàng này")',
-            confirmButtonText: '@lang("Có")',
-            cancelButtonText: '@lang("Không")',
-            showCancelButton: true,
-            showCloseButton: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "GET",
-                    url: href,
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "_method": "GET",
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            title: 'Thông báo!',
-                            text: 'Thay đổi trạng thái thành công!',
+                            text: status == 1 ? 'Vô hiệu hóa thành công!' : 'Kích hoạt thành công!',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {

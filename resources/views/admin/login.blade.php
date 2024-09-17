@@ -10,7 +10,7 @@
                                 <img src="{{ asset('img/image/logo-2.png') }}" class="mw-100 mb-4" height="80">
                                 <p>{{ translate('Login to your account.') }}</p>
                             </div>
-                            <form class="pad-hor" method="POST" role="form" action="{{ route('admin.login.post') }}">
+                            <form class="pad-hor" method="POST" role="form">
                                 @csrf
                                 <div class="form-group">
                                     <input id="email" type="email"

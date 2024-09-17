@@ -26,12 +26,12 @@ class ProfileController extends Controller
                 if ($profile->avatar && $profile->avatar !== 'default.png') {
                     deleteImage($profile->avatar, 'upload/employee');
                 }
-                $profile->avatar = uploadImage($request->file('uploadPhoto'), 'upload/employee');
+                $profile->avatar = uploadImage($request->file('uploadPhoto'), 'upload/employee/');
             }
             $profile->save();
             flash('Cập nhật thông tin thành công!')->success();
 
-            return redirect()->route('profile.index', ['id' => $request->id]);
+            return redirect()->route('admin.profile.index', ['id' => $request->id]);
         } else {
             flash('Không tìm thấy hồ sơ.')->error();
 

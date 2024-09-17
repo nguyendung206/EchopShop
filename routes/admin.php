@@ -21,13 +21,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/login', [AuthController::class, 'index'])->name('admin.login');
-Route::post('/login', [AuthController::class, 'login'])->name('admin.login.post');
+
+Route::get('/admin/login', [AuthController::class, 'index'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login');
+Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
-
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
     Route::get('/', [AuthController::class, 'index'])->name('index');
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
@@ -48,18 +47,17 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //shop
     Route::resource('/shop', ShopController::class);
-    Route::put('shop/changestatus/{id}', [ShopController::class, 'changestatus'])->name('shop.changestatus');
+    Route::post('shop/changestatus/{id}', [ShopController::class, 'status'])->name('shop.changestatus');
 
     //banner
     Route::resource('/banner', BannerController::class);
     Route::put('banner/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
 
-    //banner
+    //brand
     Route::resource('/brand', BrandController::class);
-    Route::put('brand/changestatus/{id}', [BrandController::class, 'changestatus'])->name('brand.changestatus');
+    Route::post('brand/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
 
-    //banner
+    //product
     Route::resource('/product', ProductController::class);
-    Route::put('product/changestatus/{id}', [ProductController::class, 'changestatus'])->name('product.changestatus');
-
+    Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
 });

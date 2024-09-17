@@ -1,13 +1,13 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Hãng hàng')
+@lang('Thương hi')
 @endsection
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
-	<div class="align-items-center">
-		<h1 class="h3"><strong>@lang('Hãng hàng')</strong></h1>
-	</div>
+    <div class="align-items-center">
+        <h1 class="h3"><strong>@lang('Thương hi')</strong></h1>
+    </div>
 </div>
 <div class="filter">
     <form class="" id="food" action="{{ route('admin.brand.index') }}" method="GET">
@@ -43,7 +43,7 @@
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="status" name="status">
                     <option value="">@lang('Trạng thái')</option>
                     @foreach (\App\Enums\Status::cases() as $status)
-                    <option value="{{ $status->value }}" @if(request('status') == $status->value) selected @endif>
+                    <option value="{{ $status->value }}" @if(request('status')==$status->value) selected @endif>
                         {{ $status->label() }}
                     </option>
                     @endforeach
@@ -67,9 +67,9 @@
                     <span class="custom-FontSize ml-1">@lang('Xuất file')</span>
                 </a>
                 <button type="button" class="btn btn-info w-25 btn_import ml-2 d-flex btn-responsive justify-content-center">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                      </svg>
+                    </svg>
                     <span class="custom-FontSize ml-1">@lang('Tải lên')</span>
                 </button>
             </div>
@@ -97,35 +97,41 @@
             <tbody>
                 @if (!empty($datas) && count($datas))
                 @foreach ($datas as $key => $data)
-                    <tr class="text-center">
-                        <td class="font-weight-800 align-middle">{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
-                        <td class="font-weight-400 align-middle">
-                            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{getImage($data->photo)}}">
-                        </td>
-                        <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
-                        <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>
-                        <td>{{ $data->status->label() }}</td>
-                        <td>{{ $data->category ? $data->category->name : '' }}</td>
-                        <td class="text-right">
-                            @if ($data->status->value == 1)
-                                <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}" 
-                                data-href="{{ route('admin.brand.changestatus', ['id' => $data->id]) }}" id="active-popup" title="@lang('user.deactivate')">
-                                    <i class="las la-ban"></i>
-                                </a>
-                            @else
-                                <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status" data-id="{{ $data->id }}" 
-                                data-href="{{ route('admin.brand.changestatus', ['id' => $data->id]) }}" id="inactive-popup" title="@lang('user.active')">
-                                    <i class="las la-check-circle"></i>
-                                </a>
-                            @endif
-                            <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.brand.edit',  $data->id ) }}"  title="@lang('Update')">
-                                <i class="las la-edit"></i>
-                            </a>
-                            <a href="javascript:void(0)" data-href="{{ route('admin.brand.destroy', $data->id) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
-                                <i class="las la-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
+                <tr class="text-center">
+                    <td class="font-weight-800 align-middle">{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
+                    <td class="font-weight-400 align-middle">
+                        <img style="height: 90px;" class="profile-user-img img-responsive img-bordered" src="{{getImage($data->photo)}}">
+                    </td>
+                    <td class="font-weight-400 align-middle text-overflow">{{optional($data)->name}}</td>
+                    <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>
+                    <td>{{ $data->status->label() }}</td>
+                    <td>{{ $data->category ? $data->category->name : '' }}</td>
+                    <td class="text-right">
+                        @if ($data->status->value == 1)
+                        <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
+                            data-id="{{ $data->id }}"
+                            data-href="{{ route('admin.brand.changestatus', ['id' => $data->id]) }}"
+                            data-status="{{$data->status}}"
+                            id="active-popup" title="@lang('user.deactivate')">
+                            <i class="las la-ban"></i>
+                        </a>
+                        @else
+                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
+                            data-id="{{ $data->id }}"
+                            data-href="{{ route('admin.brand.changestatus', ['id' => $data->id]) }}"
+                            data-status="{{$data->status}}"
+                            id="inactive-popup" title="@lang('user.active')">
+                            <i class="las la-check-circle"></i>
+                        </a>
+                        @endif
+                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.brand.edit',  $data->id ) }}" title="@lang('Update')">
+                            <i class="las la-edit"></i>
+                        </a>
+                        <a href="javascript:void(0)" data-href="{{ route('admin.brand.destroy', $data->id) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
+                            <i class="las la-trash"></i>
+                        </a>
+                    </td>
+                </tr>
                 @endforeach
                 @endif
             </tbody>
@@ -141,37 +147,36 @@
 
 @section('script')
 <script type="text/javascript">
-
-    function sort_customers(el){
+    function sort_customers(el) {
         $('#sort_customers').submit();
     }
-    $(document).on('click','.btn_import',function(){
+    $(document).on('click', '.btn_import', function() {
         $('#file').click();
     })
-    $(document).on('change','#file',function(ev){
-        let file,form = $('#form-import');
+    $(document).on('change', '#file', function(ev) {
+        let file, form = $('#form-import');
         if (file = ev.currentTarget.files[0]) {
-        if (file instanceof File) {
-            if (['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'].includes(file.type)) {
-            form.submit();
-            } else{
-            AIZ.plugins.notify('danger', "Something wrong");
+            if (file instanceof File) {
+                if (['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'].includes(file.type)) {
+                    form.submit();
+                } else {
+                    AIZ.plugins.notify('danger', "Something wrong");
+                }
             }
-        }
         }
         ev.currentTarget.value = null;
     })
-    @foreach (session('errors', collect())->toArray() as $message)
-        AIZ.plugins.notify('danger', '{{ $message[0] }}');
-    @endforeach
     // active popup
-    $(document).on('click', '#inactive-popup', function() {
+    $(document).on('click', '.changeStatus', function() {
         let id = $(this).attr('data-id');
         let href = $(this).attr('data-href');
+        let status = $(this).attr('data-status'); // Lấy trạng thái hiện tại
+        let titleText = status == 1 ? '@lang("Vô hiệu hóa")' : '@lang("Kích hoạt")'; // Kiểm tra trạng thái để thay đổi tiêu đề
+        let confirmText = status == 1 ? '@lang("Bạn muốn vô hiệu hóa Thương hiệu này?")' : '@lang("Bạn muốn kích hoạt Thương hiệu này?")';
 
         Swal.fire({
-            title: '@lang("Kích hoạt")',
-            text: '@lang("Bạn muốn kích hoạt Danh mục này?")',
+            title: titleText,
+            text: confirmText,
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
             showCancelButton: true,
@@ -179,16 +184,12 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    type: "GET", 
+                    type: "POST",
                     url: href,
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "_method": "GET",
-                    },
                     success: function(response) {
                         Swal.fire({
                             title: 'Thông báo!',
-                            text: 'Thay đổi trạng thái thành công!',
+                            text: status == 1 ? 'Vô hiệu hóa thành công!' : 'Kích hoạt thành công!',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -198,45 +199,7 @@
                     error: function(err) {
                         Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
                     }
-                });  
-            }
-        });
-    });
-
-    $(document).on('click', '#active-popup', function() {
-        let id = $(this).attr('data-id');
-        let href = $(this).attr('data-href');
-
-        Swal.fire({
-            title: '@lang("Vô hiêu hóa")',
-            text: '@lang("Bạn muốn vô hiệu hóa Danh mục này")',
-            confirmButtonText: '@lang("Có")',
-            cancelButtonText: '@lang("Không")',
-            showCancelButton: true,
-            showCloseButton: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "GET", 
-                    url: href,
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "_method": "GET",
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            title: 'Thông báo!',
-                            text: 'Thay đổi trạng thái thành công!',
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            location.reload();
-                        });
-                    },
-                    error: function(err) {
-                        Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.', 'error');
-                    }
-                }); 
+                });
             }
         });
     });
@@ -246,8 +209,8 @@
         let delete_href = $(this).attr('data-href');
 
         Swal.fire({
-            title: '@lang("Xóa Hãng hàng")',
-            text: '@lang("Bạn có muốn xóa Hãng hàng này không ?")',
+            title: '@lang("Xóa Thương hi")',
+            text: '@lang("Bạn có muốn xóa Thương hi này không ?")',
             icon: 'warning',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
@@ -256,7 +219,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    type: "POST", 
+                    type: "POST",
                     url: delete_href,
                     data: {
                         "_token": "{{ csrf_token() }}",
@@ -265,7 +228,7 @@
                     success: function(response) {
                         Swal.fire({
                             title: 'Xóa thành công!',
-                            text: 'Hãng hàng đã được xóa.',
+                            text: 'Thương hi đã được xóa.',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -273,7 +236,7 @@
                         });
                     },
                     error: function(err) {
-                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Hãng hàng.', 'error');
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Thương hi.', 'error');
                     }
                 });
             }
@@ -283,15 +246,15 @@
 
     //Date
     $('#joined_date').daterangepicker({
-    autoUpdateInput: false,
-    minDate: '1921/01/01',
-    singleDatePicker: true,
-    showDropdowns: true,
-    locale: {
-        format: 'YYYY/MM/DD',
-        applyLabel: "Ok",
-        cancelLabel: "Cancel",
-        "monthNames":[
+        autoUpdateInput: false,
+        minDate: '1921/01/01',
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+            format: 'YYYY/MM/DD',
+            applyLabel: "Ok",
+            cancelLabel: "Cancel",
+            "monthNames": [
                 "@lang('Tháng 1')",
                 "@lang('Tháng 2')",
                 "@lang('Tháng 3')",
@@ -305,7 +268,7 @@
                 "@lang('Tháng 11')",
                 "@lang('Tháng 12')",
             ],
-            daysOfWeek:[
+            daysOfWeek: [
                 "@lang('Chủ nhật')",
                 "@lang('Thứ 2')",
                 "@lang('Thứ 3')",
@@ -316,18 +279,17 @@
             ]
         }
     });
-    $('#joined_date').on('apply.daterangepicker', function (ev, picker) {
+    $('#joined_date').on('apply.daterangepicker', function(ev, picker) {
         $(this).val(picker.startDate.format('YYYY/MM/DD'));
     });
 
-    $('#joined_date').on('cancel.daterangepicker', function (ev, picker) {
+    $('#joined_date').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
-    
+
     @if(request('joined_date'))
     $('#joined_date').value("{{request('joined_date')}}");
     @endif
     $('input[name="joined_date"]').val('');
-
 </script>
 @endsection

@@ -61,7 +61,7 @@ if (! function_exists('deleteImage')) {
 }
 
 if (! function_exists('uploadMultipleImages')) {
-    function uploadMultipleImages($files, $path = 'upload/product')
+    function uploadMultipleImages($files, $path = 'upload/product/')
     {
         $fileNames = [];
         if ($files && is_array($files)) {
