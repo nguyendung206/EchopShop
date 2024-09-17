@@ -178,8 +178,8 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái tài khoản</label>
                         <div class="col-sm-9">
                             <select class=" form-control font-weight-500" name="status" >
-                                <option class=" " value="0" {!! old('status') != null && old('status') == 0 ? ' selected' : null !!}>Đang hoạt động</option>
-                                <option class=" " value="1" {!! old('status') != null && old('status') == 1 ? ' selected' : null !!}>Đã bị khoá</option>
+                                <option class=" " value="{{StatusEnums::ACTIVE}}" {!! old('status') != null && old('status') == 0 ? ' selected' : null !!}>Đang hoạt động</option>
+                                <option class=" " value="{{StatusEnums::INACTIVE}}" {!! old('status') != null && old('status') == 1 ? ' selected' : null !!}>Đã bị khoá</option>
                             </select>
                         </div>
                     </div>

@@ -39,26 +39,25 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //customer
     Route::resource('/customer', UserController::class);
-    Route::put('customer/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('customer.updateStatus');
+    Route::put('customer/changeStatus/{id}', [UserController::class, 'changeStatus'])->name('customer.changeStatus');
 
     //partner
     Route::resource('/partner', PartnerController::class);
-    Route::put('partner/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('partner.updateStatus');
+    Route::put('partner/changeStatus/{id}', [PartnerController::class, 'changeStatus'])->name('partner.changeStatus');
 
     //shop
     Route::resource('/shop', ShopController::class);
-    Route::put('shop/changestatus/{id}', [ShopController::class, 'changestatus'])->name('shop.changestatus');
+    Route::post('shop/changestatus/{id}', [ShopController::class, 'status'])->name('shop.changestatus');
 
     //banner
     Route::resource('/banner', BannerController::class);
-    Route::put('banner/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
+    Route::put('banner/changeStatus/{id}', [BannerController::class, 'changeStatus'])->name('banner.changeStatus');
 
-    //banner
+    //brand
     Route::resource('/brand', BrandController::class);
-    Route::put('brand/changestatus/{id}', [BrandController::class, 'changestatus'])->name('brand.changestatus');
+    Route::post('brand/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
 
-    //banner
+    //product
     Route::resource('/product', ProductController::class);
-    Route::put('product/changestatus/{id}', [ProductController::class, 'changestatus'])->name('product.changestatus');
-
+    Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
 });

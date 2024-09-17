@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductService;
 use App\Services\StatusService;
+use Exception;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -123,13 +124,17 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        if ($this->productService->deleteProduct($id)) {
-            flash('Xóa sản phẩm thành công!')->success();
-        } else {
+        try {
+            if ($this->productService->deleteProduct($id)) {
+                flash('Xóa sản phẩm thành công!')->success();
+            } else {
+                flash('Đã xảy ra lỗi khi xóa sản phẩm!')->error();
+            }
+        } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi xóa sản phẩm!')->error();
         }
 
-        return redirect()->route('category.index');
+        return redirect()->route('admin.product.index');
     }
 
     public function status($id)

@@ -139,7 +139,6 @@
                         </div>
                     </div>
 
-
                     <div class="form-group row">
                         <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh')</label>
                         <div class="col-sm-9">
@@ -172,8 +171,6 @@
                             @enderror
                         </div>
                     </div>
-
-
 
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('admin.product.index') }}" class="btn btn-light mr-2">@lang('Hủy')</a>

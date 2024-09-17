@@ -108,22 +108,29 @@
                         <td class="font-weight-400 align-middle">{{optional($partner)->email}}</td>
                         <td class="font-weight-400 align-middle">{{optional($partner)->phone_number}}</td>
                         <td class="font-weight-400 align-middle">
-                        <form action="{{ route('admin.partner.updateStatus', $partner->id)}}" id="status-form-{{$partner->id}}" method="POST"  style="display: inline-block">
-                            @csrf
-                            @method("PUT")
-                            <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$partner->id}}">
-                                <option value="{{ StatusEnums::ACTIVE->value }}" {{ $partner->status->value == StatusEnums::ACTIVE->value ? 'selected' : '' }} >
-                                    @lang(StatusEnums::ACTIVE->label())
-                                </option>
-                                <option value="{{ StatusEnums::INACTIVE->value }}" {{ $partner->status->value == StatusEnums::INACTIVE->value ? 'selected' : '' }}>
-                                    @lang(StatusEnums::INACTIVE->label())
-                                </option>
-                            </select>
-
-                        </form>
+                            @if($partner->status == StatusEnums::ACTIVE)
+                            Đang hoạt động
+                            @else
+                            Đã bị khoá
+                            @endif
                         </td>
 
-                        <td class="text-center">
+                        <td class="text-left">
+                            @if ($partner->status == StatusEnums::ACTIVE)
+                            <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
+                                data-id="{{ $partner->id }}"
+                                data-href="{{ route('admin.partner.changeStatus', ['id' => $partner->id]) }}"
+                                id="active-popup" >
+                                <i class="las la-ban"></i>
+                            </a>
+                        @else
+                            <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
+                                data-id="{{ $partner->id }}"
+                                data-href="{{ route('admin.partner.changeStatus', ['id' => $partner->id]) }}"
+                                id="inactive-popup" >
+                                <i class="las la-check-circle"></i>
+                            </a>
+                        @endif
                             <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"  href="{{ route("admin.partner.show", $partner->id)}}"  >
                                 <i class="las la-list"></i>
                             </a>
@@ -243,55 +250,39 @@
     $('input[name="joined_date"]').val('');
 
     //
-    $(document).on('focus', '[id^=status-select]', function() {
-            let $select = $(this);
-            // Lưu giá trị hiện tại vào thuộc tính data-old-value khi thẻ select nhận được focus
-            $select.data('old-value', $select.val());
-        });
-        $(document).on('change', '[id^=status-select]', function() {
-            let $select = $(this);
-            let oldValue = $select.data('old-value');
-            
-            let selectedText = $(this).find("option:selected").text(); // Lấy text của tùy chọn đã chọn
-            let partnerId = $(this).attr('id').replace('status-select', ''); // Lấy partner ID từ id của thẻ select
-            let form = $('#status-form-' + partnerId); // Lấy form theo partner ID
-            let formData = form.serialize(); // Lấy dữ liệu từ form, bao gồm cả CSRF token
-            let updateHref = form.attr('action'); // Lấy URL action của form
+    $(document).on('click', '.changeStatus', function() {
+            let id = $(this).attr('data-id');
+            let href = $(this).attr('data-href');
+            console.log(href);
             
             Swal.fire({
-                title: 'Đổi trạng thái người dùng này',
-                text: `Bạn đã chọn trạng thái: ${selectedText}. Bạn có muốn tiếp tục?`,
-                confirmButtonText: 'Tiếp tục',
-                cancelButtonText: 'Huỷ',
+                title: '@lang('Trạng thái')',
+                text: '@lang('Bạn muốn thay đổi trạng thái đối tác này?')',
+                confirmButtonText: '@lang('Có')',
+                cancelButtonText: '@lang('Không')',
                 showCancelButton: true,
                 showCloseButton: true,
-
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "PUT",
-                        url: updateHref,
-                        data: formData,
-                        success: function (response){
+                        url: href,
+                        success: function(response) {
                             Swal.fire({
-                            text: response.message,
-                            icon: 'success',
-                            confirmButtonText: 'OK'
+                                title: 'Thông báo!',
+                                text: 'Thay đổi trạng thái thành công!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
                             });
                         },
                         error: function(err) {
-                            Swal.fire({
-                            title: 'Lỗi',
-                            text: 'Có lỗi xảy ra khi cập nhật trạng thái người dùng.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
+                            Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.',
+                                'error');
                         }
                     });
-                }else {
-                        $select.val(oldValue);
                 }
-
             });
         });
 </script>

@@ -31,7 +31,7 @@
                         <span class="d-flex align-items-center">
                             <span class="avatar avatar-sm mr-md-2">
                                 <img
-                                    src="{{asset('storage/upload/employee/' .optional(Auth::user())->avatar)}}">
+                                    src="{{getImage(optional(Auth::user())->avatar)}}">
                             </span>
                             <span class="d-none d-md-block">
                                 <span class="d-block fw-500">{{optional(Auth::user())->name}}</span>

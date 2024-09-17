@@ -3,7 +3,7 @@
 @section('content')
 <div class="box box-primary">
     <div class="box-body">
-        <form action="{{route('profile.save')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('admin.profile.save')}}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="{{$profile->id}}" />
             <input type="hidden" name="Password" value="{{$profile->Password}}" />
             <div class="form-group">
@@ -34,7 +34,7 @@
                 <input type="file" class="form-control" name="uploadPhoto" onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])" />
             </div>
             <div class="form-group">
-                <img id="Photo" src="{{ asset('storage/upload/employee/' . ($profile->avatar ?? 'nophoto.png')) }}" class="img img-bordered" style="width:200px" />
+                <img id="Photo" src="{{ getImage($profile->avatar) }}" class="img img-bordered" style="width:200px" />
             </div>
 
 
