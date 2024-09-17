@@ -22,13 +22,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/login', [AuthController::class, 'index'])->name('admin.login');
-Route::post('/login', [AuthController::class, 'login'])->name('admin.login');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::get('/admin/login', [AuthController::class, 'index'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login');
+Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('index');
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');

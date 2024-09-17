@@ -159,9 +159,6 @@
         }
         ev.currentTarget.value = null;
     })
-    @foreach(session('errors', collect()) -> toArray() as $message)
-    AIZ.plugins.notify('danger', '{{ $message[0] }}');
-    @endforeach
     // active popup
     $(document).on('click', '#inactive-popup', function() {
         let id = $(this).attr('data-id');
