@@ -6,7 +6,7 @@
 
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3"><strong>Điều khoản</strong></h1>
+            <h1 class="h3"><strong>Chính sách</strong></h1>
         </div>
     </div>
     <div class="filter">
@@ -223,7 +223,7 @@
                         success: function(response) {
                             Swal.fire({
                                 title: 'Xóa thành công!',
-                                text: 'điều khoản đã được xóa.',
+                                text: 'Chính sách đã được xóa.',
                                 icon: 'success',
                                 confirmButtonText: 'OK'
                             }).then(() => {
@@ -232,7 +232,7 @@
                         },
                         error: function(err) {
 
-                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa điều khoản.', 'error');
+                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Chính sách.', 'error');
                         }
                     });
                 }

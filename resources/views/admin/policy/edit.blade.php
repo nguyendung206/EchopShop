@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Sửa Điều khoản')
+@lang('Sửa chính sách')
 @endsection
 @section('content')
 <div class="backnow">
@@ -14,7 +14,7 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">Sửa điều khoản</h5>
+                <h5 class="mb-0 h6">Sửa chính sách</h5>
             </div>
             <div class="card-body">
                 <form action="{{route('admin.policy.update', $policy->id)}}" method="post" enctype="multipart/form-data">

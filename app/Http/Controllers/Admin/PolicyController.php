@@ -38,11 +38,11 @@ class PolicyController extends Controller
     {
         try {
             $this->policyService->store($request);
-            flash('Thêm điều khoản thành công')->success();
+            flash('Thêm chính sách thành công')->success();
 
             return redirect()->route('admin.policy.index');
         } catch (Exception $e) {
-            flash('Thêm điều khoản thất bại')->error();
+            flash('Thêm chính sách thất bại')->error();
 
             return redirect()->route('admin.policy.create');
         }
@@ -59,11 +59,11 @@ class PolicyController extends Controller
     {
         try {
             $policy = $this->policyService->update($request, $id);
-            flash('Cập nhật điều khoản thành công!')->success();
+            flash('Cập nhật chính sách thành công!')->success();
 
             return redirect()->route('admin.policy.index');
         } catch (Exception $e) {
-            flash('Đã xảy ra lỗi khi cập nhật điều khoản!')->error();
+            flash('Đã xảy ra lỗi khi cập nhật chính sách!')->error();
 
             return redirect()->back()->withInput();
         }
@@ -75,12 +75,12 @@ class PolicyController extends Controller
         try {
             $check = $this->policyService->destroy($id);
             if ($check) {
-                flash('Xóa điều khoản thành công!')->success();
+                flash('Xóa chính sách thành công!')->success();
             } else {
-                flash('Đã xảy ra lỗi khi xóa điều khoản!')->error();
+                flash('Đã xảy ra lỗi khi xóa chính sách!')->error();
             }
         } catch (Exception $e) {
-            flash('Đã xảy ra lỗi khi xóa điều khoản!')->error();
+            flash('Đã xảy ra lỗi khi xóa chính sách!')->error();
         }
     }
 
