@@ -50,14 +50,14 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Giờ mở cửa:')</label>
                     <div class="col-sm-9">
-                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $shop->open }}h</p>
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $shop->open }}</p>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Giờ đóng cửa:')</label>
                     <div class="col-sm-9">
-                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $shop->close }}h</p>
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $shop->close }}</p>
                     </div>
                 </div>
 

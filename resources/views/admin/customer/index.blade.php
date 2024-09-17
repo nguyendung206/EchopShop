@@ -106,21 +106,25 @@
                         <td class="font-weight-400 align-middle text-overflow">{{optional($user)->name}}</td>
                         <td class="font-weight-400 align-middle">{{$user->email}}</td>
                         <td class="font-weight-400 align-middle">{{$user->address}}</td>
-                        <td class="font-weight-400 align-middle">
-                            {{-- {{ App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}} --}}
-                            <form action="{{ route('admin.customer.updateStatus', $user->id)}}" id="status-form-{{$user->id}}" method="POST"  style="display: inline-block">
-                                @csrf
-                                @method("PUT")
-                            <select class="text-center font-weight-500" name="status" style="border: none" id="status-select{{$user->id}}">
-                                <option class=" text-center" value="{{ App\Enums\UserStatus::Active }}" {!! $user->status == App\Enums\UserStatus::Active ? ' selected' : null !!}>Đang hoạt động</option>
-                                <option class=" text-center" value="{{ App\Enums\UserStatus::Block }}" {!! $user->status == App\Enums\UserStatus::Block ? ' selected' : null !!}>Đã bị khoá</option>
-                            </select>
-                            </form>
-                        </td>
+                        <td class="font-weight-400 align-middle">{!! $user->status == StatusEnums::ACTIVE ? 'Đang hoạt động' : 'Đã bị khoá' !!}</td>
                         <td class="font-weight-400 align-middle">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</td>
                         <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>
                         <td class="">
-                           
+                            @if ($user->status == StatusEnums::ACTIVE)
+                                        <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
+                                            data-id="{{ $user->id }}"
+                                            data-href="{{ route('admin.customer.changeStatus', ['id' => $user->id]) }}"
+                                            id="active-popup" >
+                                            <i class="las la-ban"></i>
+                                        </a>
+                                    @else
+                                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
+                                            data-id="{{ $user->id }}"
+                                            data-href="{{ route('admin.customer.changeStatus', ['id' => $user->id]) }}"
+                                            id="inactive-popup">
+                                            <i class="las la-check-circle"></i>
+                                        </a>
+                                    @endif
                             <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"  href="{{ route("admin.customer.show", $user->id)}}"  >
                                 <i class="las la-list"></i>
                             </a>
@@ -176,37 +180,6 @@
         @foreach (session('errors', collect())->toArray() as $message)
             AIZ.plugins.notify('danger', '{{ $message[0] }}');
         @endforeach
-        // active popup
-        $(document).on('click', '#active-popup', function() {
-            Swal.fire({
-                title: '@lang('user.active_user')',
-                text: '@lang('user.continue')',
-                // icon: 'error',
-                confirmButtonText: '@lang('user.yes')',
-                cancelButtonText: '@lang('user.no')',
-                showCancelButton: true,
-                showCloseButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(this).parents('form').submit();
-                }
-            });
-        });
-        $(document).on('click', '#inactive-popup', function() {
-            Swal.fire({
-                title: '@lang('user.inactive_user')',
-                text: '@lang('user.continue')',
-                // icon: 'error',
-                confirmButtonText: '@lang('user.yes')',
-                cancelButtonText: '@lang('user.no')',
-                showCancelButton: true,
-                showCloseButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(this).parents('form').submit();
-                }
-            });
-        });
         //deletee
         $(document).on('click', '.btn-delete', function() {
             let delete_id= $(this).attr('data-id');
@@ -229,57 +202,42 @@
         });
 
         // 
-        $(document).on('focus', '[id^=status-select]', function() {
-            let $select = $(this);
-            // Lưu giá trị hiện tại vào thuộc tính data-old-value khi thẻ select nhận được focus
-            $select.data('old-value', $select.val());
-        });
-        $(document).on('change', '[id^=status-select]', function() {
-            let $select = $(this);
-            let oldValue = $select.data('old-value');
-            
-            let selectedText = $(this).find("option:selected").text(); // Lấy text của tùy chọn đã chọn
-            let userId = $(this).attr('id').replace('status-select', ''); // Lấy user ID từ id của thẻ select
-            let form = $('#status-form-' + userId); // Lấy form theo user ID
-            let formData = form.serialize(); // Lấy dữ liệu từ form, bao gồm cả CSRF token
-            let updateHref = form.attr('action'); // Lấy URL action của form
+        $(document).on('click', '.changeStatus', function() {
+            let id = $(this).attr('data-id');
+            let href = $(this).attr('data-href');
+            console.log(href);
             
             Swal.fire({
-                title: 'Đổi trạng thái người dùng này',
-                text: `Bạn đã chọn trạng thái: ${selectedText}. Bạn có muốn tiếp tục?`,
-                confirmButtonText: 'Tiếp tục',
-                cancelButtonText: 'Huỷ',
+                title: '@lang('Trạng thái')',
+                text: '@lang('Bạn muốn thay đổi trạng thái người dùng này?')',
+                confirmButtonText: '@lang('Có')',
+                cancelButtonText: '@lang('Không')',
                 showCancelButton: true,
                 showCloseButton: true,
-
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "PUT",
-                        url: updateHref,
-                        data: formData,
-                        success: function (response){
+                        url: href,
+                        success: function(response) {
                             Swal.fire({
-                            text: response.message,
-                            icon: 'success',
-                            confirmButtonText: 'OK'
+                                title: 'Thông báo!',
+                                text: 'Thay đổi trạng thái thành công!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
                             });
                         },
                         error: function(err) {
-                            Swal.fire({
-                            title: 'Lỗi',
-                            text: 'Có lỗi xảy ra khi cập nhật trạng thái người dùng.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
+                            Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.',
+                                'error');
                         }
                     });
-                }else {
-                        $select.val(oldValue);
                 }
-
             });
         });
+
         //
 
 

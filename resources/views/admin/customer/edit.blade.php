@@ -181,8 +181,8 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái tài khoản</label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="status" >
-                                <option class=" text-center" value="{{ App\Enums\UserStatus::Active }}" {!! $user->status == App\Enums\UserStatus::Active ? ' selected' : null !!}>Đang hoạt động</option>
-                                <option class=" text-center" value="{{ App\Enums\UserStatus::Block }}" {!! $user->status == App\Enums\UserStatus::Block ? ' selected' : null !!}>Đã bị khoá</option>
+                                <option class=" text-center" value="{{ StatusEnums::ACTIVE }}" {!! $user->status == StatusEnums::ACTIVE ? ' selected' : null !!}>Đang hoạt động</option>
+                                <option class=" text-center" value="{{ StatusEnums::INACTIVE }}" {!! $user->status == StatusEnums::INACTIVE ? ' selected' : null !!}>Đã bị khoá</option>
                             </select>
                         </div>
                     </div>
