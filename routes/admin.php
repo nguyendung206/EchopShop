@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
@@ -32,6 +33,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/save', [ProfileController::class, 'update'])->name('profile.save');
     });
+
+    //policy
+    Route::resource('/policy', PolicyController::class);
+    Route::put('policy/changeStatus/{id}', [PolicyController::class, 'changeStatus'])->name('policy.changeStatus');
 
     //category
     Route::resource('/category', CategoryController::class);

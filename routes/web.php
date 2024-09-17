@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use App\Http\Controllers\Web\ShopController;
+use App\Http\Controllers\Web\PolicyController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/admin.php';
@@ -35,7 +36,11 @@ Route::prefix('/product-detail')->group(function () {
 });
 
 Route::prefix('/policy')->name('policy.')->group(function() {
-    Route::get('/term', [HomeController::class, 'term'])->name('term');
+    Route::get('/security', [PolicyController::class, 'getPolicy'])->name('security');
+    Route::get('/term', [PolicyController::class, 'getPolicy'])->name('term');
+    Route::get('/prohibited', [PolicyController::class, 'getPolicy'])->name('prohibited');
+    Route::get('/communicate', [PolicyController::class, 'getPolicy'])->name('communicate');
+    Route::get('/safeToUse', [PolicyController::class, 'getPolicy'])->name('safeToUse');
 });
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Enums\TypeProduct;
-use App\Enums\TypePolicy;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
@@ -92,10 +91,5 @@ class HomeController extends Controller
         }
 
         return view($viewDefault, compact('products', 'provinces'));
-    }
-
-    public function term() {
-        $policies = Policy::query()->where('status', Status::ACTIVE)->where('type', TypePolicy::TERM)->get();
-        return view('web.info.term', compact('policies'));
     }
 }

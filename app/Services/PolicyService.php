@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\Policy;
+use App\Enums\TypePolicy;
+use App\Enums\Status;
+
 use Exception;
 
 class PolicyService
@@ -55,5 +58,32 @@ class PolicyService
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function getPolicyHome($request) {
+        $type = null;
+            $currentUrl = $request->url();
+            switch (true) {
+                case stripos($currentUrl, 'security') !== false:
+                    $type = TypePolicy::SECURITY;
+                    break;
+                case stripos($currentUrl, 'term') !== false:
+                    $type = TypePolicy::TERM;
+                    break;
+                case stripos($currentUrl, 'prohibited') !== false:
+                    $type = TypePolicy::PROHIBITED;
+                    break;
+                case stripos($currentUrl, 'communicate') !== false:
+                    $type = TypePolicy::COMMUNICATE;
+                    break;
+                case stripos($currentUrl, 'safeToUse') !== false:
+                    $type = TypePolicy::SAFETOUSE;
+                    break;
+                default:
+                    break;
+            }
+    
+            $policies = Policy::query()->where('status', Status::ACTIVE)->where('type', $type)->get();
+            return $policies;
     }
 }
