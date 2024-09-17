@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\PolicyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,16 +26,12 @@ Route::get('/admin/login', [AuthController::class, 'index'])->name('admin.login'
 Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('index');
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/save', [ProfileController::class, 'update'])->name('profile.save');
     });
-
-    //term
-    Route::resource('/policy', PolicyController::class);
-    Route::put('policy/changeStatus/{id}', [PolicyController::class, 'changeStatus'])->name('policy.changeStatus');
 
     //category
     Route::resource('/category', CategoryController::class);
@@ -44,26 +39,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     //customer
     Route::resource('/customer', UserController::class);
-    Route::put('customer/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('customer.updateStatus');
+    Route::put('customer/changeStatus/{id}', [UserController::class, 'changeStatus'])->name('customer.changeStatus');
 
     //partner
     Route::resource('/partner', PartnerController::class);
-    Route::put('partner/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('partner.updateStatus');
+    Route::put('partner/changeStatus/{id}', [PartnerController::class, 'changeStatus'])->name('partner.changeStatus');
 
     //shop
     Route::resource('/shop', ShopController::class);
-    Route::put('shop/changestatus/{id}', [ShopController::class, 'changestatus'])->name('shop.changestatus');
+    Route::post('shop/changestatus/{id}', [ShopController::class, 'status'])->name('shop.changestatus');
 
     //banner
     Route::resource('/banner', BannerController::class);
-    Route::put('banner/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
+    Route::put('banner/changeStatus/{id}', [BannerController::class, 'changeStatus'])->name('banner.changeStatus');
 
-    //banner
+    //brand
     Route::resource('/brand', BrandController::class);
-    Route::put('brand/changestatus/{id}', [BrandController::class, 'changestatus'])->name('brand.changestatus');
+    Route::post('brand/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
 
-    //banner
+    //product
     Route::resource('/product', ProductController::class);
-    Route::put('product/changestatus/{id}', [ProductController::class, 'changestatus'])->name('product.changestatus');
-
+    Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
 });
