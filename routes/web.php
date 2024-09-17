@@ -33,6 +33,10 @@ Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPasswo
 Route::prefix('/product-detail')->group(function () {
     Route::get('/{slug}', [ProductController::class, 'show'])->name('web.productdetail.index');
 });
+
+Route::prefix('/info')->name('info.')->group(function() {
+    Route::get('/term', [HomeController::class, 'term'])->name('term');
+});
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 

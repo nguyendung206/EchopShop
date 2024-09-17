@@ -93,6 +93,13 @@
                         <span class="aiz-side-nav-text">Đối tác</span>
                     </a>
                 </li>
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('admin.term.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['admin.term.index']) }}">
+                        <i class="las la-home aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Điều khoản</span>
+                    </a>
+                </li>
         
                 
             </ul><!-- .aiz-side-nav -->

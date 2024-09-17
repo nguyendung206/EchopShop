@@ -22,7 +22,7 @@
                     @method('PUT')
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Tên công ty</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Tên công ty<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="Tên công ty" name="company_name" class="form-control @error('company_name') is-invalid @enderror" value="{{ old('company_name') ? old('company_name') : $partner->company_name }}">
                             @error('company_name')
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Email</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Email<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="Eamil" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') ? old('email') : $partner->email }}">
                             @error('email')
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Số điện thoại</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Số điện thoại<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="Số điện thoại" name="phone_number" class="form-control @error('phone_number') is-invalid @enderror" value="{{ old('phone_number') ? old('phone_number') : $partner->phone_number }}">
                             @error('phone_number')
