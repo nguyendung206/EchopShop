@@ -32,9 +32,11 @@ Chính sách
 </div>
 <div class="container content">
     <div class="row">
-    @foreach ($policies as $policy)
+    @forelse ($policies as $policy)
     <div class="col-12"  style="font-size: 16px; margin: 20px 0;font-weight: 400;line-height: 18.75px;color:#535353;">{{$policy->description}}</div>
-    @endforeach
+    @empty
+    <div class="text-center w-100" style="font-size: 16px; margin: 20px 0;font-weight: 400;line-height: 18.75px;color:red;">Chưa có chính sách cho mục này</div>
+    @endforelse
 </div>
 </div>
 @endsection
