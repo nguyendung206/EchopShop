@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PartnerRequest;
 use App\Models\Partner;
 use App\Services\PartnerService;
+use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,10 @@ class PartnerController extends Controller
 {
     protected $partnerService;
 
-    public function __construct(PartnerService $partnerService)
+    public function __construct(PartnerService $partnerService, StatusService $statusService)
     {
         $this->partnerService = $partnerService;
+        $this->statusService = $statusService;
     }
 
     public function index(Request $request)
@@ -92,19 +94,12 @@ class PartnerController extends Controller
         }
     }
 
-    public function updateStatus(Request $request, $id)
+    public function changeStatus(Request $request, $id)
     {
-        $partner = Partner::find($id);
-        if (! $partner) {
-            flash('Sửa thông tin thất bại')->error();
-
-            return back();
-        }
         try {
-            $updateData = [
-                'status' => $request->status,
-            ];
-            $partner->update($updateData);
+            $partner = Partner::findOrFail($id);
+            $this->statusService->changeStatus($partner);
+            flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([
                 'status' => 'success',

@@ -1,7 +1,7 @@
 <?php
 
+use App\Enums\Status;
 use App\Enums\UserGender;
-use App\Enums\UserStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->bigInteger('province_id')->nullable();
             $table->bigInteger('district_id')->nullable();
             $table->bigInteger('ward_id')->nullable();
-            $table->tinyInteger('status')->unsigned()->default(UserStatus::Active);
+            $table->tinyInteger('status')->unsigned()->default(Status::Active);
             $table->bigInteger('shop_id')->nullable();
             $table->integer('role')->default(1);
             $table->timestamps();
