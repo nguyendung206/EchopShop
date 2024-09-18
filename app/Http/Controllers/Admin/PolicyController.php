@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\PolicyRequest;
 use App\Models\Policy;
 use App\Services\PolicyService;
 use App\Services\StatusService;
-
+use Illuminate\Http\Request;
 
 class PolicyController extends Controller
 {
     protected $policyService;
+
     protected $statusService;
 
     public function __construct(PolicyService $policyService, StatusService $statusService)
@@ -24,16 +24,15 @@ class PolicyController extends Controller
     public function index(Request $request)
     {
         $policies = $this->policyService->index($request);
-        return view('admin.policy.index',compact('policies'));
-    }
 
+        return view('admin.policy.index', compact('policies'));
+    }
 
     public function create()
     {
         return view('admin.policy.create');
     }
 
-    
     public function store(PolicyRequest $request)
     {
         try {
@@ -47,14 +46,14 @@ class PolicyController extends Controller
             return redirect()->route('admin.policy.create');
         }
     }
-    
+
     public function edit($id)
     {
         $policy = Policy::findOrFail($id);
+
         return view('admin.policy.edit', compact('policy'));
     }
 
-    
     public function update(PolicyRequest $request, $id)
     {
         try {
@@ -69,7 +68,6 @@ class PolicyController extends Controller
         }
     }
 
-    
     public function destroy($id)
     {
         try {
@@ -84,7 +82,8 @@ class PolicyController extends Controller
         }
     }
 
-    public function changeStatus($id) {
+    public function changeStatus($id)
+    {
         try {
             $policy = Policy::findOrFail($id);
             $this->statusService->changeStatus($policy);

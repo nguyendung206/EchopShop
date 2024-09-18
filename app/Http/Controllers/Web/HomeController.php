@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Enums\TypeProduct;
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Partner;
-use App\Models\Policy;
 use App\Models\Product;
 use App\Models\Province;
 use App\Services\HomeService;

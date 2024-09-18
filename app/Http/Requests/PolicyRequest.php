@@ -25,9 +25,10 @@ class PolicyRequest extends FormRequest
     {
         return [
             'description' => ['required', 'max: 1000'],
-            'type' => ['required','integer','in:1,2,3,4,5'],
+            'type' => ['required', 'integer', 'in:1,2,3,4,5'],
         ];
     }
+
     public function attributes()
     {
         return [
