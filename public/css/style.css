@@ -543,13 +543,91 @@ a:hover {
 }
 
 
+.information-us {
+    color: white;background-color: #B10000;padding: 64px 60px; display: flex;flex-direction: column;justify-content:center;
+}
+.title-us {
+    margin-bottom: 20px;font-size: 28px;font-weight: 600;
+}
+.content-us {
+    display: flex; align-items: center;
+}
+.content-us img {
+    margin-right: 12px;
+}
+.content-us span {
+    font-size: 24px;
+    line-height: 28.13px;
+    font-weight: 300;
+}
+.wrap-us {
+    margin-bottom: 60px;
+}
+.information-input {
+    box-sizing: border-box;
+    padding-left: 60px;
+}
+.wrap-input {
+    position: relative;
 
+}
+.icon-user-input {
+    position:absolute;
+    top: 52%;
+    left:22px;
+}
+.icon-sms-input {
+    position:absolute;
+    top: 45%;
+    left:22px;
+}
+.input-user {
+    width: 100%;
+    margin-top: 33px;
+    font-size: 18px;
+    padding: 19px 0px 19px 65px;
+    color: #5a5a5a;
+}
+.input-sms {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 19px 0px 19px 65px;
+    color: #5a5a5a;
+}
+.input-content {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 19px 22px 19px 22px;
+    color: #5a5a5a;
+    min-height: 210px;
+}
+.button-cancel {
+    padding: 14px 34px;
+    margin-right:20px;
+    font-size:26px;
+    font-weight: 500;
+}
+.button-send {
+    padding: 14px 34px;
+    font-size:26px;
+    font-weight: 500;
+    line-height: inherit;
+}
+.wrap-button {
+    margin-top: 30px;
+      margin-bottom: 30px;
+}
 
 
 @media (min-width: 320px) and (max-width: 768px) {
 
     .topheader {
         font-size: 12px;
+    }
+    .information-input {
+        padding-left: 0px;
     }
 
     .overlay {
@@ -772,7 +850,9 @@ a:hover {
     .product-img {
         height: 250px;
     }
-
+    .information-input {
+        padding-left: 0px;
+    }
     .logo {
         width: 35%;
     }
