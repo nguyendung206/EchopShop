@@ -20,6 +20,12 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Cửa hàng:')</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->shop->name }}</p>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tên sản phẩm:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->name }}</p>

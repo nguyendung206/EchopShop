@@ -22,6 +22,7 @@
                 <form action="{{ route('admin.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
+                    <input type="hidden" name="shop_id" value="{{ $product->shop_id }}">
                     <div class="form-group row">
                         <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Tên sản phẩm')</label>
                         <div class="col-sm-9">
@@ -145,7 +146,7 @@
                             <input type="hidden" name="old_photo" value="{{ $product->photo }}">
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)">
                             <img id="photo_preview" src="{{ $product->photo ? getImage($product->photo) : asset('storage/upload/product/noproduct.png') }}" class="img img-bordered" style="width:200px" />
-                           
+
                             @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

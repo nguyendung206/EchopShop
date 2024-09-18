@@ -18,4 +18,9 @@ class Shop extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function shop()
+    {
+        return $this->hasMany(Product::class, 'shop_id', 'id');
+    }
 }

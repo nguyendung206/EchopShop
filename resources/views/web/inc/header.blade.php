@@ -132,7 +132,7 @@
                             <!-- Nếu người dùng đã đăng nhập -->
                             @if(optional(Auth::user()->shop)->status->value === 1)
                             <div class="btn-post px-2">
-                                <a href="#">
+                                <a href="{{ route('post.create') }}">
                                     <i class="fa-regular fa-file-lines mr-2"></i>
                                     <span>Đăng bài</span>
                                 </a>

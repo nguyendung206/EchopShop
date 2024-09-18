@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Alatsi&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('/css/resetcss.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
     @yield('css')
@@ -71,6 +72,19 @@
     .toast-close-button:hover {
         color: #ddd;
     }
+
+    .ck-content {
+        height: 200px;
+    }
+
+    .ck p {
+        margin: 0;
+    }
+
+    .btn-product {
+        color: #535353;
+        font-size: 16px;
+    }
 </style>
 
 <body id="body">
@@ -79,6 +93,9 @@
     @yield('content')
     @include('web.inc.footer')
 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -91,6 +108,7 @@
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css">
     <script src="{{asset('/js/text.js')}}"></script>
     @yield('script')
 

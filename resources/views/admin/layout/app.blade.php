@@ -91,10 +91,13 @@
             animation: loadingC 0.6s 0.3s linear infinite;
         }
 
-        .ck p {
-            min-height: 200px;
+        .ck-content {
+            height: 200px;
         }
 
+        .ck p {
+            margin: 0;
+        }
         @keyframes loadingC {
             0 {
                 transform: translate(0, 0);

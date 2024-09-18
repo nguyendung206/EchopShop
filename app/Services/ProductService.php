@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Models\ProductUnit;
+use Illuminate\Support\Facades\Auth;
 
 class ProductService
 {
@@ -31,6 +32,24 @@ class ProductService
         return $query->paginate(10);
     }
 
+    public function getPosts($perPage)
+    {
+        try {
+            if (! Auth::check()) {
+                return [];
+            }
+
+            $user = Auth::user();
+            if ($user->shop) {
+                return Product::where('shop_id', $user->shop->id)->paginate($perPage);
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
     public function createProduct(ProductRequest $request)
     {
         $product = new Product;
@@ -38,6 +57,7 @@ class ProductService
         $product->description = $request->description;
         $product->status = $request->status;
         $product->price = $request->price;
+        $product->shop_id = $request->shop_id;
         $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
@@ -78,6 +98,7 @@ class ProductService
         $product->status = $request->status;
         $product->price = $request->price;
         $product->type = $request->type;
+        $product->shop_id = $request->shop_id;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 

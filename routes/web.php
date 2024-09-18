@@ -50,4 +50,6 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::post('/', [FavoriteController::class, 'store'])->name('store');
         Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('destroy');
     });
+
+    Route::resource('/post', ProductController::class);
 });
