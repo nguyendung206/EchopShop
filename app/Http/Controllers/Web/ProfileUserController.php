@@ -30,7 +30,7 @@ class ProfileUserController extends Controller
             $hasMorePage = ! $favorites->hasMorePages();
 
             return response()->json([
-                'products' => $productHtml,
+                'posts' => $productHtml,
                 'hasMorePage' => $hasMorePage,
             ]);
         }

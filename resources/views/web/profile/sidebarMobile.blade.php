@@ -17,7 +17,7 @@
             <div class="col-12">
                 <nav class="category-profile" id="category-profile">
                     <ul class="list text-center">
-                        <a href="{{route('web.profile.index', Session::get('user')->id)}}" data-tab="profile">
+                        <a href="{{route('profile.index', Session::get('user')->id)}}" data-tab="profile">
                             <i class="fa-regular fa-circle-user mr-1"></i>
                             Hồ sơ của tôi
                         </a>
@@ -30,12 +30,12 @@
                             Lịch sử chat
                         </a>
                         @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
-                        <a href="#" class="profile-tab" data-tab="posts">
+                        <a href="{{ route('post.index') }}" class="profile-tab" data-tab="posts">
                             <i class="fa-regular fa-file-lines mr-1"></i>
                             Quản lý bài đăng
                         </a>
                         @else
-                        <a href="{{route('web.registershop.create')}}" class="profile-tab" data-tab="shop">
+                        <a href="{{route('registershop.create')}}" class="profile-tab" data-tab="shop">
                             <i class="fa-solid fa-store"></i>
                             Đăng ký bán hàng
                         </a>

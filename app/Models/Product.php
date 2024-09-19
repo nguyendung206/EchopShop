@@ -33,6 +33,11 @@ class Product extends Model
         return $this->hasMany(ProductUnit::class, 'product_id', 'id');
     }
 
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id', 'id');
+    }
+
     public function sluggable(): array
     {
         return [
