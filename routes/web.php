@@ -7,7 +7,6 @@ use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use App\Http\Controllers\Web\ShopController;
-use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/admin.php';
@@ -65,3 +64,7 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
 
     Route::resource('/post', ProductController::class);
 });
+
+Route::get('/category/{slug}', [ProductController::class, 'filterByCategory'])->name('filter.category');
+Route::get('/category/{categorySlug}/brand/{brandSlug}', [ProductController::class, 'filterByCategoryAndBrand'])->name('filter.category.brand');
+Route::get('/filter-products', [ProductController::class, 'filterProducts'])->name('filterProducts');

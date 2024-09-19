@@ -14,7 +14,7 @@
             <i class="fa-regular fa-comment-dots mr-1"></i>
             Lịch sử chat
         </a>
-        @if(optional(Auth::user()->shop)->status->value === 1)
+        @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
         <a href="{{ route('post.index') }}" class="profile-tab" data-tab="posts">
             <i class="fa-regular fa-file-lines mr-1"></i>
             Quản lý bài đăng
