@@ -18,7 +18,7 @@ class FavoriteService
                 ->whereHas('product', function ($query) {
                     $query->where('status', 1);
                 })
-                ->with('product')
+                ->with(['product.productUnits'])
                 ->paginate($perPage);
 
             return $favorites;

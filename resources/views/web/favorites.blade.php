@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>Đơn hàng</th>
+                    <th class="res-none">Đơn hàng</th>
                     <th>Tên sản phẩm</th>
                     <th>Hình thức</th>
                     <th>Trạng thái</th>
@@ -31,33 +31,40 @@
                                 data-productId="{{ $product->id }}"><i class="fa-regular fa-trash-can"
                                     style="color: #A0A0A0;font-size: 1.25rem"></i></a>
                         </td>
-                        <td class="align-middle">
+                        <td class="align-middle res-none">
                             <img style="height: 90px;" class="profile-user-img img-responsive img-bordered"
                                 src="{{ getImage($product->photo) }}">
                         </td>
                         <td class="align-middle">{{ $product->name }}</td>
-                        <td class="align-middle">{{ $product->type->label() }}</td>
-                        <td class="align-middle">{{ $product->status->label() }}</td>
+                        <td class="align-middle">{{str_replace('hàng', '',  $product->type->label())}}</td>
+                        <td class="align-middle {{  $product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? 'text-success' : '' }}">
+                            {{  $product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}</td>
                         <td class="align-middle">
                             @switch($product->type)
-                                @case(TypeProductEnums::EXCHANGE)
-                                    <a class="buy" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" style="color: white;width: 145px;display:inline-block">Trao đổi
-                                        ngay</a>
-                                @break
+                                        @case(TypeProductEnums::EXCHANGE)
+                                            <a class="buy buy-favorite {{$product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? '' : 'disable-buy' }}"
+                                                href="{{ $product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? route('web.productdetail.index', ['slug' => $product->slug]) : 'javascript:void(0)' }}">
+                                                Trao đổi ngay
+                                            </a>
+                                        @break
 
-                                @case(TypeProductEnums::SECONDHAND)
-                                    <a class="buy" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" style="color: white;width: 145px;display:inline-block">Mua ngay</a>
-                                @break
+                                        @case(TypeProductEnums::SECONDHAND)
+                                            <a class="buy buy-favorite {{$product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? '' : 'disable-buy' }}"
+                                                href="{{ $product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? route('web.productdetail.index', ['slug' => $product->slug]) : 'javascript:void(0)' }}">
+                                                Mua ngay
+                                            </a>
+                                        @break
 
-                                @case(TypeProductEnums::GIVEAWAY)
-                                    <a class="buy" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" style="color: white;width: 145px;display:inline-block">Nhận quà
-                                        ngay</a>
-                                @break
+                                        @case(TypeProductEnums::GIVEAWAY)
+                                            <a class="buy buy-favorite {{$product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? '' : 'disable-buy' }}"
+                                                href="{{ $product->productUnits->count() > 0 && $product->productUnits[0]->quantity > 0 ? route('web.productdetail.index', ['slug' => $product->slug]) : 'javascript:void(0)' }}">
+                                                Nhận quà ngay
+                                            </a>
+                                        @break
 
-                                @default
-                                    <!-- Nội dung mặc định nếu không khớp với các case trên -->
-                                    <span class="badge badge-warning">Unknown Type</span>
-                            @endswitch
+                                        @default
+                                            <span class="badge badge-warning">Unknown Type</span>
+                                    @endswitch
 
                         </td>
                     </tr>

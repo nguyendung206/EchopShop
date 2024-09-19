@@ -40,7 +40,7 @@
                             Đăng ký bán hàng
                         </a>
                         @endif
-                        <a href="#" data-tab="favorites">
+                        <a href="{{route('favoriteProduct')}}" data-tab="favoriteProduct">
                             <i class="fa-regular fa-heart mr-1"></i>
                             Đã thích
                         </a>
