@@ -10,14 +10,9 @@ class Contact extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'status' => Status::class,
-    ];
-
     protected $fillable = [
         'name',
         'email',
         'content',
-        'status',
     ];
 }

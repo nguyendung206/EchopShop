@@ -22,7 +22,7 @@
                         value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
                 </div>
                
-                <div class="col-md-3 text-md-right download" style="padding-left: 3px">
+                <div class="col-md-6 text-md-right download" style="padding-left: 3px">
                     <a href="" type="button"
                         class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
                         <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
@@ -31,25 +31,11 @@
                 </div>
             </div>
             <div class="row gutters-5 mb-3 custom-change">
-                <div class="col-md-3 ">
+                <div class="col-md-6 ">
                     <input type="text" onkeypress='return event.charCode >=48 && event.charCode<=57' autocomplete="off"
                         class="form-control custom-placeholder" name="joined_date" id="joined_date"
                         placeholder="{{ __('Ngày tạo') }}" value="{{ request('joined_date') }}">
                     <div class="custom-down"><i class="fas fa-chevron-down"></i></div>
-                </div>
-                <div class="col-md-3 res-status">
-                    <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500"
-                        id="status" name="status">
-                        <option value="">Trạng thái</option>
-                        <option value="{{ StatusEnums::ACTIVE->value }}" @if (request('status') == StatusEnums::ACTIVE->value) selected @endif>
-                            {{ StatusEnums::ACTIVE->label() }}
-                        </option>
-                        <option value="{{ StatusEnums::INACTIVE->value }}"
-                            @if (request('status') == StatusEnums::INACTIVE->value) selected @endif>
-                            {{ StatusEnums::INACTIVE->label() }}
-                        </option>
-
-                    </select>
                 </div>
                 <div class="col-md-6 d-flex">
                     <button type="submit" class="pl-0 pr-0 btn btn-info w-25 d-flex btn-responsive justify-content-center">
@@ -98,9 +84,8 @@
                     <tr class="text-center">
                         <th class="w-60 font-weight-800">STT</th>
                         <th class="">@lang('Tên người gửi')</th>
-                        <th>@lang('Email')</th>
                         <th>@lang('Nội dung')</th>
-                        <th class="w-140">@lang('Trạng thái')</th>
+                        <th>@lang('Email')</th>
                         <th class="w-150">@lang('Điều chỉnh')</th>
                     </tr>
                 </thead>
@@ -111,31 +96,14 @@
                                 <td class="font-weight-800 align-middle">
                                     {{ $key + 1 + ($contacts->currentPage() - 1) * $contacts->perPage() }}</td>
                                 <td class="font-weight-400 align-middle">{{ strip_tags($contact->name) }}</td>
-                                <td class="font-weight-400 align-middle">{{ strip_tags($contact->email) }}</td>
                                 <td class="font-weight-400 align-middle">{{ strip_tags($contact->content) }}</td>
-                                <td class="font-weight-400 align-middle">
-                                    {{StatusEnums::ACTIVE == $contact->status ? 'Đang hoạt động' : 'Đã xử lý'}}
-                                </td>
+                                <td class="font-weight-400 align-middle">{{ strip_tags($contact->email) }}</td>
+                                
                                 <td class="text-left">
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
                                         href="{{ route('admin.contact.show', $contact->id) }}">
                                         <i class="las la-list"></i>
                                     </a>
-                                    @if ($contact->status == StatusEnums::ACTIVE)
-                                    <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
-                                        data-id="{{ $contact->id }}"
-                                        data-href="{{ route('admin.contact.changeStatus', ['id' => $contact->id]) }}"
-                                        id="active-popup" >
-                                        <i class="las la-ban"></i>
-                                    </a>
-                                    @else
-                                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
-                                            data-id="{{ $contact->id }}"
-                                            data-href="{{ route('admin.contact.changeStatus', ['id' => $contact->id]) }}"
-                                            id="inactive-popup" >
-                                            <i class="las la-check-circle"></i>
-                                        </a>
-                                    @endif
                                     <a href="javascript:void(0)"
                                         data-href="{{ route('admin.contact.destroy', $contact->id) }}"
                                         data-id="{{ $contact->id }}"
@@ -250,41 +218,6 @@
         @endif
         $('input[name="joined_date"]').val('');
 
-        $(document).on('click', '.changeStatus', function() {
-            let id = $(this).attr('data-id');
-            let href = $(this).attr('data-href');
-            console.log(href);
-            
-            Swal.fire({
-                title: '@lang('Trạng thái')',
-                text: '@lang('Bạn muốn thay đổi trạng thái này?')',
-                confirmButtonText: '@lang('Có')',
-                cancelButtonText: '@lang('Không')',
-                showCancelButton: true,
-                showCloseButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "PUT",
-                        url: href,
-                        success: function(response) {
-                            Swal.fire({
-                                title: 'Thông báo!',
-                                text: 'Thay đổi trạng thái thành công!',
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            }).then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(err) {
-                            Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.',
-                                'error');
-                        }
-                    });
-                }
-            });
-        });
 
     </script>
 @endsection

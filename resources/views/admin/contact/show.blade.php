@@ -20,7 +20,6 @@
                                     <h6>
                                         Email: {{$contact->email}}
                                     </h6>
-                                    <p class="text-muted font-weight-bold {{$contact->status == StatusEnums::ACTIVE ? 'text-warning' : 'text-success'}}">{{$contact->status == StatusEnums::ACTIVE ? 'Đang xử lý' : 'Đã xử lý'}}</p>
                                     <hr class="mt-0 mb-4">
                                     <div class="row pt-1">
                                         <div class="col-12 mb-3">
@@ -52,13 +51,11 @@
                                                     @error('content')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
-                                                    {!! $contact->status == StatusEnums::ACTIVE ? "" : "<p class='text-muted'><strong class='text-warning'>Lưu ý: </strong> Bạn đã xử lý tin nhắn này rồi.</p>" !!}
                                             </div>
 
                                         </div>     
                                         <input type="hidden" value="{{$contact->email}}" name="email">
                                         <input type="hidden" value="{{$contact->content}}" name="contentUser">
-                                        <input type="hidden" value="{{$contact->status}}" name="status">
                                         <input type="hidden" value="{{$contact->id}}" name="id">
                                         <div class="d-flex justify-content-end">
                                             <a class="btn btn-secondary" style="color: white;margin-right: 20px;" href="{{route("admin.contact.index")}}">Trở về</a>

@@ -39,7 +39,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/', [ContactController::class, 'index'])->name('index');
         Route::get('/{id}', [ContactController::class, 'show'])->name('show');
         Route::delete('/{id}', [ContactController::class, 'destroy'])->name('destroy');
-        Route::put('/changeStatus/{id}', [ContactController::class, 'changeStatus'])->name('changeStatus');
         Route::post('/sendMail', [ContactController::class, 'sendMail'])->name('sendMail');
     });
     //policy

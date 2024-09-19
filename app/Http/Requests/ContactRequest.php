@@ -25,7 +25,6 @@ class ContactRequest extends FormRequest
     {
 
         $rule = ['name' => ['required', 'max:255'],
-            'status' => ['required', 'in:1,2'],
             'content' => ['required', 'max: 1000'],
             'email' => ['required', 'email'], ];
 
@@ -42,7 +41,6 @@ class ContactRequest extends FormRequest
             'name' => 'Tên người gửi',
             'content' => 'Nội dung',
             'email' => 'email',
-            'status' => 'Trạng thái',
         ];
     }
 }

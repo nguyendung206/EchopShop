@@ -45,8 +45,9 @@ Chính sách
                         <img src="{{asset('img/image/sms-contact-us.png')}}" alt="" class="icon-sms-input">
                         <input type="text" placeholder="Nhập địa chỉ Email*" class="input-sms" name="email">
                     </div>
-                    <input type="hidden" name="status" value="{{StatusEnums::ACTIVE}}">
-                    <textarea type="text wrap-input-content" placeholder="Nhập nội dung tin nhắn" class="input-content" name="content"></textarea>
+                    <div class="wrap-input-content">
+                        <textarea type="text " placeholder="Nhập nội dung tin nhắn" class="input-content" name="content"></textarea>
+                    </div>
                     <div  class="text-right wrap-button">
                         <a href="{{route('home')}}" class="all button-cancel">Huỷ</a>
                         <button class="buy button-send" type="submit">Gửi</button>
@@ -77,15 +78,14 @@ $(document).ready(function() {
                     },
                     error: function(xhr) {
                         $('.error-message').remove();
-                        if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.hasOwnProperty('name')) {
-                            $('.wrap-input-name').after('<div class="error-message text-danger mt-3">' + xhr.responseJSON.errors.name[0] + '</div>');
-                        } 
-                        if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.hasOwnProperty('content')) {
-                            $('textarea[name="content"]').after('<div class="error-message text-danger mt-3">' + xhr.responseJSON.errors.content[0] + '</div>');
-                        } 
-                        if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.hasOwnProperty('email')) {
-                            $('.wrap-input-email').after('<div class="error-message text-danger mt-3">' + xhr.responseJSON.errors.email[0] + '</div>');
-                        } 
+                        function showError(inputClass, fielName) {
+                            if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.hasOwnProperty(fielName)) {
+                                $(inputClass).after('<div class="error-message text-danger mt-3">' + xhr.responseJSON.errors[fielName][0] + '</div>');
+                            }
+                        }
+                        showError('.wrap-input-name', 'name');
+                        showError('.wrap-input-content', 'content');
+                        showError('.wrap-input-email', 'email');
                         toastr.error('Đã xảy ra lỗi, vui lòng thử lại.', null, { positionClass: 'toast-bottom-left' });
                     }
                 });

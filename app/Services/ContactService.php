@@ -39,7 +39,6 @@ class ContactService
             'name' => $request->name,
             'email' => $request->email,
             'content' => $request->content,
-            'status' => Status::ACTIVE->value,
         ];
 
         return Contact::create($contactData);

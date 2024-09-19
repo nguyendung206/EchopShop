@@ -38,11 +38,6 @@ class ContactController extends Controller
     {
         try {
             Mail::to($request->email)->send(new ContactMail($request->content, $request->contentUser));
-            if ($request->status == Status::ACTIVE->value) {
-                $contact = Contact::findOrFail($request->id);
-                $contact->status = Status::INACTIVE;
-                $contact->save();
-            }
             flash('Đã gửi tin nhắn đến mail của người dùng')->success();
 
             return back();
@@ -68,22 +63,4 @@ class ContactController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, $id)
-    {
-        try {
-            $contact = Contact::findOrFail($id);
-            $this->statusService->changeStatus($contact);
-            flash('Thay đổi trạng thái thành công!')->success();
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Sửa thông tin thành công.',
-            ], 200);
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Sửa thông tin thất bại.',
-            ], 500);
-        }
-    }
 }
