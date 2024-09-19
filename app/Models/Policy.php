@@ -10,14 +10,17 @@ use Illuminate\Database\Eloquent\Model;
 class Policy extends Model
 {
     use HasFactory;
+
     protected $table = 'policies';
+
     protected $casts = [
         'status' => Status::class,
-        'type' => TypePolicy::class
+        'type' => TypePolicy::class,
     ];
+
     protected $fillable = [
         'description',
         'status',
-        'type'
+        'type',
     ];
 }

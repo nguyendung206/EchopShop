@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Enums\TypeProduct;
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Partner;
-use App\Models\Policy;
 use App\Models\Product;
 use App\Models\Province;
 use App\Services\HomeService;
@@ -74,10 +72,6 @@ class HomeController extends Controller
                 $viewDefault = 'web.product.giveawayProduct';
                 $viewList = 'web.product.listGiveawayProduct';
                 break;
-            case stripos($currentUrl, 'favorite') !== false:
-                $viewDefault = 'web.product.favoriteProduct';
-                $viewList = 'web.product.listFavoriteProduct';
-                break;
             default:
                 break;
         }
@@ -87,6 +81,7 @@ class HomeController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'productHtml' => view($viewList, compact('products'))->render(),
+                'hasMorePages' => $product->hasMorePages(),
             ]);
         }
 

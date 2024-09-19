@@ -24,7 +24,7 @@ class ProfileUserController extends Controller
         $user = User::where('id', $id)->first();
         $provinces = Province::all();
 
-        $favorites = $this->favoriteService->getProduct(8);
+        $favorites = $this->favoriteService->getProduct(9);
         if ($request->ajax() || $request->wantsJson()) {
             $productHtml = view('web.moreFavorite', compact('favorites'))->render();
             $hasMorePage = ! $favorites->hasMorePages();

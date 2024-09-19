@@ -1,17 +1,40 @@
-@forelse($products as $favorite)
-        @php
-            $product = $favorite->product;
-        @endphp
-    <div class="col-lg-4 product-item col-6 text-center py-3">
-        <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-        <a href="#" class='product-heart favorite-active' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-solid fa-heart fa-heart-home"></i></a>
-        <p class="product-name pt-2">{{$product->name}}</p>
-        <p class="price color-B10000 pt-2">{{$product->price}} đ</p>
-        <br>
-        <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="buy">Mua ngay</a>
-    </div>
-    @empty
-                <div class="text-center w-100 py-5">
-                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-                </div>
-@endforelse
+@foreach($favorites as $favorite)
+    @php
+        $product = $favorite->product;
+    @endphp
+    <tr class="post-item" id="product-{{ $product->id }}">
+        <td class="align-middle">
+            <a href="#" class='product-trash favorite-active'
+                data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
+                data-productId="{{ $product->id }}"><i class="fa-regular fa-trash-can"
+                    style="color: #A0A0A0;font-size: 1.25rem"></i></a>
+        </td>
+        <td class="align-middle">
+            <img style="height: 90px;" class="profile-user-img img-responsive img-bordered"
+                src="{{ getImage($product->photo) }}">
+        </td>
+        <td class="align-middle">{{ $product->name }}</td>
+        <td class="align-middle">{{ $product->type->label() }}</td>
+        <td class="align-middle">{{ $product->status->label() }}</td>
+        <td class="align-middle">
+            @switch($product->type)
+                @case(TypeProductEnums::EXCHANGE)
+                    <a class="buy" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" style="color: white;">Trao đổi ngay</a>
+                @break
+
+                @case(TypeProductEnums::SECONDHAND)
+                    <a class="buy" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" style="color: white;">Mua ngay</a>
+                @break
+
+                @case(TypeProductEnums::GIVEAWAY)
+                    <a class="buy" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" style="color: white;">Nhận quà ngay</a>
+                @break
+
+                @default
+                    <!-- Nội dung mặc định nếu không khớp với các case trên -->
+                    <span class="badge badge-warning">Unknown Type</span>
+            @endswitch
+
+        </td>
+    </tr>
+@endforeach

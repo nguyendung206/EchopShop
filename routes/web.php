@@ -3,10 +3,10 @@
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use App\Http\Controllers\Web\ShopController;
-use App\Http\Controllers\Web\PolicyController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/admin.php';
@@ -15,7 +15,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name('exchangeProduct');
 Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
 Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
-Route::get('/favoriteProduct', [HomeController::class, 'filterProducts'])->name('favoriteProduct');
+Route::get('/favoriteProduct', [FavoriteController::class, 'index'])->name('favoriteProduct');
 
 Route::get('/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/login', [AuthController::class, 'login'])->name('web.authentication');
@@ -35,7 +35,7 @@ Route::prefix('/product-detail')->group(function () {
     Route::get('/{slug}', [ProductController::class, 'show'])->name('web.productdetail.index');
 });
 
-Route::prefix('/policy')->name('policy.')->group(function() {
+Route::prefix('/policy')->name('policy.')->group(function () {
     Route::get('/security', [PolicyController::class, 'getPolicy'])->name('security');
     Route::get('/term', [PolicyController::class, 'getPolicy'])->name('term');
     Route::get('/prohibited', [PolicyController::class, 'getPolicy'])->name('prohibited');
