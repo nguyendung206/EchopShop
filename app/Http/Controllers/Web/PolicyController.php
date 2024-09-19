@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Policy;
 use App\Services\PolicyService;
+use Illuminate\Http\Request;
 
 class PolicyController extends Controller
 {
@@ -16,8 +15,10 @@ class PolicyController extends Controller
         $this->policyService = $policyService;
     }
 
-    public function getPolicy(Request $request) {
-            $policies = $this->policyService->getPolicyHome($request);
-            return view('web.policy.policy', compact('policies'));
+    public function getPolicy(Request $request)
+    {
+        $policies = $this->policyService->getPolicyHome($request);
+
+        return view('web.policy.policy', compact('policies'));
     }
 }

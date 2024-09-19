@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Policy;
-use App\Enums\TypePolicy;
 use App\Enums\Status;
-
+use App\Enums\TypePolicy;
+use App\Models\Policy;
 use Exception;
 
 class PolicyService
@@ -28,7 +27,7 @@ class PolicyService
         $policyData = [
             'description' => $request->description,
             'status' => $request->status,
-            'type' => $request->type
+            'type' => $request->type,
         ];
 
         return Policy::create($policyData);
@@ -41,7 +40,7 @@ class PolicyService
         $policyData = [
             'description' => $request->description,
             'status' => $request->status,
-            'type' => $request->type
+            'type' => $request->type,
         ];
         $policy->update($policyData);
 
@@ -60,30 +59,32 @@ class PolicyService
         }
     }
 
-    public function getPolicyHome($request) {
+    public function getPolicyHome($request)
+    {
         $type = null;
-            $currentUrl = $request->url();
-            switch (true) {
-                case stripos($currentUrl, 'security') !== false:
-                    $type = TypePolicy::SECURITY;
-                    break;
-                case stripos($currentUrl, 'term') !== false:
-                    $type = TypePolicy::TERM;
-                    break;
-                case stripos($currentUrl, 'prohibited') !== false:
-                    $type = TypePolicy::PROHIBITED;
-                    break;
-                case stripos($currentUrl, 'communicate') !== false:
-                    $type = TypePolicy::COMMUNICATE;
-                    break;
-                case stripos($currentUrl, 'safeToUse') !== false:
-                    $type = TypePolicy::SAFETOUSE;
-                    break;
-                default:
-                    break;
-            }
-    
-            $policies = Policy::query()->where('status', Status::ACTIVE)->where('type', $type)->get();
-            return $policies;
+        $currentUrl = $request->url();
+        switch (true) {
+            case stripos($currentUrl, 'security') !== false:
+                $type = TypePolicy::SECURITY;
+                break;
+            case stripos($currentUrl, 'term') !== false:
+                $type = TypePolicy::TERM;
+                break;
+            case stripos($currentUrl, 'prohibited') !== false:
+                $type = TypePolicy::PROHIBITED;
+                break;
+            case stripos($currentUrl, 'communicate') !== false:
+                $type = TypePolicy::COMMUNICATE;
+                break;
+            case stripos($currentUrl, 'safeToUse') !== false:
+                $type = TypePolicy::SAFETOUSE;
+                break;
+            default:
+                break;
+        }
+
+        $policies = Policy::query()->where('status', Status::ACTIVE)->where('type', $type)->get();
+
+        return $policies;
     }
 }
