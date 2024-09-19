@@ -144,4 +144,9 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
         }
     }
+
+    public function filterProduct(Request $request)
+    {
+        return view('web.product.product');
+    }
 }

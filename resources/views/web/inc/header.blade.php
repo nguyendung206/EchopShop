@@ -104,13 +104,13 @@
 
 
                             <li class="">
-                                <a href="#">Trao đổi hàng hóa</a>
+                                <a href="{{route('exchangeProduct')}}">Trao đổi hàng hóa</a>
                             </li>
                             <li class="">
-                                <a href="#">Mua bán đồ sencondhand</a>
+                                <a href="{{route('secondhandProduct')}}">Mua bán đồ sencondhand</a>
                             </li>
                             <li class="">
-                                <a href="#">Hàng cũ đem tặng</a>
+                                <a href="{{route('giveawayProduct')}}">Hàng cũ đem tặng</a>
                             </li>
                         </ul>
                     </div>

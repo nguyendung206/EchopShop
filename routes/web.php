@@ -7,6 +7,7 @@ use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use App\Http\Controllers\Web\ShopController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/admin.php';
@@ -42,6 +43,8 @@ Route::prefix('/policy')->name('policy.')->group(function () {
     Route::get('/communicate', [PolicyController::class, 'getPolicy'])->name('communicate');
     Route::get('/safeToUse', [PolicyController::class, 'getPolicy'])->name('safeToUse');
 });
+Route::get('/product', [ProductController::class, 'filterProduct'])->name('product');
+
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 
