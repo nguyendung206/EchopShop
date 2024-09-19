@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ProductController;
@@ -33,7 +34,13 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/save', [ProfileController::class, 'update'])->name('profile.save');
     });
-
+    //contact
+    Route::prefix('contact')->name('contact.')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->name('index');
+        Route::get('/{id}', [ContactController::class, 'show'])->name('show');
+        Route::delete('/{id}', [ContactController::class, 'destroy'])->name('destroy');
+        Route::post('/sendMail', [ContactController::class, 'sendMail'])->name('sendMail');
+    });
     //policy
     Route::resource('/policy', PolicyController::class);
     Route::put('policy/changeStatus/{id}', [PolicyController::class, 'changeStatus'])->name('policy.changeStatus');

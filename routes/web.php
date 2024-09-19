@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\PolicyController;
@@ -33,6 +34,11 @@ Route::post('/resetPassword/{token}', [AuthController::class, 'handleResetPasswo
 
 Route::prefix('/product-detail')->group(function () {
     Route::get('/{slug}', [ProductController::class, 'show'])->name('web.productdetail.index');
+});
+
+Route::prefix('/about')->name('about.')->group(function () {
+    Route::get('/contactUs', [ContactController::class, 'create'])->name('contactUs');
+    Route::post('/contactUs', [ContactController::class, 'store'])->name('contactUs');
 });
 
 Route::prefix('/policy')->name('policy.')->group(function () {

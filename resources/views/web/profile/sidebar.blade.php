@@ -14,7 +14,7 @@
             <i class="fa-regular fa-comment-dots mr-1"></i>
             Lịch sử chat
         </a>
-        {{-- @if(optional(Auth::user()->shop)->status->value === 1)
+        @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
         <a href="#" class="profile-tab" data-tab="posts">
             <i class="fa-regular fa-file-lines mr-1"></i>
             Quản lý bài đăng
@@ -24,7 +24,7 @@
             <i class="fa-solid fa-store"></i>
             Đăng ký bán hàng
         </a>
-        @endif --}}
+        @endif
         <a href="#" class="profile-tab" data-tab="favorites">
             <i class="fa-regular fa-heart mr-1"></i>
             Đã thích

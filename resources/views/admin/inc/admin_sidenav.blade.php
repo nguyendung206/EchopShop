@@ -94,6 +94,13 @@
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
+                    <a href="{{ route('admin.contact.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['admin.contact.index']) }}">
+                        <i class="las la-tools aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Liên hệ</span>
+                    </a>
+                </li>
+                <li class="aiz-side-nav-item">
                     <a href="#" class="aiz-side-nav-link">
                         <i class="las la-newspaper aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">Chính sách</span>

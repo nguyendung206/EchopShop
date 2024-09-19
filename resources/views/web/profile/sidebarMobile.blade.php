@@ -29,14 +29,17 @@
                             <i class="fa-regular fa-comment-dots mr-1"></i>
                             Lịch sử chat
                         </a>
-                        <a href="#" data-tab="posts">
+                        @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
+                        <a href="#" class="profile-tab" data-tab="posts">
                             <i class="fa-regular fa-file-lines mr-1"></i>
                             Quản lý bài đăng
                         </a>
-                        <a href="{{route('web.registershop.create')}}" data-tab="shop">
+                        @else
+                        <a href="{{route('web.registershop.create')}}" class="profile-tab" data-tab="shop">
                             <i class="fa-solid fa-store"></i>
                             Đăng ký bán hàng
                         </a>
+                        @endif
                         <a href="#" data-tab="favorites">
                             <i class="fa-regular fa-heart mr-1"></i>
                             Đã thích
