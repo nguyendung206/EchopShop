@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
 use App\Mail\ContactMail;
@@ -62,5 +61,4 @@ class ContactController extends Controller
             flash('Đã xảy ra lỗi khi xóa Banner!')->error();
         }
     }
-
 }

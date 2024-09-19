@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\Status;
 use App\Models\Contact;
 use Exception;
 
