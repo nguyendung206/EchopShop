@@ -280,7 +280,6 @@
         $(document).on('click', '.changeStatus', function() {
             let id = $(this).attr('data-id');
             let href = $(this).attr('data-href');
-            console.log(href);
             
             Swal.fire({
                 title: '@lang('Trạng thái')',

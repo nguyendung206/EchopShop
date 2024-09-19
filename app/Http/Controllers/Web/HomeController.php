@@ -72,10 +72,6 @@ class HomeController extends Controller
                 $viewDefault = 'web.product.giveawayProduct';
                 $viewList = 'web.product.listGiveawayProduct';
                 break;
-            case stripos($currentUrl, 'favorite') !== false:
-                $viewDefault = 'web.product.favoriteProduct';
-                $viewList = 'web.product.listFavoriteProduct';
-                break;
             default:
                 break;
         }
@@ -85,6 +81,7 @@ class HomeController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'productHtml' => view($viewList, compact('products'))->render(),
+                'hasMorePages' => $product->hasMorePages(),
             ]);
         }
 

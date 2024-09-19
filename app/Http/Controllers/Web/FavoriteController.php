@@ -15,9 +15,17 @@ class FavoriteController extends Controller
         $this->favoriteService = $favoriteService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $favorites = $this->favoriteService->getProduct(9);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'productHtml' => view('web.product.listFavoriteProduct', compact('favorites'))->render(),
+                'hasMorePages' => $favorites->hasMorePages(),
+            ]);
+        }
+
+        return view('web.product.favoriteProduct', compact('favorites'));
     }
 
     public function store(Request $request)
@@ -39,39 +47,6 @@ class FavoriteController extends Controller
 
     }
 
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $result = $this->favoriteService->destroy($id);

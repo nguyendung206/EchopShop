@@ -98,7 +98,7 @@ HOME
             </div>
             @if($secondhandProducts->isNotEmpty())
             <div class="text-center py-5 divMoreSecondhand">
-                @if($secondhandProducts->count() >= 8)
+                @if($secondhandProducts->count() >= 8 && $secondhandProducts->hasMorePages())
                 <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
                 <a class="all color-B10000" href="{{route("secondhandProduct")}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
@@ -159,7 +159,7 @@ HOME
             </div>
             @if($exchangeProducts->isNotEmpty())
             <div class="text-center py-5 divMoreExchange">
-                @if($exchangeProducts->count() >= 8)
+                @if($exchangeProducts->count() >= 8 && $exchangeProducts->hasMorePages())
                 <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i class="fa-solid fa-angles-down"></i></a>
                 @endif
                 <a class="all color-B10000" href="{{route('exchangeProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
@@ -289,7 +289,6 @@ HOME
                     $('.secondhand-list').append(response.products);
                     if (response.hasMorePage) {
                         $('#btnMoreSecondhand').hide();
-                        $('.end-of-products-secondhand').show();
                     }
                 },
                 error: function(xhr, status, error) {
@@ -314,7 +313,6 @@ HOME
                     $('.exchange-list').append(response.products);
                     if (response.hasMorePage) {
                         $('#btnMoreExchange').hide();
-                        $('.end-of-products-exchange').show();
                     }
                 },
                 error: function(xhr, status, error) {
