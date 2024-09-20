@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\DiscountRequest;
-use App\Services\DiscountService;
 use App\Models\Discount;
+use App\Services\DiscountService;
+use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {
-    
     protected $discountService;
 
     public function __construct(DiscountService $discountService)
@@ -36,9 +35,11 @@ class DiscountController extends Controller
         try {
             $this->discountService->store($request);
             flash('Thêm giảm giá thành công')->success();
+
             return redirect()->route('admin.discount.index');
         } catch (Exception $e) {
             flash('Thêm giảm giá thất bại')->error();
+
             return redirect()->route('admin.discount.create');
         }
     }
@@ -46,12 +47,14 @@ class DiscountController extends Controller
     public function show($id)
     {
         $discount = Discount::findOrFail($id);
+
         return view('admin.discount.show', compact('discount'));
     }
 
     public function edit($id)
     {
         $discount = Discount::findOrFail($id);
+
         return view('admin.discount.edit', compact('discount'));
     }
 

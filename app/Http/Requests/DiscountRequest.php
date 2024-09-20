@@ -34,6 +34,7 @@ class DiscountRequest extends FormRequest
             'maxUses' => 'required|numeric|min:0',
             'limitUses' => 'required|numeric|min:0',
         ];
+
         return $rules;
     }
 
@@ -44,7 +45,7 @@ class DiscountRequest extends FormRequest
                 $validator->errors()->add('limitUses', 'Số lượt dùng của mỗi người phải nhỏ hơn hoặc bằng với số lượng mã');
             }
         });
-    }                                                       
+    }
 
     public function attributes()
     {

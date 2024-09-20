@@ -14,9 +14,9 @@ class DiscountService
             $query->where('title', 'like', '%'.$request->search.'%');
         }
         if (isset($request->status)) {
-            if($request->status == 1) {
+            if ($request->status == 1) {
                 $query->where('end_date', '>=', now());
-            }else {
+            } else {
                 $query->where('end_date', '<', now());
             }
         }
@@ -39,8 +39,9 @@ class DiscountService
                 'limit_uses' => $request->limitUses,
             ];
             $discount = Discount::create($discountData);
+
             return $discount;
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             return $e;
         }
 
@@ -70,6 +71,7 @@ class DiscountService
         try {
             $discount = Discount::findOrFail($id);
             $check = $discount->delete();
+
             return $check;
         } catch (Exception $e) {
             return false;

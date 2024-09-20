@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\TypeDiscount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\TypeDiscount;
 
 class Discount extends Model
 {
