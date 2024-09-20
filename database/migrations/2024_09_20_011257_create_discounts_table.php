@@ -20,10 +20,12 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->tinyInteger('type');
             $table->float('value')->default(0);
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->float('max_value')->default(0);
+            $table->string('photo')->nullable();
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
             $table->integer('max_uses')->default(0);
-            $table->integer('current_uses')->default(0);
+            $table->integer('quantity_used')->default(0);
             $table->integer('limit_uses')->default(0);
             $table->timestamps();
         });

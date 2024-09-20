@@ -17,7 +17,7 @@
                 <h5 class="mb-0 h6">Sửa Giảm giá</h5>
             </div>
             <div class="card-body">
-                <form action="{{route('admin.discount.update', $discount->id)}}" method="POST">
+                <form action="{{route('admin.discount.update', $discount->id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="form-group row">
@@ -59,6 +59,16 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Giá trị Tối đa<span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="Giá trị" name="maxValue" class="form-control @error('maxValue') is-invalid @enderror" value="{{ old('maxValue') ? old('maxValue') : $discount->max_value }}">
+                            @error('maxValue')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Kiểu giảm giá</label>
@@ -80,9 +90,9 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Ngày bắt đầu<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="date" placeholder="Ngày bắt đầu" name="startDate" class="form-control
-                            @error('startDate') is-invalid  @enderror" value="{{ old('startDate') ? old('startDate') : date('Y-m-d', strtotime(optional($discount)->start_date)) }}">
-                            @error('startDate')
+                            <input type="datetime-local" placeholder="Ngày bắt đầu" name="startTime" class="form-control
+                            @error('startTime') is-invalid  @enderror" value="{{ old('startTime') ? old('startTime') : date('Y-m-d\TH:i', strtotime(optional($discount)->start_date)) }}">
+                            @error('startTime')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -91,9 +101,9 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Ngày kết thúc<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="date" placeholder="Ngày kết thúc" name="endDate" class="form-control
-                            @error('endDate') is-invalid  @enderror" value="{{ old('endDate') ? old('endDate') : date('Y-m-d', strtotime(optional($discount)->end_date)) }}">
-                            @error('endDate')
+                            <input type="datetime-local" placeholder="Ngày kết thúc" name="endTime" class="form-control
+                            @error('endTime') is-invalid  @enderror" value="{{ old('endTime') ? old('endTime') : date('Y-m-d\TH:i', strtotime(optional($discount)->end_date)) }}">
+                            @error('endTime')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -115,6 +125,19 @@
                             <input type="number" placeholder="Số lần dùng mỗi người" name="limitUses" class="form-control @error('limitUses') is-invalid @enderror" value="{{ old('limitUses') ? old('limitUses') : $discount->limit_uses }}">
                             @error('limitUses')
                             <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Ảnh<span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-9">
+                            <input type="hidden" name="old_photo" value="{{ old('old_photo') }}" />
+                            <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)" />
+                            <img id="photo_preview" src="{{ old('old_photo') ? getImage(old('old_photo')) : getImage($discount->photo) }}" class="img img-bordered mt-4" style="width:200px" />
+
+                            @error('photo')
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>

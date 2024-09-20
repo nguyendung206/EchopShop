@@ -33,10 +33,12 @@ class DiscountService
                 'code' => $request->code,
                 'type' => $request->type,
                 'value' => $request->value,
-                'start_date' => $request->startDate,
-                'end_date' => $request->endDate,
+                'max_value' => $request->maxValue,
+                'start_time' => $request->startTime,
+                'end_time' => $request->endTime,
                 'max_uses' => $request->maxUses,
                 'limit_uses' => $request->limitUses,
+                'photo' => uploadImage($request->file('photo'), 'upload/discounts/', 'nodiscount.png'),
             ];
             $discount = Discount::create($discountData);
 
@@ -50,18 +52,25 @@ class DiscountService
     public function update($request, $id)
     {
         $discount = Discount::findOrFail($id);
+        $photo = $discount->photo;
         $discountData = [
             'title' => $request->title,
             'description' => $request->description,
             'code' => $request->code,
             'type' => $request->type,
             'value' => $request->value,
-            'start_date' => $request->startDate,
-            'end_date' => $request->endDate,
+            'max_value' => $request->maxValue,
+            'start_time' => $request->startTime,
+            'end_time' => $request->endTime,
             'max_uses' => $request->maxUses,
             'limit_uses' => $request->limitUses,
+            'photo' => uploadImage($request->file('photo'), 'upload/discounts/', 'nodiscount.png'),
         ];
         $discount->update($discountData);
+        if ($request->file('photo')) {
+            deleteImage($photo, 'nodiscount.png');
+
+        }
 
         return $discount;
     }
@@ -71,6 +80,9 @@ class DiscountService
         try {
             $discount = Discount::findOrFail($id);
             $check = $discount->delete();
+            if ($check) {
+                deleteImage($discount->photo, 'nodiscount.png');
+            }
 
             return $check;
         } catch (Exception $e) {

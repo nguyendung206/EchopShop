@@ -107,6 +107,7 @@
                 <thead>
                     <tr class="text-center">
                         <th class="w-60 font-weight-800">STT</th>
+                        <th class="">@lang('Ảnh giảm giá')</th>
                         <th class="w-25">@lang('Tiêu đề')</th>
                         <th class="">@lang('Mã giảm giá')</th>
                         <th class="">@lang('Giá trị giảm')</th>
@@ -121,6 +122,10 @@
                             <tr class="text-center">
                                 <td class="font-weight-800 align-middle">
                                     {{ $key + 1 + ($discounts->currentPage() - 1) * $discounts->perPage() }}</td>
+                                <td class="font-weight-400 align-middle">
+                                        <img style="height: 90px;" class="profile-user-img img-responsive img-bordered"
+                                        src="{{ getImage($discount->photo) }}">
+                                </td>
                                 <td class="font-weight-400 align-middle text-overflow">{{ optional($discount)->title }}</td>
                                 <td class="font-weight-400 align-middle">{{ $discount->code }}</td>
 
@@ -134,8 +139,8 @@
                                 </td>
 
 
-                                <td>{{ $discount->start_date }}</td>
-                                <td>{{ $discount->end_date }}</td>
+                                <td>{{ $discount->start_time }}</td>
+                                <td>{{ $discount->end_time }}</td>
                                 <td class="text-left">
                                     
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"

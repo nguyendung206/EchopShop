@@ -16,10 +16,12 @@ class Discount extends Model
         'code',
         'type',
         'value',
-        'start_date',
-        'end_date',
+        'max_value',
+        'start_time',
+        'end_time',
         'max_uses',
-        'current_uses',
+        'photo',
+        'quantity_used',
         'limit_uses',
     ];
 
