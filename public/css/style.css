@@ -29,7 +29,11 @@ a:hover {
 }
 
 .topheader {
-    background-color: #FFF5BC;
+    background-color: #FF7A00;
+}
+
+.topheader a {
+    font-size: 12px;
 }
 
 .logo-vietnam {
@@ -37,18 +41,82 @@ a:hover {
     margin-right: 8px;
 }
 
-.language {
+.mainheader {
+    background-color: #FFDD15;
+}
+
+.mainheader .fa-heart {
+    color: #232323;
+    font-size: 20px;
+}
+
+.input-group-text {
+    background-color: #fff;
+    color: #FF7A00;
+    border-right: none;
+    font-size: 14px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.w-120px {
+    max-width: 120px;
+    border-radius: 0;
+    border-left: none;
+}
+
+.border-l-r-none {
+    border-left: none;
+    border-right: none;
+}
+
+.forcus-none:focus {
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
+.btn-search {
+    background-color: #FF7A00;
+    color: #fff;
+    border-radius: 10px;
+}
+
+.search-header-btn {
     display: flex;
+    position: absolute;
+    right: 10px;
+    top: 1px;
+}
+
+.search i {
+    font-size: 20px;
+    color: #232323;
+}
+
+.about-me {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+}
+
+.category {
+    padding: 20px 180px;
+}
+
+.category a {
+    font-size: 16px;
+    color: #606060;
+}
+
+.divider {
+    border-left: 2px solid #000;
+    height: 20px;
+    width: 0;
 }
 
 .about {
     display: flex;
     justify-content: end;
     align-items: center;
-}
-
-.logo {
-    width: 100%;
 }
 
 .avt {
@@ -75,8 +143,8 @@ a:hover {
 }
 
 .dropdown-img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     margin-right: 8px;
     margin-left: 12px;
 }
@@ -88,11 +156,25 @@ a:hover {
     justify-content: space-between;
 }
 
+.dropdown-item:hover {
+    background-color: #EBEBEB;
+    color: #FF7A00;
+}
+
+.dropdown-item:hover .dropdown-submenu>a::after {
+    color: #FF7A00;
+}
+
 .btn-post a {
-    background-color: #B10000;
-    border: 1px solid #B10000;
+    background-color: #FF0000;
+    border: 1px solid #FF0000;
     color: #fff;
-    padding: 4px 12px;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.color-232323 {
+    color: #232323;
 }
 
 .menu a:hover {
@@ -519,22 +601,25 @@ a:hover {
     display: block;
     color: #535353;
 }
+
 .drop-user-item:hover {
     color: #B10000;
     background-color: #FFF5BC;
 }
+
 .drop-user-item i {
     margin-right: 20px;
     color: #B10000;
     width: 16px;
 }
+
 .dropdown-item-custom {
     margin: 6px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: .25rem 1.5rem;
+    padding: .75rem 1.5rem;
 }
 
 .dropdown-item-active:active {
@@ -544,43 +629,61 @@ a:hover {
 
 
 .information-us {
-    color: white;background-color: #B10000;padding: 64px 60px; display: flex;flex-direction: column;justify-content:center;
+    color: white;
+    background-color: #B10000;
+    padding: 64px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
 .title-us {
-    margin-bottom: 20px;font-size: 28px;font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 600;
 }
+
 .content-us {
-    display: flex; align-items: center;
+    display: flex;
+    align-items: center;
 }
+
 .content-us img {
     margin-right: 12px;
 }
+
 .content-us span {
     font-size: 24px;
     line-height: 28.13px;
     font-weight: 300;
 }
+
 .wrap-us {
     margin-bottom: 60px;
 }
+
 .information-input {
     box-sizing: border-box;
     padding-left: 60px;
 }
+
 .wrap-input {
     position: relative;
 
 }
+
 .icon-user-input {
-    position:absolute;
+    position: absolute;
     top: 52%;
-    left:22px;
+    left: 22px;
 }
+
 .icon-sms-input {
-    position:absolute;
+    position: absolute;
     top: 45%;
-    left:22px;
+    left: 22px;
 }
+
 .input-user {
     width: 100%;
     margin-top: 33px;
@@ -588,6 +691,7 @@ a:hover {
     padding: 19px 0px 19px 65px;
     color: #5a5a5a;
 }
+
 .input-sms {
     width: 100%;
     margin-top: 20px;
@@ -595,6 +699,7 @@ a:hover {
     padding: 19px 0px 19px 65px;
     color: #5a5a5a;
 }
+
 .input-content {
     width: 100%;
     margin-top: 20px;
@@ -603,21 +708,24 @@ a:hover {
     color: #5a5a5a;
     min-height: 210px;
 }
+
 .button-cancel {
     padding: 14px 34px;
-    margin-right:20px;
-    font-size:26px;
+    margin-right: 20px;
+    font-size: 26px;
     font-weight: 500;
 }
+
 .button-send {
     padding: 14px 34px;
-    font-size:26px;
+    font-size: 26px;
     font-weight: 500;
     line-height: inherit;
 }
+
 .wrap-button {
     margin-top: 30px;
-      margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .buy-favorite {
@@ -627,6 +735,7 @@ a:hover {
     border: none;
 
 }
+
 .disable-buy {
     pointer-events: none;
     background-color: grey;
@@ -635,10 +744,11 @@ a:hover {
 
 
 @media (min-width: 320px) and (max-width: 768px) {
-    
+
     .topheader {
         font-size: 12px;
     }
+
     .information-input {
         padding-left: 0px;
     }
@@ -720,7 +830,7 @@ a:hover {
         font-size: 22px;
     }
 
-    .menu {
+    .category {
         display: none;
     }
 
@@ -856,6 +966,22 @@ a:hover {
         width: 30%;
         margin-top: 2px;
     }
+
+    .d-n {
+        display: none;
+    }
+
+    .btn-search {
+        font-size: 12px;
+    }
+
+    .w-120px {
+        font-size: 12px;
+    }
+
+    .border-l-r-none {
+        font-size: 12px;
+    }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
@@ -863,9 +989,11 @@ a:hover {
     .product-img {
         height: 250px;
     }
+
     .information-input {
         padding-left: 0px;
     }
+
     .logo {
         width: 35%;
     }
@@ -953,8 +1081,33 @@ a:hover {
         /* padding: 1rem 0 0 16rem; */
     }
 
-    .menu {
+    /* .menu {
         display: none;
+    } */
+
+    .btn-post a {
+        padding: 4px 8px;
+        font-size: 14px;
+    }
+
+    .btn-search {
+        font-size: 14px;
+    }
+
+    .w-120px {
+        font-size: 14px;
+    }
+
+    .d-n {
+        display: none;
+    }
+
+    .search i {
+        font-size: 16px;
+    }
+
+    .border-l-r-none {
+        font-size: 14px;
     }
 
     .menu-bars {
@@ -986,8 +1139,13 @@ a:hover {
     }
 
     .category-img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .category-name {
+        font-size: 14px;
+        line-height: 16px;
     }
 
     .gift-img {
@@ -1009,9 +1167,28 @@ a:hover {
         font-size: 12px;
         padding: 6px 12px;
     }
+
+    .header-name {
+        display: none;
+    }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
+    .category-img {
+        width: 80px;
+        height: 80px;
+    }
+
+
+    .category-name {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .header-name {
+        display: none;
+    }
+
     .app-heading {
         font-size: 24px;
     }
@@ -1037,6 +1214,20 @@ a:hover {
     .menu a {
         font-size: 14px;
     }
+
+    .category {
+        padding: 20px 38px;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1337px) {
+    .header-name {
+        display: none;
+    }
+
+    .category {
+        padding: 20px 150px;
+    }
 }
 
 .dropdown-submenu {
@@ -1044,10 +1235,8 @@ a:hover {
 }
 
 .dropdown-submenu>.dropdown-menu {
-    top: 0;
+    top: -10px;
     left: 100%;
-    margin-top: -6px;
-    margin-left: -1px;
     -webkit-border-radius: 0 6px 6px 6px;
     -moz-border-radius: 0 6px 6px;
     border-radius: 0 6px 6px 6px;
@@ -1057,7 +1246,7 @@ a:hover {
     display: block;
 }
 
-.dropdown-submenu>a:after {
+/* .dropdown-submenu>a:after {
     display: block;
     content: " ";
     float: right;
@@ -1068,8 +1257,7 @@ a:hover {
     border-width: 5px 0 5px 5px;
     border-left-color: #ccc;
     margin-top: 5px;
-    margin-right: -10px;
-}
+} */
 
 .dropdown-submenu:hover>a:after {
     border-left-color: #fff;
@@ -1086,10 +1274,8 @@ a:hover {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
-.dropdown-item-custom {
-    padding: 0;
-}
-.dropdown-item-custom img{
+
+.dropdown-item-custom img {
     margin: 0;
 }
 
@@ -1102,14 +1288,19 @@ a:hover {
     background-color: #fff !important;
     color: #B10000;
 }
+
 .slick-next-gift:hover {
-    color: #fff; /* Màu sắc của biểu tượng khi hover */
+    color: #fff;
+    /* Màu sắc của biểu tượng khi hover */
     background-color: #B10000 !important;
 }
+
 .slick-prev-gift:hover {
-    color: #fff; /* Màu sắc của biểu tượng khi hover */
+    color: #fff;
+    /* Màu sắc của biểu tượng khi hover */
     background-color: #B10000 !important;
 }
-.icon-test-custom .slick-arrow{
+
+.icon-test-custom .slick-arrow {
     position: relative;
 }

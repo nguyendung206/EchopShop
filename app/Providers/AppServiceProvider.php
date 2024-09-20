@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -31,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
         if (Schema::hasTable('categories')) {
             $categories = Category::query()->where('status', 1)->with('activeBrands')->get();
             View::share('categories', $categories);
+        }
+        if (Schema::hasTable('brands')) {
+            $brands = Brand::query()->where('status', 1)->limit(12)->get();
+
+            View::share('brands', $brands);
         }
     }
 }
