@@ -14,6 +14,8 @@ class BannerController extends Controller
 {
     protected $bannerService;
 
+    protected $statusService;
+
     public function __construct(BannerService $bannerService, StatusService $statusService)
     {
         $this->bannerService = $bannerService;

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ProductController;
@@ -34,6 +35,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/save', [ProfileController::class, 'update'])->name('profile.save');
     });
+
+    //discount
+    Route::resource('/discount', DiscountController::class);
+    Route::put('discount/changeStatus/{id}', [DiscountController::class, 'changeStatus'])->name('discount.changeStatus');
+
     //contact
     Route::prefix('contact')->name('contact.')->group(function () {
         Route::get('/', [ContactController::class, 'index'])->name('index');

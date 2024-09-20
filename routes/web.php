@@ -37,8 +37,8 @@ Route::prefix('/product-detail')->group(function () {
 });
 
 Route::prefix('/about')->name('about.')->group(function () {
-    Route::get('/contactUs', [ContactController::class, 'create'])->name('contactUs');
-    Route::post('/contactUs', [ContactController::class, 'store'])->name('contactUs');
+    Route::get('/contactUs', [ContactController::class, 'create'])->name('contactUs.create');
+    Route::post('/contactUs', [ContactController::class, 'store'])->name('contactUs.store');
 });
 
 Route::prefix('/policy')->name('policy.')->group(function () {

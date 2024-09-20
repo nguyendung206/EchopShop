@@ -49,7 +49,7 @@
                 <!-- quản lý người dùng -->
                 <li class="aiz-side-nav-item">
                     <a href="#" class="aiz-side-nav-link">
-                        <i class="las la-newspaper aiz-side-nav-icon"></i>
+                        <i class="las la-user aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">người dùng</span>
                         <span class="aiz-side-nav-arrow"></span>
                     </a>
@@ -57,7 +57,7 @@
                         <li class="aiz-side-nav-item">
                             <a href="{{ route('admin.customer.index') }}"
                                 class="aiz-side-nav-link {{ areActiveRoutes(['admin.customer.index', 'admin.customer.create', 'admin.customer.edit']) }}">
-                                <i class="las la-home aiz-side-nav-icon"></i>
+                                <i class="las la-address-book aiz-side-nav-icon"></i>
 
                                 <span class="aiz-side-nav-text">Khách hàng</span>
                             </a>
@@ -65,7 +65,7 @@
 
                         <li class="aiz-side-nav-item">
                             <a href="#" class="aiz-side-nav-link ">
-                                <i class="las la-home aiz-side-nav-icon"></i>
+                                <i class="las la-id-card aiz-side-nav-icon"></i>
                                 <span class="aiz-side-nav-text">Quản trị viên</span>
                             </a>
                         </li>
@@ -89,14 +89,14 @@
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('admin.partner.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['admin.partner.index']) }}">
-                        <i class="las la-tools aiz-side-nav-icon"></i>
+                        <i class="las la-hands-helping aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">Đối tác</span>
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('admin.contact.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['admin.contact.index']) }}">
-                        <i class="las la-tools aiz-side-nav-icon"></i>
+                        <i class="las la-sms aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">Liên hệ</span>
                     </a>
                 </li>
@@ -114,6 +114,13 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('admin.discount.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['admin.discount.index']) }}">
+                        <i class="las la-percentage aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Giảm giá</span>
+                    </a>
                 </li>
         
                 
