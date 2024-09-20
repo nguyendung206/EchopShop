@@ -88,6 +88,15 @@ a:hover {
     top: 1px;
 }
 
+.btn-all {
+    background-color: #FFDD15;
+    border-radius: 30px;
+    padding: 8px 16px;
+    color: #990000;
+    font-weight: 500;
+    line-height: 18.75px;
+}
+
 .search i {
     font-size: 20px;
     color: #232323;

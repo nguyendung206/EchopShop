@@ -50,11 +50,14 @@ HOME
         <div class="container">
             <div class="row">
                 @foreach ($brands as $brand)
-                    <div class="col-2">
-                        <img class="category-img" src="{{ getImage($brand->photo) }}" alt="">
-                        <p class="category-name">{{$brand->name}}</p>
-                    </div>
+                <div class="col-2">
+                    <img class="category-img" src="{{ getImage($brand->photo) }}" alt="">
+                    <p class="category-name">{{$brand->name}}</p>
+                </div>
                 @endforeach
+                <div class="col-12 text-center mt-4">
+                    <a href="" class="btn-all">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                </div>
             </div>
         </div>
     </div>
