@@ -143,13 +143,15 @@
                                 </a>
                             </div>
                             @endif
-
+                            <a href="#" class="mx-2">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
                             <div class="dropdown">
                                 <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(Auth::user()->avatar) }}" alt="">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                    <a class="drop-user-item profile-tab" href="{{ route('web.profile.index', Auth::id()) }}" data-tab="profile">
+                                    <a class="drop-user-item profile-tab" href="{{route('profile.index', Session::get('user')->id)}}" data-tab="profile">
                                         <i class="fa-solid fa-user mr-2"></i> Hồ sơ cá nhân
                                     </a>
                                     <a class="drop-user-item" href="{{ route('web.logout') }}">

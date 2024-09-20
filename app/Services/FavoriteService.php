@@ -14,7 +14,12 @@ class FavoriteService
                 return [];
             }
             $user = Auth::user();
-            $favorites = Favorite::query()->where('user_id', Auth::id())->with('product')->paginate($perPage);
+            $favorites = Favorite::where('user_id', Auth::id())
+                ->whereHas('product', function ($query) {
+                    $query->where('status', 1);
+                })
+                ->with(['product.productUnits'])
+                ->paginate($perPage);
 
             return $favorites;
         } catch (\Exception $e) {

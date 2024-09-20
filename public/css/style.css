@@ -620,9 +620,22 @@ a:hover {
       margin-bottom: 30px;
 }
 
+.buy-favorite {
+    color: white;
+    min-width: 145px;
+    display: inline-block;
+    border: none;
+
+}
+.disable-buy {
+    pointer-events: none;
+    background-color: grey;
+    text-decoration: none;
+}
+
 
 @media (min-width: 320px) and (max-width: 768px) {
-
+    
     .topheader {
         font-size: 12px;
     }

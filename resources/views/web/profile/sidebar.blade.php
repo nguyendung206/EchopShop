@@ -1,8 +1,13 @@
 <div class="col-lg-3 profile-list">
     <img src="{{ getImage(optional(Auth::user())->avatar) }}" alt="" class="profile-img profile-img-2">
     <p class="profile-name text-center">{{ optional(Auth::user())->name }}</p>
+    @if (strpos(request()->url(), 'profile') == false)
+        <a href="{{ route('web.profile.index', Session::get('user')->id) }}" class="buy change-profile-btn">
+            <img src="{{ asset('/img/icon/edit-profile.png') }}" alt="" > Chỉnh sửa
+        </a>
+    @endif
     <ul class="list">
-        <a href="{{route('web.profile.index', Session::get('user')->id)}}" class="profile-tab" data-tab="profile">
+        <a href="{{route('profile.index', Session::get('user')->id)}}" class="profile-tab" data-tab="profile">
             <i class="fa-regular fa-circle-user mr-1"></i>
             Hồ sơ của tôi
         </a>
@@ -20,12 +25,12 @@
             Quản lý bài đăng
         </a>
         @else
-        <a href="{{route('web.registershop.create')}}" class="profile-tab" data-tab="shop">
+        <a href="{{route('registershop.create')}}" class="profile-tab" data-tab="shop">
             <i class="fa-solid fa-store"></i>
             Đăng ký bán hàng
         </a>
         @endif
-        <a href="#" class="profile-tab" data-tab="favorites">
+        <a href="{{route('favoriteProduct')}}" class="profile-tab" data-tab="favoriteProduct">
             <i class="fa-regular fa-heart mr-1"></i>
             Đã thích
         </a>

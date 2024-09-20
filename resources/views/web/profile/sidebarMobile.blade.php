@@ -17,7 +17,7 @@
             <div class="col-12">
                 <nav class="category-profile" id="category-profile">
                     <ul class="list text-center">
-                        <a href="{{route('web.profile.index', Session::get('user')->id)}}" data-tab="profile">
+                        <a href="{{route('profile.index', Session::get('user')->id)}}" data-tab="profile">
                             <i class="fa-regular fa-circle-user mr-1"></i>
                             Hồ sơ của tôi
                         </a>
@@ -35,12 +35,12 @@
                             Quản lý bài đăng
                         </a>
                         @else
-                        <a href="{{route('web.registershop.create')}}" class="profile-tab" data-tab="shop">
+                        <a href="{{route('registershop.create')}}" class="profile-tab" data-tab="shop">
                             <i class="fa-solid fa-store"></i>
                             Đăng ký bán hàng
                         </a>
                         @endif
-                        <a href="#" data-tab="favorites">
+                        <a href="{{route('favoriteProduct')}}" data-tab="favoriteProduct">
                             <i class="fa-regular fa-heart mr-1"></i>
                             Đã thích
                         </a>

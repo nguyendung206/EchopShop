@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Favorite;
 use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 
 class HomeService
 {
@@ -29,23 +27,6 @@ class HomeService
                 return $query->where('brand_id', $brandId);
             })
             ->where('type', $type)->get();
-
-        if (stripos($request->url(), 'favorite')) {
-            if (! Auth::check()) {
-                return redirect()->route('web.login');
-            }
-            $products = Favorite::where('user_id', Auth::id())
-                ->whereHas('product', function ($query) use ($rangeInputMin, $rangeInputMax, $brandId) {
-                    $query->where('status', 1)
-                        ->where('price', '>=', $rangeInputMin)
-                        ->where('price', '<=', $rangeInputMax)
-                        ->when($brandId, function ($query, $brandId) {
-                            return $query->where('brand_id', $brandId);
-                        });
-                })
-                ->with('product')
-                ->get();
-        }
 
         return $products;
     }
