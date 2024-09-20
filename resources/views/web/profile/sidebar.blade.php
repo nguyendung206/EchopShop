@@ -2,7 +2,7 @@
     <img src="{{ getImage(optional(Auth::user())->avatar) }}" alt="" class="profile-img profile-img-2">
     <p class="profile-name text-center">{{ optional(Auth::user())->name }}</p>
     @if (strpos(request()->url(), 'profile') == false)
-        <a href="{{ route('web.profile.index', Session::get('user')->id) }}" class="buy change-profile-btn">
+        <a href="{{ route('profile.index', Session::get('user')->id) }}" class="buy change-profile-btn">
             <img src="{{ asset('/img/icon/edit-profile.png') }}" alt="" > Chỉnh sửa
         </a>
     @endif
