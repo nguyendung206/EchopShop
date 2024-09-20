@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Http\Requests\DiscountRequest;
+use App\Services\DiscountService;
+use App\Models\Discount;
+
+class DiscountController extends Controller
+{
+    
+    protected $discountService;
+
+    public function __construct(DiscountService $discountService)
+    {
+        $this->discountService = $discountService;
+    }
+
+    public function index(Request $request)
+    {
+        $discounts = $this->discountService->index($request);
+
+        return view('admin.discount.index', compact('discounts'));
+
+    }
+
+    public function create()
+    {
+        return view('admin.discount.create');
+    }
+
+    public function store(DiscountRequest $request)
+    {
+        try {
+            $this->discountService->store($request);
+            flash('Thêm giảm giá thành công')->success();
+            return redirect()->route('admin.discount.index');
+        } catch (Exception $e) {
+            flash('Thêm giảm giá thất bại')->error();
+            return redirect()->route('admin.discount.create');
+        }
+    }
+
+    public function show($id)
+    {
+        $discount = Discount::findOrFail($id);
+        return view('admin.discount.show', compact('discount'));
+    }
+
+    public function edit($id)
+    {
+        $discount = Discount::findOrFail($id);
+        return view('admin.discount.edit', compact('discount'));
+    }
+
+    public function update(DiscountRequest $request, $id)
+    {
+        try {
+            $discount = $this->discountService->update($request, $id);
+            flash('Cập nhật giảm giá thành công!')->success();
+
+            return redirect()->route('admin.discount.index');
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi cập nhật giảm giá!')->error();
+
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $check = $this->discountService->destroy($id);
+            if ($check) {
+                flash('Xóa giảm giá thành công!')->success();
+            } else {
+                flash('Đã xảy ra lỗi khi xóa giảm giá!')->error();
+            }
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi xóa giảm giá!')->error();
+        }
+    }
+}

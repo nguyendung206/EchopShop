@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DiscountController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
         Route::post('/save', [ProfileController::class, 'update'])->name('profile.save');
     });
+
+    //discount
+    Route::resource('/discount', DiscountController::class);
+
     //contact
     Route::prefix('contact')->name('contact.')->group(function () {
         Route::get('/', [ContactController::class, 'index'])->name('index');
