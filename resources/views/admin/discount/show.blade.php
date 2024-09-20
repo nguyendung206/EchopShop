@@ -13,7 +13,11 @@
                 <div class="col col-lg-6 mb-4 mb-lg-0">
                 <div class="card mb-3" style="border-radius: .5rem;">
                     <div class="row g-0">
-                    
+                        <div class="col-md-12 gradient-custom text-center text-white"
+                        style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                        <img src="{{ getImage($discount->photo)}}"
+                        alt="Avatar" class="img-fluid my-5" style="width: 100%;height: 230px;" />
+                        </div>
                     <div class="col-md-12">
                         <div class="card-body p-4">
                         <h6>
@@ -55,6 +59,10 @@
                             <div class="col-6 mb-3">
                                 <h6>Số mã đã được dùng</h6>
                                 <p class="text-muted">{{$discount->current_uses}}</p>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h6>Trạng thái</h6>
+                                <p class="text-muted">{{$discount->status->label()}}</p>
                             </div>
                         </div>
                         <div class="d-flex justify-content-start">

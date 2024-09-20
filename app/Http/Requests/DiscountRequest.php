@@ -35,6 +35,7 @@ class DiscountRequest extends FormRequest
             'endTime' => 'required|date|after_or_equal:startTime',
             'maxUses' => 'required|numeric|min:0',
             'limitUses' => 'required|numeric|min:0',
+            'status' => 'required|in:1,2',
         ];
 
         return $rules;
@@ -66,6 +67,7 @@ class DiscountRequest extends FormRequest
             'endTime' => 'Ngày kết thúc',
             'maxUses' => 'Số lượng mã giảm giá',
             'limitUses' => 'Giới hạn số lần sử dụng',
+            'status' => 'Trạng thái',
         ];
     }
 }

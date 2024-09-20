@@ -39,6 +39,7 @@ class DiscountService
                 'max_uses' => $request->maxUses,
                 'limit_uses' => $request->limitUses,
                 'photo' => uploadImage($request->file('photo'), 'upload/discounts/', 'nodiscount.png'),
+                'status' => $request->status,
             ];
             $discount = Discount::create($discountData);
 
@@ -65,6 +66,7 @@ class DiscountService
             'max_uses' => $request->maxUses,
             'limit_uses' => $request->limitUses,
             'photo' => uploadImage($request->file('photo'), 'upload/discounts/', 'nodiscount.png'),
+            'status' => $request->status,
         ];
         $discount->update($discountData);
         if ($request->file('photo')) {

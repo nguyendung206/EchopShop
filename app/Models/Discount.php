@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Status;
 use App\Enums\TypeDiscount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,9 +24,11 @@ class Discount extends Model
         'photo',
         'quantity_used',
         'limit_uses',
+        'status',
     ];
 
     protected $casts = [
         'type' => TypeDiscount::class,
+        'status' => Status::class,
     ];
 }

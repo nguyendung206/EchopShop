@@ -6,15 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DiscountRequest;
 use App\Models\Discount;
 use App\Services\DiscountService;
+use App\Services\StatusService;
 use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {
     protected $discountService;
 
-    public function __construct(DiscountService $discountService)
+    protected $statusService;
+
+    public function __construct(DiscountService $discountService, StatusService $statusService)
     {
         $this->discountService = $discountService;
+        $this->statusService = $statusService;
     }
 
     public function index(Request $request)
@@ -83,6 +87,25 @@ class DiscountController extends Controller
             }
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi xóa giảm giá!')->error();
+        }
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        try {
+            $discount = Discount::findOrFail($id);
+            $this->statusService->changeStatus($discount);
+            flash('Thay đổi trạng thái thành công!')->success();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Sửa thông tin thành công.',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sửa thông tin thất bại.',
+            ], 500);
         }
     }
 }

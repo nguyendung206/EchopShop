@@ -19,7 +19,7 @@
                 <h1 class="footer-heading">Về Echop</h1>
                 <ul>
                     <li><a href="#" class="footer-link">Giới thiệu</a></li>
-                    <li><a href="{{route('about.contactUs')}}" class="footer-link">Liên hệ với chúng tôi</a></li>
+                    <li><a href="{{route('about.contactUs.create')}}" class="footer-link">Liên hệ với chúng tôi</a></li>
                     <li><a href="#" class="footer-link">Blog</a></li>
                 </ul>
             </div>

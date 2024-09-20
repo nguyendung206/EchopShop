@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->integer('max_uses')->default(0);
             $table->integer('quantity_used')->default(0);
             $table->integer('limit_uses')->default(0);
+            $table->integer('status')->default(Status::ACTIVE->value);
             $table->timestamps();
         });
     }

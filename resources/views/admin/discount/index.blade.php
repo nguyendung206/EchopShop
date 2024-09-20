@@ -113,6 +113,7 @@
                         <th class="">@lang('Giá trị giảm')</th>
                         <th class="">@lang('Ngày bắt đầu')</th>
                         <th class="">@lang('Ngày kết thúc')</th>
+                        <th>@lang('trạng thái')</th>
                         <th class="w-150">@lang('Điều chỉnh')</th>
                     </tr>
                 </thead>
@@ -141,8 +142,23 @@
 
                                 <td>{{ $discount->start_time }}</td>
                                 <td>{{ $discount->end_time }}</td>
+                                <td>{{ $discount->status->label() }}</td>
                                 <td class="text-left">
-                                    
+                                    @if ($discount->status == StatusEnums::ACTIVE)
+                                    <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
+                                        data-id="{{ $discount->id }}"
+                                        data-href="{{ route('admin.discount.changeStatus', ['id' => $discount->id]) }}"
+                                        id="active-popup" >
+                                        <i class="las la-ban"></i>
+                                    </a>
+                                @else
+                                    <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
+                                        data-id="{{ $discount->id }}"
+                                        data-href="{{ route('admin.discount.changeStatus', ['id' => $discount->id]) }}"
+                                        id="inactive-popup" >
+                                        <i class="las la-check-circle"></i>
+                                    </a>
+                                @endif
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
                                         href="{{ route('admin.discount.show', $discount->id) }}">
                                         <i class="las la-list"></i>
@@ -273,6 +289,41 @@
             Swal.fire({
                 title: '@lang('Trạng thái')',
                 text: '@lang('Bạn muốn thay đổi trạng thái Giảm giá này?')',
+                confirmButtonText: '@lang('Có')',
+                cancelButtonText: '@lang('Không')',
+                showCancelButton: true,
+                showCloseButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "PUT",
+                        url: href,
+                        success: function(response) {
+                            Swal.fire({
+                                title: 'Thông báo!',
+                                text: 'Thay đổi trạng thái thành công!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(err) {
+                            Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.',
+                                'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.changeStatus', function() {
+            let id = $(this).attr('data-id');
+            let href = $(this).attr('data-href');
+            
+            Swal.fire({
+                title: '@lang('Trạng thái')',
+                text: '@lang('Bạn muốn thay đổi trạng thái Banner này?')',
                 confirmButtonText: '@lang('Có')',
                 cancelButtonText: '@lang('Không')',
                 showCancelButton: true,

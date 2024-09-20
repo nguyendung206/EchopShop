@@ -127,6 +127,23 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Trạng thái</label>
+                        <div class="col-sm-9">
+                            <select class="text-center font-weight-500 form-control @error('status') is-invalid  @enderror" name="status" >
+                                <option value="{{ StatusEnums::ACTIVE->value }}" {{old('status') ? old('status') == StatusEnums::ACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(StatusEnums::ACTIVE->label())
+                                </option>
+                                <option value="{{ StatusEnums::INACTIVE->value }}" {{old('status') ? old('status') == StatusEnums::INACTIVE->value ? 'selected' : '' : ''}}>
+                                    @lang(StatusEnums::INACTIVE->label())
+                                </option>
+                            </select>
+                            @error('status')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">@lang('Ảnh')<span class="text-vali">&#9913;</span></label>

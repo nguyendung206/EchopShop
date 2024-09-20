@@ -38,6 +38,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //discount
     Route::resource('/discount', DiscountController::class);
+    Route::put('discount/changeStatus/{id}', [DiscountController::class, 'changeStatus'])->name('discount.changeStatus');
 
     //contact
     Route::prefix('contact')->name('contact.')->group(function () {
