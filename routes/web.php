@@ -16,7 +16,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name('exchangeProduct');
 Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
 Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
-Route::get('/favoriteProduct', [HomeController::class, 'filterProducts'])->name('favoriteProduct');
+Route::get('/favoriteProduct', [FavoriteController::class, 'index'])->name('favoriteProduct');
 
 Route::get('/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/login', [AuthController::class, 'login'])->name('web.authentication');
@@ -54,13 +54,13 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 
     Route::prefix('/profile')->group(function () {
-        Route::get('/{id}', [ProfileUserController::class, 'index'])->name('web.profile.index');
-        Route::put('/saveprofile', [ProfileUserController::class, 'updateProfile'])->name('web.profile.save');
-        Route::put('/saveidentification', [ProfileUserController::class, 'updateIdentification'])->name('web.identification.save');
+        Route::get('/{id}', [ProfileUserController::class, 'index'])->name('profile.index');
+        Route::put('/saveprofile', [ProfileUserController::class, 'updateProfile'])->name('profile.save');
+        Route::put('/saveidentification', [ProfileUserController::class, 'updateIdentification'])->name('identification.save');
     });
     Route::prefix('/registershop')->group(function () {
-        Route::get('/', [ShopController::class, 'create'])->name('web.registershop.create');
-        Route::post('/save', [ShopController::class, 'store'])->name('web.registershop.store');
+        Route::get('/', [ShopController::class, 'create'])->name('registershop.create');
+        Route::post('/save', [ShopController::class, 'store'])->name('registershop.store');
     });
 
     Route::prefix('/favorite')->name('favorite.')->group(function () {

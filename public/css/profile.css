@@ -267,7 +267,28 @@ button.form-btn-save {
     border-left: 2px solid #B10000;
 }
 
+.change-profile-btn {
+    width: 250px;
+    display:flex;
+    align-items: center;
+    margin: 30px auto 60px auto;
+    justify-content: center;
+    font-size: 16px;
+}
+.change-profile-btn img {
+    margin-right: 8px;
+}
+.res-none {
+    display: block;
+}
+
 @media (min-width: 320px) and (max-width: 768px) {
+    .res-none {
+        display: none;
+    }
+    .buy-favorite {
+        min-width: 50px;
+    }
     .profile-update-btn-2 {
         margin-left: 0;
     }

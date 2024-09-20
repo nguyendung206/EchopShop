@@ -47,11 +47,11 @@
         <div class="category-3">
             <div class="box">
                 <div class="slider">
-                    <input type="range" id="rangeInput" min="0" max="1000000" value="100000" />
+                    <input type="range" id="rangeInput" min="0" max="1000000" value="0" />
                     <input type="range" id="rangeInput2" min="1000000" max="2000000" value="1000000" />
                 </div>
                 <div class="value">
-                    <div id="value1">100000</div>
+                    <div id="value1">0</div>
                     <div id="value2" style="margin-left: 4px">- 1000000</div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
         var selectedCategories = [];
         var selectedBrands = [];
         var selectedProvinces = [];
-        var rangeInputMin = 100000;
+        var rangeInputMin = 0;
         var rangeInputMax = 1000000;
 
         // Toggle brand visibility when clicking on the extend icon
@@ -151,7 +151,7 @@
             selectedCategories = [];
             selectedBrands = [];
             selectedProvinces = [];
-            rangeInputMin = 100000;
+            rangeInputMin = 0;
             rangeInputMax = 1000000;
             $('.category-checkbox, .brand-checkbox, .province-checkbox').prop('checked', false);
             $('#value1').text(rangeInputMin); // Reset displayed min value
