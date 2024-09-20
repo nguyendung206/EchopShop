@@ -44,89 +44,81 @@
 <header>
     <div class="header">
         <div class="container-fluid topheader">
-            <div class="row justify-content-between align-items-center p-14px">
-                <div class="hotline color-750000 col-md-6 col-6">
-                    <i class="fa-regular fa-circle-question"></i>
-                    Hotline: <strong>001 234-567-890</strong>
+            <div class="row justify-content-between align-items-center py-2">
+                <div class="hotline col-md-6 col-6 ">
+                    <a href="" class="text-white">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <strong>Trợ giúp</strong>
+                    </a>
                 </div>
                 <div class="about col-md-6 col-6">
-                    <div class="language color-750000 px-2">
-                        <img class="logo-vietnam" src="{{ asset('/img/image/vietnam.png') }}" alt="">
-                        <span class="mr-2">Việt Nam</span>
-                        <i class="fa-solid fa-caret-down"></i>
+                    <div class="language px-2">
+                        <a class="text-white" href="#">
+                            <i class="fa-solid fa-gear"></i>
+                            <span class="mx-2">Cài đặt</span>
+                        </a>
                     </div>
-                    <div class="about-me">
-                        <a class="color-750000 px-2" href="#">Về chúng tôi</a>
+                    <div class="about-me px-2">
+                        <a class="text-white" href="#">Tải ứng dụng</a>
                     </div>
-                    <div class="contact">
-                        <a class="color-750000 px-2" href="#">Liên hệ</a>
+                    <div class="contact px-2">
+                        <a class="text-white" href="#">Hướng dẫn sử dụng ứng dụng</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="mainheader">
-            <div class="container py-3">
+            <div class="container-fluid py-3">
                 <div class="row justify-content-between align-items-center">
-                    <div class="col-lg-2 col-md-6 col-2 col-sm-2">
-                        <a href="{{ route('home') }}">
-                            <img class="logo" src="{{ asset('/img/image/logo.png') }}" alt="">
+                    <div class="row justify-content-between align-items-center col-lg-2 col-md-2 col-2 col-sm-2 ml-1">
+                        <a href="{{ route('home') }}" style="width: 75%;">
+                            <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="" >
+                        </a>
+                        <a href="" class="d-n">
+                            <i class="fa-regular fa-heart"></i>
                         </a>
                     </div>
-                    <div class="col-lg-8 menu">
-                        <ul class="row">
-                            <li class="ml-3">
-                                <div class="dropdown">
-                                    <a href="#" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Danh mục sản phẩm <i class="fa-solid fa-caret-down pl-2"></i>
-                                    </a>
-                                    @if(isset($categories) && $categories->count())
-                                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                                        @foreach($categories as $category)
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category', ['slug' => $category->slug]) }}">
-                                                <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
-                                                <p class="dropdown-title">{{ $category->name }}</p>
-                                            </a>
-                                            @if($category->activeBrands->count())
-                                            <ul class="dropdown-menu">
-                                                @foreach($category->activeBrands as $brand)
-                                                <li class="dropdown-item">
-                                                    <a href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
-                                                        {{ $brand->name }}
-                                                    </a>
-                                                </li>
-                                                @endforeach
-                                            </ul>
-                                            @endif
-                                        </li>
-                                        @endforeach
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-item-custom" href="#">
-                                                <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
-                                                <p class="dropdown-title">Khác</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    @endif
-                                </div>
-                            </li>
-                            <li>
-                                <a href="{{ route('exchangeProduct') }}">Trao đổi hàng hóa</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('secondhandProduct') }}">Mua bán đồ secondhand</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('giveawayProduct') }}">Hàng cũ đem tặng</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-2 col-md-6 col-6 col-sm-6">
-                        <div class="row justify-content-end align-items-center">
-                            <div class="search mr-2">
-                                <a href="#"><i class="color-750000 fa-solid fa-magnifying-glass"></i></a>
+                    <div class="col-6 menu">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                             </div>
+                            <input type="text" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
+                            <div class="input-group-append">
+                                <div style="position: relative;">
+                                    <div style="border-left: 2px solid #000; height: 50%; position: absolute; left: 1px; top: 25%;"></div>
+
+                                    <select class="form-control w-120px forcus-none">
+                                        <option value="" disabled selected>Địa điểm</option>
+                                        <option value="hanoi">Hà Nội</option>
+                                        <option value="hcm">TP. Hồ Chí Minh</option>
+                                        <option value="danang">Đà Nẵng</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-search" type="button">
+                                    Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-4 col-sm-4">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="search d-n">
+                                <a href="#"><i class="fa-regular fa-bell"></i></i></a>
+                            </div>
+                            <div class="search">
+                                <a href="#">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </a>
+                            </div>
+                            <div class="search d-n">
+                                <a href="#">
+                                    <i class="fa-regular fa-comment-dots"></i>
+                                </a>
+                            </div>
                             @guest
                             <div class="btn-post px-2">
                                 <a href="{{ route('web.login') }}">
@@ -143,10 +135,11 @@
                                 </a>
                             </div>
                             @endif
-
                             <div class="dropdown">
-                                <a href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a href="#" class="row align-items-center ml-2" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(Auth::user()->avatar) }}" alt="">
+                                    <span class="d-n ml-2 color-232323 header-name">{{ Auth::user()->name }} </span>
+                                    <i class="d-n fa-solid fa-sort-down ml-2 mb-2 color-232323 header-name"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                     <a class="drop-user-item profile-tab" href="{{route('profile.index', Session::get('user')->id)}}" data-tab="profile">
@@ -165,6 +158,72 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="container-fluid d-n" style="box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.15);">
+            <div class="category">
+                <ul class="row align-items-center">
+                    <li class="mx-4">
+                        <div class="dropdown">
+                            <a href="#" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa-solid fa-bars mr-2"></i> Danh mục sản phẩm <i class="fa-solid fa-caret-down pl-2"></i>
+                            </a>
+                            @if(isset($categories) && $categories->count())
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" style="width: 250px;">
+                                @foreach($categories as $category)
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category', ['slug' => $category->slug]) }}">
+                                        <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
+                                        <p class="dropdown-title">{{ $category->name }}</p>
+                                        <i class="fa-solid fa-caret-right"></i>
+                                    </a>
+                                    @if($category->activeBrands->count())
+                                    <ul class="dropdown-menu" style="width: 250px;">
+                                        @foreach($category->activeBrands as $brand)
+                                        <li class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                                <p class="dropdown-title">{{ $brand->name }}</p>
+                                                <i class="fa-solid fa-caret-right"></i>
+                                            </a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    @endif
+                                </li>
+                                @endforeach
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-item-custom" href="#">
+                                        <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
+                                        <p class="dropdown-title">Khác</p>
+                                        <i class="fa-solid fa-caret-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            @endif
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{{ route('exchangeProduct') }}" class="row align-items-center mx-4">
+                            <img src="{{asset('img/icon/exchange.png')}}" alt="" class="mr-2">
+                            <span>Trao đổi hàng hóa</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{{ route('secondhandProduct') }}" class="row align-items-center mx-4">
+                            <img src="{{asset('img/icon/secondhand.png')}}" alt="" class="mr-2">
+                            <span>Mua bán đồ secondhand</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{{ route('giveawayProduct') }}" class="row align-items-center mx-4">
+                            <img src="{{asset('img/icon/giveaway.png')}}" alt="" class="mr-2">
+                            <span>Hàng cũ đem tặng</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

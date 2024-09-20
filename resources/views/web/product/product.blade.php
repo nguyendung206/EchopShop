@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-<div class="content container">
+<div class="content container mt-4">
     <div class="row">
         @include('web.inc.web_sidebarProduct')
         <div class="col-lg-9 col-12">

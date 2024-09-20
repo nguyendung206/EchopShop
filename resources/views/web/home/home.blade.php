@@ -39,7 +39,7 @@ HOME
     </a>
 </div>
 
-<div class="category pt-2">
+<div class="category-2 pt-2">
     <div class="container">
         <br>
         <h1>Danh mục sản phẩm</h1>
@@ -48,13 +48,16 @@ HOME
     </div>
     <div class="list-category mb-5">
         <div class="container">
-            <div class="responsive slider">
-                @foreach ($categories as $category)
-                <div class="">
-                    <img class="category-img" src="{{ getImage($category->photo) }}" alt="">
-                    <p class="category-name">{{$category->name}}</p>
+            <div class="row">
+                @foreach ($brands as $brand)
+                <div class="col-2">
+                    <img class="category-img" src="{{ getImage($brand->photo) }}" alt="">
+                    <p class="category-name">{{$brand->name}}</p>
                 </div>
                 @endforeach
+                <div class="col-12 text-center mt-4">
+                    <a href="" class="btn-all">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                </div>
             </div>
         </div>
     </div>
@@ -71,7 +74,7 @@ HOME
                 </div>
 
             </div>
-           
+
         </div>
         <div class="container">
             <div class="row secondhand-list">
@@ -80,7 +83,7 @@ HOME
                     <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
                         <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
                         @auth
-                        <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
+                        <a href="#" class="product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} " data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home"></i></a>
                         @else
                         <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
                         @endauth
@@ -225,40 +228,40 @@ HOME
             </div>
         </div>
     </div>
-    
-        <div class="container">
-            <div class="gift-list slider">
-                @forelse($giveawayProducts as $product)
-                <div class="gift-item m-2">
-                    <img src="{{ getImage($product->photo) }}" alt="" class="gift-img">
-                    <div class="layer">
-                        <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                        <p>Free</p>
-                    </div>
-                    @auth
-                    <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home icon-change-2"></i></a>
-                    @else
-                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home icon-change-2"></i></a>
-                    @endauth
-                    <div class="gift-hover">
-                        <div class="layout"></div>
-                        <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="gift-btn">
-                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
-                        </a>
-                    </div>
+
+    <div class="container">
+        <div class="gift-list slider">
+            @forelse($giveawayProducts as $product)
+            <div class="gift-item m-2">
+                <img src="{{ getImage($product->photo) }}" alt="" class="gift-img">
+                <div class="layer">
+                    <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
+                    <p>Free</p>
                 </div>
-                @empty
-                <div class="text-center w-100 py-5">
-                    <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                @auth
+                <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}"><i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home icon-change-2"></i></a>
+                @else
+                <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home icon-change-2"></i></a>
+                @endauth
+                <div class="gift-hover">
+                    <div class="layout"></div>
+                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="gift-btn">
+                        <i class="fa-solid fa-gift"></i> Nhận quà tặng
+                    </a>
                 </div>
-                @endforelse
-                @if($giveawayProducts->isNotEmpty() )
-                <div class="gift-item m-2" style="position: absolute;top: 50%;right:-40px">
-                    <a class="all color-B10000" href="{{route('giveawayProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
-                </div>
-                @endif
             </div>
+            @empty
+            <div class="text-center w-100 py-5">
+                <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+            </div>
+            @endforelse
+            @if($giveawayProducts->isNotEmpty() )
+            <div class="gift-item m-2" style="position: absolute;top: 50%;right:-40px">
+                <a class="all color-B10000" href="{{route('giveawayProduct')}}">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+            </div>
+            @endif
         </div>
+    </div>
 </div>
 <br>
 <hr>

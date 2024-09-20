@@ -1,4 +1,4 @@
-<div class="breakcrumb-1 my-4">
+<div class="breakcrumb-1 mb-4">
     <div class="breakcrumb-wrap container">
         @foreach ($items as $index => $item)
         <div class="breakcrumb-item {{ $loop->last ? 'breakcrumb-last-item' : '' }}">
