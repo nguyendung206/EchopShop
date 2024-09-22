@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Enums\TypeProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\Brand;
 use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Province;
@@ -22,6 +23,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+        $brands = Brand::query()->where('status', 1)->limit(12)->get();
         $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
         $secondhandProducts = $this->homeService->getProduct(TypeProduct::SECONDHAND->value, 10, 'secondhandPage');
         $exchangeProducts = $this->homeService->getProduct(TypeProduct::EXCHANGE->value, 10, 'exchangePage');
@@ -46,7 +48,7 @@ class HomeController extends Controller
 
         }
 
-        return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts'));
+        return view('web.home.home', compact('brands', 'banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts'));
     }
 
     public function filterProducts(Request $request)

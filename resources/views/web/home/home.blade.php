@@ -47,13 +47,16 @@
         </div>
         <div class="list-category mb-5">
             <div class="container">
-                <div class="responsive slider">
-                    @foreach ($categories as $category)
-                        <div class="">
-                            <img class="category-img" src="{{ getImage($category->photo) }}" alt="">
-                            <p class="category-name">{{ $category->name }}</p>
-                        </div>
+                <div class="row">
+                    @foreach ($brands as $brand)
+                    <div class="col-2">
+                        <img class="category-img" src="{{ getImage($brand->photo) }}" alt="">
+                        <p class="category-name">{{$brand->name}}</p>
+                    </div>
                     @endforeach
+                    <div class="col-12 text-center mt-4">
+                        <a href="" class="btn-all">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
