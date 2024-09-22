@@ -253,10 +253,10 @@ a:hover {
     position: absolute;
     transform: translateY(-50%);
     z-index: 2;
-    top: 83.5%;
+    top: 400%;
     border: none;
     cursor: pointer;
-    left: 13.5%;
+    left: 0%;
     border-radius: 50%;
     border: 1px solid #000;    
     font-size: 12px;
@@ -266,10 +266,10 @@ a:hover {
     position: absolute;
     transform: translateY(-50%);
     z-index: 2;
-    top: 83.5%;
+    top: 400%;
     border: none;
     cursor: pointer;
-    right: 13.5%;
+    right: 0%;
     border-radius: 50%;
     border: 1px solid #000;
     font-size: 12px;

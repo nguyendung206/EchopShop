@@ -59,7 +59,7 @@
         </div>
 
         <div>
-            <img src="{{asset("/img/image/banner-home-1.png")}}" alt="">
+            <img src="{{asset("/img/image/banner-home-1.png")}}" alt="" style="width: 100%">
         </div>
         
         <div class="secondhand background-exchange">
@@ -231,7 +231,7 @@
     </div>
     <div class="gift">
         <div class="container">
-            <div class="row justify-content-between align-items-center">
+            <div class="row justify-content-between align-items-center" style="position: relative">
                 <div class="category pt-2">
                     <div class="container">
                         <br>
@@ -291,7 +291,7 @@
     </div>
 
     <div>
-        <img src="{{asset("/img/image/banner-home-2.png")}}" alt="">
+        <img src="{{asset("/img/image/banner-home-2.png")}}" alt="" style="width: 100%">
     </div>
 
     @section('script')
