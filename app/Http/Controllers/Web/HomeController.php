@@ -47,7 +47,7 @@ class HomeController extends Controller
             ]);
         }
 
-        return view('web.home.home', compact('brands', 'banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'partners'));
+        return view('web.home.home', compact('brands', 'banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts'));
     }
 
     public function filterProducts(Request $request)

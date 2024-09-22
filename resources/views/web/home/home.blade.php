@@ -38,12 +38,10 @@
         </a>
     </div>
 
-    <div class="category pt-2">
+    <div class=" pt-2">
         <div class="container">
             <br>
-            <h1>Danh mục sản phẩm</h1>
-            <div class="test"></div>
-            <hr>
+            <h1 class="title-secondhand">Danh mục sản phẩm</h1>
         </div>
         <div class="list-category mb-5">
             <div class="container">
@@ -68,12 +66,10 @@
         <div class="secondhand background-exchange">
             <div class="container">
                 <div class="row justify-content-between align-items-center">
-                    <div class="category pt-2">
+                    <div class="container pt-2">
                         <div class="container">
                             <br>
-                            <h1>Trao đổi hàng hóa</h1>
-                            <div class="test"></div>
-                            <hr>
+                            <h1 class="title-secondhand">Trao đổi hàng hóa</h1>
                         </div>
                     </div>
                 </div>
@@ -131,7 +127,7 @@
         <div class="secondhand">
             <div class="container">
                 <div class="row justify-content-between align-items-center">
-                    <div class="category pt-2">
+                    <div class=" pt-2">
                         <div class="container">
                             <br>
                             <h1 class="title-secondhand">Mua bán đồ secondhand</h1>
@@ -235,12 +231,10 @@
     <div class="gift">
         <div class="container">
             <div class="row justify-content-between align-items-center" style="position: relative">
-                <div class="category pt-2">
+                <div class="container pt-2">
                     <div class="container">
                         <br>
-                        <h1>Hàng cũ đem tặng</h1>
-                        <div class="test"></div>
-                        <hr>
+                        <h1 class="title-secondhand">Hàng cũ đem tặng</h1>
                     </div>
                 </div>
                 <div class="">
