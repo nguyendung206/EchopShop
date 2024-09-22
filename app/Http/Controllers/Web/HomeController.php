@@ -45,10 +45,9 @@ class HomeController extends Controller
                 'products' => $productHtml,
                 'hasMorePage' => $hasMorePage,
             ]);
-
         }
 
-        return view('web.home.home', compact('brands', 'banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts'));
+        return view('web.home.home', compact('brands', 'banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'partners'));
     }
 
     public function filterProducts(Request $request)

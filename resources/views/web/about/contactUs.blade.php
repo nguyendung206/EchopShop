@@ -34,7 +34,7 @@ Chính sách
             </div>
         </div>
         <div class="col-lg-7 col-12 information-input" >
-            <form action="{{route('about.contactUs')}}" method="POST" id="contactForm">
+            <form action="{{route('about.contactUs.store')}}" method="POST" id="contactForm">
                 @csrf
                 <div>
                     <div class="wrap-input wrap-input-name">
