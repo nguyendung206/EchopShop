@@ -23,20 +23,19 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
-        $secondhandProducts = $this->homeService->getProduct(TypeProduct::SECONDHAND->value, 8, 'secondhandPage');
-        $exchangeProducts = $this->homeService->getProduct(TypeProduct::EXCHANGE->value, 8, 'exchangePage');
-        $partners = Partner::query()->where('status', 1)->get();
+        $secondhandProducts = $this->homeService->getProduct(TypeProduct::SECONDHAND->value, 10, 'secondhandPage');
+        $exchangeProducts = $this->homeService->getProduct(TypeProduct::EXCHANGE->value, 10, 'exchangePage');
         $giveawayProducts = Product::query()->where('status', 1)->where('type', TypeProduct::GIVEAWAY)->get();
 
         if ($request->ajax() || $request->wantsJson()) {
             $productHtml = '';
             $hasMorePage = false;
             if ($request->query('secondhandPage')) {
-                $productHtml = view('web.home.moreSecondhand', compact('secondhandProducts'))->render();
+                $productHtml = view('web.product.listSecondhandProduct', compact('secondhandProducts'))->render();
                 $hasMorePage = ! $secondhandProducts->hasMorePages();
             }
             if ($request->query('exchangePage')) {
-                $productHtml = view('web.home.moreExchange', compact('exchangeProducts'))->render();
+                $productHtml = view('web.product.listExchangeProduct', compact('exchangeProducts'))->render();
                 $hasMorePage = ! $exchangeProducts->hasMorePages();
             }
 
@@ -47,30 +46,22 @@ class HomeController extends Controller
 
         }
 
-        return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'partners'));
+        return view('web.home.home', compact('banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts'));
     }
 
     public function filterProducts(Request $request)
     {
         $type = null;
         $currentUrl = $request->url();
-        $viewDefault = '';
-        $viewList = '';
         switch (true) {
             case stripos($currentUrl, 'exchange') !== false:
                 $type = TypeProduct::EXCHANGE;
-                $viewDefault = 'web.product.exchangeProduct';
-                $viewList = 'web.product.listExchangeProduct';
                 break;
             case stripos($currentUrl, 'secondhand') !== false:
                 $type = TypeProduct::SECONDHAND;
-                $viewDefault = 'web.product.secondhandProduct';
-                $viewList = 'web.product.listSecondhandProduct';
                 break;
             case stripos($currentUrl, 'giveaway') !== false:
                 $type = TypeProduct::GIVEAWAY;
-                $viewDefault = 'web.product.giveawayProduct';
-                $viewList = 'web.product.listGiveawayProduct';
                 break;
             default:
                 break;
@@ -79,12 +70,12 @@ class HomeController extends Controller
         $products = $this->homeService->filterProducts($request, $type);
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
+            
             return response()->json([
-                'productHtml' => view($viewList, compact('products'))->render(),
-                'hasMorePages' => $product->hasMorePages(),
+                'productHtml' => view('web.product.listProduct', compact('products'))->render(),
             ]);
         }
 
-        return view($viewDefault, compact('products', 'provinces'));
+        return view('web.product.productPage', compact('products', 'provinces'));
     }
 }

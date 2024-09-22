@@ -57,77 +57,12 @@
                 </div>
             </div>
         </div>
-        <div class="secondhand">
-            <div class="container">
-                <div class="row justify-content-between align-items-center">
-                    <div class="category pt-2">
-                        <div class="container">
-                            <br>
-                            <h1>Mua bán đồ secondhand</h1>
-                            <div class="test"></div>
-                            <hr>
-                        </div>
-                    </div>
 
-                </div>
-
-            </div>
-            <div class="container">
-                <div class="row secondhand-list">
-                    @forelse($secondhandProducts as $product)
-                        <div class="col-custom text-center py-3 product-item">
-                            <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
-                                <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-                                @auth
-                                    <a href="#"
-                                        class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
-                                        data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
-                                        data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
-                                            class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
-                                @else
-                                    <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
-                                @endauth
-                                <p class="product-name pt-2">{{ $product->name }}</p>
-                                <p class="price color-B10000 pt-2">{{ format_price($product->price) }}</p>
-                            </a>
-                            <br>
-                            <a class="buy" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Mua
-                                ngay</a>
-                        </div>
-                    @empty
-                        <div class="text-center w-100 py-5">
-                            <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
-                        </div>
-                    @endforelse
-                </div>
-                @if ($secondhandProducts->isNotEmpty())
-                    <div class="text-center py-5 divMoreSecondhand">
-                        @if ($secondhandProducts->count() >= 8 && $secondhandProducts->hasMorePages())
-                            <a id="btnMoreSecondhand" class="all color-B10000" href="#">Xem thêm <i
-                                    class="fa-solid fa-angles-down"></i></a>
-                        @endif
-                        <a class="all color-B10000" href="{{ route('secondhandProduct') }}">Xem tất cả <i
-                                class="fa-solid fa-angles-right"></i></a>
-                    </div>
-                @endif
-            </div>
+        <div>
+            <img src="{{asset("/img/image/banner-home-1.png")}}" alt="">
         </div>
-        <div class="brand">
-            <div class="container">
-                <div class="list-brand slider">
-                    @forelse($partners as $partner)
-                        <div class="brand-item p-5">
-                            <img src="{{ getImage($partner->photo) }}" alt="" class="brand-img">
-                        </div>
-                    @empty
-                        <div class="text-center w-100 py-5">
-                            <span class="" style="color:rgb(177,0,0);">Không có thông tin để hiển thị.</span>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-        </div>
-        <div class="secondhand">
+        
+        <div class="secondhand background-exchange">
             <div class="container">
                 <div class="row justify-content-between align-items-center">
                     <div class="category pt-2">
@@ -143,25 +78,34 @@
             <div class="container">
                 <div class="row exchange-list">
                     @forelse($exchangeProducts as $product)
-                        <div class="col-sm-4 col-md-4 col-lg-3 text-center col-6 py-3 product-item">
+                    <div class="col-custom text-center  product-item">
+                        <div class="product-wrap">
                             <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
-                                <img class="product-img" src="{{ getImage($product->photo) }}" alt="">
+                                <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
                                 @auth
                                     <a href="#"
                                         class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
-                                        data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
-                                        data-url-store="{{ route('favorite.store') }}"
-                                        data-productId="{{ $product->id }}"><i
+                                        data-url-destroy="{{ route('favorite.destroy', $product->id) }} heart-exchange"
+                                        data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
                                             class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
                                 @else
-                                    <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                                    <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home heart-exchange"></i></a>
                                 @endauth
-                                <p class="product-name pt-2">{{ $product->name }}</p>
+                                <p class="product-name pt-2 line-clamp-2">{{ $product->name }}</p>
+                                <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
+                                <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($product->price) }}</p>
+                                <div class="user-product-wrap">
+                                    <img class="mini-avatar" src="{{asset('/img/image/mini-avt.png')}}" alt="">
+                                    <div class="user-product "><p class="line-clamp-1">Trần thị Diễm My &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt=""> &nbsp; 1 giờ trước &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; Thành Phố huế</p></div>
+                                </div>
                             </a>
                             <br>
-                            <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                            <a href="#" class="buy">Trao đổi</a>
+                            <div class="buy-wrap-exchange">
+                                <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+                                <a class="btn-buy-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi hàng</a>
+                            </div>
                         </div>
+                    </div>
                     @empty
                         <div class="text-center w-100 py-5">
                             <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
@@ -169,16 +113,80 @@
                     @endforelse
                 </div>
                 @if ($exchangeProducts->isNotEmpty())
-                    <div class="text-center py-5 divMoreExchange">
+                    <div class="text-center py-5 divMoreExchange btn-more-wrap">
                         @if ($exchangeProducts->count() >= 8 && $exchangeProducts->hasMorePages())
-                            <a id="btnMoreExchange" class="all color-B10000" href="#">Xem thêm <i
+                            <a id="btnMoreExchange" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm<i
                                     class="fa-solid fa-angles-down"></i></a>
                         @endif
-                        <a class="all color-B10000" href="{{ route('exchangeProduct') }}">Xem tất cả <i
+                        <a class="all color-B10000 btn-more" href="{{ route('exchangeProduct') }}">Xem tất cả <i
                                 class="fa-solid fa-angles-right"></i></a>
                     </div>
                 @endif
 
+            </div>
+        </div>
+        <div class="secondhand">
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="category pt-2">
+                        <div class="container">
+                            <br>
+                            <h1 class="title-secondhand">Mua bán đồ secondhand</h1>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="container">
+                <div class="row secondhand-list">
+                    @forelse($secondhandProducts as $product)
+                        <div class="col-custom text-center  product-item">
+                            <div class="product-wrap">
+                                <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
+                                    <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
+                                    @auth
+                                        <a href="#"
+                                            class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
+                                            data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
+                                            data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
+                                                class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
+                                    @else
+                                        <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                                    @endauth
+                                    <p class="product-name pt-2 line-clamp-2">{{ $product->name }}</p>
+                                    <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
+                                    <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($product->price) }}</p>
+                                    <div class="user-product-wrap">
+                                        <img class="mini-avatar" src="{{asset('/img/image/mini-avt.png')}}" alt="">
+                                        <div class="user-product "><p class="line-clamp-1">Trần thị Diễm My &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt=""> &nbsp; 1 giờ trước &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; Thành Phố huế</p></div>
+                                    </div>
+                                </a>
+                                <br>
+                                <div class="buy-wrap">
+                                    <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
+                                    <a href="#" class="btn-cart-product"><i class="fa-solid fa-cart-shopping"></i></a>
+                                    <a class="btn-buy-product" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Mua
+                                        ngay</a>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center w-100 py-5">
+                            <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                        </div>
+                    @endforelse
+                </div>
+                @if ($secondhandProducts->isNotEmpty())
+                    <div class="text-center py-5 divMoreSecondhand btn-more-wrap">
+                        @if ($secondhandProducts->count() >= 8 && $secondhandProducts->hasMorePages())
+                            <a id="btnMoreSecondhand" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm mới<i
+                                    class="fa-solid fa-angles-right"></i></a>
+                        @endif
+                        <a class="all color-B10000 btn-more" href="{{ route('secondhandProduct') }}">Xem tất cả <i
+                                class="fa-solid fa-angles-right"></i></a>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="app">
@@ -232,7 +240,7 @@
                         <hr>
                     </div>
                 </div>
-                <div class="icon-test icon-test-custom">
+                <div class="">
                     <i class="fa-solid fa-arrow-left color-B10000 slick-prev-gift"></i>
                     <i class="fa-solid fa-arrow-right color-fff slick-next-gift"></i>
                 </div>
@@ -258,8 +266,10 @@
                             <a href="{{ route('web.login') }}"><i
                                     class="fa-regular fa-heart fa-heart-home icon-change-2"></i></a>
                         @endauth
-                        <div class="gift-hover">
-                            <div class="layout"></div>
+                        <div class="gift-name line-clamp-2">
+                            {{$product->name}}
+                        </div>
+                        <div class="gift-btn-wrap">
                             <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"
                                 class="gift-btn">
                                 <i class="fa-solid fa-gift"></i> Nhận quà tặng
@@ -271,17 +281,18 @@
                         <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
                     </div>
                 @endforelse
-                @if ($giveawayProducts->isNotEmpty())
-                    <div class="gift-item m-2" style="position: absolute;top: 50%;right:-40px">
-                        <a class="all color-B10000" href="{{ route('giveawayProduct') }}">Xem tất cả <i
+                
+            </div>
+                    <div class="text-center  m-5" >
+                        <a class="all color-B10000 btn-more" href="{{ route('giveawayProduct') }}">Xem thêm sản phẩm mới <i
                                 class="fa-solid fa-angles-right"></i></a>
                     </div>
-                @endif
-            </div>
         </div>
     </div>
-    <br>
-    <hr>
+
+    <div>
+        <img src="{{asset("/img/image/banner-home-2.png")}}" alt="">
+    </div>
 
     @section('script')
         <script src="{{ asset('/js/favorite.js') }}"></script>
