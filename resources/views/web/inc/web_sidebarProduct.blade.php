@@ -34,7 +34,7 @@
             @forelse($provinces as $province)
             <div class="category-2-item" data-provinceid="{{ $province->id }}">
                 <input type="checkbox" class="province-checkbox" />
-                <span>{{$province->province_name}}</span>
+                <span>{{ $province->province_name }}</span>
             </div>
             @empty
             <div class="category-2-item" style="color:rgb(177,0,0);">
@@ -47,12 +47,12 @@
         <div class="category-3">
             <div class="box">
                 <div class="slider">
-                    <input type="range" id="rangeInput" min="0" max="1000000" value="0" />
-                    <input type="range" id="rangeInput2" min="1000000" max="2000000" value="1000000" />
+                    <input type="range" id="rangeInput" min="0" max="2000000" value="0" />
+                    <input type="range" id="rangeInput2" min="1000000" max="5000000" value="2000000" />
                 </div>
                 <div class="value">
                     <div id="value1">0</div>
-                    <div id="value2" style="margin-left: 4px">- 1000000</div>
+                    <div id="value2" style="margin-left: 4px">- 2000000</div>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
         var selectedBrands = [];
         var selectedProvinces = [];
         var rangeInputMin = 0;
-        var rangeInputMax = 1000000;
+        var rangeInputMax = 2000000;
 
         // Toggle brand visibility when clicking on the extend icon
         $('.toggle-brands').on('click', function() {
@@ -139,6 +139,20 @@
                 },
                 success: function(response) {
                     $('.list-product').html(response.productHtml);
+                    var categoryNames = response.categoryNames.join(', ');
+                    var brandNames = response.brandNames.join(', ');
+                    var titleText = '';
+
+                    if (categoryNames && brandNames) {
+                        titleText = categoryNames + ' - ' + brandNames;
+                    } else if (categoryNames) {
+                        titleText = categoryNames;
+                    } else if (brandNames) {
+                        titleText = brandNames;
+                    } else {
+                        titleText = 'Sản phẩm';
+                    }
+                    $('.title-text').text(titleText);
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -152,7 +166,7 @@
             selectedBrands = [];
             selectedProvinces = [];
             rangeInputMin = 0;
-            rangeInputMax = 1000000;
+            rangeInputMax = 2000000;
             $('.category-checkbox, .brand-checkbox, .province-checkbox').prop('checked', false);
             $('#value1').text(rangeInputMin); // Reset displayed min value
             $('#value2').text(rangeInputMax); // Reset displayed max value
@@ -163,6 +177,7 @@
                 data: {},
                 success: function(response) {
                     $('.list-product').html(response.productHtml);
+                    $('.title-text').text('Sản phẩm');
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);

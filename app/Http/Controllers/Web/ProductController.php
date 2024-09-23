@@ -174,10 +174,15 @@ class ProductController extends Controller
         $rangeInputMax = $request->input('rangeInputMax', null);
         $provinces = Province::all();
 
+        $category = Category::whereIn('id', $selectedCategories)->pluck('name')->toArray();
+        $brand = Brand::whereIn('id', $selectedBrands)->pluck('name')->toArray();
+
         $products = $this->productService->filterProducts($selectedCategories, $selectedBrands, $selectedProvinces, $rangeInputMin, $rangeInputMax);
 
         return response()->json([
             'productHtml' => view('web.product.product_list', compact('products', 'provinces'))->render(),
+            'categoryNames' => $category,
+            'brandNames' => $brand,
         ]);
     }
 }
