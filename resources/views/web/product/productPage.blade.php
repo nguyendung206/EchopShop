@@ -32,6 +32,16 @@
     </div>
 
     <div class="content container">
+
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-9 button-page-wrap">
+                <a href="{{route('secondhandProduct')}}" class="{{$case == "secondhand" ? 'active' : ''}}">Mua bán</a>
+                <a href="{{route('exchangeProduct')}}"  class="{{$case == "exchange" ? 'active' : ''}}">Trao đổi</a>
+                <a href="{{route('giveawayProduct')}}" class="{{$case == "giveaway" ? 'active' : ''}}">Hàng tặng</a>
+            </div>
+
+        </div>
         <div class="row">
             @include('web.inc.web_slideProduct')
             <div class="col-lg-9 col-12">
