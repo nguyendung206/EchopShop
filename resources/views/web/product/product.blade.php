@@ -4,7 +4,18 @@
 @endsection
 
 @section('content')
-<div class="content container mt-4">
+<div class="title-line">
+    <div class="title-text">
+        @if(isset($category) && isset($brand))
+        {{ $category->name }} - {{ $brand->name }}
+        @elseif(isset($category))
+        {{ $category->name }}
+        @else
+        Sản phẩm
+        @endif
+    </div>
+</div>
+<div class="content container">
     <div class="row">
         @include('web.inc.web_sidebarProduct')
         <div class="col-lg-9 col-12">
