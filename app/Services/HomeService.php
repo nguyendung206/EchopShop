@@ -9,7 +9,7 @@ class HomeService
     public function getProduct($type, $perPage, $pageName)
     {
         $query = Product::query();
-        $products = $query->where('status', 1)->where('type', $type)->paginate($perPage, ['*'], $pageName);
+        $products = $query->where('status', 1)->where('type', $type)->with('shop')->paginate($perPage, ['*'], $pageName);
 
         return $products;
     }
@@ -26,7 +26,9 @@ class HomeService
             ->when($brandId, function ($query, $brandId) {
                 return $query->where('brand_id', $brandId);
             })
-            ->where('type', $type)->get();
+            ->where('type', $type)
+            ->with(['shop', 'shop.user', 'shop.user.province'])
+            ->get();
 
         return $products;
     }
