@@ -6,7 +6,6 @@ use App\Enums\TypeProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Brand;
-use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Province;
 use App\Services\HomeService;
@@ -71,7 +70,7 @@ class HomeController extends Controller
         $products = $this->homeService->filterProducts($request, $type);
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
-            
+
             return response()->json([
                 'productHtml' => view('web.product.listProduct', compact('products'))->render(),
             ]);
