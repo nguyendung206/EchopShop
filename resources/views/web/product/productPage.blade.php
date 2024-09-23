@@ -3,12 +3,15 @@
 @php
     $url = Str::lower(request()->url());
     $case = 'giveaway';
+    $dataUrl = route('giveawayProduct');
 
     if (Str::contains($url, 'secondhand')) {
         $case = 'secondhand';
+        $dataUrl = route('secondhandProduct');
     }
     if (Str::contains($url, 'exchange')) {
         $case = 'exchange';
+        $dataUrl = route('exchangeProduct');
     }
 @endphp
 
@@ -22,12 +25,12 @@
     <div class="title-line">
         <div class="title-text">
             @if ($case == 'exchange')
-    Trao đổi hàng hoá
-    @elseif ($case == 'secondhand')
-    Mua bán đồ SECONDHAND
-    @else
-    Hàng cũ đem tặng
-    @endif
+                Trao đổi hàng hoá
+            @elseif ($case == 'secondhand')
+                Mua bán đồ SECONDHAND
+            @else
+                Hàng cũ đem tặng
+            @endif
         </div>
     </div>
 
@@ -36,9 +39,9 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-lg-9 button-page-wrap">
-                <a href="{{route('secondhandProduct')}}" class="{{$case == "secondhand" ? 'active' : ''}}">Mua bán</a>
-                <a href="{{route('exchangeProduct')}}"  class="{{$case == "exchange" ? 'active' : ''}}">Trao đổi</a>
-                <a href="{{route('giveawayProduct')}}" class="{{$case == "giveaway" ? 'active' : ''}}">Hàng tặng</a>
+                <a href="{{ route('secondhandProduct') }}" class="{{ $case == 'secondhand' ? 'active' : '' }}">Mua bán</a>
+                <a href="{{ route('exchangeProduct') }}" class="{{ $case == 'exchange' ? 'active' : '' }}">Trao đổi</a>
+                <a href="{{ route('giveawayProduct') }}" class="{{ $case == 'giveaway' ? 'active' : '' }}">Hàng tặng</a>
             </div>
 
         </div>
@@ -67,15 +70,24 @@
                                         <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
                                         <p class="price product-price color-B10000 pt-2 line-clamp-1">
                                             {{ format_price($product->price) }}</p>
-                                            <div class="user-product-wrap">
-                                                @if (isset($product->shop))
-                                        <img class="mini-avatar" src="{{getImage($product->shop->logo)}}" alt="">
-                                        <div class="user-product "><p class="line-clamp-1">{{$product->shop->name}}  &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p></div>
-                                        @else
-                                        <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin">
-                                        <div class="user-product " style="width: 77%"><p class="line-clamp-1">Sản phẩm của echop</p></div>
-                                        @endif
-                                            </div>
+                                        <div class="user-product-wrap">
+                                            @if (isset($product->shop))
+                                                <img class="mini-avatar" src="{{ getImage($product->shop->logo) }}"
+                                                    alt="">
+                                                <div class="user-product ">
+                                                    <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
+                                                            src="{{ asset('/img/icon/doc-top.png') }}"
+                                                            alt="">&nbsp;
+                                                        {{ $product->shop->user->province->province_name }}</p>
+                                                </div>
+                                            @else
+                                                <img src="{{ asset('/img/image/logo.png') }}" alt=""
+                                                    class="mini-avatar-admin">
+                                                <div class="user-product " style="width: 77%">
+                                                    <p class="line-clamp-1">Sản phẩm của echop</p>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </a>
                                     <br>
                                     @switch($case)
@@ -112,7 +124,8 @@
                                 @endforelse
                             @else
                                 @forelse($products as $product)
-                                    <div class="gift-item m-2 col-lg-4 col-6" style="margin-left: 0px !important;margin-right: 0px !important">
+                                    <div class="gift-item m-2 col-lg-4 col-6"
+                                        style="margin-left: 0px !important;margin-right: 0px !important">
                                         <img src="{{ getImage($product->photo) }}" alt="" class="gift-img">
                                         <div class="layer">
                                             <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
@@ -146,12 +159,88 @@
                             @endif
 
                         </div>
+
+                        <div class="text-center more-wrap">
+                            @if ($products->hasMorePages())
+                                <button id="btn-more">
+                                    Xem thêm
+                                </button>
+                            @endif
+                        </div>
                     </div>
+
+
                 </div>
+
             </div>
 
             @section('script')
                 <script src="{{ asset('/js/favorite.js') }}"></script>
+
+                <script>
+                    $(document).ready(function() {
+                        var currentPage = 1;
+                        var brandId = null;
+                        var provinceIds = null;
+                        var rangeInput = null;
+                        var rangeInput2 = null;
+                        var option = null;
+
+                        $('#filter-button').on('click', function() {
+                            currentPage = 1;
+                        })
+                        $('#btn-more').click(function(event) {
+
+                            $('.custom-radio').each(function() {
+                                if ($(this).find('label').hasClass('checked-text')) {
+                                    option = $(this).find('input').val();
+                                }
+                            });
+
+                            var rangeInput = Math.round($('#rangeInput').val() / 100000) * 100000;
+                            var rangeInput2 = Math.floor($('#rangeInput2').val() / 100000) * 100000;
+
+                            var provinceIds = [];
+                            $('.category-2-item.checked-text').each(function() {
+                                var provinceId = $(this).data('provinceid');
+                                provinceIds.push(provinceId);
+                            });
+
+                            event.preventDefault();
+                            currentPage++;
+
+
+                            $.ajax({
+                                url: @json($dataUrl),
+                                method: 'GET',
+                                data: {
+                                    page: currentPage,
+                                    brandId: brandId,
+                                    provinceIds: provinceIds,
+                                    rangeInputMin: rangeInput,
+                                    rangeInputMax: rangeInput2,
+                                    option: option,
+                                },
+                                success: function(response) {
+                                    $('.list-product').append(response.productHtml);
+                                    console.log(response);
+
+                                    if (response.hasMorePages) {
+                                        if ($('.more-wrap').children().length === 0) {
+                                            $('.more-wrap').append(
+                                                `<button id="btn-more">Xem thêm</button>`)
+                                        }
+                                    } else {
+                                        $('#btn-more').hide();
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+
+                                }
+                            });
+                        });
+                    })
+                </script>
             @endsection
 
         @endsection

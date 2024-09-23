@@ -58,7 +58,7 @@
     <div class="category-3">
         <div class="box">
             <div class="slider">
-                <input type="range" id="rangeInput" min="0" max="1000000" value="100000" />
+                <input type="range" id="rangeInput" min="0" max="1000000" value="0" />
                 <input type="range" id="rangeInput2" min="1000000" max="2000000" value="1000000" />
             </div>
             <div class="value">
@@ -109,7 +109,7 @@
                 100;
             rangeInput.style.background = `linear-gradient(to right, #ddd ${value}%, rgb(177,0,0,1) ${value}%)`;
             document.getElementById("value1").textContent = `Giá: ${
-          Math.floor(rangeInput.value / 100000) * 100000
+                Math.round( (rangeInput.value / 100000 * 100000) / 100000) * 100000
         }`;
         }
 
@@ -217,6 +217,7 @@
 
 
             $('#filter-button').on('click', function() {
+
                 let url = $(this).data('url');
                 $('.custom-radio').each(function() {
                     if ($(this).find('label').hasClass('checked-text')) {
@@ -224,15 +225,14 @@
                     }
                 });
 
-                var rangeInput = $('#rangeInput').val();
-                var rangeInput2 = $('#rangeInput2').val();
+                var rangeInput = Math.round($('#rangeInput').val() / 100000) * 100000;
+                var rangeInput2 = Math.floor($('#rangeInput2').val() / 100000) * 100000;
                 
                 var provinceIds = [];
                 $('.category-2-item.checked-text').each(function() {
                     var provinceId = $(this).data('provinceid');
                     provinceIds.push(provinceId);
                 });
-                console.log(rangeInput);
                 
                 $.ajax({
                     url: url,
@@ -245,9 +245,15 @@
                         option: option,
                     },
                     success: function(response) {
-                        $('.list-product').html(response.productHtml);
-                        
                         console.log(response);
+                        
+                        $('.list-product').html(response.productHtml);
+                        if(response.hasMorePages) {
+                            $('#btn-more').show()
+                        } else {
+                            $('#btn-more').hide()
+                        }
+                       
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);

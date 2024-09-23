@@ -322,6 +322,21 @@ a:hover {
     border: 2px solid #B10000;
 }
 
+#btn-more {
+    border: 2px solid #B10000;
+    padding: 8px 16px;
+    background-color: white;
+    color: #B10000;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 70px 0px;
+    cursor: pointer;
+}
+#btn-more:hover {
+    color: white;
+    background-color: #B10000;
+}
+
 .category-img {
     width: 150px;
     height: 150px;
