@@ -1,10 +1,8 @@
 <div class="container py-5">
-    <div class="category pt-2">
+    <div class="pt-2">
         <div class="container">
             <br>
             <h1>Sản phẩm yêu thích của bạn</h1>
-            <div class="test"></div>
-            <hr>
         </div>
     </div>
     <div class="col-lg-12 col-sm-12 col-12 mt-4">

@@ -69,7 +69,7 @@ class AuthController extends Controller
                 'province_id' => $request->province_id,
                 'district_id' => $request->district_id,
                 'ward_id' => $request->ward_id,
-                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users', 'nophoto.png'),
+                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', 'nophoto.png'),
             ];
 
             User::create($userData);
