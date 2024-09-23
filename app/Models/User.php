@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Shop::class, 'user_id', 'id');
     }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'id');
+    }
 }

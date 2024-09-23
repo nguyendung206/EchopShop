@@ -487,13 +487,15 @@ a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
+.user-product-wrap {
+    height: 21px;
+}
 .user-product {
     line-height: 11.72px;
     font-size: 10px;
     color: #949494;
     display: inline-block;
-    width: 80%;
+    width: 88%;
     position: relative;
 }
 
@@ -501,7 +503,10 @@ a:hover {
     width: 18px !important;
     height: 18px !important;
 }
-
+.mini-avatar-admin {
+    width: 40px !important;
+    height: 18px;
+}
 .buy-wrap {
     border: 1px solid #ff0000;
     font-size: 14px;
@@ -1609,6 +1614,12 @@ a:hover {
         right: 4% !important;
         font-size: 16px;
         padding: 7px;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1337px) {
+    .header-name {
+        display: none;
     }
 
     @media (min-width: 1200px) and (max-width: 1337px) {
