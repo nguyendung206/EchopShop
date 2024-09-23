@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Chạy migrations.
      *
      * @return void
      */
@@ -15,19 +15,24 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->string('color')->nullable();
             $table->string('size')->nullable();
             $table->integer('quantity')->nullable();
             $table->timestamps();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+
+            // Ràng buộc khóa ngoại
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+
+            // Có thể thêm ràng buộc duy nhất để tránh trùng lặp trong giỏ hàng
+            $table->unique(['user_id', 'product_id', 'color', 'size']);
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Phục hồi migrations.
      *
      * @return void
      */

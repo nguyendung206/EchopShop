@@ -185,6 +185,20 @@ body {
     margin-top: 35px;
 }
 
+.product-button a {
+    border: none;
+    background-color: rgba(177, 0, 0, 1);
+    color: white;
+    padding: 14px 54px;
+    font-size: 20px;
+
+}
+
+.product-button a:hover {
+    background-color: rgba(177, 0, 0, 0.8);
+    cursor: pointer;
+}
+
 .product-button button {
     border: none;
     background-color: rgba(177, 0, 0, 1);

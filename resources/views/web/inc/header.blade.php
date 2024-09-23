@@ -72,7 +72,7 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="row justify-content-between align-items-center col-lg-2 col-md-2 col-2 col-sm-2 ml-1">
                         <a href="{{ route('home') }}" style="width: 75%;">
-                            <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="" >
+                            <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
                         <a href="" class="d-n">
                             <i class="fa-regular fa-heart"></i>
@@ -110,7 +110,7 @@
                                 <a href="#"><i class="fa-regular fa-bell"></i></i></a>
                             </div>
                             <div class="search">
-                                <a href="#">
+                                <a href="{{route('cart.index')}}">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </a>
                             </div>

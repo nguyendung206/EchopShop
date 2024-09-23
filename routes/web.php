@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
@@ -69,6 +70,11 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     });
 
     Route::resource('/post', ProductController::class);
+
+    Route::prefix('/cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/store', [CartController::class, 'store'])->name('store');
+    });
 });
 
 Route::get('/category/{slug}', [ProductController::class, 'filterByCategory'])->name('filter.category');

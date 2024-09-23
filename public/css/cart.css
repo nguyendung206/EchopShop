@@ -1,0 +1,364 @@
+body {
+    font-family: 'roboto';
+}
+.row {
+    padding: 0;
+}
+.header {
+    border-bottom: 1px solid rgba(204, 204, 204,0.5);
+}
+.content {
+    background-color: #f5f5f5;
+    padding-top: 20px;
+}
+.content-wrap {
+
+}
+.cart-header {
+    background-color: white;
+    margin-bottom: 10px;
+}
+.cart-header-wrap {
+    display: flex;
+    align-items: center;
+    height: 55px;
+}
+.cart-header-wrap  {
+    display: flex;
+    text-align: center;
+}
+.cart-header-wrap div:nth-of-type(1){
+    text-align: right;
+}
+.cart-header-wrap div:nth-of-type(2){
+    text-align: left;
+}
+.cart-main {
+    background-color: white;
+}
+.cart-main-header {
+    border-bottom: 1px solid rgba(204, 204, 204,0.5);
+    height: 60px;
+    align-items: center;
+}
+.content-wrap.container {
+    padding: 0 !important;
+    display: block !important;
+}
+.content {
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+.cart-main-header {
+    display: flex;
+    text-align: center;
+}
+.cart-main-header div:nth-of-type(1) {
+    text-align: right;
+}
+.cart-main-header div:nth-of-type(2) {
+    text-align: left;
+}
+.cart-main-header b {
+    background-color: rgb(177,0,0);
+    padding: 2px 3px;
+    border-radius: 4px;
+    color: white;
+    margin-right: 4px;
+    font-weight: 400;
+}
+.cart-main-header {
+    font-weight: 600;
+}
+.cart-item {
+    text-align: center;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+.cart-item div:nth-of-type(2) {
+    text-align: left;
+    display: flex;
+}
+.img-item img{
+    width: 80px;
+    height: 80px;
+}
+.item-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: space-between;
+    font-size: 12px;
+}
+.class-item{
+    color: #7c7b7b;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.list-class {
+    position: absolute;
+    background-color: white;
+    border: 1px solid rgba(124, 123, 123,0.5);
+    display: none;
+}
+.list-class.open-class {
+    display: block !important;
+    z-index: 10;
+}
+.list-class div {
+    border-bottom: 1px solid rgba(124, 123, 123,0.5);
+    padding: 4px 16px;
+}
+.open-list-class {
+    cursor: pointer;
+}
+
+.class-item b {
+    display: block;
+    font-weight: 400;
+}
+.class-item i {
+    margin-right: 6px;
+    color: #7c7b7b;
+}
+.name-item-cart {
+    font-size: 13px;
+}
+.unit-price {
+    font-size: 12px;
+}
+.unit-price b {
+    font-weight: 400;
+    color: #7c7b7b;
+    text-decoration: line-through;
+}
+
+/* number input */
+.number-input {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .number-input button {
+    background-color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+  }
+  
+  .number-input input[type="number"] {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  .number-input button:focus {
+    outline: none;
+  }
+  
+  .number-input button:hover {
+    background-color: #fff7f7;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Loại bỏ spinner trên Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+/* number input */
+.total-amount {
+    font-size: 12px;
+    color: rgb(177,0,0);
+}
+.action-item {
+    font-size: 12px;
+}   
+.action-item button:nth-of-type(2) {
+    display: block;
+    color: rgb(177,0,0);
+    font-size: 10px;
+    font-weight: 400;
+}
+.action-item button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+/* checkbox */
+[class*="custom-checkbox"] {
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgba(177, 0, 0, 1);
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+[class*="custom-checkbox"].checked::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 2px;
+    width: 8px;
+    height: 16px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+[class*="custom-checkbox"].checked {
+    background-color: rgba(177, 0, 0, 1);
+
+}
+/* checkbox */
+
+.content-2 {
+    background-color: #f5f5f5 !important;
+    margin-top: 0px !important;
+
+}
+.content-2-wrap.container {
+    padding: 20px 0;
+    background-color: white;
+}
+.content-2-wrap {
+    display: flex;
+    align-items: center;
+}
+.main-content-item {
+    display: flex;
+    font-size: 14px;
+}
+.main-content-item div {
+    margin-right: 25px;
+}
+.total-price {
+    font-size: 14px;
+    display: flex;
+}
+.total-price div {
+    margin-right: 10px;
+}
+.total-price span {
+    color: rgb(177,0,0);
+    font-size: 18px;
+}
+.order-button button {
+    border: none;
+    background-color: rgb(177,0,0);
+    color: white;
+    padding: 8px 16px;
+}
+.order-button button:hover {
+    background-color: rgb(177,0,0,0.8);
+}
+.content-5 {
+    background-color: #f5f5f5;
+}
+.content-5-title {
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 60px 0;
+}
+.content-5-wrap.container {
+    margin-bottom: 0px !important;
+    padding-bottom: 70px;
+}
+
+@media (max-width: 992px) {
+    .line-clamp {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Số dòng tối đa */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .change-item {
+        font-size: 10px;
+      }
+      .expire-day-item {
+        font-size: 10px;
+      }
+      .class-item {
+        font-size: 10px;
+      }
+      .action-item {
+        font-size: 10px;
+      }
+      .res-none {
+        display: none;
+    }
+}
+@media (max-width: 450px) {
+    .res-none {
+        display: none;
+    }
+    .res-change-item {
+        display: block !important;
+    }
+    .minus {
+        display: none;
+    }
+    .plus {
+        display: none;
+    }
+   
+    .number-input input[type="number"] {
+        width: 44px;
+    }
+    .cart-header {
+        font-size: 12px;
+    }
+    .total-amount {
+        font-size: 10px;
+        padding: 0 !important;
+    }
+    .unit-price {
+        font-size: 10px;
+    }
+    .action-item {
+        padding: 0 !important;
+    }
+    .content-2-wrap.container {
+        font-size: 12px;
+    }
+    .total-price span {
+        font-size: 12px;
+    }
+    .order-button button {
+        font-size: 12px;
+    }
+    .order-button {
+        padding: 0 !important;
+    }
+    .total-price {
+        font-size: 12px;
+    }
+    .total-amount {
+        font-size: 12px;
+    }
+    .filter-item {
+        font-size: 12px;
+    }
+    .responsive-menu-icon {
+        font-size: 18px;
+    }
+    .action-item button {
+        padding: 0;
+    }
+    .order-button button {
+        font-size: 8px;
+    }
+}

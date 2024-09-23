@@ -9,17 +9,17 @@ HOME
 @section('content')
 @php
 $items = [
-    [
-        'label' => 'Echop',
-        'href' => route('home')
-    ],
-    [
-        'label' => $product->type->label(),
-        'href' => ''
-    ],
-    [
-        'label' => $product->name,
-    ]
+[
+'label' => 'Echop',
+'href' => route('home')
+],
+[
+'label' => $product->type->label(),
+'href' => ''
+],
+[
+'label' => $product->name,
+]
 ];
 @endphp
 @include('components.breadcrumb', ['items' => $items])
@@ -66,8 +66,16 @@ $items = [
                 @if($product->type->value == 1)
                 <button>Trao đổi</button>
                 @elseif($product->type->value == 2)
-                <button>Mua hàng</button>
-                <button>Thêm vào giỏ hàng</button>
+                <a class="text-white">Mua hàng</a>
+                @auth
+                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
+                    Thêm hàng vào giỏ
+                </a>
+                @else
+                <a href="{{ route('web.login') }}" class="btn-cart-product">
+                    Thêm hàng vào giỏ
+                </a>
+                @endauth
                 @elseif($product->type->value == 3)
                 <button>Nhận quà tặng</button>
                 @endif
@@ -744,6 +752,7 @@ $items = [
         document.getElementById('main-image').src = imageSrc;
     }
 </script>
-<script src="{{ asset('/js/favorite.js')}}"></script>
+<script src="{{ asset('/js/favorite.js') }}"></script>
+<script src="{{ asset('/js/cart.js')}}"></script>
 @endsection
 @endsection
