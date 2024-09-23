@@ -32,7 +32,7 @@ return new class extends Migration
             $table->bigInteger('province_id')->nullable();
             $table->bigInteger('district_id')->nullable();
             $table->bigInteger('ward_id')->nullable();
-            $table->tinyInteger('status')->unsigned()->default(Status::Active);
+            $table->tinyInteger('status')->unsigned()->default(Status::ACTIVE->value);
             $table->bigInteger('shop_id')->nullable();
             $table->integer('role')->default(1);
             $table->timestamps();

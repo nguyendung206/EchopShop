@@ -30,12 +30,14 @@
                 </div>
             @endforeach
         </div>
+        @if ($banners->count() != 0)
         <a class="carousel-control-prev icon-hover" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <i class="icon fa-solid fa-arrow-left" aria-hidden="true"></i>
         </a>
         <a class="carousel-control-next icon-hover" href="#carouselExampleIndicators" role="button" data-slide="next">
             <i class="icon fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
+        @endif
     </div>
 
     <div class=" pt-2">
@@ -94,8 +96,13 @@
                                 <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
                                 <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($product->price) }}</p>
                                 <div class="user-product-wrap">
-                                    <img class="mini-avatar" src="{{asset('/img/image/mini-avt.png')}}" alt="">
-                                    <div class="user-product "><p class="line-clamp-1">Trần thị Diễm My &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt=""> &nbsp; 1 giờ trước &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; Thành Phố huế</p></div>
+                                    @if (isset($product->shop))
+                                        <img class="mini-avatar" src="{{getImage($product->shop->logo)}}" alt="">
+                                        <div class="user-product "><p class="line-clamp-1">{{$product->shop->name}}  &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p></div>
+                                    @else
+                                        <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin">
+                                        <div class="user-product " style="width: 77%"><p class="line-clamp-1">Sản phẩm của echop</p></div>
+                                    @endif
                                 </div>
                             </a>
                             <br>
@@ -157,8 +164,13 @@
                                     <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
                                     <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($product->price) }}</p>
                                     <div class="user-product-wrap">
-                                        <img class="mini-avatar" src="{{asset('/img/image/mini-avt.png')}}" alt="">
-                                        <div class="user-product "><p class="line-clamp-1">Trần thị Diễm My &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt=""> &nbsp; 1 giờ trước &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; Thành Phố huế</p></div>
+                                        @if (isset($product->shop))
+                                        <img class="mini-avatar" src="{{getImage($product->shop->logo)}}" alt="">
+                                        <div class="user-product "><p class="line-clamp-1">{{$product->shop->name}}  &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p></div>
+                                        @else
+                                        <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin">
+                                        <div class="user-product " style="width: 77%"><p class="line-clamp-1">Sản phẩm của echop</p></div>
+                                        @endif
                                     </div>
                                 </a>
                                 <br>
