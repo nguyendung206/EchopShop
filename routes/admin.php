@@ -78,4 +78,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     //product
     Route::resource('/product', ProductController::class);
     Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
+
+    Route::prefix('userproduct')->name('userproduct.')->group(function () {
+        Route::get('/', [ProductController::class, 'userproduct'])->name('index');
+        Route::get('/show/{id}', [ProductController::class, 'showuserproduct'])->name('show');
+        Route::post('/changestatus/{id}', [ProductController::class, 'statususerproduct'])->name('changestatus');
+    });
 });

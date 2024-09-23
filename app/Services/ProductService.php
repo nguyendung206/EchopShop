@@ -32,6 +32,31 @@ class ProductService
         return $query->paginate(10);
     }
 
+    public function getProductsUser($request)
+    {
+        $query = Product::query();
+
+        $query->whereNotNull('shop_id');
+
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
+            });
+        }
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('type') && $request->type != '') {
+            $query->where('type', $request->type);
+        }
+
+        return $query->paginate(10);
+    }
+
     public function getPosts($perPage)
     {
         try {

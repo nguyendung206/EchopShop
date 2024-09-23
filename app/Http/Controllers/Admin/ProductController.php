@@ -158,4 +158,33 @@ class ProductController extends Controller
 
         return view('admin.product.show', compact('product'));
     }
+
+    public function userproduct(Request $request)
+    {
+        $datas = $this->productService->getProductsUser($request);
+
+        return view('admin.userproduct.index', compact('datas'));
+    }
+
+    public function statususerproduct($id)
+    {
+        try {
+            $product = Product::findOrFail($id);
+            $this->statusService->changeStatus($product);
+            flash('Thay đổi trạng thái thành công')->success();
+        } catch (\Exception $e) {
+            flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
+
+            return redirect()->route('admin.userproduct.index');
+        }
+
+        return redirect()->route('admin.userproduct.index');
+    }
+
+    public function showuserproduct($id)
+    {
+        $product = Product::where('id', $id)->first();
+
+        return view('admin.userproduct.show', compact('product'));
+    }
 }
