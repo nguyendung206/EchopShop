@@ -32,6 +32,16 @@
     </div>
 
     <div class="content container">
+
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-9 button-page-wrap">
+                <a href="{{route('secondhandProduct')}}" class="{{$case == "secondhand" ? 'active' : ''}}">Mua bán</a>
+                <a href="{{route('exchangeProduct')}}"  class="{{$case == "exchange" ? 'active' : ''}}">Trao đổi</a>
+                <a href="{{route('giveawayProduct')}}" class="{{$case == "giveaway" ? 'active' : ''}}">Hàng tặng</a>
+            </div>
+
+        </div>
         <div class="row">
             @include('web.inc.web_slideProduct')
             <div class="col-lg-9 col-12">
@@ -57,16 +67,15 @@
                                         <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
                                         <p class="price product-price color-B10000 pt-2 line-clamp-1">
                                             {{ format_price($product->price) }}</p>
-                                        <div class="user-product-wrap">
-                                            <img class="mini-avatar" src="{{ asset('/img/image/mini-avt.png') }}"
-                                                alt="">
-                                            <div class="user-product ">
-                                                <p class="line-clamp-1">Trần thị Diễm My &nbsp;<img
-                                                        src="{{ asset('/img/icon/doc-top.png') }}" alt=""> &nbsp; 1
-                                                    giờ trước &nbsp;<img src="{{ asset('/img/icon/doc-top.png') }}"
-                                                        alt="">&nbsp; Thành Phố huế</p>
+                                            <div class="user-product-wrap">
+                                                @if (isset($product->shop))
+                                        <img class="mini-avatar" src="{{getImage($product->shop->logo)}}" alt="">
+                                        <div class="user-product "><p class="line-clamp-1">{{$product->shop->name}}  &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p></div>
+                                        @else
+                                        <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin">
+                                        <div class="user-product " style="width: 77%"><p class="line-clamp-1">Sản phẩm của echop</p></div>
+                                        @endif
                                             </div>
-                                        </div>
                                     </a>
                                     <br>
                                     @switch($case)
