@@ -11,14 +11,14 @@
     <div class="row">
         @include('web.profile.sidebar')
         <div class="col-lg-9 col-sm-12 col-12 mt-4">
-            @if(optional(Auth::user()->shop)->status->value === 2)
+            @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 2)
             <h1 class="profile-title text-center">Đang chờ phê duyệt</h1>
             @else
             <div class="col-md-12">
                 <h1 class="profile-title">Thông tin Shop</h1>
                 <p class="profile-content">Những thông tin dưới đây đại diện cho Shop của bạn. Vui lòng nhập đầy đủ các thông tin.</p>
             </div>
-            <form action="{{route('web.registershop.store')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('registershop.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="user_id" value="{{ optional(Auth::user())->id }}">
                 <div class="row">

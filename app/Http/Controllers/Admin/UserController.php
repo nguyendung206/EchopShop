@@ -8,6 +8,7 @@ use App\Models\District;
 use App\Models\Province;
 use App\Models\User;
 use App\Models\Ward;
+use App\Services\StatusService;
 use App\Services\UserService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -16,9 +17,12 @@ class UserController extends Controller
 {
     protected $userService;
 
-    public function __construct(UserService $userService)
+    protected $statusService;
+
+    public function __construct(UserService $userService, StatusService $statusService)
     {
         $this->userService = $userService;
+        $this->statusService = $statusService;
     }
 
     // Hiển thị tất cả người dùng
@@ -119,25 +123,18 @@ class UserController extends Controller
         }
     }
 
-    public function updateStatus(Request $request, $id)
+    public function changeStatus(Request $request, $id)
     {
-        $user = User::findOrFail($id);
         try {
-            $updateData = [
-                'status' => $request->status,
-            ];
-            $user->update($updateData);
+            $user = User::findOrFail($id);
+            $this->statusService->changeStatus($user);
+            flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Sửa thông tin thành công.',
             ], 200);
-        } catch (QueryException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Sửa thông tin thất bại.',
-            ], 500);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Sửa thông tin thất bại.',

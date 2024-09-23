@@ -212,6 +212,9 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'StatusEnums' => \App\Enums\Status::class,
+        'TypeProductEnums' => \App\Enums\TypeProduct::class,
+        'TypePolicyEnums' => \App\Enums\TypePolicy::class,
+        'TypeDiscountEnums' => \App\Enums\TypeDiscount::class,
     ])->toArray(),
 
 ];

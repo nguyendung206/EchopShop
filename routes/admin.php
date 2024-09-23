@@ -4,7 +4,10 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShopController;
@@ -34,17 +37,32 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::post('/save', [ProfileController::class, 'update'])->name('profile.save');
     });
 
+    //discount
+    Route::resource('/discount', DiscountController::class);
+    Route::put('discount/changeStatus/{id}', [DiscountController::class, 'changeStatus'])->name('discount.changeStatus');
+
+    //contact
+    Route::prefix('contact')->name('contact.')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->name('index');
+        Route::get('/{id}', [ContactController::class, 'show'])->name('show');
+        Route::delete('/{id}', [ContactController::class, 'destroy'])->name('destroy');
+        Route::post('/sendMail', [ContactController::class, 'sendMail'])->name('sendMail');
+    });
+    //policy
+    Route::resource('/policy', PolicyController::class);
+    Route::put('policy/changeStatus/{id}', [PolicyController::class, 'changeStatus'])->name('policy.changeStatus');
+
     //category
     Route::resource('/category', CategoryController::class);
     Route::post('category/changestatus/{id}', [CategoryController::class, 'status'])->name('category.changestatus');
 
     //customer
     Route::resource('/customer', UserController::class);
-    Route::put('customer/updateStatus/{id}', [UserController::class, 'updateStatus'])->name('customer.updateStatus');
+    Route::put('customer/changeStatus/{id}', [UserController::class, 'changeStatus'])->name('customer.changeStatus');
 
     //partner
     Route::resource('/partner', PartnerController::class);
-    Route::put('partner/updateStatus/{id}', [PartnerController::class, 'updateStatus'])->name('partner.updateStatus');
+    Route::put('partner/changeStatus/{id}', [PartnerController::class, 'changeStatus'])->name('partner.changeStatus');
 
     //shop
     Route::resource('/shop', ShopController::class);
@@ -52,7 +70,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //banner
     Route::resource('/banner', BannerController::class);
-    Route::put('banner/updateStatus/{id}', [BannerController::class, 'updateStatus'])->name('banner.updateStatus');
+    Route::put('banner/changeStatus/{id}', [BannerController::class, 'changeStatus'])->name('banner.changeStatus');
 
     //banner
     Route::resource('/brand', BrandController::class);

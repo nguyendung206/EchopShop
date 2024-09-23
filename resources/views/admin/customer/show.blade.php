@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="col-12 mb-3">
                                     <h6>Trạng thái tài khoản</h6>
-                                    <p class="text-muted">{{App\Enums\UserStatus::getKey($user->status) == 'Active' ? 'Đang hoạt động' : 'Đã bị khoá'}}</p>
+                                    <p class="text-muted">{{StatusEnums::ACTIVE == $user->status ? 'Đang hoạt động' : 'Đã bị khoá'}}</p>
                                 </div>
                         </div>
                         <div class="d-flex justify-content-start">

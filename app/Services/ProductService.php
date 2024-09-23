@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Models\ProductUnit;
+use Illuminate\Support\Facades\Auth;
 
 class ProductService
 {
@@ -31,6 +32,24 @@ class ProductService
         return $query->paginate(10);
     }
 
+    public function getPosts($perPage)
+    {
+        try {
+            if (! Auth::check()) {
+                return [];
+            }
+
+            $user = Auth::user();
+            if ($user->shop) {
+                return Product::where('shop_id', $user->shop->id)->paginate($perPage);
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
     public function createProduct(ProductRequest $request)
     {
         $product = new Product;
@@ -38,6 +57,7 @@ class ProductService
         $product->description = $request->description;
         $product->status = $request->status;
         $product->price = $request->price;
+        $product->shop_id = $request->shop_id;
         $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
@@ -78,6 +98,7 @@ class ProductService
         $product->status = $request->status;
         $product->price = $request->price;
         $product->type = $request->type;
+        $product->shop_id = $request->shop_id;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
 
@@ -147,5 +168,42 @@ class ProductService
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function filterByCategory($categoryId)
+    {
+        return Product::where('category_id', $categoryId)->get();
+    }
+
+    public function filterByCategoryAndBrand($categoryId, $brandId)
+    {
+        return Product::where('category_id', $categoryId)
+            ->where('brand_id', $brandId)
+            ->get();
+    }
+
+    public function filterProducts($categoryIds = [], $brandIds = [], $provinceIds = [], $minPrice = null, $maxPrice = null, $condition = null)
+    {
+        $query = Product::query();
+
+        if (! empty($categoryIds)) {
+            $query->whereIn('category_id', $categoryIds);
+        }
+
+        if (! empty($brandIds)) {
+            $query->whereIn('brand_id', $brandIds);
+        }
+
+        if (! empty($provinceIds)) {
+            $query->whereHas('province', function ($q) use ($provinceIds) {
+                $q->whereIn('id', $provinceIds);
+            });
+        }
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
+        }
+
+        return $query->get();
     }
 }

@@ -15,7 +15,7 @@
                 <h1 class="profile-title">Thông tin cá nhân</h1>
                 <p class="profile-content">Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể thấy và chỉnh sửa những thông tin này.</p>
             </div>
-            <form action="{{ route('web.profile.save') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('profile.save') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="id" value="{{ $user->id }}">
@@ -121,7 +121,7 @@
                 <h1 class="profile-title">Thông tin bảo mật</h1>
                 <p class="profile-content">Những thông tin dưới đây mang tính bảo mật. Chỉ bạn mới có thể thấy và chỉnh sửa những thông tin này.</p>
             </div>
-            <form action="{{ route('web.identification.save') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('identification.save') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="id" value="{{ $user->id }}">

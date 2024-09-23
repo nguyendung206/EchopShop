@@ -1,5 +1,4 @@
 <br>
-<hr>
 <footer class="footer">
     <div class="container">
         <div class="row justify-content-between">
@@ -19,7 +18,7 @@
                 <h1 class="footer-heading">Về Echop</h1>
                 <ul>
                     <li><a href="#" class="footer-link">Giới thiệu</a></li>
-                    <li><a href="#" class="footer-link">Liên hệ với chúng tôi</a></li>
+                    <li><a href="{{route('about.contactUs.create')}}" class="footer-link">Liên hệ với chúng tôi</a></li>
                     <li><a href="#" class="footer-link">Blog</a></li>
                 </ul>
             </div>
@@ -35,11 +34,11 @@
             <div class="col-md-2 col-6">
                 <h1 class="footer-heading">Chính sách</h1>
                 <ul>
-                    <li><a href="#" class="footer-link">Chính sách bảo mật</a></li>
-                    <li><a href="#" class="footer-link">Điều khoản dịch vụ</a></li>
-                    <li><a href="#" class="footer-link">Hành vi bị cấm</a></li>
-                    <li><a href="#" class="footer-link">Chính sách giao tiếp</a></li>
-                    <li><a href="#" class="footer-link">Hướng dãn an toàn sử dụng</a></li>
+                    <li><a href="{{route('policy.security')}}" class="footer-link">Chính sách bảo mật</a></li>
+                    <li><a href="{{route('policy.term')}}" class="footer-link">Điều khoản dịch vụ</a></li>
+                    <li><a href="{{route('policy.prohibited')}}" class="footer-link">Hành vi bị cấm</a></li>
+                    <li><a href="{{route('policy.communicate')}}" class="footer-link">Chính sách giao tiếp</a></li>
+                    <li><a href="{{route('policy.safeToUse')}}" class="footer-link">Hướng dẫn an toàn sử dụng</a></li>
                 </ul>
             </div>
 

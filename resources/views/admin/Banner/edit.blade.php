@@ -21,7 +21,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Tiêu đề</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Tiêu đề<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="Tiêu đề" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') ? old('title') : $banner->title }}">
                             @error('title')
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Liên kết</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Liên kết<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="Liên kết" name="link" class="form-control @error('link') is-invalid @enderror" value="{{ old('link') ? old('link') : $banner->link }}">
                             @error('link')
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Mô tả</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Mô tả<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                         <textarea id="description" name="description" class="form-control">{{strip_tags( old('description') ? old('description') : $banner->description )}}</textarea>
                             @error('description')
