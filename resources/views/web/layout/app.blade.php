@@ -93,7 +93,7 @@
     @yield('content')
     @include('web.inc.footer')
 
-    
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -114,26 +114,22 @@
         // Toastr configuration with close button
         @if(session('success'))
         toastr.success("{{ session('success') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @elseif(session('error'))
         toastr.error("{{ session('error') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @elseif(session('info'))
         toastr.info("{{ session('info') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @elseif(session('warning'))
         toastr.warning("{{ session('warning') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @endif

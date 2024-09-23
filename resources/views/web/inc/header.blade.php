@@ -72,7 +72,7 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="row justify-content-between align-items-center col-lg-2 col-md-2 col-2 col-sm-2 ml-1">
                         <a href="{{ route('home') }}" style="width: 75%;">
-                            <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="" >
+                            <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
                         <a href="" class="d-n">
                             <i class="fa-regular fa-heart"></i>
@@ -127,7 +127,7 @@
                                 </a>
                             </div>
                             @else
-                            @if(optional(Auth::user()->shop)->status->value === 1)
+                            @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
                             <div class="btn-post px-2">
                                 <a href="{{ route('post.create') }}">
                                     <i class="fa-regular fa-file-lines mr-2"></i>

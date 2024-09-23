@@ -31,8 +31,8 @@ class ShopController extends Controller
         try {
             $this->shopService->createShop($request);
 
-            return redirect()->route('web.registershop.create')
-                ->with('success', 'Đăng ký shop thành công! Vui lòng chờ kiểm duyệt từ hệ thống');
+            return redirect()->route('registershop.create')
+                ->with('success', 'Đăng ký shop thành công! Vui lòng chờ kiểm duyệt từ hệ thống!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Đã xảy ra lỗi khi đăng ký Shop!')
