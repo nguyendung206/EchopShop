@@ -129,7 +129,7 @@
                                 </a>
                             </div>
                             @else
-                            @if(optional(Auth::user()->shop)->status === 1)
+                            @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
                             <div class="btn-post px-2">
                                 <a href="{{ route('post.create') }}">
                                     <i class="fa-regular fa-file-lines mr-2"></i>

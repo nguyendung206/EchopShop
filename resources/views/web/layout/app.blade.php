@@ -114,26 +114,22 @@
         // Toastr configuration with close button
         @if(session('success'))
         toastr.success("{{ session('success') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @elseif(session('error'))
         toastr.error("{{ session('error') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @elseif(session('info'))
         toastr.info("{{ session('info') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @elseif(session('warning'))
         toastr.warning("{{ session('warning') }}", null, {
-            closeButton: true,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-bottom-left',
             timeOut: 5000
         });
         @endif

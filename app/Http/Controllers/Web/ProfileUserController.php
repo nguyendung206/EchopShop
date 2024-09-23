@@ -60,7 +60,7 @@ class ProfileUserController extends Controller
 
             $profile->save();
 
-            return redirect()->route('web.profile.index', ['id' => $request->id])
+            return redirect()->route('profile.index', ['id' => $request->id])
                 ->with('success', 'Cập nhật thông tin thành công!');
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy hồ sơ.');
@@ -85,7 +85,7 @@ class ProfileUserController extends Controller
             }
             $profile->save();
 
-            return redirect()->route('web.profile.index', ['id' => $request->id])
+            return redirect()->route('profile.index', ['id' => $request->id])
                 ->with('success', 'Cập nhật thông tin thành công!');
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy hồ sơ.');
