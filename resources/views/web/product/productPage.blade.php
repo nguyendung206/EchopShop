@@ -3,12 +3,15 @@
 @php
 $url = Str::lower(request()->url());
 $case = 'giveaway';
+$dataUrl = route('giveawayProduct');
 
 if (Str::contains($url, 'secondhand')) {
 $case = 'secondhand';
+$dataUrl = route('secondhandProduct');
 }
 if (Str::contains($url, 'exchange')) {
 $case = 'exchange';
+$dataUrl = route('exchangeProduct');
 }
 @endphp
 
@@ -29,6 +32,7 @@ $case = 'exchange';
         Hàng cũ đem tặng
         @endif
     </div>
+</div>
 </div>
 
 <div class="content container">
@@ -116,6 +120,8 @@ $case = 'exchange';
                         @default
                         @endswitch
                     </div>
+
+
                 </div>
                 @empty
                 <div class="text-center w-100 py-5">
@@ -165,6 +171,71 @@ $case = 'exchange';
 @section('script')
 <script src="{{ asset('/js/favorite.js') }}"></script>
 <script src="{{ asset('/js/cart.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        var currentPage = 1;
+        var brandId = null;
+        var provinceIds = null;
+        var rangeInput = null;
+        var rangeInput2 = null;
+        var option = null;
+
+        $('#filter-button').on('click', function() {
+            currentPage = 1;
+        })
+        $('#btn-more').click(function(event) {
+
+            $('.custom-radio').each(function() {
+                if ($(this).find('label').hasClass('checked-text')) {
+                    option = $(this).find('input').val();
+                }
+            });
+
+            var rangeInput = Math.round($('#rangeInput').val() / 100000) * 100000;
+            var rangeInput2 = Math.floor($('#rangeInput2').val() / 100000) * 100000;
+
+            var provinceIds = [];
+            $('.category-2-item.checked-text').each(function() {
+                var provinceId = $(this).data('provinceid');
+                provinceIds.push(provinceId);
+            });
+
+            event.preventDefault();
+            currentPage++;
+
+
+            $.ajax({
+                url: @json($dataUrl),
+                method: 'GET',
+                data: {
+                    page: currentPage,
+                    brandId: brandId,
+                    provinceIds: provinceIds,
+                    rangeInputMin: rangeInput,
+                    rangeInputMax: rangeInput2,
+                    option: option,
+                },
+                success: function(response) {
+                    $('.list-product').append(response.productHtml);
+                    console.log(response);
+
+                    if (response.hasMorePages) {
+                        if ($('.more-wrap').children().length === 0) {
+                            $('.more-wrap').append(
+                                `<button id="btn-more">Xem thêm</button>`)
+                        }
+                    } else {
+                        $('#btn-more').hide();
+                    }
+                },
+                error: function(xhr, status, error) {
+
+                }
+            });
+        });
+    })
+</script>
 @endsection
 
 @endsection

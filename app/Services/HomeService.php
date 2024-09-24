@@ -28,7 +28,7 @@ class HomeService
             })
             ->where('type', $type)
             ->with(['shop', 'shop.user', 'shop.user.province'])
-            ->get();
+            ->paginate(9);
 
         return $products;
     }
