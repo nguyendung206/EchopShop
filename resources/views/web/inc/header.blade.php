@@ -43,32 +43,34 @@
 
 <header>
     <div class="header">
-        <div class="container-fluid topheader">
-            <div class="row justify-content-between align-items-center py-2">
-                <div class="hotline col-md-6 col-6 ">
-                    <a href="" class="text-white">
-                        <i class="fa-regular fa-circle-question"></i>
-                        <strong>Trợ giúp</strong>
-                    </a>
-                </div>
-                <div class="about col-md-6 col-6">
-                    <div class="language px-2">
-                        <a class="text-white" href="#">
-                            <i class="fa-solid fa-gear"></i>
-                            <span class="mx-2">Cài đặt</span>
+        <div class="topheader px-4">
+            <div class="container-fluid py-2 mw-1200">
+                <div class="row justify-content-between align-items-center ">
+                    <div class="hotline ">
+                        <a href="" class="text-white">
+                            <i class="fa-regular fa-circle-question"></i>
+                            <strong>Trợ giúp</strong>
                         </a>
                     </div>
-                    <div class="about-me px-2">
-                        <a class="text-white" href="#">Tải ứng dụng</a>
-                    </div>
-                    <div class="contact px-2">
-                        <a class="text-white" href="#">Hướng dẫn sử dụng ứng dụng</a>
+                    <div class="about">
+                        <div class="language px-2">
+                            <a class="text-white" href="#">
+                                <i class="fa-solid fa-gear"></i>
+                                <span class="mx-2">Cài đặt</span>
+                            </a>
+                        </div>
+                        <div class="about-me px-2">
+                            <a class="text-white" href="#">Tải ứng dụng</a>
+                        </div>
+                        <div class="contact px-2">
+                            <a class="text-white" href="#">Hướng dẫn sử dụng ứng dụng</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="mainheader">
-            <div class="container-fluid py-3">
+        <div class="mainheader px-4">
+            <div class="container-fluid mw-1200">
                 <div class="row justify-content-between align-items-center">
                     <div class="row justify-content-between align-items-center col-lg-2 col-md-2 col-2 col-sm-2 ml-1">
                         <a href="{{ route('home') }}" style="width: 75%;">
@@ -137,7 +139,7 @@
                                 </a>
                             </div>
                             @endif
-                            <div class="dropdown">
+                            <div class="dropdown ml-3">
                                 <a href="#" class="row align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(Auth::user()->avatar) }}" alt="">
                                     <span class="d-n ml-2 color-232323 header-name">{{ Auth::user()->name }} </span>
