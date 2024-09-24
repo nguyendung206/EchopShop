@@ -21,7 +21,7 @@ class ContactController extends Controller
 
     public function index(Request $request)
     {
-        $contacts = $this->contactService->index($request);
+        $contacts = $this->contactService->index($request->all());
 
         return view('admin.contact.index', compact('contacts'));
     }

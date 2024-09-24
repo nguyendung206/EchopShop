@@ -23,7 +23,7 @@ class PolicyController extends Controller
 
     public function index(Request $request)
     {
-        $policies = $this->policyService->index($request);
+        $policies = $this->policyService->index($request->all());
 
         return view('admin.policy.index', compact('policies'));
     }
@@ -36,7 +36,7 @@ class PolicyController extends Controller
     public function store(PolicyRequest $request)
     {
         try {
-            $this->policyService->store($request);
+            $this->policyService->store($request->all());
             flash('Thêm chính sách thành công')->success();
 
             return redirect()->route('admin.policy.index');
@@ -57,7 +57,7 @@ class PolicyController extends Controller
     public function update(PolicyRequest $request, $id)
     {
         try {
-            $policy = $this->policyService->update($request, $id);
+            $policy = $this->policyService->update($request->all(), $id);
             flash('Cập nhật chính sách thành công!')->success();
 
             return redirect()->route('admin.policy.index');

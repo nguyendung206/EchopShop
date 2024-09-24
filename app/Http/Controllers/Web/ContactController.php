@@ -21,7 +21,7 @@ class ContactController extends Controller
     public function store(ContactRequest $request)
     {
         try {
-            $this->contactService->store($request);
+            $this->contactService->store($request->all());
 
             return response()->json([
                 'status' => 'success',

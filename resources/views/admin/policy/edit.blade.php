@@ -23,7 +23,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Mô tả</label>
                         <div class="col-sm-9">
-                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') ? old('description') : $policy->description }}
                         </textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -48,6 +48,25 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Kiểu chính sách')</label>
+                        <div class="col-sm-9 mt-2">
+                            @foreach(\App\Enums\TypePolicy::cases() as $type)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input @error('type') is-invalid @enderror" type="radio" name="type" id="type_{{ $type->value }}" value="{{ $type->value }}"
+                                    {{ (old('type') == $type->value ||  $policy->type->value ==  $type->value) ? 'checked' : '' }}>
+                                <label style="font-size: 1rem;" class="form-check-label" for="type_{{ $type->value }}">
+                                    @lang($type->label())
+                                </label>
+                            </div>
+                            @endforeach
+                            @error('type')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('admin.policy.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>
                         <button type="submit" class="btn btn-primary">Sửa</button>

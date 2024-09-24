@@ -24,7 +24,7 @@ class BannerController extends Controller
 
     public function index(Request $request)
     {
-        $banners = $this->bannerService->index($request);
+        $banners = $this->bannerService->index($request->all());
 
         return view('admin.banner.index', compact('banners'));
 
@@ -72,7 +72,7 @@ class BannerController extends Controller
     public function update(BannerRequest $request, $id)
     {
         try {
-            $banner = $this->bannerService->update($request, $id);
+            $banner = $this->bannerService->update($request->all(), $id);
             flash('Cập nhật Banner thành công!')->success();
 
             return redirect()->route('admin.banner.index');
@@ -97,7 +97,7 @@ class BannerController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus($id)
     {
         try {
             $banner = Banner::findOrFail($id);
