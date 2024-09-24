@@ -193,8 +193,6 @@
                 <script>
                     $(document).ready(function() {
                         var currentPage = 1;
-                        var brandId = null;
-                        var provinceIds = null;
                         var rangeInput = null;
                         var rangeInput2 = null;
                         var option = null;
@@ -204,20 +202,27 @@
                         })
                         $('#btn-more').click(function(event) {
 
+                            var selectedBrands = [];
+                            $('.category-1-item.checked-text').each(function() {
+                                var brandId = $(this).data('brandid');
+                                selectedBrands.push(brandId);
+                            });
+
+                            var selectedProvinces = [];
+                            $('.category-2-item.checked-text').each(function() {
+                                var provinceId = $(this).data('provinceid');
+                                selectedProvinces.push(provinceId);
+                            });
+
                             $('.custom-radio').each(function() {
                                 if ($(this).find('label').hasClass('checked-text')) {
                                     option = $(this).find('input').val();
                                 }
                             });
 
-                            var rangeInput = Math.round($('#rangeInput').val() / 100000) * 100000;
-                            var rangeInput2 = Math.floor($('#rangeInput2').val() / 100000) * 100000;
+                            var rangeInput = $('#min').val();
+                            var rangeInput2 = $('#max').val();
 
-                            var provinceIds = [];
-                            $('.category-2-item.checked-text').each(function() {
-                                var provinceId = $(this).data('provinceid');
-                                provinceIds.push(provinceId);
-                            });
 
                             event.preventDefault();
                             currentPage++;
@@ -227,14 +232,15 @@
                                 url: @json($dataUrl),
                                 method: 'GET',
                                 data: {
-                                    page: currentPage,
-                                    brandId: brandId,
-                                    provinceIds: provinceIds,
+                                    brandIds: selectedBrands,
+                                    provinceIds: selectedProvinces,
                                     rangeInputMin: rangeInput,
                                     rangeInputMax: rangeInput2,
                                     option: option,
-                                    search: @json($search),
-                                    province: @json($provinceQuery),
+                                    provinceIds: selectedProvinces,
+                                    province: @json(request()->get('province')),
+                                    search: @json($search = request()->get('search')),
+                                    page: currentPage
                                 },
                                 success: function(response) {
                                     $('.list-product').append(response.productHtml);

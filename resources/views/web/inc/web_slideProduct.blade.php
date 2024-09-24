@@ -203,18 +203,12 @@
                 var rangeInput = $('#min').val();
                 var rangeInput2 = $('#max').val();
                 
-                var provinceIds = [];
-                $('.category-2-item.checked-text').each(function() {
-                    var provinceId = $(this).data('provinceid');
-                    provinceIds.push(provinceId);
-                });
-                
                 $.ajax({
                     url: url,
                     method: 'GET',
                     data: {
                         brandIds: selectedBrands,
-                        provinceIds: provinceIds,
+                        provinceIds: selectedProvinces,
                         rangeInputMin: rangeInput,
                         rangeInputMax: rangeInput2,
                         option: option,

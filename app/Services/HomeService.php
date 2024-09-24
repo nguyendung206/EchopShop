@@ -22,7 +22,6 @@ class HomeService
         $rangeInputMax = isset($request['rangeInputMax']) ? (float) $request['rangeInputMax'] : PHP_INT_MAX;
         $query = Product::query();
         if (! empty($request['search'])) {
-
             $query = $query->where('name', 'like', '%'.$request['search'].'%');
         }
         if (! empty($request['province'])) {  // province ở thanh search
@@ -44,7 +43,7 @@ class HomeService
         $products = $query->where('status', 1)
             ->where('price', '>=', $rangeInputMin)
             ->where('price', '<=', $rangeInputMax)
-            ->where('type', $type)
+            ->where('type', $type->value)
             ->with(['shop', 'shop.user', 'shop.user.province'])
             ->paginate(9);
 
