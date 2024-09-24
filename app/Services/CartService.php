@@ -7,6 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 class CartService
 {
+    public function getCart()
+    {
+        $userId = Auth::id();
+
+        if ($userId) {
+            return Cart::where('user_id', $userId)->get();
+        }
+
+        return collect();
+    }
+
     public function store($request)
     {
         $existingCartItem = Cart::where('user_id', Auth::id())
@@ -25,6 +36,18 @@ class CartService
             ]);
 
             return $newCartItem;
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $cart = Cart::findOrFail($id);
+            $cart->delete();
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 }

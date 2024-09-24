@@ -74,6 +74,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
         Route::post('/store', [CartController::class, 'store'])->name('store');
+        Route::get('/destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
+        Route::get('/clear', [CartController::class, 'clear'])->name('clear');
     });
 });
 

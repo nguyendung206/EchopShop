@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Services\CartService;
+use Exception;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -15,9 +17,11 @@ class CartController extends Controller
         $this->cartService = $cartService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        return view('web.cart.index');
+        $carts = $this->cartService->getCart();
+
+        return view('web.cart.index', compact('carts'));
     }
 
     public function store(Request $request)
@@ -36,5 +40,25 @@ class CartController extends Controller
             'status' => 'fail',
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
+    }
+
+    public function destroy($id)
+    {
+        try {
+            if ($this->cartService->destroy($id)) {
+                return redirect()->back()->with('success', 'Xóa thành công!');
+            } else {
+                return redirect()->back()->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
+        }
+    }
+
+    public function clear(Request $request)
+    {
+        Cart::where('user_id', auth()->id())->delete();
+
+        return redirect()->route('cart.index')->with('success', 'Giỏ hàng đã được xóa.');
     }
 }
