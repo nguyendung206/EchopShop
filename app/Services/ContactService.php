@@ -10,11 +10,8 @@ class ContactService
     public function index($request)
     {
         $query = Contact::query();
-        if (! empty($request->search)) {
-            $query->where('name', 'like', '%'.$request->search.'%');
-        }
-        if (isset($request->status)) {
-            $query->where('status', $request->status);
+        if (! empty($request['search'])) {
+            $query->where('name', 'like', '%'.$request['search'].'%');
         }
 
         return $query->paginate(10);
@@ -35,9 +32,9 @@ class ContactService
     public function store($request)
     {
         $contactData = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'content' => $request->content,
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'content' => $request['content'],
         ];
 
         return Contact::create($contactData);

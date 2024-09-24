@@ -157,16 +157,6 @@
                         </div>
                     </div>
 
-                    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
                     <div class="form-group mb-0 text-right">
                         <a href="{{ route('admin.discount.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>
                         <button type="submit" class="btn btn-primary">@lang('Lưu')</button>

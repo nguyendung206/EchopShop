@@ -26,22 +26,25 @@ class UserService
     public function store($request)
     {
         try {
+            if(!isset($request['uploadFile'])) {
+                $request['uploadFile'] = null;
+            }
             $userData = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'phone_number' => $request->phone_number,
-                'citizen_identification_number' => $request->citizen_identification_number,
-                'date_of_issue' => $request->date_of_issue,
-                'place_of_issue' => $request->place_of_issue,
-                'date_of_birth' => $request->date_of_birth,
-                'province_id' => $request->province_id,
-                'district_id' => $request->district_id,
-                'ward_id' => $request->ward_id,
-                'address' => $request->address,
-                'gender' => $request->gender,
-                'status' => $request->status,
-                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', 'nophoto.png'),
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                'phone_number' => $request['phone_number'],
+                'citizen_identification_number' => $request['citizen_identification_number'],
+                'date_of_issue' => $request['date_of_issue'],
+                'place_of_issue' => $request['place_of_issue'],
+                'date_of_birth' => $request['date_of_birth'],
+                'province_id' => $request['province_id'],
+                'district_id' => $request['district_id'],
+                'ward_id' => $request['ward_id'],
+                'address' => $request['address'],
+                'gender' => $request['gender'],
+                'status' => $request['status'],
+                'avatar' => uploadImage($request['uploadFile'], 'upload/users/', 'nophoto.png'),
             ];
 
             $user = User::create($userData);
@@ -56,31 +59,35 @@ class UserService
 
     public function update($request, $id)
     {
+        
         $user = User::findOrFail($id);
         $avatar = $user->avatar;
+        if(!isset($request['uploadFile'])) {
+            $request['uploadFile'] = null;
+        }
         $updateData = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'citizen_identification_number' => $request->citizen_identification_number,
-            'date_of_issue' => $request->date_of_issue,
-            'place_of_issue' => $request->place_of_issue,
-            'date_of_birth' => $request->date_of_birth,
-            'province_id' => $request->province_id,
-            'district_id' => $request->district_id,
-            'ward_id' => $request->ward_id,
-            'address' => $request->address,
-            'gender' => $request->gender,
-            'status' => $request->status,
-            'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', $avatar),
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'phone_number' => $request['phone_number'],
+            'citizen_identification_number' => $request['citizen_identification_number'],
+            'date_of_issue' => $request['date_of_issue'],
+            'place_of_issue' => $request['place_of_issue'],
+            'date_of_birth' => $request['date_of_birth'],
+            'province_id' => $request['province_id'],
+            'district_id' => $request['district_id'],
+            'ward_id' => $request['ward_id'],
+            'address' => $request['address'],
+            'gender' => $request['gender'],
+            'status' => $request['status'],
+            'avatar' => uploadImage($request['uploadFile'], 'upload/users/', $avatar),
         ];
-        if ($request->has('password') && ! empty($request->password)) {
-            $updateData['password'] = bcrypt($request->password);
+        if (!empty($request['password'])) {
+            $updateData['password'] = bcrypt($request['password']);
         }
 
         $user->update($updateData);
 
-        if ($request->file('uploadFile')) {
+        if ($request['uploadFile']) {
             deleteImage($avatar);
         }
 
@@ -98,6 +105,29 @@ class UserService
 
             return $result;
         } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function register($request) {
+        try {
+            if(!isset($request['uploadFile'])) {
+                $request['uploadFile'] = null;
+            }
+            $userData = [
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                'phone_number' => $request['phone_number'],
+                'address' => $request['address'],
+                'province_id' => $request['province_id'],
+                'district_id' => $request['district_id'],
+                'ward_id' => $request['ward_id'],
+                'avatar' => uploadImage($request['uploadFile'], 'upload/users/', 'nophoto.png'),
+            ];
+
+            return User::create($userData);
+        } catch (Throwable $th) {
             return false;
         }
     }

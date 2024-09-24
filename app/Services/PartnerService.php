@@ -21,34 +21,46 @@ class PartnerService
 
     public function store($request)
     {
+        if(!isset($request['photo'])) {
+            $request['photo'] = null;
+        }
         $PartnerData = [
-            'company_name' => $request->company_name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'photo' => uploadImage($request->file('photo'), 'upload/Partners/', 'nophoto.png'),
-            'status' => $request->status,
+            'company_name' => $request['company_name'],
+            'email' => $request['email'],
+            'phone_number' => $request['phone_number'],
+            'photo' => uploadImage($request['photo'], 'upload/Partners/', 'nophoto.png'),
+            'status' => $request['status'],
         ];
 
         return Partner::create($PartnerData);
     }
 
     public function update($request, $id)
-    {
+    {   
+        try {
+        
         $partner = Partner::findorfail($id);
         $photo = $partner->photo;
+        if(!isset($request['photo'])) {
+            $request['photo'] = null;
+        }
         $PartnerData = [
-            'company_name' => $request->company_name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'photo' => uploadImage($request->file('photo'), 'upload/Partners/', $photo),
-            'status' => $request->status,
+            'company_name' => $request['company_name'],
+            'email' => $request['email'],
+            'phone_number' => $request['phone_number'],
+            'photo' => uploadImage($request['photo'], 'upload/Partners/', $photo),
+            'status' => $request['status'],
         ];
         $partner->update($PartnerData);
-        if ($request->file('photo')) {
+        if ($request['photo']) {
             deleteImage($photo, 'nophoto.png');
         }
 
         return $partner;
+    } catch (\Throwable $th) {
+        dd($request);
+        dd($th);
+    }
     }
 
     public function destroy($id)

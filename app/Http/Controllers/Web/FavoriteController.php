@@ -30,7 +30,7 @@ class FavoriteController extends Controller
 
     public function store(Request $request)
     {
-        $result = $this->favoriteService->store($request);
+        $result = $this->favoriteService->store($request->all());
         if ($result) {
             flash('Thêm yêu thích thành công')->success();
 

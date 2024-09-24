@@ -71,6 +71,7 @@
                             <input type="hidden" name="old_photo" value="{{ old('old_photo') }}" />
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)" />
                             <img id="photo_preview" src="{{ old('old_photo') ? getImage(old('old_photo')) : getImage($partner->photo) }}" class="img img-bordered mt-4" style="width:200px" />
+
                             @error('photo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

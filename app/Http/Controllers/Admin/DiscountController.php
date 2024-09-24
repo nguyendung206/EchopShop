@@ -23,7 +23,7 @@ class DiscountController extends Controller
 
     public function index(Request $request)
     {
-        $discounts = $this->discountService->index($request);
+        $discounts = $this->discountService->index($request->all());
 
         return view('admin.discount.index', compact('discounts'));
 
@@ -37,7 +37,7 @@ class DiscountController extends Controller
     public function store(DiscountRequest $request)
     {
         try {
-            $this->discountService->store($request);
+            $discount = $this->discountService->store($request->all());
             flash('Thêm giảm giá thành công')->success();
 
             return redirect()->route('admin.discount.index');
@@ -65,7 +65,7 @@ class DiscountController extends Controller
     public function update(DiscountRequest $request, $id)
     {
         try {
-            $discount = $this->discountService->update($request, $id);
+            $discount = $this->discountService->update($request->all(), $id);
             flash('Cập nhật giảm giá thành công!')->success();
 
             return redirect()->route('admin.discount.index');
@@ -90,7 +90,7 @@ class DiscountController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus( $id)
     {
         try {
             $discount = Discount::findOrFail($id);

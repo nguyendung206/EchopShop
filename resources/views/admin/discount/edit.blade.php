@@ -91,7 +91,7 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Ngày bắt đầu<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="datetime-local" placeholder="Ngày bắt đầu" name="startTime" class="form-control
-                            @error('startTime') is-invalid  @enderror" value="{{ old('startTime') ? old('startTime') : date('Y-m-d\TH:i', strtotime(optional($discount)->start_date)) }}">
+                            @error('startTime') is-invalid  @enderror" value="{{ old('startTime') ? old('startTime') : date('Y-m-d\TH:i', strtotime(optional($discount)->start_time)) }}">
                             @error('startTime')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -102,7 +102,7 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Ngày kết thúc<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="datetime-local" placeholder="Ngày kết thúc" name="endTime" class="form-control
-                            @error('endTime') is-invalid  @enderror" value="{{ old('endTime') ? old('endTime') : date('Y-m-d\TH:i', strtotime(optional($discount)->end_date)) }}">
+                            @error('endTime') is-invalid  @enderror" value="{{ old('endTime') ? old('endTime') : date('Y-m-d\TH:i', strtotime(optional($discount)->end_time)) }}">
                             @error('endTime')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

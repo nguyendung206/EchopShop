@@ -10,11 +10,11 @@ class BannerService
     public function index($request)
     {
         $query = Banner::query();
-        if (! empty($request->search)) {
-            $query->where('title', 'like', '%'.$request->search.'%');
+        if (!empty($request['search'])) {
+            $query->where('title', 'like', '%'.$request['search'].'%');
         }
-        if (isset($request->status)) {
-            $query->where('status', $request->status);
+        if (!empty($request['status'])) {
+            $query->where('status', $request['status']);
         }
 
         return $query->paginate(5);
@@ -22,18 +22,21 @@ class BannerService
 
     public function store($request)
     {
-        $display_order = $request->display_order;
-        if (! $request->display_order) {
+        if(!isset($request['photo'])) {
+            $request['photo'] = null;
+        }
+        $display_order = $request['display_order'];
+        if (! $request['display_order']) {
             $maxDisplayOrder = Banner::max('display_order');
             $display_order = $maxDisplayOrder + 1;
         }
         $bannerData = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'status' => $request->status,
+            'title' => $request['title'],
+            'description' => $request['description'],
+            'status' => $request['status'],
             'display_order' => $display_order,
-            'link' => $request->link,
-            'photo' => uploadImage($request->file('photo'), 'upload/banners/', 'nobanner.png'),
+            'link' => $request['link'],
+            'photo' => uploadImage($request['photo'], 'upload/banners/', 'nobanner.png'),
         ];
 
         return Banner::create($bannerData);
@@ -42,23 +45,25 @@ class BannerService
     public function update($request, $id)
     {
         $banner = Banner::findOrFail($id);
-
         $photo = $banner->photo;
-        $display_order = $request->display_order;
-        if (! $request->display_order) {
+        if(!isset($request['photo'])) {
+            $request['photo'] = null;
+        }
+        $display_order = $request['display_order'];
+        if (! $request['display_order']) {
             $maxDisplayOrder = Banner::max('display_order');
             $display_order = $maxDisplayOrder + 1;
         }
         $bannerData = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'status' => $request->status,
+            'title' => $request['title'],
+            'description' => $request['description'],
+            'status' => $request['status'],
             'display_order' => $display_order,
-            'link' => $request->link,
-            'photo' => uploadImage($request->file('photo'), 'upload/banners/', $photo),
+            'link' => $request['link'],
+            'photo' => uploadImage($request['photo'], 'upload/banners/', $photo),
         ];
         $banner->update($bannerData);
-        if ($request->file('photo')) {
+        if ($request['photo']) {
             deleteImage($photo, 'nobanner.png');
 
         }

@@ -67,7 +67,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $this->userService->store($request);
+            $this->userService->store($request->all());
             flash('Thêm người dùng thành công')->success();
 
             return redirect()->route('admin.customer.index');
@@ -94,7 +94,7 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         try {
-            $this->userService->update($request, $id);
+            $this->userService->update($request->all(), $id);
             flash('Sửa người dùng thành công')->success();
 
             return redirect()->route('admin.customer.index', $id);
@@ -123,7 +123,7 @@ class UserController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus($id)
     {
         try {
             $user = User::findOrFail($id);
