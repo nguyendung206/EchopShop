@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\Status;
+use App\Models\Brand;
 use App\Models\Product;
 
 class HomeService
@@ -47,5 +49,16 @@ class HomeService
             ->paginate(9);
 
         return $products;
+    }
+
+    public function search($request)
+    {
+        $datas = ['products' => [], 'brands' => []];
+        if (! empty($request['search'])) {
+            $datas['products'] = Product::query()->where('name', 'like', '%'.$request['search'].'%')->where('status', Status::ACTIVE)->take(10)->get();
+            $datas['brands'] = Brand::query()->where('name', 'like', '%'.$request['search'].'%')->where('status', Status::ACTIVE)->take(10)->get();
+        }
+
+        return $datas;
     }
 }

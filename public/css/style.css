@@ -600,7 +600,7 @@ a:hover {
     right: 26px;
     color: #EA0000;
     font-size: 18px;
-    top: 40%;
+    top: 38%;
 }
 .btn-more {
     background-color: #ffdd15 !important;
@@ -1057,6 +1057,33 @@ a:hover {
     pointer-events: none;
     background-color: grey;
     text-decoration: none;
+}
+
+.list-product {
+    margin-top: 40px;
+}
+
+.list-result {
+    display: none;
+    box-shadow: 5px 10px 10px 5px rgba(204, 204, 204,0.5);
+}
+.list-group-item:first-child {
+    border-top-left-radius: 0rem;
+    border-top-right-radius: 0rem;
+}
+
+.list-product-result .list-group-item.active {
+    border-top-left-radius: .85rem;
+}
+.list-group-item {
+    padding: 6px 12px 6px 18px !important;
+    border: 1px solid #eaeaea;
+}
+.list-group-item.active {
+    padding-left: 12px !important;
+    font-weight: 500;
+    background-color: #FF7A00;
+    border: none;
 }
 
 @media (min-width: 320px) and (max-width: 768px) {

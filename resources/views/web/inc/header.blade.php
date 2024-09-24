@@ -99,7 +99,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                             </div>
-                            <input type="text" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                             <div class="input-group-append">
                                 <div style="position: relative;">
@@ -117,6 +117,10 @@
                                 <button class="btn btn-search" type="submit">
                                     Tìm kiếm
                                 </button>
+                            </div>
+
+                            <div class="list-result" style="position: absolute; width: 100%; top: 38px; z-index: 100">
+                                
                             </div>
                         </div>
                     </form>
@@ -246,3 +250,41 @@
     </div>
 
 </header>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('focus', function() {
+            $('.list-result').show();
+        });
+    
+        $('#search').on('blur', function() {
+            // Delay việc ẩn div để có thời gian chọn các item
+            setTimeout(function() {
+                $('.list-result').hide();
+            }, 200);
+        });
+    });
+    $('.list-result').on('mousedown', function(event) {
+        event.preventDefault();
+    });
+    </script>
+<script>
+    $('#search').on('input', function() {
+        var searchValue = $(this).val();
+        $.ajax({
+            url: @json(route('search')),
+            method: 'GET',
+            data: {
+                search: searchValue
+            },
+            success: function(response) {
+                $('.list-result').empty();
+                $('.list-result').append(response.resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
+            }
+        });                
+    });
+</script>
