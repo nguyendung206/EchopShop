@@ -2,7 +2,7 @@
     <div class="aiz-sidebar left c-scrollbar">
         <div class="aiz-side-nav-logo-wrap">
             <a href="#" class="d-block text-left">
-                <img class="mw-100" src="{{asset('/img/image/logo.png')}}" class="brand-icon" alt=""> 
+                <img class="mw-100" src="{{asset('/img/image/logo.png')}}" class="brand-icon" alt="">
             </a>
         </div>
         <div class="aiz-side-nav-wrap">
@@ -75,6 +75,12 @@
                                 <span class="aiz-side-nav-text">Shop</span>
                             </a>
                         </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.userproduct.index') }}" class="aiz-side-nav-link ">
+                                <i class="las la-box aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">Sản phẩm</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -122,8 +128,8 @@
                         <span class="aiz-side-nav-text">Giảm giá</span>
                     </a>
                 </li>
-        
-                
+
+
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->
     </div><!-- .aiz-sidebar -->
