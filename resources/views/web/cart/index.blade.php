@@ -67,7 +67,6 @@ HOME
                 <input type="checkbox" class="all-check mr-2" />
                 <span>Chọn tất cả ({{ $carts->count() }})</span>
                 <a href="#" class="btn btn-link text-danger" id="clear-cart">Xóa tất cả</a>
-                <button class="btn btn-link">Bỏ sản phẩm không hoạt động</button>
             </div>
             <div>
                 <span>Tổng thanh toán sản phẩm: </span>
