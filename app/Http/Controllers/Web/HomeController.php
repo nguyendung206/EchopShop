@@ -67,7 +67,7 @@ class HomeController extends Controller
                 break;
         }
 
-        $products = $this->homeService->filterProducts($request, $type);
+        $products = $this->homeService->filterProducts($request->all(), $type);
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([

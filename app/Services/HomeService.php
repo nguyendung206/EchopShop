@@ -16,16 +16,32 @@ class HomeService
 
     public function filterProducts($request, $type)
     {
+        $rangeInputMin = isset($request['rangeInputMin']) ? (float) $request['rangeInputMin'] : 0;
+        $rangeInputMax = isset($request['rangeInputMax']) ? (float) $request['rangeInputMax'] : PHP_INT_MAX;
+        $query = Product::query();
+        if (! empty($request['search'])) {
 
-        $rangeInputMin = $request->query('rangeInputMin') !== null ? (float) $request->query('rangeInputMin') : 0;
-        $rangeInputMax = $request->query('rangeInputMax') !== null ? (float) $request->query('rangeInputMax') : PHP_INT_MAX;
-        $brandId = $request->query('brandId');
-        $products = Product::query()->where('status', 1)
+            $query = $query->where('name', 'like', '%'.$request['search'].'%');
+        }
+        if (! empty($request['province'])) {  // province ở thanh search
+            $provinceId = $request['province'];
+            $query = $query->whereHas('shop.user.province', function ($query) use ($provinceId) {
+                $query->where('id', $provinceId);
+            });
+        }
+        if (! empty($request['brandIds'])) {
+            $brandIds = $request['brandIds'];
+            $query = $query->whereIn('brand_id', $brandIds);
+        }
+        if (! empty($request['provinceIds'])) {  // province ở thanh lọc product
+            $provinceIds = $request['provinceIds'];
+            $query = $query->whereHas('shop.user.province', function ($query) use ($provinceIds) {
+                $query->whereIn('id', $provinceIds);
+            });
+        }
+        $products = $query->where('status', 1)
             ->where('price', '>=', $rangeInputMin)
             ->where('price', '<=', $rangeInputMax)
-            ->when($brandId, function ($query, $brandId) {
-                return $query->where('brand_id', $brandId);
-            })
             ->where('type', $type)
             ->with(['shop', 'shop.user', 'shop.user.province'])
             ->paginate(9);

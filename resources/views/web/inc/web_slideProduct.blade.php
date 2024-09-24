@@ -30,7 +30,10 @@
             <label>{{$category->name}}</label><img src="{{ asset('/img/icon/extend.png') }}" alt="" />
             <div class="category-item-wrap">
                 @forelse($category->activeBrands as $brand)
-                <div><a href="#" id="brandFilter" data-url="{{ $route }}" data-brandid="{{$brand->id}}">{{$brand->name}}</a></div>
+                <div class="category-1-item" data-brandid="{{ $brand->id }}">
+                    <div class="custom-checkbox"></div>
+                    <span>{{$brand->name}}</span>
+                </div>
                 @empty
                 @endforelse
             </div>
@@ -57,16 +60,13 @@
     <div class="category-title mt-4">Mức giá</div>
     <div class="category-3">
         <div class="box">
-            <div class="slider">
-                <input type="range" id="rangeInput" min="0" max="1000000" value="0" />
-                <input type="range" id="rangeInput2" min="1000000" max="2000000" value="1000000" />
-            </div>
-            <div class="value">
-                <div id="value1"></div>
-                <div id="value2" style="margin-left: 4px">&nbsp; - 500000</div>
+            <div class="min-max-slider" data-legendnum="3">
+                    <input id="min" class="min" name="min" type="range" step="1" min="0" max="3000000" />
+                    <input id="max" class="max" name="max" type="range" step="1" min="0" max="3000000" />
             </div>
         </div>
     </div>
+
     <div class="category-4">
         <div class="category-title mt-4">Tình trạng sản phẩm</div>
         <div class="category-4">
@@ -95,43 +95,11 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        const rangeInput = document.getElementById("rangeInput");
-        const rangeInput2 = document.getElementById("rangeInput2");
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        function updateRangeInput() {
-            const value =
-                ((rangeInput.value - rangeInput.min) /
-                    (rangeInput.max - rangeInput.min)) *
-                100;
-            rangeInput.style.background = `linear-gradient(to right, #ddd ${value}%, rgb(177,0,0,1) ${value}%)`;
-            document.getElementById("value1").textContent = `Giá: ${
-                Math.round( (rangeInput.value / 100000 * 100000) / 100000) * 100000
-        }`;
-        }
-
-        function updateRangeInput2() {
-            const value =
-                ((rangeInput2.value - rangeInput2.min) /
-                    (rangeInput2.max - rangeInput2.min)) *
-                100;
-            rangeInput2.style.background = `linear-gradient(to right, rgb(177,0,0,1) ${value}%, #ddd ${value}%)`;
-            document.getElementById("value2").textContent = `- ${
-          Math.floor(rangeInput2.value / 100000) * 100000
-        } VNĐ`;
-        }
-
-        rangeInput.addEventListener("input", updateRangeInput);
-        rangeInput2.addEventListener("input", updateRangeInput2);
-        updateRangeInput();
-        updateRangeInput2();
-    </script>
 
     
-    <script>
+    <script>    // đóng mở category
         document.addEventListener("DOMContentLoaded", function() {
             const categoryImages = document.querySelectorAll(".category-item");
 
@@ -149,9 +117,17 @@
                     }
                 });
             });
+            // ngăn không cho sự kiện click lan đến category-item
+            const category1Items = document.querySelectorAll(".category-1-item");
+            category1Items.forEach((item) => {
+                item?.addEventListener("click", function(event) {
+                    event.stopPropagation(); 
+                    
+                });
+            });
         });
     </script>
-    <script>
+    <script>    // checkcustom của province
         const check = document.querySelectorAll(".category-2-item");
         check.forEach((item) =>
             item.addEventListener("click", function() {
@@ -161,7 +137,17 @@
             })
         );
     </script>
-    <script>
+    <script>    // checkcustom của category (nằm ở brand)
+        const check1 = document.querySelectorAll(".category-1-item");
+        check1.forEach((item) =>
+            item.addEventListener("click", function() {
+                const inputcheck = item.querySelector(".custom-checkbox");
+                inputcheck.classList.toggle("checked");
+                item.classList.toggle("checked-text");
+            })
+        );
+    </script>
+    <script>    // radio
         const radio = document.querySelectorAll(".custom-radio");
         radio.forEach((item) => {
             item.addEventListener("click", function(e) {
@@ -174,7 +160,7 @@
             });
         });
     </script>
-    <script>
+    <script>    // đóng mở nav responsive
         const category = document.querySelector(".category-title-wrap-1");
         category.querySelector(".open-icon")
             .addEventListener("click", function() {
@@ -186,37 +172,26 @@
             })
     </script>
 
-    <script>
+    <script>    // lọc sản phẩm
          $(document).ready(function() {
-            var brandId= null;
             var provinceIds= null;
             var rangeInput= null;
             var rangeInput2= null;
             var option= null;
-            
-            $(document).on('click', '#brandFilter', function(event) {
-                event.preventDefault();
-                brandId = $(this).data('brandid');
-                let url = $(this).data('url');
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    data: {
-                        brandId: brandId,
-                    },
-                    success: function(response) {
-                        $('.list-product').html(response.productHtml);
-                        
-                        console.log(response);
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-
 
             $('#filter-button').on('click', function() {
+                var selectedBrands = [];
+                $('.category-1-item.checked-text').each(function() {
+                    var brandId = $(this).data('brandid');
+                    selectedBrands.push(brandId);
+                });
+
+                var selectedProvinces = [];
+                $('.category-2-item.checked-text').each(function() {
+                    var provinceId = $(this).data('provinceid');
+                    selectedProvinces.push(provinceId);
+                });
+
 
                 let url = $(this).data('url');
                 $('.custom-radio').each(function() {
@@ -225,8 +200,8 @@
                     }
                 });
 
-                var rangeInput = Math.round($('#rangeInput').val() / 100000) * 100000;
-                var rangeInput2 = Math.floor($('#rangeInput2').val() / 100000) * 100000;
+                var rangeInput = $('#min').val();
+                var rangeInput2 = $('#max').val();
                 
                 var provinceIds = [];
                 $('.category-2-item.checked-text').each(function() {
@@ -238,11 +213,14 @@
                     url: url,
                     method: 'GET',
                     data: {
-                        brandId: brandId,
+                        brandIds: selectedBrands,
                         provinceIds: provinceIds,
                         rangeInputMin: rangeInput,
                         rangeInputMax: rangeInput2,
                         option: option,
+                        provinceIds: selectedProvinces,
+                        province: @json(request()->get('province')),
+                        search: @json($search = request()->get('search')),
                     },
                     success: function(response) {
                         console.log(response);
@@ -267,11 +245,13 @@
                     url: url,
                     method: 'GET',
                     data: {
-                        brandId: null,
+                        brandId: [],
                         provinceIds: null,
                         rangeInputMin: null,
                         rangeInputMax: null,
                         option: null,
+                        provinceIds: [],
+                        
                     },
                     success: function(response) {
                         $('.list-product').html(response.productHtml);
@@ -285,3 +265,5 @@
             })
         });
     </script>
+
+    <script src="{{asset('/js/inputRange.js')}}"></script>

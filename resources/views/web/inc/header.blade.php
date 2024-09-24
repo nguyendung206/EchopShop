@@ -1,3 +1,17 @@
+@php
+    $search = request()->get('search');
+    $provinceQuery = request()->get('province');
+
+    $url = Str::lower(request()->url());
+    $route = route('secondhandProduct');
+
+    if (Str::contains($url, 'giveaway')) {
+        $route = route('giveawayProduct');
+    }
+    if (Str::contains($url, 'exchange')) {
+        $route = route('exchangeProduct');
+    }
+@endphp
 <div id="overlay">
     <div class="l-navbar" id="navbar">
         <div class="nav">
@@ -79,30 +93,33 @@
                         </a>
                     </div>
                     <div class="col-6 menu">
+                        <form action="{{$route}}" method="GET">
+                        @csrf
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                             </div>
-                            <input type="text" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                             <div class="input-group-append">
                                 <div style="position: relative;">
                                     <div style="border-left: 2px solid #000; height: 50%; position: absolute; left: 1px; top: 25%;"></div>
 
-                                    <select class="form-control w-120px forcus-none">
-                                        <option value="" disabled selected>Địa điểm</option>
-                                        <option value="hanoi">Hà Nội</option>
-                                        <option value="hcm">TP. Hồ Chí Minh</option>
-                                        <option value="danang">Đà Nẵng</option>
+                                    <select class="form-control w-120px forcus-none" name="province">
+                                        <option value="0" disabled selected>Địa điểm</option>
+                                        @foreach ($provinces as $province)
+                                            <option value="{{$province->id}}" {{$provinceQuery && $provinceQuery == $province->id ? 'selected' : ''}}>{{$province->province_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-search" type="button">
+                                <button class="btn btn-search" type="submit">
                                     Tìm kiếm
                                 </button>
                             </div>
                         </div>
+                    </form>
                     </div>
                     <div class="col-lg-4 col-md-4 col-4 col-sm-4">
                         <div class="row justify-content-between align-items-center">

@@ -2,6 +2,14 @@
 
 @php
     $url = Str::lower(request()->url());
+    $search = null;
+    $provinceQuery = null;
+    if (request()->filled('search')) {
+        $search = request()->get('search');
+    }
+    if (request()->filled('province')) {
+        $provinceQuery = request()->get('province');
+    }
     $case = 'giveaway';
     $dataUrl = route('giveawayProduct');
 
@@ -39,15 +47,20 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-lg-9 button-page-wrap">
-                <a href="{{ route('secondhandProduct') }}" class="{{ $case == 'secondhand' ? 'active' : '' }}">Mua bán</a>
-                <a href="{{ route('exchangeProduct') }}" class="{{ $case == 'exchange' ? 'active' : '' }}">Trao đổi</a>
-                <a href="{{ route('giveawayProduct') }}" class="{{ $case == 'giveaway' ? 'active' : '' }}">Hàng tặng</a>
+                <a href="{{ route('secondhandProduct', ['search'=> $search, 'province' => $provinceQuery])}}" class="{{ $case == 'secondhand' ? 'active' : '' }}">Mua bán</a>
+                <a href="{{ route('exchangeProduct', ['search'=> $search, 'province' => $provinceQuery]) }}" class="{{ $case == 'exchange' ? 'active' : '' }}">Trao đổi</a>
+                <a href="{{ route('giveawayProduct', ['search'=> $search, 'province' => $provinceQuery]) }}" class="{{ $case == 'giveaway' ? 'active' : '' }}">Hàng tặng</a>
             </div>
 
         </div>
         <div class="row">
             @include('web.inc.web_slideProduct')
             <div class="col-lg-9 col-12">
+                @if ($search != null)
+                <div style="font-size: 16px; color: #B10000;padding: 10px 0px">
+                    Kết quả tìm kiếm của: {{$search}}
+                </div>
+                @endif
                 <div class="row list-product">
                     @if ($case != 'giveaway')
                         @forelse($products as $product)
@@ -220,10 +233,11 @@
                                     rangeInputMin: rangeInput,
                                     rangeInputMax: rangeInput2,
                                     option: option,
+                                    search: @json($search),
+                                    province: @json($provinceQuery),
                                 },
                                 success: function(response) {
                                     $('.list-product').append(response.productHtml);
-                                    console.log(response);
 
                                     if (response.hasMorePages) {
                                         if ($('.more-wrap').children().length === 0) {
