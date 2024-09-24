@@ -72,7 +72,7 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="row justify-content-between align-items-center col-lg-2 col-md-2 col-2 col-sm-2 ml-1">
                         <a href="{{ route('home') }}" style="width: 75%;">
-                            <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="" >
+                            <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
                         <a href="" class="d-n">
                             <i class="fa-regular fa-heart"></i>
@@ -105,19 +105,21 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-4 col-sm-4">
-                        <div class="row justify-content-between align-items-center">
-                            <div class="search d-n">
-                                <a href="#"><i class="fa-regular fa-bell"></i></i></a>
-                            </div>
-                            <div class="search">
-                                <a href="#">
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                </a>
-                            </div>
-                            <div class="search d-n">
-                                <a href="#">
-                                    <i class="fa-regular fa-comment-dots"></i>
-                                </a>
+                        <div class="row justify-content-around align-items-center">
+                            <div class="header-icon">
+                                <div class="search d-n">
+                                    <a href="#"><i class="fa-regular fa-bell"></i></i></a>
+                                </div>
+                                <div class="search">
+                                    <a href="#">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </a>
+                                </div>
+                                <div class="search d-n">
+                                    <a href="#">
+                                        <i class="fa-regular fa-comment-dots"></i>
+                                    </a>
+                                </div>
                             </div>
                             @guest
                             <div class="btn-post px-2">
@@ -127,7 +129,7 @@
                                 </a>
                             </div>
                             @else
-                            @if(optional(Auth::user()->shop)->status === 1)
+                            @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
                             <div class="btn-post px-2">
                                 <a href="{{ route('post.create') }}">
                                     <i class="fa-regular fa-file-lines mr-2"></i>
@@ -136,7 +138,7 @@
                             </div>
                             @endif
                             <div class="dropdown">
-                                <a href="#" class="row align-items-center ml-2" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a href="#" class="row align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(Auth::user()->avatar) }}" alt="">
                                     <span class="d-n ml-2 color-232323 header-name">{{ Auth::user()->name }} </span>
                                     <i class="d-n fa-solid fa-sort-down ml-2 mb-2 color-232323 header-name"></i>
@@ -151,8 +153,7 @@
                                 </div>
                             </div>
                             @endguest
-
-                            <div id="nav-toggle">
+                            <div id="nav-toggle" class="d-block d-md-none">
                                 <i class="fa-solid fa-bars p-3 menu-bars"></i>
                             </div>
                         </div>
@@ -171,7 +172,7 @@
                             @if(isset($categories) && $categories->count())
                             <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" style="width: 250px;">
                                 @foreach($categories as $category)
-                                <li class="dropdown-submenu">
+                                <li class="dropdown-submenu" style="position: relative;">
                                     <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category', ['slug' => $category->slug]) }}">
                                         <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
                                         <p class="dropdown-title">{{ $category->name }}</p>
@@ -180,7 +181,7 @@
                                     @if($category->activeBrands->count())
                                     <ul class="dropdown-menu" style="width: 250px;">
                                         @foreach($category->activeBrands as $brand)
-                                        <li class="dropdown-submenu">
+                                        <li>
                                             <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
                                                 <p class="dropdown-title">{{ $brand->name }}</p>
                                                 <i class="fa-solid fa-caret-right"></i>
@@ -191,7 +192,7 @@
                                     @endif
                                 </li>
                                 @endforeach
-                                <li class="dropdown-submenu">
+                                <li>
                                     <a class="dropdown-item dropdown-item-custom" href="#">
                                         <img src="{{ asset('/img/icon/khac.png') }}" alt="" class="dropdown-img">
                                         <p class="dropdown-title">Khác</p>
@@ -227,5 +228,4 @@
             </div>
         </div>
     </div>
-
 </header>

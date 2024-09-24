@@ -27,7 +27,7 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $datas = $this->productService->getProducts($request);
+        $datas = $this->productService->getProducts($request->all());
 
         return view('admin.product.index', compact('datas'));
     }
@@ -161,7 +161,7 @@ class ProductController extends Controller
 
     public function userproduct(Request $request)
     {
-        $datas = $this->productService->getProductsUser($request);
+        $datas = $this->productService->getProductsUser($request->all());
 
         return view('admin.userproduct.index', compact('datas'));
     }

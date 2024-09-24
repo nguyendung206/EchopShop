@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/admin/login', [AuthController::class, 'index'])->name('admin.login');
 Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
@@ -65,17 +64,17 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //shop
     Route::resource('/shop', ShopController::class);
-    Route::post('shop/changestatus/{id}', [ShopController::class, 'status'])->name('shop.changestatus');
+    Route::put('shop/changestatus/{id}', [ShopController::class, 'changestatus'])->name('shop.changestatus');
 
     //banner
     Route::resource('/banner', BannerController::class);
     Route::put('banner/changeStatus/{id}', [BannerController::class, 'changeStatus'])->name('banner.changeStatus');
 
-    //brand
+    //banner
     Route::resource('/brand', BrandController::class);
-    Route::post('brand/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
+    Route::put('brand/changestatus/{id}', [BrandController::class, 'changestatus'])->name('brand.changestatus');
 
-    //product
+    //banner
     Route::resource('/product', ProductController::class);
     Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
 

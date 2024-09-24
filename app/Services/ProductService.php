@@ -9,49 +9,47 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductService
 {
-    public function getProducts($request)
+    public function getProducts(array $request)
     {
         $query = Product::query();
 
-        if ($request->has('search') && $request->search != '') {
-            $searchTerm = $request->search;
+        if (! empty($request['search'])) {
+            $searchTerm = $request['search'];
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', '%'.$searchTerm.'%')
                     ->orWhere('description', 'like', '%'.$searchTerm.'%');
             });
         }
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
+        if (! empty($request['status'])) {
+            $query->where('status', $request['status']);
         }
 
-        if ($request->has('type') && $request->type != '') {
-            $query->where('type', $request->type);
+        if (! empty($request['type'])) {
+            $query->where('type', $request['type']);
         }
 
         return $query->paginate(10);
     }
 
-    public function getProductsUser($request)
+    public function getProductsUser(array $requestData)
     {
-        $query = Product::query();
+        $query = Product::query()->whereNotNull('shop_id');
 
-        $query->whereNotNull('shop_id');
-
-        if ($request->has('search') && $request->search != '') {
-            $searchTerm = $request->search;
+        if (! empty($requestData['search'])) {
+            $searchTerm = $requestData['search'];
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', '%'.$searchTerm.'%')
                     ->orWhere('description', 'like', '%'.$searchTerm.'%');
             });
         }
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
+        if (! empty($requestData['status'])) {
+            $query->where('status', $requestData['status']);
         }
 
-        if ($request->has('type') && $request->type != '') {
-            $query->where('type', $request->type);
+        if (! empty($requestData['type'])) {
+            $query->where('type', $requestData['type']);
         }
 
         return $query->paginate(10);

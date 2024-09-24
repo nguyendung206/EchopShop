@@ -306,7 +306,6 @@
     @section('script')
         <script src="{{ asset('/js/favorite.js') }}"></script>
 
-        <script src="{{ asset('/js/text.js') }}"></script>
         <script>
             $(document).ready(function() {
                 var currentSecondhandPage = 1;
