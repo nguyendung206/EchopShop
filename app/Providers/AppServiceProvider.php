@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Province;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -30,7 +31,10 @@ class AppServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('categories')) {
             $categories = Category::query()->where('status', 1)->with('activeBrands')->get();
-            View::share('categories', $categories);
+            $provinces = Province::query()->get();
+            View::share(['categories' => $categories,
+                'provinces' => $provinces,
+            ]);
         }
     }
 }

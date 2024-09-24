@@ -2,6 +2,14 @@
 
 @php
     $url = Str::lower(request()->url());
+    $search = null;
+    $provinceQuery = null;
+    if (request()->filled('search')) {
+        $search = request()->get('search');
+    }
+    if (request()->filled('province')) {
+        $provinceQuery = request()->get('province');
+    }
     $case = 'giveaway';
     $dataUrl = route('giveawayProduct');
 
@@ -39,15 +47,20 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-lg-9 button-page-wrap">
-                <a href="{{ route('secondhandProduct') }}" class="{{ $case == 'secondhand' ? 'active' : '' }}">Mua bán</a>
-                <a href="{{ route('exchangeProduct') }}" class="{{ $case == 'exchange' ? 'active' : '' }}">Trao đổi</a>
-                <a href="{{ route('giveawayProduct') }}" class="{{ $case == 'giveaway' ? 'active' : '' }}">Hàng tặng</a>
+                <a href="{{ route('secondhandProduct', ['search'=> $search, 'province' => $provinceQuery])}}" class="{{ $case == 'secondhand' ? 'active' : '' }}">Mua bán</a>
+                <a href="{{ route('exchangeProduct', ['search'=> $search, 'province' => $provinceQuery]) }}" class="{{ $case == 'exchange' ? 'active' : '' }}">Trao đổi</a>
+                <a href="{{ route('giveawayProduct', ['search'=> $search, 'province' => $provinceQuery]) }}" class="{{ $case == 'giveaway' ? 'active' : '' }}">Hàng tặng</a>
             </div>
 
         </div>
         <div class="row">
             @include('web.inc.web_slideProduct')
             <div class="col-lg-9 col-12">
+                @if ($search != null)
+                <div style="font-size: 16px; color: #B10000;padding: 10px 0px">
+                    Kết quả tìm kiếm của: {{$search}}
+                </div>
+                @endif
                 <div class="row list-product">
                     @if ($case != 'giveaway')
                         @forelse($products as $product)
@@ -180,8 +193,6 @@
                 <script>
                     $(document).ready(function() {
                         var currentPage = 1;
-                        var brandId = null;
-                        var provinceIds = null;
                         var rangeInput = null;
                         var rangeInput2 = null;
                         var option = null;
@@ -191,20 +202,27 @@
                         })
                         $('#btn-more').click(function(event) {
 
+                            var selectedBrands = [];
+                            $('.category-1-item.checked-text').each(function() {
+                                var brandId = $(this).data('brandid');
+                                selectedBrands.push(brandId);
+                            });
+
+                            var selectedProvinces = [];
+                            $('.category-2-item.checked-text').each(function() {
+                                var provinceId = $(this).data('provinceid');
+                                selectedProvinces.push(provinceId);
+                            });
+
                             $('.custom-radio').each(function() {
                                 if ($(this).find('label').hasClass('checked-text')) {
                                     option = $(this).find('input').val();
                                 }
                             });
 
-                            var rangeInput = Math.round($('#rangeInput').val() / 100000) * 100000;
-                            var rangeInput2 = Math.floor($('#rangeInput2').val() / 100000) * 100000;
+                            var rangeInput = $('#min').val();
+                            var rangeInput2 = $('#max').val();
 
-                            var provinceIds = [];
-                            $('.category-2-item.checked-text').each(function() {
-                                var provinceId = $(this).data('provinceid');
-                                provinceIds.push(provinceId);
-                            });
 
                             event.preventDefault();
                             currentPage++;
@@ -214,16 +232,18 @@
                                 url: @json($dataUrl),
                                 method: 'GET',
                                 data: {
-                                    page: currentPage,
-                                    brandId: brandId,
-                                    provinceIds: provinceIds,
+                                    brandIds: selectedBrands,
+                                    provinceIds: selectedProvinces,
                                     rangeInputMin: rangeInput,
                                     rangeInputMax: rangeInput2,
                                     option: option,
+                                    provinceIds: selectedProvinces,
+                                    province: @json(request()->get('province')),
+                                    search: @json($search = request()->get('search')),
+                                    page: currentPage
                                 },
                                 success: function(response) {
                                     $('.list-product').append(response.productHtml);
-                                    console.log(response);
 
                                     if (response.hasMorePages) {
                                         if ($('.more-wrap').children().length === 0) {
