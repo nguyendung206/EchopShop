@@ -39,7 +39,7 @@ class PolicyController extends Controller
             default:
                 break;
         }
-        $policies = $this->policyService->getPolicyHome($request, $type);
+        $policies = $this->policyService->getPolicyHome($type);
 
         return view('web.policy.policy', compact('policies'));
     }

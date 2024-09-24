@@ -108,4 +108,27 @@ class UserService
             return false;
         }
     }
+
+    public function register($request) {
+        try {
+            if(!isset($request['uploadFile'])) {
+                $request['uploadFile'] = null;
+            }
+            $userData = [
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                'phone_number' => $request['phone_number'],
+                'address' => $request['address'],
+                'province_id' => $request['province_id'],
+                'district_id' => $request['district_id'],
+                'ward_id' => $request['ward_id'],
+                'avatar' => uploadImage($request['uploadFile'], 'upload/users/', 'nophoto.png'),
+            ];
+
+            return User::create($userData);
+        } catch (Throwable $th) {
+            return false;
+        }
+    }
 }

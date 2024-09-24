@@ -14,12 +14,20 @@ use App\Models\Ward;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Mail;
 
 class AuthController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function index(Request $request)
     {
         if (Auth::check()) {
@@ -60,32 +68,15 @@ class AuthController extends Controller
     public function store(RegisterRequest $request)
     {
         try {
-            $userData = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'phone_number' => $request->phone_number,
-                'address' => $request->address,
-                'province_id' => $request->province_id,
-                'district_id' => $request->district_id,
-                'ward_id' => $request->ward_id,
-                'avatar' => uploadImage($request->file('uploadFile'), 'upload/users/', 'nophoto.png'),
-            ];
-
-            User::create($userData);
+            $user = $this->userService->register($request->all());
+            Auth::login($user);
             $request->session()->regenerate();
-            $user = Auth::user();
             Session::put('user', $user);
-            flash('Đăng ký thành công')->success();
 
             return redirect('/');
         } catch (QueryException $e) {
-            flash('Đăng ký thất bại')->error();
-
             return redirect()->route('web.register');
         } catch (\Exception $e) {
-            flash('Đăng ký thất bại')->error();
-
             return redirect()->route('web.register');
         }
     }
