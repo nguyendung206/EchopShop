@@ -41,6 +41,12 @@ a:hover {
     margin-right: 8px;
 }
 
+.mw-1200 {
+    padding: 20px 0;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
 .mainheader {
     background-color: #FFDD15;
 }
@@ -108,7 +114,11 @@ a:hover {
 }
 
 .category {
-    padding: 20px 180px;
+    padding: 20px 0;
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
 }
 
 .category a {
@@ -332,6 +342,7 @@ a:hover {
     margin: 70px 0px;
     cursor: pointer;
 }
+
 #btn-more:hover {
     color: white;
     background-color: #B10000;
@@ -502,9 +513,11 @@ a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .user-product-wrap {
     height: 21px;
 }
+
 .user-product {
     line-height: 11.72px;
     font-size: 10px;
@@ -518,10 +531,12 @@ a:hover {
     width: 18px !important;
     height: 18px !important;
 }
+
 .mini-avatar-admin {
     width: 40px !important;
     height: 18px;
 }
+
 .buy-wrap {
     border: 1px solid #ff0000;
     font-size: 14px;
