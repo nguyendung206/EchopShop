@@ -90,7 +90,7 @@ class DiscountController extends Controller
         }
     }
 
-    public function changeStatus( $id)
+    public function changeStatus($id)
     {
         try {
             $discount = Discount::findOrFail($id);

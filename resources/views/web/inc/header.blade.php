@@ -134,7 +134,7 @@
                                     <a href="#"><i class="fa-regular fa-bell"></i></i></a>
                                 </div>
                                 <div class="search">
-                                    <a href="#">
+                                    <a href="{{route('cart.index')}}">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                     </a>
                                 </div>

@@ -26,7 +26,7 @@ class UserService
     public function store($request)
     {
         try {
-            if(!isset($request['uploadFile'])) {
+            if (! isset($request['uploadFile'])) {
                 $request['uploadFile'] = null;
             }
             $userData = [
@@ -59,10 +59,10 @@ class UserService
 
     public function update($request, $id)
     {
-        
+
         $user = User::findOrFail($id);
         $avatar = $user->avatar;
-        if(!isset($request['uploadFile'])) {
+        if (! isset($request['uploadFile'])) {
             $request['uploadFile'] = null;
         }
         $updateData = [
@@ -81,7 +81,7 @@ class UserService
             'status' => $request['status'],
             'avatar' => uploadImage($request['uploadFile'], 'upload/users/', $avatar),
         ];
-        if (!empty($request['password'])) {
+        if (! empty($request['password'])) {
             $updateData['password'] = bcrypt($request['password']);
         }
 
@@ -109,9 +109,10 @@ class UserService
         }
     }
 
-    public function register($request) {
+    public function register($request)
+    {
         try {
-            if(!isset($request['uploadFile'])) {
+            if (! isset($request['uploadFile'])) {
                 $request['uploadFile'] = null;
             }
             $userData = [

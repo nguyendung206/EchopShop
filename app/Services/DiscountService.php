@@ -27,7 +27,7 @@ class DiscountService
     public function store($request)
     {
         try {
-            if(!isset($request['photo'])) {
+            if (! isset($request['photo'])) {
                 $request['photo'] = null;
             }
             $discountData = [
@@ -45,6 +45,7 @@ class DiscountService
                 'status' => $request['status'],
             ];
             $discount = Discount::create($discountData);
+
             return $discount;
         } catch (Exception $e) {
             return $e;
@@ -56,7 +57,7 @@ class DiscountService
     {
         $discount = Discount::findOrFail($id);
         $photo = $discount->photo;
-        if(!isset($request['photo'])) {
+        if (! isset($request['photo'])) {
             $request['photo'] = null;
         }
         $discountData = [

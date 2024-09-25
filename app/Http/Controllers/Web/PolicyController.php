@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Http\Controllers\Controller;
 use App\Enums\TypePolicy;
+use App\Http\Controllers\Controller;
 use App\Services\PolicyService;
 use Illuminate\Http\Request;
 

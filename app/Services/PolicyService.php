@@ -61,6 +61,7 @@ class PolicyService
     public function getPolicyHome($type)
     {
         $policies = Policy::query()->where('status', Status::ACTIVE)->where('type', $type)->get();
+
         return $policies;
     }
 }

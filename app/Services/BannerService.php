@@ -10,10 +10,10 @@ class BannerService
     public function index($request)
     {
         $query = Banner::query();
-        if (!empty($request['search'])) {
+        if (! empty($request['search'])) {
             $query->where('title', 'like', '%'.$request['search'].'%');
         }
-        if (!empty($request['status'])) {
+        if (! empty($request['status'])) {
             $query->where('status', $request['status']);
         }
 
@@ -22,7 +22,7 @@ class BannerService
 
     public function store($request)
     {
-        if(!isset($request['photo'])) {
+        if (! isset($request['photo'])) {
             $request['photo'] = null;
         }
         $display_order = $request['display_order'];
@@ -46,7 +46,7 @@ class BannerService
     {
         $banner = Banner::findOrFail($id);
         $photo = $banner->photo;
-        if(!isset($request['photo'])) {
+        if (! isset($request['photo'])) {
             $request['photo'] = null;
         }
         $display_order = $request['display_order'];
