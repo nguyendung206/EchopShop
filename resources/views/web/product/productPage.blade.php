@@ -2,6 +2,14 @@
 
 @php
 $url = Str::lower(request()->url());
+$search = null;
+$provinceQuery = null;
+if (request()->filled('search')) {
+$search = request()->get('search');
+}
+if (request()->filled('province')) {
+$provinceQuery = request()->get('province');
+}
 $case = 'giveaway';
 $dataUrl = route('giveawayProduct');
 
@@ -33,22 +41,26 @@ $dataUrl = route('exchangeProduct');
         @endif
     </div>
 </div>
-</div>
 
 <div class="content container">
 
     <div class="row">
         <div class="col-lg-3"></div>
         <div class="col-lg-9 button-page-wrap">
-            <a href="{{route('secondhandProduct')}}" class="{{$case == "secondhand" ? 'active' : ''}}">Mua bán</a>
-            <a href="{{route('exchangeProduct')}}" class="{{$case == "exchange" ? 'active' : ''}}">Trao đổi</a>
-            <a href="{{route('giveawayProduct')}}" class="{{$case == "giveaway" ? 'active' : ''}}">Hàng tặng</a>
+            <a href="{{ route('secondhandProduct', ['search'=> $search, 'province' => $provinceQuery])}}" class="{{ $case == 'secondhand' ? 'active' : '' }}">Mua bán</a>
+            <a href="{{ route('exchangeProduct', ['search'=> $search, 'province' => $provinceQuery]) }}" class="{{ $case == 'exchange' ? 'active' : '' }}">Trao đổi</a>
+            <a href="{{ route('giveawayProduct', ['search'=> $search, 'province' => $provinceQuery]) }}" class="{{ $case == 'giveaway' ? 'active' : '' }}">Hàng tặng</a>
         </div>
 
     </div>
     <div class="row">
         @include('web.inc.web_slideProduct')
         <div class="col-lg-9 col-12">
+            @if ($search != null)
+            <div style="font-size: 16px; color: #B10000;padding: 10px 0px">
+                Kết quả tìm kiếm của: {{$search}}
+            </div>
+            @endif
             <div class="row list-product">
                 @if ($case != 'giveaway')
                 @forelse($products as $product)
@@ -74,12 +86,18 @@ $dataUrl = route('exchangeProduct');
                             </p>
                             <div class="user-product-wrap">
                                 @if (isset($product->shop))
-                                <img class="mini-avatar" src="{{getImage($product->shop->logo)}}" alt="">
+                                <img class="mini-avatar" src="{{ getImage($product->shop->logo) }}"
+                                    alt="">
                                 <div class="user-product ">
-                                    <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p>
+                                    <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
+                                            src="{{ asset('/img/icon/doc-top.png') }}"
+                                            alt="">&nbsp;
+                                        {{ $product->shop->user->province->province_name }}
+                                    </p>
                                 </div>
                                 @else
-                                <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin">
+                                <img src="{{ asset('/img/image/logo.png') }}" alt=""
+                                    class="mini-avatar-admin">
                                 <div class="user-product " style="width: 77%">
                                     <p class="line-clamp-1">Sản phẩm của echop</p>
                                 </div>
@@ -120,8 +138,6 @@ $dataUrl = route('exchangeProduct');
                         @default
                         @endswitch
                     </div>
-
-
                 </div>
                 @empty
                 <div class="text-center w-100 py-5">
@@ -130,7 +146,8 @@ $dataUrl = route('exchangeProduct');
                 @endforelse
                 @else
                 @forelse($products as $product)
-                <div class="gift-item m-2 col-lg-4 col-6" style="margin-left: 0px !important;margin-right: 0px !important">
+                <div class="gift-item m-2 col-lg-4 col-6"
+                    style="margin-left: 0px !important;margin-right: 0px !important">
                     <img src="{{ getImage($product->photo) }}" alt="" class="gift-img">
                     <div class="layer">
                         <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
@@ -164,8 +181,19 @@ $dataUrl = route('exchangeProduct');
                 @endif
 
             </div>
+
+            <div class="text-center more-wrap">
+                @if ($products->hasMorePages())
+                <button id="btn-more">
+                    Xem thêm
+                </button>
+                @endif
+            </div>
         </div>
+
+
     </div>
+
 </div>
 
 @section('script')
@@ -175,8 +203,6 @@ $dataUrl = route('exchangeProduct');
 <script>
     $(document).ready(function() {
         var currentPage = 1;
-        var brandId = null;
-        var provinceIds = null;
         var rangeInput = null;
         var rangeInput2 = null;
         var option = null;
@@ -186,20 +212,27 @@ $dataUrl = route('exchangeProduct');
         })
         $('#btn-more').click(function(event) {
 
+            var selectedBrands = [];
+            $('.category-1-item.checked-text').each(function() {
+                var brandId = $(this).data('brandid');
+                selectedBrands.push(brandId);
+            });
+
+            var selectedProvinces = [];
+            $('.category-2-item.checked-text').each(function() {
+                var provinceId = $(this).data('provinceid');
+                selectedProvinces.push(provinceId);
+            });
+
             $('.custom-radio').each(function() {
                 if ($(this).find('label').hasClass('checked-text')) {
                     option = $(this).find('input').val();
                 }
             });
 
-            var rangeInput = Math.round($('#rangeInput').val() / 100000) * 100000;
-            var rangeInput2 = Math.floor($('#rangeInput2').val() / 100000) * 100000;
+            var rangeInput = $('#min').val();
+            var rangeInput2 = $('#max').val();
 
-            var provinceIds = [];
-            $('.category-2-item.checked-text').each(function() {
-                var provinceId = $(this).data('provinceid');
-                provinceIds.push(provinceId);
-            });
 
             event.preventDefault();
             currentPage++;
@@ -209,16 +242,18 @@ $dataUrl = route('exchangeProduct');
                 url: @json($dataUrl),
                 method: 'GET',
                 data: {
-                    page: currentPage,
-                    brandId: brandId,
-                    provinceIds: provinceIds,
+                    brandIds: selectedBrands,
+                    provinceIds: selectedProvinces,
                     rangeInputMin: rangeInput,
                     rangeInputMax: rangeInput2,
                     option: option,
+                    provinceIds: selectedProvinces,
+                    province: @json(request() -> get('province')),
+                    search: @json($search = request() -> get('search')),
+                    page: currentPage
                 },
                 success: function(response) {
                     $('.list-product').append(response.productHtml);
-                    console.log(response);
 
                     if (response.hasMorePages) {
                         if ($('.more-wrap').children().length === 0) {

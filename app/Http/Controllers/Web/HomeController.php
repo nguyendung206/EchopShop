@@ -67,7 +67,7 @@ class HomeController extends Controller
                 break;
         }
 
-        $products = $this->homeService->filterProducts($request, $type);
+        $products = $this->homeService->filterProducts($request->all(), $type);
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -77,5 +77,14 @@ class HomeController extends Controller
         }
 
         return view('web.product.productPage', compact('products', 'provinces'));
+    }
+
+    public function search(Request $request)
+    {
+        $datas = $this->homeService->search($request->all());
+
+        return response()->json([
+            'resultHtml' => view('web.UI.resultSearch', ['products' => $datas['products'], 'brands' => $datas['brands']])->render(),
+        ]);
     }
 }

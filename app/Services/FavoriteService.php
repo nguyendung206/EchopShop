@@ -33,7 +33,7 @@ class FavoriteService
             if (Auth::check()) {
                 $newFavorite = Favorite::create([
                     'user_id' => Auth::id(),
-                    'product_id' => $request->productId,
+                    'product_id' => $request['productId'],
                 ]);
 
                 return $newFavorite;

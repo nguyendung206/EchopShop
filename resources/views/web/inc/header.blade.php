@@ -1,3 +1,17 @@
+@php
+    $search = request()->get('search');
+    $provinceQuery = request()->get('province');
+
+    $url = Str::lower(request()->url());
+    $route = route('secondhandProduct');
+
+    if (Str::contains($url, 'giveaway')) {
+        $route = route('giveawayProduct');
+    }
+    if (Str::contains($url, 'exchange')) {
+        $route = route('exchangeProduct');
+    }
+@endphp
 <div id="overlay">
     <div class="l-navbar" id="navbar">
         <div class="nav">
@@ -43,32 +57,34 @@
 
 <header>
     <div class="header">
-        <div class="container-fluid topheader">
-            <div class="row justify-content-between align-items-center py-2">
-                <div class="hotline col-md-6 col-6 ">
-                    <a href="" class="text-white">
-                        <i class="fa-regular fa-circle-question"></i>
-                        <strong>Trợ giúp</strong>
-                    </a>
-                </div>
-                <div class="about col-md-6 col-6">
-                    <div class="language px-2">
-                        <a class="text-white" href="#">
-                            <i class="fa-solid fa-gear"></i>
-                            <span class="mx-2">Cài đặt</span>
+        <div class="topheader px-4">
+            <div class="container-fluid py-2 mw-1200">
+                <div class="row justify-content-between align-items-center ">
+                    <div class="hotline ">
+                        <a href="" class="text-white">
+                            <i class="fa-regular fa-circle-question"></i>
+                            <strong>Trợ giúp</strong>
                         </a>
                     </div>
-                    <div class="about-me px-2">
-                        <a class="text-white" href="#">Tải ứng dụng</a>
-                    </div>
-                    <div class="contact px-2">
-                        <a class="text-white" href="#">Hướng dẫn sử dụng ứng dụng</a>
+                    <div class="about">
+                        <div class="language px-2">
+                            <a class="text-white" href="#">
+                                <i class="fa-solid fa-gear"></i>
+                                <span class="mx-2">Cài đặt</span>
+                            </a>
+                        </div>
+                        <div class="about-me px-2">
+                            <a class="text-white" href="#">Tải ứng dụng</a>
+                        </div>
+                        <div class="contact px-2">
+                            <a class="text-white" href="#">Hướng dẫn sử dụng ứng dụng</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="mainheader">
-            <div class="container-fluid py-3">
+        <div class="mainheader px-4">
+            <div class="container-fluid mw-1200">
                 <div class="row justify-content-between align-items-center">
                     <div class="row justify-content-between align-items-center col-lg-2 col-md-2 col-2 col-sm-2 ml-1">
                         <a href="{{ route('home') }}" style="width: 75%;">
@@ -79,30 +95,37 @@
                         </a>
                     </div>
                     <div class="col-6 menu">
+                        <form action="{{$route}}" method="GET">
+                        @csrf
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                             </div>
-                            <input type="text" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                             <div class="input-group-append">
                                 <div style="position: relative;">
                                     <div style="border-left: 2px solid #000; height: 50%; position: absolute; left: 1px; top: 25%;"></div>
 
-                                    <select class="form-control w-120px forcus-none">
-                                        <option value="" disabled selected>Địa điểm</option>
-                                        <option value="hanoi">Hà Nội</option>
-                                        <option value="hcm">TP. Hồ Chí Minh</option>
-                                        <option value="danang">Đà Nẵng</option>
+                                    <select class="form-control w-120px forcus-none" name="province">
+                                        <option value="0" disabled selected>Địa điểm</option>
+                                        @foreach ($provinces as $province)
+                                            <option value="{{$province->id}}" {{$provinceQuery && $provinceQuery == $province->id ? 'selected' : ''}}>{{$province->province_name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-search" type="button">
+                                <button class="btn btn-search" type="submit">
                                     Tìm kiếm
                                 </button>
                             </div>
+
+                            <div class="list-result" style="position: absolute; width: 100%; top: 38px; z-index: 100">
+                                
+                            </div>
                         </div>
+                    </form>
                     </div>
                     <div class="col-lg-4 col-md-4 col-4 col-sm-4">
                         <div class="row justify-content-around align-items-center">
@@ -137,7 +160,7 @@
                                 </a>
                             </div>
                             @endif
-                            <div class="dropdown">
+                            <div class="dropdown ml-3">
                                 <a href="#" class="row align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(Auth::user()->avatar) }}" alt="">
                                     <span class="d-n ml-2 color-232323 header-name">{{ Auth::user()->name }} </span>
@@ -228,4 +251,43 @@
             </div>
         </div>
     </div>
+
 </header>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('focus', function() {
+            $('.list-result').show();
+        });
+    
+        $('#search').on('blur', function() {
+            // Delay việc ẩn div để có thời gian chọn các item
+            setTimeout(function() {
+                $('.list-result').hide();
+            }, 200);
+        });
+    });
+    $('.list-result').on('mousedown', function(event) {
+        event.preventDefault();
+    });
+    </script>
+<script>
+    $('#search').on('input', function() {
+        var searchValue = $(this).val();
+        $.ajax({
+            url: @json(route('search')),
+            method: 'GET',
+            data: {
+                search: searchValue
+            },
+            success: function(response) {
+                $('.list-result').empty();
+                $('.list-result').append(response.resultHtml);
+            },
+            error: function(xhr, status, error) {
+                $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
+            }
+        });                
+    });
+</script>

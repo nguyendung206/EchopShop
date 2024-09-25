@@ -18,6 +18,7 @@ Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name(
 Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
 Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
 Route::get('/favoriteProduct', [FavoriteController::class, 'index'])->name('favoriteProduct');
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 
 Route::get('/login', [AuthController::class, 'index'])->name('web.login');
 Route::post('/login', [AuthController::class, 'login'])->name('web.authentication');

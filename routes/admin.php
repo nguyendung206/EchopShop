@@ -24,13 +24,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/login', [AuthController::class, 'index'])->name('admin.login');
-Route::post('/login', [AuthController::class, 'login'])->name('admin.login');
+Route::get('/admin/login', [AuthController::class, 'index'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login');
+Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
-
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
     Route::get('/', [AuthController::class, 'index'])->name('index');
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'index'])->name('profile.index');
@@ -78,6 +76,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //banner
     Route::resource('/product', ProductController::class);
-    Route::put('product/changestatus/{id}', [ProductController::class, 'changestatus'])->name('product.changestatus');
+    Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
 
+    Route::prefix('userproduct')->name('userproduct.')->group(function () {
+        Route::get('/', [ProductController::class, 'userproduct'])->name('index');
+        Route::get('/show/{id}', [ProductController::class, 'showuserproduct'])->name('show');
+        Route::post('/changestatus/{id}', [ProductController::class, 'statususerproduct'])->name('changestatus');
+    });
 });

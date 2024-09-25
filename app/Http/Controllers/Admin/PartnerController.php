@@ -22,7 +22,7 @@ class PartnerController extends Controller
 
     public function index(Request $request)
     {
-        $partners = $this->partnerService->index($request);
+        $partners = $this->partnerService->index($request->all());
 
         return view('admin.partner.index', compact('partners'));
     }
@@ -35,7 +35,7 @@ class PartnerController extends Controller
     public function store(PartnerRequest $request)
     {
         try {
-            $this->partnerService->store($request);
+            $this->partnerService->store($request->all());
             flash('Thêm partner thành công')->success();
 
             return redirect()->route('admin.partner.index');
@@ -69,7 +69,7 @@ class PartnerController extends Controller
     public function update(PartnerRequest $request, $id)
     {
         try {
-            $partner = $this->partnerService->update($request, $id);
+            $partner = $this->partnerService->update($request->all(), $id);
             flash('Cập nhật đối tác thành công!')->success();
 
             return redirect()->route('admin.partner.index');
@@ -94,7 +94,7 @@ class PartnerController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, $id)
+    public function changeStatus($id)
     {
         try {
             $partner = Partner::findOrFail($id);
