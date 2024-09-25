@@ -66,7 +66,11 @@ $items = [
                 @if($product->type->value == 1)
                 <button>Trao đổi</button>
                 @elseif($product->type->value == 2)
-                <a class="text-white">Mua hàng</a>
+                <form action="{{route("cart.store")}}" method="POST" class="d-inline">
+                    <input type="hidden" name="productId" value="{{$product->id}}">
+                    @csrf
+                    <button class="text-white">Mua hàng</button>
+                </form>
                 @auth
                 <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
                     Thêm hàng vào giỏ

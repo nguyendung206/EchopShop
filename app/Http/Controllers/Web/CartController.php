@@ -27,6 +27,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $result = $this->cartService->store($request);
+        if ($request->ajax() || $request->wantsJson()) {
         if ($result) {
             flash('Thêm vào giỏ thành công')->success();
 
@@ -40,6 +41,8 @@ class CartController extends Controller
             'status' => 'fail',
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
+        }
+        return redirect()->route('cart.index');
     }
 
     public function destroy($id)
