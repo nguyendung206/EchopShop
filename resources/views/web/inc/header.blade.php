@@ -102,7 +102,7 @@ $route = route('exchangeProduct');
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
-                        <a href="{{route('favoriteProduct')}}" class="display-none">
+                        <a href="{{route('favoriteProduct')}}" class="d-n display-none">
                             <i class="fa-regular fa-heart"></i>
                         </a>
                     </div>
