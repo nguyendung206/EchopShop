@@ -1052,7 +1052,6 @@ body {
 } */
 
 .product-button {
-    z-index: 1000;
     position: relative;
     height: 58px;
 }

@@ -90,7 +90,9 @@
 <body id="body">
 
     @include('web.inc.header')
-    @yield('content')
+    <div class="pt-200 pt-120">
+        @yield('content')
+    </div>
     @include('web.inc.footer')
 
 

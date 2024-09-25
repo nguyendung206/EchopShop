@@ -25,18 +25,55 @@ $route = route('exchangeProduct');
                     </a>
                 </div>
                 <ul class="nav-list mt-3" id="menu-toggle">
+                    @auth
+                    @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
                     <li>
                         <a href="{{ route('post.create') }}" class="nav-link active">
                             <i class="fa-regular fa-file-lines mr-2"></i>
                             <span class="nav-text">Đăng bài</span>
                         </a>
                     </li>
+                    @endif
+                    @else
                     <li>
-                        <a href="{{ route('home') }}" class="nav-link active">
-                            <i class="fa-solid fa-bars mr-2"></i>
-                            <span class="nav-text">Danh mục sản phẩm</span>
+                        <a href="{{ route('web.login') }}" class="nav-link active">
+                            <i class="fa-regular fa-file-lines mr-2"></i>
+                            <span class="nav-text">Đăng bài</span>
                         </a>
                     </li>
+                    @endauth
+                    <li>
+                        <a href="#" class="nav-link" id="toggle-categories">
+                            <i class="fa-solid fa-bars mr-2"></i>
+                            <span class="nav-text">Danh mục sản phẩm</span>
+                            <i class="fa-solid fa-caret-down pl-2"></i>
+                        </a>
+                        <ul class="custom-dropdown-menu" id="categories-menu" style="display: none;">
+                            @if(isset($categories) && $categories->count())
+                            @foreach($categories as $category)
+                            <li>
+                                <a class="dropdown-item category-toggle" href="#" data-category="{{ $category->slug }}">
+                                    <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
+                                    <p class="dropdown-title">{{ $category->name }}</p>
+                                    <i class="fa-solid fa-caret-right pl-2"></i>
+                                </a>
+                                @if($category->activeBrands->count())
+                                <ul class="custom-dropdown-submenu" style="display: none;">
+                                    @foreach($category->activeBrands as $brand)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                            <p class="dropdown-title">{{ $brand->name }}</p>
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                @endif
+                            </li>
+                            @endforeach
+                            @endif
+                        </ul>
+                    </li>
+
                     <li>
                         <a href="{{ route('exchangeProduct') }}" class="nav-link">
                             <img src="{{asset('img/icon/exchange.png')}}" alt="" class="mr-2">
@@ -55,17 +92,28 @@ $route = route('exchangeProduct');
                             <span class="nav-text">Hàng cũ đem tặng</span>
                         </a>
                     </li>
+
+                    @auth
                     <li>
                         <a href="{{route('favoriteProduct')}}" class="nav-link active">
                             <i class="fa-regular fa-heart mr-2"></i>
                             <span class="nav-text">Bài viết yêu thích</span>
                         </a>
                     </li>
+                    @else
+                    <li>
+                        <a href="{{route('web.login')}}" class="nav-link active">
+                            <i class="fa-regular fa-heart mr-2"></i>
+                            <span class="nav-text">Bài viết yêu thích</span>
+                        </a>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
 
 <header>
     <div class="header">
@@ -98,7 +146,7 @@ $route = route('exchangeProduct');
         <div class="mainheader px-4">
             <div class="container-fluid mw-1200">
                 <div class="row justify-content-between align-items-center">
-                    <div class="col-lg-2 col-md-2 col-sm-3 col-3 ml-1 row justify-content-between align-items-center">
+                    <div class="col-lg-2 col-md-2 col-sm-3 col-2 ml-1 row justify-content-between align-items-center">
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
@@ -106,7 +154,7 @@ $route = route('exchangeProduct');
                             <i class="fa-regular fa-heart"></i>
                         </a>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-4 col-1 menu">
+                    <div class="col-lg-6 col-md-6 col-sm-3 col-1 menu">
                         <form action="{{$route}}" method="GET" class="display-none">
                             @csrf
                             <div class="input-group">
@@ -139,7 +187,7 @@ $route = route('exchangeProduct');
                             </div>
                         </form>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-5 col-8">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-9">
                         <div class="row justify-content-around align-items-center">
                             <div class="header-icon">
                                 <div class="search">
@@ -159,7 +207,7 @@ $route = route('exchangeProduct');
                                 </div>
                             </div>
                             @guest
-                            <div class="btn-post px-2">
+                            <div class="btn-post px-2 ">
                                 <a href="{{ route('web.login') }}">
                                     <i class="fa-solid fa-right-to-bracket mr-2"></i>
                                     <span>Đăng nhập</span>
@@ -190,7 +238,7 @@ $route = route('exchangeProduct');
                                 </div>
                             </div>
                             @endguest
-                            <div id="nav-toggle" class="d-block d-md-none ml-3">
+                            <div id="nav-toggle" class="d-block d-md-none">
                                 <i class="fa-solid fa-bars p-3 menu-bars"></i>
                             </div>
                         </div>
@@ -298,10 +346,26 @@ $route = route('exchangeProduct');
             </div>
         </div>
     </div>
-
 </header>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#toggle-categories').on('click', function(e) {
+            e.preventDefault();
+            $('#categories-menu').slideToggle(300);
+        });
+
+        $('.category-toggle').on('click', function(e) {
+            e.preventDefault();
+            $(this).next('.custom-dropdown-submenu').slideToggle(300);
+        });
+    });
+</script>
+
+
+
 <script>
     $(document).ready(function() {
         $('#search').on('focus', function() {
