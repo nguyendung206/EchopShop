@@ -207,7 +207,7 @@ $route = route('exchangeProduct');
                                         <span class="badge badge-danger" style="position: absolute;bottom: 12px; left: 10px;">{{ count($notifications) }}</span>
                                         @endif
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 400px;">
                                         @if(isset($notifications) && count($notifications) > 0)
                                         @foreach($notifications as $notification)
                                         <a class="dropdown-item d-flex align-items-start" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
@@ -217,10 +217,10 @@ $route = route('exchangeProduct');
                                             <div>
                                                 <strong>{{ $notification->title }}</strong>
                                                 <div class="text-muted my-2">{{ $notification->body }}</div>
-                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small> <!-- Thời gian thông báo -->
+                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                             </div>
                                         </a>
-                                        <div class="dropdown-divider"></div> <!-- Đường phân cách giữa các thông báo -->
+                                        <div class="dropdown-divider"></div>
                                         @endforeach
                                         @else
                                         <div class="dropdown-item text-muted">
@@ -229,8 +229,6 @@ $route = route('exchangeProduct');
                                         @endif
                                     </div>
                                 </div>
-
-
                             </div>
                             @guest
                             <div class="btn-post px-2 ">

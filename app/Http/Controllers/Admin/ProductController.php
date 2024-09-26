@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Mail\ActiveProduct;
-use App\Mail\InActiveProduct;
+use App\Mail\ProductStatusMail;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -178,24 +177,22 @@ class ProductController extends Controller
         try {
             $product = Product::findOrFail($id);
             $this->statusService->changeStatus($product);
-            $title = $product->status->value === 1 ? 'Sản phẩm đã được kích hoạt' : 'Sản phẩm đã bị vô hiệu hóa';
+            $isActive = $product->status->value === 1;
+            $title = $isActive ? 'Sản phẩm đã được kích hoạt' : 'Sản phẩm đã bị vô hiệu hóa';
             $body = 'Sản phẩm "'.$product->name.'" đã thay đổi trạng thái.';
-            $type = $product->status->value === 1 ? 1 : 2;
+            $type = $isActive ? 1 : 2;
 
-            if ($product->status->value === 1) {
-                Mail::to($product->shop->email)->send(new ActiveProduct($product, $title, $body));
-                Mail::to($product->shop->user->email)->send(new ActiveProduct($product, $title, $body));
-            } else {
-                Mail::to($product->shop->email)->send(new InActiveProduct($product, $title, $body));
-                Mail::to($product->shop->user->email)->send(new InActiveProduct($product, $title, $body));
-            }
-            $this->notificationService->createNotification(
-                $product->shop->user->id,
-                $type,
-                $title,
-                $body,
-                $product->id
-            );
+            Mail::to($product->shop->email)->send(new ProductStatusMail($product, $title, $body, $isActive));
+            Mail::to($product->shop->user->email)->send(new ProductStatusMail($product, $title, $body, $isActive));
+
+            $this->notificationService->createNotification([
+                'user_id' => $product->shop->user->id,
+                'type' => $type,
+                'title' => $title,
+                'body' => $body,
+                'product_id' => $product->id,
+            ]);
+
             flash('Thay đổi trạng thái thành công')->success();
         } catch (\Exception $e) {
             flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
