@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('type');
             $table->string('title');
             $table->text('body');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->boolean('is_read')->default(false);
             $table->timestamps();
 
