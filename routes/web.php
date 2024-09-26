@@ -5,14 +5,14 @@ use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use App\Http\Controllers\Web\ShopController;
-use App\Http\Controllers\Web\OrderController;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__ . '/admin.php';
+require __DIR__.'/admin.php';
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name('exchangeProduct');
@@ -82,8 +82,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
 
     Route::prefix('/order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::post('/change-address',[OrderController::class,'changeAddress'])->name('changeAddress');
-        Route::post('/pay-order', [OrderController::class,'store'])->name('payOrder');
+        Route::post('/change-address', [OrderController::class, 'changeAddress'])->name('changeAddress');
+        Route::post('/pay-order', [OrderController::class, 'store'])->name('payOrder');
     });
 });
 

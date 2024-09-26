@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-
 class UserService
 {
     public function filter($filters)
@@ -134,7 +133,9 @@ class UserService
             return false;
         }
     }
-    public function changeAddress($request) {
+
+    public function changeAddress($request)
+    {
         try {
             $user = Auth::user();
             $updateData = [
@@ -145,6 +146,7 @@ class UserService
                 'address' => $request['address'],
             ];
             $result = $user->update($updateData);
+
             return $result;
         } catch (\Throwable $th) {
             return false;

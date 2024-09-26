@@ -28,20 +28,21 @@ class CartController extends Controller
     {
         $result = $this->cartService->store($request);
         if ($request->ajax() || $request->wantsJson()) {
-        if ($result) {
-            flash('Thêm vào giỏ thành công')->success();
+            if ($result) {
+                flash('Thêm vào giỏ thành công')->success();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Thêm vào giỏ thành công',
+                ], 200);
+            }
 
             return response()->json([
-                'status' => 'success',
-                'message' => 'Thêm vào giỏ thành công',
-            ], 200);
+                'status' => 'fail',
+                'message' => 'Đã có lỗi xảy ra',
+            ], 500);
         }
 
-        return response()->json([
-            'status' => 'fail',
-            'message' => 'Đã có lỗi xảy ra',
-        ], 500);
-        }
         return redirect()->route('cart.index');
     }
 

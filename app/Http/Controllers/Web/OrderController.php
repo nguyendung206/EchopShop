@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Services\UserService;
 use App\Services\OrderService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,31 +19,36 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $datas = $this->orderService->index($request->all());
+
         return view('web.order.order', ['carts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
     }
 
-    public function changeAddress(Request $request) {
-            $result = $this->userService->changeAddress($request->all());
-            if($result) {
+    public function changeAddress(Request $request)
+    {
+        $result = $this->userService->changeAddress($request->all());
+        if ($result) {
 
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Thay đổi địa chỉ thành công.',
-                ]);
-            }else {
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'Thay đổi địa chỉ thất bại.',
-                ]);
-            }
-        
+            return response()->json([
+                'status' => 200,
+                'message' => 'Thay đổi địa chỉ thành công.',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Thay đổi địa chỉ thất bại.',
+            ]);
+        }
+
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         try {
             $order = $this->orderService->store($request->all());
+
             return redirect()->route('order.index');
         } catch (Exception $e) {
             return $e;

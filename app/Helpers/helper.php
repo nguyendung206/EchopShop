@@ -16,24 +16,25 @@ use App\Models\Food;
 use App\Models\Material;
 use App\Models\Menu;
 use App\Models\MenuItem;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 
-if(! function_exists('dateRemaining')) {
-    function dateRemaining($endDate) {
+if (! function_exists('dateRemaining')) {
+    function dateRemaining($endDate)
+    {
         date_default_timezone_set('Asia/Bangkok');
         $currentDate = Carbon::now(); // Thay thế bằng thời gian hiện tại
         $endDate = Carbon::parse($endDate);
         $daysRemaining = $endDate->diffInDays($currentDate);
         $hoursRemaining = $endDate->copy()->subDays($daysRemaining)->diffInHours($currentDate);
         $minutesRemaining = $endDate->copy()->subDays($daysRemaining)->subHours($hoursRemaining)->diffInMinutes($currentDate);
-    
-        return $daysRemaining . ' ngày ' . $hoursRemaining . ' giờ ' . $minutesRemaining . ' phút.';
+
+        return $daysRemaining.' ngày '.$hoursRemaining.' giờ '.$minutesRemaining.' phút.';
     }
-    
+
 }
 
 if (! function_exists('getImage')) {

@@ -1,10 +1,10 @@
 <?php
 
+use App\Enums\StatusOrder;
+use App\Enums\TypePayment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\StatusOrder;
-use App\Enums\TypePayment;
 
 return new class extends Migration
 {
