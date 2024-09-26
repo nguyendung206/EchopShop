@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Notification;
 use App\Models\Province;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -32,9 +34,21 @@ class AppServiceProvider extends ServiceProvider
         if (Schema::hasTable('categories')) {
             $categories = Category::query()->where('status', 1)->with('activeBrands')->get();
             $provinces = Province::query()->get();
-            View::share(['categories' => $categories,
+            View::share([
+                'categories' => $categories,
                 'provinces' => $provinces,
             ]);
+        }
+        if (Schema::hasTable('notifications')) {
+            View::composer('*', function ($view) {
+                if (Auth::check()) {
+                    $notifications = Notification::where('user_id', Auth::id())
+                        ->where('is_read', false)
+                        ->get();
+
+                    $view->with('notifications', $notifications);
+                }
+            });
         }
     }
 }

@@ -5,24 +5,30 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Mail\ProductStatusMail;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\NotificationService;
 use App\Services\ProductService;
 use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
     protected $productService;
 
+    protected $notificationService;
+
     protected $statusService;
 
-    public function __construct(ProductService $productService, StatusService $statusService)
+    public function __construct(ProductService $productService, StatusService $statusService, NotificationService $notificationService)
     {
         $this->productService = $productService;
         $this->statusService = $statusService;
+        $this->notificationService = $notificationService;
     }
 
     public function index(Request $request)
@@ -171,6 +177,22 @@ class ProductController extends Controller
         try {
             $product = Product::findOrFail($id);
             $this->statusService->changeStatus($product);
+            $isActive = $product->status->value === 1;
+            $title = $isActive ? 'Sản phẩm đã được kích hoạt' : 'Sản phẩm đã bị vô hiệu hóa';
+            $body = 'Sản phẩm "'.$product->name.'" đã thay đổi trạng thái.';
+            $type = $isActive ? 1 : 2;
+
+            Mail::to($product->shop->email)->send(new ProductStatusMail($product, $title, $body, $isActive));
+            Mail::to($product->shop->user->email)->send(new ProductStatusMail($product, $title, $body, $isActive));
+
+            $this->notificationService->createNotification([
+                'user_id' => $product->shop->user->id,
+                'type' => $type,
+                'title' => $title,
+                'body' => $body,
+                'product_id' => $product->id,
+            ]);
+
             flash('Thay đổi trạng thái thành công')->success();
         } catch (\Exception $e) {
             flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
