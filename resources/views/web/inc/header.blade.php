@@ -200,11 +200,37 @@ $route = route('exchangeProduct');
                                         <i class="fa-regular fa-comment-dots"></i>
                                     </a>
                                 </div>
-                                <div class="search">
-                                    <a href="#">
+                                <div class="search" style="position: relative;">
+                                    <a href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa-regular fa-bell"></i>
+                                        @if(isset($notifications) && count($notifications) > 0)
+                                        <span class="badge badge-danger" style="position: absolute;bottom: 12px; left: 10px;">{{ count($notifications) }}</span>
+                                        @endif
                                     </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+                                        @if(isset($notifications) && count($notifications) > 0)
+                                        @foreach($notifications as $notification)
+                                        <a class="dropdown-item d-flex align-items-start" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
+                                            <div class="mr-3 mt-4">
+                                                <i class="fa-regular fa-bell"></i>
+                                            </div>
+                                            <div>
+                                                <strong>{{ $notification->title }}</strong>
+                                                <div class="text-muted my-2">{{ $notification->body }}</div>
+                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small> <!-- Thời gian thông báo -->
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-divider"></div> <!-- Đường phân cách giữa các thông báo -->
+                                        @endforeach
+                                        @else
+                                        <div class="dropdown-item text-muted">
+                                            Không có thông báo mới
+                                        </div>
+                                        @endif
+                                    </div>
                                 </div>
+
+
                             </div>
                             @guest
                             <div class="btn-post px-2 ">

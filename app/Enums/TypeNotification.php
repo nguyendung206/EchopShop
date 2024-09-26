@@ -10,8 +10,8 @@ enum TypeNotification: int
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Hoạt động',
-            self::INACTIVE => 'Không hoạt động',
+            self::ACTIVE => 'Kích hoạt sản phẩm',
+            self::INACTIVE => 'Vô hiệu hóa sản phẩm',
         };
     }
 }

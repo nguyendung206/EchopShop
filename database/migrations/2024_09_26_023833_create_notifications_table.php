@@ -19,10 +19,12 @@ return new class extends Migration
             $table->integer('type');
             $table->string('title');
             $table->text('body');
+            $table->unsignedBigInteger('product_id');
             $table->boolean('is_read')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

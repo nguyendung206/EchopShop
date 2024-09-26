@@ -193,7 +193,8 @@ class ProductController extends Controller
                 $product->shop->user->id,
                 $type,
                 $title,
-                $body
+                $body,
+                $product->id
             );
             flash('Thay đổi trạng thái thành công')->success();
         } catch (\Exception $e) {
