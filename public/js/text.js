@@ -114,7 +114,7 @@ const showMenu = (toggleId, navbarId, bodyId, overlayId, closeId) => {
 
     if (toggle && navbar) {
         toggle.addEventListener('click', () => {
-            navbar.classList.toggle('show');
+            navbar.classList.toggle('showMenu');
             toggle.classList.toggle('rotate');
             bodypadding.classList.toggle('expander');
             overlay.classList.toggle('overlay');
@@ -123,7 +123,7 @@ const showMenu = (toggleId, navbarId, bodyId, overlayId, closeId) => {
 
     if (close && navbar) {
         close.addEventListener('click', () => {
-            navbar.classList.remove('show');
+            navbar.classList.remove('showMenu');
             toggle.classList.remove('rotate');
             bodypadding.classList.remove('expander');
             overlay.classList.remove('overlay');
