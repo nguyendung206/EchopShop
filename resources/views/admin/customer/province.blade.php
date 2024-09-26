@@ -24,7 +24,7 @@
                      districtId: districtId
                  },
                  success: function(response) {
-                     $('#ward_select').empty().append('<option value="0">Phường/Thị xã *</option>');
+                     $('#ward_select').empty().append('<option value="0" disabled>Phường/Thị xã *</option>');
 
                      $.each(response.wards, function(index, ward) {
                          $('#ward_select').append('<option value="' + ward.id + '">' + ward.ward_name + '</option>');
@@ -54,7 +54,7 @@
                  provinceId: provinceId
              },
              success: function(response) {
-                 $('#district_select').empty().append('<option value="0">Quận/Huyện *</option>');
+                 $('#district_select').empty().append('<option value="0" disabled>Quận/Huyện *</option>');
 
                  $.each(response.districts, function(index, district) {
 
@@ -64,11 +64,11 @@
                  if (provinceId == provinceIdUser) {
                      $('#district_select').val(districtIdUser).trigger('change');
                  }
-                 $('#ward_select').empty().append('<option value="0" >Phường/Thị xã *</option>');
-                 $('#ward_select').append('<option value="0" >Vui lòng chọn quận huyện trước</option>');
+                 $('#ward_select').empty().append('<option value="0" disabled>Phường/Thị xã *</option>');
+                 $('#ward_select').append('<option value="0" disabled>Vui lòng chọn quận huyện trước</option>');
                  @else
-                 $('#ward_select').empty().append('<option value="0" >Phường/Thị xã *</option>');
-                 $('#ward_select').append('<option value="0" >Vui lòng chọn quận huyện trước</option>');
+                 $('#ward_select').empty().append('<option value="0" disabled>Phường/Thị xã *</option>');
+                 $('#ward_select').append('<option value="0" disabled>Vui lòng chọn quận huyện trước</option>');
                  @endif
              },
              error: function(xhr) {

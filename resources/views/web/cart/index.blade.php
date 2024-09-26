@@ -26,7 +26,7 @@ HOME
                 @foreach ($carts as $cart)
                 <tr class="text-center">
                     <td class="align-middle">
-                        <input type="checkbox" class="custom-checkbox" />
+                        <input type="checkbox" class="custom-checkbox" data-cart-id="{{$cart->id}}"/>
                     </td>
                     <td class="align-middle">
                         <div class="d-flex">
@@ -78,7 +78,7 @@ HOME
                 }}
                 </b>
             </div>
-            <button class="btn btn-success">Mua hàng</button>
+            <a class="btn btn-success" href="{{route('order.index')}}" id="buyButton">Mua hàng</a>
         </div>
         @else
         <div class="text-center w-100 py-5">
@@ -250,6 +250,27 @@ HOME
         // Chuyển hướng đến route xóa giỏ hàng
         window.location.href = "{{ route('cart.clear') }}";
     });
+</script>
+
+<script>
+    document.querySelectorAll('.custom-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', updateBuyButton);
+    });
+    document.querySelectorAll('.all-check').forEach(checkbox => {
+        checkbox.addEventListener('change', updateBuyButton);
+    });
+    function updateBuyButton() {
+        const selectedCartIds = [];
+        document.querySelectorAll('.custom-checkbox:checked').forEach(checkbox => {
+            selectedCartIds.push(checkbox.getAttribute('data-cart-id'));
+        });
+
+        // Cập nhật URL của nút Mua hàng
+        const buyButton = document.getElementById('buyButton');
+        const baseUrl = buyButton.getAttribute('href').split('?')[0];
+        const queryString = selectedCartIds.length > 0 ? `?cart_ids[]=${selectedCartIds.join('&cart_ids[]=')}` : '';
+        buyButton.setAttribute('href', baseUrl + queryString);
+    }
 </script>
 
 @endsection
