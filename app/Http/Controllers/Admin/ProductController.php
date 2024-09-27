@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Jobs\CreateNotificationJob;
 use App\Mail\ProductStatusMail;
 use App\Models\Brand;
 use App\Models\Category;
@@ -182,16 +183,19 @@ class ProductController extends Controller
             $body = 'Sản phẩm "'.$product->name.'" đã thay đổi trạng thái.';
             $type = $isActive ? 1 : 2;
 
-            Mail::to($product->shop->email)->send(new ProductStatusMail($product, $title, $body, $isActive));
-            Mail::to($product->shop->user->email)->send(new ProductStatusMail($product, $title, $body, $isActive));
+            Mail::to($product->shop->email)
+                ->later(now()->addMinute(), new ProductStatusMail($product, $title, $body, $isActive));
 
-            $this->notificationService->createNotification([
+            Mail::to($product->shop->user->email)
+                ->later(now()->addMinute(), new ProductStatusMail($product, $title, $body, $isActive));
+
+            CreateNotificationJob::dispatch([
                 'user_id' => $product->shop->user->id,
                 'type' => $type,
                 'title' => $title,
                 'body' => $body,
                 'product_id' => $product->id,
-            ]);
+            ])->delay(now()->addMinute());
 
             flash('Thay đổi trạng thái thành công')->success();
         } catch (\Exception $e) {
