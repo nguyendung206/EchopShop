@@ -55,9 +55,9 @@
                     <div class="form-group row">
                         <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Loại hàng')</label>
                         <div class="col-sm-9">
-                            <select class="form-control font-weight-500" name="category_id">
+                            <select class="form-control font-weight-500" name="category_id" id="inputCategory">
                                 <option value="" {{ old('category_id') === null ? 'selected' : '' }}>
-                                    @lang('Chọn loại hàng')
+                                    @lang('Chọn danh mục')
                                 </option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -74,15 +74,9 @@
                     <div class="form-group row">
                         <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Thương hiệu')</label>
                         <div class="col-sm-9">
-                            <select class="form-control font-weight-500" name="brand_id">
-                                <option value="" {{ old('brand_id') === null ? 'selected' : '' }}>
-                                    @lang('Chọn thương hiệu')
-                                </option>
-                                @foreach($brands as $brand)
-                                <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                                    @lang($brand->name)
-                                </option>
-                                @endforeach
+                            <select class="form-control font-weight-500" name="brand_id" id="inputBrand">
+                                <option value="">Chọn Thương hiệu</option>
+                                <!-- Options will be populated by JavaScript -->
                             </select>
                             @error('brand_id')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -91,12 +85,12 @@
                     </div>
 
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Kiểu sản phẩm')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Hình thức')</label>
                         <div class="col-sm-9 mt-2">
                             @foreach(\App\Enums\TypeProduct::cases() as $type)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input @error('type') is-invalid @enderror" type="radio" name="type" id="type_{{ $type->value }}" value="{{ $type->value }}"
-                                    {{ old('type') == $type->value ? 'checked' : '' }}>
+                                    {{ old('type') == $type->value ? 'checked' : '' }} onchange="checkType()">
                                 <label style="font-size: 1rem;" class="form-check-label" for="type_{{ $type->value }}">
                                     @lang($type->label())
                                 </label>
@@ -123,16 +117,25 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Số lượng')</label>
+                    <div class="form-group row" id="detailContainer" style="display: none;">
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Chi tiết')</label>
                         <div class="col-sm-9">
                             <div id="color_boxes">
                                 <!-- Dynamic color inputs will be added here -->
                             </div>
-                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Chi tiết')</button>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Thêm chi tiết')</button>
                         </div>
                     </div>
-
+                    <div class="form-group row" id="detailQuantity" style="display: none;">
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Số lượng')</label>
+                        <div class="col-sm-9">
+                            <div id="quantity_boxes">
+                                <div class="input-group mb-2">
+                                    <input type="number" name="quantities[]" class="form-control" placeholder="Nhập số lượng">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Ảnh')<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
@@ -154,7 +157,7 @@
                         <div class="col-sm-9">
                             <input type="file" class="form-control @error('list_photo') is-invalid @enderror" name="list_photo[]" multiple onchange="previewListPhotos(this)">
                             <div id="list_photo_preview" class="d-flex flex-wrap">
-                               
+
                             </div>
                             @error('list_photo')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -170,7 +173,31 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categories = @json($categories);
+        const brands = @json($brands);
+        const categorySelect = document.getElementById('inputCategory');
+        const brandSelect = document.getElementById('inputBrand');
 
+        categorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+
+            brandSelect.innerHTML = '<option value="">Chọn Thương hiệu</option>';
+
+            if (selectedCategoryId) {
+                const filteredBrands = brands.filter(brand => brand.category_id == selectedCategoryId);
+
+                filteredBrands.forEach(brand => {
+                    const option = document.createElement('option');
+                    option.value = brand.id;
+                    option.textContent = brand.name;
+                    brandSelect.appendChild(option);
+                });
+            }
+        });
+    });
+</script>
 <script>
     function previewPhoto(input) {
         const preview = document.getElementById('photo_preview');
@@ -230,12 +257,12 @@
         colorInput.className = 'form-control';
         colorInput.placeholder = 'Nhập màu';
 
-        // Input để nhập kích cở
+        // Input để nhập kích cỡ
         const sizeInput = document.createElement('input');
         sizeInput.type = 'text';
         sizeInput.name = 'sizes[]';
         sizeInput.className = 'form-control ml-2';
-        sizeInput.placeholder = 'Nhập kích cở';
+        sizeInput.placeholder = 'Nhập kích cỡ';
 
         // Input để nhập số lượng
         const quantityInput = document.createElement('input');
@@ -243,6 +270,7 @@
         quantityInput.name = 'quantities[]';
         quantityInput.className = 'form-control ml-2';
         quantityInput.placeholder = 'Nhập số lượng';
+
         // Nút xóa
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
@@ -261,6 +289,30 @@
         // Thêm thẻ div mới vào container
         colorBoxContainer.appendChild(newColorBox);
     }
+
+    function checkType() {
+        const typeSelect = document.querySelector('input[name="type"]:checked');
+        const detailContainer = document.getElementById('detailContainer');
+        const detailQuantity = document.getElementById('detailQuantity');
+        const colorBoxContainer = document.getElementById('color_boxes');
+
+        detailContainer.style.display = 'none';
+        detailQuantity.style.display = 'none';
+
+        colorBoxContainer.innerHTML = '';
+
+        if (typeSelect) {
+            if (typeSelect.value == 2 || typeSelect.value == 4) {
+                detailContainer.style.display = 'flex';
+                addColorBox(); 
+            } else if (typeSelect.value == 1 || typeSelect.value == 3) {
+                detailQuantity.style.display = 'flex';
+            }
+        }
+    }
+
+    // Kiểm tra và thiết lập hiển thị khi trang được tải
+    document.addEventListener('DOMContentLoaded', checkType);
 </script>
 <script type="importmap">
     {

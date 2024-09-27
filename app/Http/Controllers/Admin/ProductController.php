@@ -57,12 +57,12 @@ class ProductController extends Controller
                 $sizes = $request->input('sizes', []);
                 $quantities = $request->input('quantities', []);
 
-                foreach ($colors as $index => $color) {
+                foreach ($quantities as $index => $quantity) {
                     $this->productService->createProductUnit([
                         'product_id' => $product->id,
-                        'color' => $color ?? '',
+                        'color' => $colors[$index] ?? '',
                         'size' => $sizes[$index] ?? '',
-                        'quantity' => $quantities[$index] ?? 0,
+                        'quantity' => $quantity ?? 1,
                     ]);
                 }
 

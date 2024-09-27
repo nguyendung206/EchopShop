@@ -23,8 +23,8 @@
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputGender">Danh mục *</label>
-                    <select class="form-control font-weight-500" name="category_id">
+                    <label for="inputCategory">Danh mục *</label>
+                    <select class="form-control font-weight-500" name="category_id" id="inputCategory">
                         <option value="" {{ old('category_id') === null ? 'selected' : '' }}>Chọn Danh mục</option>
                         @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -36,25 +36,23 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
                 <div class="form-group col-md-6">
-                    <label for="inputGender">Thương hiệu *</label>
-                    <select class="form-control font-weight-500" name="brand_id">
-                        <option value="" {{ old('brand_id') === null ? 'selected' : '' }}>Chọn Danh mục</option>
-                        @foreach($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                            {{ $brand->name }}
-                        </option>
-                        @endforeach
+                    <label for="inputBrand">Thương hiệu *</label>
+                    <select class="form-control font-weight-500" name="brand_id" id="inputBrand">
+                        <option value="">Chọn Thương hiệu</option>
+                        <!-- Options will be populated by JavaScript -->
                     </select>
                     @error('brand_id')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
+
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputGender">Hình thức *</label>
-                    <select class="form-control @error('type') is-invalid @enderror" name="type" id="inputType">
+                    <label for="inputType">Hình thức *</label>
+                    <select class="form-control @error('type') is-invalid @enderror" name="type" id="inputType" onchange="checkType()">
                         <option value="">Chọn hình thức</option>
                         @foreach(\App\Enums\TypeProduct::cases() as $type)
                         <option value="{{ $type->value }}" {{ old('type') == $type->value ? 'selected' : '' }}>
@@ -84,12 +82,15 @@
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label for="description">Chi tiết </label>
-                <div id="color_boxes">
-                </div>
-                <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Chi tiết')</button>
+            <div class="form-group" id="detailQuantity" style="display: none;">
+                <label for="quantity">Số lượng chi tiết</label>
+                <div id="quantity_boxes"></div>
+            </div>
 
+            <div class="form-group" id="detailContainer" style="display: none;">
+                <label for="colors">Chi tiết màu sắc</label>
+                <div id="color_boxes"></div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Chi tiết')</button>
             </div>
 
             <div class="form-group">
@@ -120,6 +121,132 @@
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categories = @json($categories);
+        const brands = @json($brands);
+        const categorySelect = document.getElementById('inputCategory');
+        const brandSelect = document.getElementById('inputBrand');
+
+        categorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+
+            brandSelect.innerHTML = '<option value="">Chọn Thương hiệu</option>';
+
+            if (selectedCategoryId) {
+                const filteredBrands = brands.filter(brand => brand.category_id == selectedCategoryId);
+
+                filteredBrands.forEach(brand => {
+                    const option = document.createElement('option');
+                    option.value = brand.id;
+                    option.textContent = brand.name;
+                    brandSelect.appendChild(option);
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    function checkType() {
+        const typeSelect = document.getElementById('inputType');
+        const detailContainer = document.getElementById('detailContainer');
+        const detailQuantity = document.getElementById('detailQuantity');
+        const selectedValue = typeSelect.value;
+
+        detailContainer.style.display = 'none';
+        detailQuantity.style.display = 'none';
+        clearContainer('color_boxes');
+        clearContainer('quantity_boxes');
+
+        if (selectedValue == 2 || selectedValue == 4) {
+            detailContainer.style.display = 'block';
+        } else if (selectedValue == 1 || selectedValue == 3) {
+            detailQuantity.style.display = 'block';
+            addQuantityBox(); 
+        }
+    }
+
+    function clearContainer(containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+    }
+
+    function addColorBox() {
+        const colorBoxContainer = document.getElementById('color_boxes');
+        const newColorBox = createColorBox();
+        colorBoxContainer.appendChild(newColorBox);
+    }
+
+    function createColorBox() {
+        const colorBox = document.createElement('div');
+        colorBox.className = 'input-group mb-2';
+
+        const colorInput = document.createElement('input');
+        colorInput.type = 'text';
+        colorInput.name = 'colors[]';
+        colorInput.className = 'form-control';
+        colorInput.placeholder = 'Nhập màu';
+
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.name = 'sizes[]';
+        sizeInput.className = 'form-control ml-2';
+        sizeInput.placeholder = 'Nhập kích cỡ';
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.className = 'form-control ml-2';
+        quantityInput.placeholder = 'Nhập số lượng';
+
+        const removeButton = createRemoveButton(colorBox);
+
+        colorBox.appendChild(colorInput);
+        colorBox.appendChild(sizeInput);
+        colorBox.appendChild(quantityInput);
+        colorBox.appendChild(removeButton);
+
+        return colorBox;
+    }
+
+    function addQuantityBox() {
+        const quantityBoxContainer = document.getElementById('quantity_boxes');
+
+        if (quantityBoxContainer.children.length === 0) {
+            const newQuantityBox = createQuantityBox();
+            quantityBoxContainer.appendChild(newQuantityBox);
+        }
+    }
+
+    function createQuantityBox() {
+        const quantityBox = document.createElement('div');
+        quantityBox.className = 'input-group mb-2';
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.className = 'form-control';
+        quantityInput.placeholder = 'Nhập số lượng';
+
+        quantityBox.appendChild(quantityInput);
+
+        return quantityBox;
+    }
+
+    function createRemoveButton(box) {
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-danger ml-2';
+        removeButton.textContent = 'X';
+        removeButton.onclick = function() {
+            box.parentNode.removeChild(box);
+        };
+        return removeButton;
+    }
+
+    document.addEventListener('DOMContentLoaded', checkType);
+</script>
 
 <script>
     // Preview ảnh chính
@@ -204,51 +331,6 @@
         } else {
             console.error('Index không hợp lệ hoặc ảnh không tồn tại.');
         }
-    }
-
-    function addColorBox() {
-        const colorBoxContainer = document.getElementById('color_boxes');
-
-        const newColorBox = document.createElement('div');
-        newColorBox.className = 'input-group mb-2';
-
-        // Input để nhập màu
-        const colorInput = document.createElement('input');
-        colorInput.type = 'text';
-        colorInput.name = 'colors[]';
-        colorInput.className = 'form-control';
-        colorInput.placeholder = 'Nhập màu';
-
-        // Input để nhập kích cở
-        const sizeInput = document.createElement('input');
-        sizeInput.type = 'text';
-        sizeInput.name = 'sizes[]';
-        sizeInput.className = 'form-control ml-2';
-        sizeInput.placeholder = 'Nhập kích cở';
-
-        // Input để nhập số lượng
-        const quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.name = 'quantities[]';
-        quantityInput.className = 'form-control ml-2';
-        quantityInput.placeholder = 'Nhập số lượng';
-        // Nút xóa
-        const removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.className = 'btn btn-danger ml-2';
-        removeButton.textContent = 'X';
-        removeButton.onclick = function() {
-            colorBoxContainer.removeChild(newColorBox);
-        };
-
-        // Thêm các input vào thẻ div mới
-        newColorBox.appendChild(colorInput);
-        newColorBox.appendChild(sizeInput);
-        newColorBox.appendChild(quantityInput);
-        newColorBox.appendChild(removeButton);
-
-        // Thêm thẻ div mới vào container
-        colorBoxContainer.appendChild(newColorBox);
     }
 </script>
 <script type="importmap">
