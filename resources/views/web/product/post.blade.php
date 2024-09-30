@@ -41,7 +41,6 @@
                     <label for="inputBrand">Thương hiệu *</label>
                     <select class="form-control font-weight-500" name="brand_id" id="inputBrand">
                         <option value="">Chọn Thương hiệu</option>
-                        <!-- Options will be populated by JavaScript -->
                     </select>
                     @error('brand_id')
                     <div class="invalid-feedback">{{ $message }}</div>

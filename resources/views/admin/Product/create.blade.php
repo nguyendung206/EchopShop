@@ -129,11 +129,7 @@
                     <div class="form-group row" id="detailQuantity" style="display: none;">
                         <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Số lượng')</label>
                         <div class="col-sm-9">
-                            <div id="quantity_boxes">
-                                <div class="input-group mb-2">
-                                    <input type="number" name="quantities[]" class="form-control" placeholder="Nhập số lượng">
-                                </div>
-                            </div>
+                            <div id="quantity_boxes"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -290,6 +286,30 @@
         colorBoxContainer.appendChild(newColorBox);
     }
 
+    function addQuantityBox() {
+        const quantityBoxContainer = document.getElementById('quantity_boxes');
+
+        if (quantityBoxContainer.children.length === 0) {
+            const newQuantityBox = createQuantityBox();
+            quantityBoxContainer.appendChild(newQuantityBox);
+        }
+    }
+
+    function createQuantityBox() {
+        const quantityBox = document.createElement('div');
+        quantityBox.className = 'input-group mb-2';
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.className = 'form-control';
+        quantityInput.placeholder = 'Nhập số lượng';
+
+        quantityBox.appendChild(quantityInput);
+
+        return quantityBox;
+    }
+
     function checkType() {
         const typeSelect = document.querySelector('input[name="type"]:checked');
         const detailContainer = document.getElementById('detailContainer');
@@ -304,9 +324,10 @@
         if (typeSelect) {
             if (typeSelect.value == 2 || typeSelect.value == 4) {
                 detailContainer.style.display = 'flex';
-                addColorBox(); 
+                addColorBox();
             } else if (typeSelect.value == 1 || typeSelect.value == 3) {
                 detailQuantity.style.display = 'flex';
+                addQuantityBox();
             }
         }
     }

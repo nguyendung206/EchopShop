@@ -276,7 +276,7 @@
         return quantityBox;
     }
     document.addEventListener('DOMContentLoaded', function() {
-        checkType(); // Kiểm tra và hiện box đúng theo type khi trang được tải
+        checkType();
     });
 </script>
 

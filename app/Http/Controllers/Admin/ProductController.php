@@ -105,11 +105,11 @@ class ProductController extends Controller
                 $quantities = $request->input('quantities', []);
 
                 $details = [];
-                foreach ($colors as $index => $color) {
+                foreach ($quantities as $index => $quantity) {
                     $details[] = [
-                        'color' => $color ?? '',
+                        'color' => $colors[$index] ?? '',
                         'size' => $sizes[$index] ?? '',
-                        'quantity' => $quantities[$index] ?? 0,
+                        'quantity' => $quantity ?? 1,
                     ];
                 }
                 $this->productService->updateProductUnit($details, $id);
