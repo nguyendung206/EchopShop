@@ -206,7 +206,7 @@ class ProductController extends Controller
             $this->statusService->changeStatus($product);
             $isActive = $product->status->value === 1;
             $title = $isActive ? 'Sản phẩm đã được kích hoạt' : 'Sản phẩm đã bị vô hiệu hóa';
-            $body = 'Sản phẩm "' . $product->name . '" đã thay đổi trạng thái.';
+            $body = 'Sản phẩm "'.$product->name.'" đã thay đổi trạng thái.';
             $type = $isActive ? 1 : 2;
 
             Mail::to($product->shop->email)

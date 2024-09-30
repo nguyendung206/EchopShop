@@ -96,10 +96,9 @@ class ProductController extends Controller
                 return redirect()->back()->with('error', 'Đăng bài thất bại.');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi: '.$e->getMessage());
         }
     }
-
 
     public function edit($id)
     {
