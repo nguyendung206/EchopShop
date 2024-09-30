@@ -103,6 +103,7 @@ class ProductService
     public function createProductUnit(array $data)
     {
         $productUnit = new ProductUnit;
+        $productUnit->type = $data['type'];
         $productUnit->product_id = $data['product_id'];
         $productUnit->color = $data['color'];
         $productUnit->size = $data['size'];
@@ -167,6 +168,7 @@ class ProductService
         foreach ($data as $detail) {
             $productUnit = new ProductUnit;
             $productUnit->product_id = $productId;
+            $productUnit->type = $detail['type'];
             $productUnit->color = $detail['color'];
             $productUnit->size = $detail['size'];
             $productUnit->quantity = $detail['quantity'];

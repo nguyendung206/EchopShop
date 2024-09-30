@@ -53,17 +53,30 @@ class ProductController extends Controller
             $product = $this->productService->createProduct($request);
 
             if ($product) {
-                $colors = $request->input('colors', []);
-                $sizes = $request->input('sizes', []);
-                $quantities = $request->input('quantities', []);
+                if ($request->unittype == 1) {
+                    $quantity = $request->quantity;
 
-                foreach ($quantities as $index => $quantity) {
                     $this->productService->createProductUnit([
+                        'type' => $request->unittype,
                         'product_id' => $product->id,
-                        'color' => $colors[$index] ?? '',
-                        'size' => $sizes[$index] ?? '',
-                        'quantity' => $quantity ?? 1,
+                        'color' => '',
+                        'size' => '',
+                        'quantity' => $quantity > 0 ? $quantity : 1,
                     ]);
+                } elseif ($request->unittype == 2) {
+                    $colors = $request->input('colors', []);
+                    $sizes = $request->input('sizes', []);
+                    $quantities = $request->input('quantities', []);
+
+                    foreach ($quantities as $index => $quantity) {
+                        $this->productService->createProductUnit([
+                            'type' => $request->unittype,
+                            'product_id' => $product->id,
+                            'color' => $colors[$index] ?? '',
+                            'size' => $sizes[$index] ?? '',
+                            'quantity' => $quantity > 0 ? $quantity : 1,
+                        ]);
+                    }
                 }
 
                 flash('Thêm mới sản phẩm thành công!')->success();
@@ -100,17 +113,30 @@ class ProductController extends Controller
             $product = $this->productService->updateProduct($request, $id);
 
             if ($product) {
-                $colors = $request->input('colors', []);
-                $sizes = $request->input('sizes', []);
-                $quantities = $request->input('quantities', []);
-
                 $details = [];
-                foreach ($quantities as $index => $quantity) {
+                if ($request->unittype == 1) {
+                    $quantity = $request->quantity;
                     $details[] = [
-                        'color' => $colors[$index] ?? '',
-                        'size' => $sizes[$index] ?? '',
-                        'quantity' => $quantity ?? 1,
+                        'type' => $request->unittype,
+                        'product_id' => $product->id,
+                        'color' => '',
+                        'size' => '',
+                        'quantity' => $quantity > 0 ? $quantity : 1,
                     ];
+                } elseif ($request->unittype == 2) {
+                    $colors = $request->input('colors', []);
+                    $sizes = $request->input('sizes', []);
+                    $quantities = $request->input('quantities', []);
+
+                    foreach ($quantities as $index => $quantity) {
+                        $details[] = [
+                            'type' => $request->unittype,
+                            'product_id' => $product->id,
+                            'color' => $colors[$index] ?? '',
+                            'size' => $sizes[$index] ?? '',
+                            'quantity' => $quantity > 0 ? $quantity : 1,
+                        ];
+                    }
                 }
                 $this->productService->updateProductUnit($details, $id);
 
@@ -180,7 +206,7 @@ class ProductController extends Controller
             $this->statusService->changeStatus($product);
             $isActive = $product->status->value === 1;
             $title = $isActive ? 'Sản phẩm đã được kích hoạt' : 'Sản phẩm đã bị vô hiệu hóa';
-            $body = 'Sản phẩm "'.$product->name.'" đã thay đổi trạng thái.';
+            $body = 'Sản phẩm "' . $product->name . '" đã thay đổi trạng thái.';
             $type = $isActive ? 1 : 2;
 
             Mail::to($product->shop->email)

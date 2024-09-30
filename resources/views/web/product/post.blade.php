@@ -51,7 +51,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputType">Hình thức *</label>
-                    <select class="form-control @error('type') is-invalid @enderror" name="type" id="inputType" onchange="checkType()">
+                    <select class="form-control @error('type') is-invalid @enderror" name="type" id="inputType">
                         <option value="">Chọn hình thức</option>
                         @foreach(\App\Enums\TypeProduct::cases() as $type)
                         <option value="{{ $type->value }}" {{ old('type') == $type->value ? 'selected' : '' }}>
@@ -81,15 +81,34 @@
                 @enderror
             </div>
 
-            <div class="form-group" id="detailQuantity" style="display: none;">
-                <label for="quantity">Số lượng chi tiết</label>
-                <div id="quantity_boxes"></div>
+            <div class="form-group">
+                <label for="productDetails">Chi tiết *</label>
+                <div class="ml-4 form-check form-check-inline">
+                    <input name="unittype" type="radio" id="unitType1" class="form-check-input" value="1" {{ old('unittype') == '1' ? 'checked' : '' }} style="cursor: pointer;" onchange="toggleDetailInput()">
+                    <label class="form-check-label" for="unitType1" style="cursor: pointer;">Chỉ có số lượng</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input name="unittype" type="radio" id="unitType2" class="form-check-input" value="2" {{ old('unittype') == '2' ? 'checked' : '' }} style="cursor: pointer;" onchange="toggleDetailInput()">
+                    <label class="form-check-label" for="unitType2" style="cursor: pointer;">Kích cỡ, màu, số lượng</label>
+                </div>
+
+                @error('unittype')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-            <div class="form-group" id="detailContainer" style="display: none;">
+            <!-- Phần nhập chỉ có số lượng -->
+            <div class="form-group" id="quantityInput" style="display: none;">
+                <label for="quantity">Số lượng</label>
+                <input type="number" name="quantity" id="quantity" class="form-control" min="1" placeholder="Nhập số lượng">
+            </div>
+
+            <!-- Phần nhập chi tiết màu sắc -->
+            <div class="form-group" id="colorSizeInput" style="display: none;">
                 <label for="colors">Chi tiết màu sắc</label>
                 <div id="color_boxes"></div>
-                <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Chi tiết')</button>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ Thêm chi tiết</button>
             </div>
 
             <div class="form-group">
@@ -147,28 +166,25 @@
 </script>
 
 <script>
-    function checkType() {
-        const typeSelect = document.getElementById('inputType');
-        const detailContainer = document.getElementById('detailContainer');
-        const detailQuantity = document.getElementById('detailQuantity');
-        const selectedValue = typeSelect.value;
+    function toggleDetailInput() {
+        const unitType1 = document.getElementById('unitType1').checked;
+        const unitType2 = document.getElementById('unitType2').checked;
+        const quantityInput = document.getElementById('quantityInput');
+        const colorSizeInput = document.getElementById('colorSizeInput');
+        const colorBoxContainer = document.getElementById('color_boxes');
 
-        detailContainer.style.display = 'none';
-        detailQuantity.style.display = 'none';
-        clearContainer('color_boxes');
-        clearContainer('quantity_boxes');
+        colorSizeInput.style.display = 'none';
+        quantityInput.style.display = 'none';
+        colorBoxContainer.innerHTML = '';
 
-        if (selectedValue == 2 || selectedValue == 4) {
-            detailContainer.style.display = 'block';
-        } else if (selectedValue == 1 || selectedValue == 3) {
-            detailQuantity.style.display = 'block';
-            addQuantityBox(); 
+        if (unitType1) {
+            quantityInput.style.display = 'block';
+            colorSizeInput.style.display = 'none';
+        } else if (unitType2) {
+            quantityInput.style.display = 'none';
+            colorSizeInput.style.display = 'block';
+            addColorBox();
         }
-    }
-
-    function clearContainer(containerId) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
     }
 
     function addColorBox() {
@@ -209,30 +225,6 @@
         return colorBox;
     }
 
-    function addQuantityBox() {
-        const quantityBoxContainer = document.getElementById('quantity_boxes');
-
-        if (quantityBoxContainer.children.length === 0) {
-            const newQuantityBox = createQuantityBox();
-            quantityBoxContainer.appendChild(newQuantityBox);
-        }
-    }
-
-    function createQuantityBox() {
-        const quantityBox = document.createElement('div');
-        quantityBox.className = 'input-group mb-2';
-
-        const quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.name = 'quantities[]';
-        quantityInput.className = 'form-control';
-        quantityInput.placeholder = 'Nhập số lượng';
-
-        quantityBox.appendChild(quantityInput);
-
-        return quantityBox;
-    }
-
     function createRemoveButton(box) {
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
@@ -244,7 +236,7 @@
         return removeButton;
     }
 
-    document.addEventListener('DOMContentLoaded', checkType);
+    document.addEventListener('DOMContentLoaded', toggleDetailInput);
 </script>
 
 <script>
