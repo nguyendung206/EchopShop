@@ -118,7 +118,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Thành Phố<span class="text-vali">&#9913;</span></label></label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Thành Phố<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500"  name="province_id" id="province_select" >
                                 <option class=" text-center" value="0">Tỉnh/Thành phố *</option>
@@ -133,7 +133,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Quận/Huyện <span class="text-vali">&#9913;</span></label></label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Quận/Huyện <span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="district_id" id="district_select" >
                                 <option value="0" class=" text-center">Quận/Huyện *</option>
@@ -146,7 +146,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">Phường/Thị xã <span class="text-vali">&#9913;</span></label></label>
+                        <label class="col-sm-3 col-from-label font-weight-500">Phường/Thị xã <span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <select class="text-center form-control font-weight-500" name="ward_id" id="ward_select" >
                                 <option value="0" class=" text-center">Phường/Thị xã *</option>

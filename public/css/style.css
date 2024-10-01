@@ -96,6 +96,8 @@ a:hover {
     background-color: #FF7A00;
     color: #fff;
     border-radius: 10px;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
 }
 
 .search-header-btn {
@@ -109,7 +111,7 @@ a:hover {
     background-color: #FFDD15;
     border-radius: 30px;
     padding: 8px 16px;
-    color: #990000;
+    color: #ff0000;
     font-weight: 500;
     line-height: 18.75px;
 }
@@ -269,9 +271,7 @@ a:hover {
     padding: 0;
 }
 
-.carousel-item {
-    position: relative;
-}
+
 
 .slideshow-content {
     position: absolute;
@@ -673,8 +673,6 @@ a:hover {
 }
 
 .btn-more-wrap {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 40px;
 }
 
@@ -1508,6 +1506,35 @@ a:hover {
         padding-top: 170px;
     }
 
+    .carousel-control-next {
+        display: none;
+    }
+    .margin-responsive {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    .app-content {
+        display: none;
+    }
+    .col-custom {
+        width: 50%;
+    }
+    .app-btn {
+        display: none;
+    }
+    .appstore {
+        display: none;
+    }
+    .ggplay {
+        display:none;
+    }
+    .ip1 {
+        margin-top: -5px;
+    }
+    .ip2 {
+        margin-top: 25px;
+    }
+
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
@@ -1720,6 +1747,9 @@ a:hover {
 
     .pt-120 {
         padding-top: 120px;
+    }
+    .col-custom {
+        width: 33%;
     }
 }
 
