@@ -13,6 +13,7 @@ use App\Models\ProductUnit;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendOrderSuccessMail;
 
 class OrderService
 {
@@ -78,7 +79,22 @@ class OrderService
                 // xoá khỏi giỏ
                 Cart::where('id', $cartId)->delete();
             }
-
+            
+            // lấy thông tin đưa vào mail
+            $orderCreated = Order::query()
+                ->where('id', $order->id)
+                ->where('user_id', Auth::id())
+                ->with([
+                    'discount',
+                    'customer.province',
+                    'customer.district',  
+                    'customer.ward',      
+                    'orderDetails.product'
+                ])
+                ->first();
+            $emailUser = Auth::user()->email;
+            $emailJob = new SendOrderSuccessMail($emailUser, $orderCreated);
+            dispatch($emailJob);
             return $order;
         } catch (Exception $e) {
             return $e;

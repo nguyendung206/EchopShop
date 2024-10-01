@@ -34,4 +34,9 @@ class Order extends Model
     {
         return $this->belongsTo(Discount::class, 'discount_id');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

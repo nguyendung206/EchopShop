@@ -7,6 +7,7 @@ use App\Services\OrderService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
+
 class OrderController extends Controller
 {
     protected $userService;
@@ -21,8 +22,9 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $datas = $this->orderService->index($request->all());
 
+        $datas = $this->orderService->index($request->all());
+        
         return view('web.order.order', ['carts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
     }
 
