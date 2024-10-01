@@ -30,7 +30,7 @@
                          $('#ward_select').append('<option value="' + ward.id + '">' + ward.ward_name + '</option>');
                      });
 
-                     @if(isset($user -> ward_id))
+                     @if(isset($user -> ward_id) || old('ward_id') !== null)
                      if (districtId == districtIdUser) {
                          $('#ward_select').val(wardIdUser).trigger('change');
                      }
@@ -60,7 +60,7 @@
 
                      $('#district_select').append('<option value="' + district.id + '" >' + district.district_name + '</option>');
                  });
-                 @if(isset($user -> district_id))
+                 @if(isset($user -> district_id) || old('province_id') !== null)
                  if (provinceId == provinceIdUser) {
                      $('#district_select').val(districtIdUser).trigger('change');
                  }
@@ -77,8 +77,7 @@
          });
      });
 
-     @if(isset($user -> province_id))
-
-     $('#province_select').val(provinceIdUser).trigger('change');
+     @if(isset($user -> province_id) || old('province_id') !== null)
+        $('#province_select').val(provinceIdUser).trigger('change');
      @endif
  </script>

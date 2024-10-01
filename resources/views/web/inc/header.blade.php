@@ -203,14 +203,14 @@ $route = route('exchangeProduct');
                                 <div class="search" style="position: relative;">
                                     <a href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa-regular fa-bell"></i>
-                                        @if(isset($notifications) && count($notifications) > 0)
-                                        <span class="badge badge-danger" style="position: absolute;bottom: 12px; left: 10px;">{{ count($notifications) }}</span>
+                                        @if(isset($notifications) && $notifications->where('is_read', false)->count() > 0)
+                                        <span class="badge badge-danger" style="position: absolute;bottom: 12px; left: 10px;">{{ $notifications->where('is_read', false)->count() }}</span>
                                         @endif
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 400px;">
                                         @if(isset($notifications) && count($notifications) > 0)
                                         @foreach($notifications as $notification)
-                                        <a class="dropdown-item d-flex align-items-start" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
+                                        <a class="py-notificaition dropdown-item d-flex align-items-start {{ !$notification->is_read ? 'is_read' : '' }}" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
                                             <div class="mr-3 mt-4">
                                                 <i class="fa-regular fa-bell"></i>
                                             </div>
@@ -220,12 +220,9 @@ $route = route('exchangeProduct');
                                                 <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                             </div>
                                         </a>
-                                        <div class="dropdown-divider"></div>
                                         @endforeach
                                         @else
-                                        <div class="dropdown-item text-muted">
-                                            Không có thông báo mới
-                                        </div>
+                                        <div class="dropdown-item text-center">@lang('Không có thông báo mới')</div>
                                         @endif
                                     </div>
                                 </div>

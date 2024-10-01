@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Mail\ForgotPasswordMail;
+use App\Jobs\SendForgotPasswordMail;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\ResetPasswordToken;
@@ -127,10 +127,13 @@ class AuthController extends Controller
         ];
         if (ResetPasswordToken::where('email', $request->email)->exists()) {
             ResetPasswordToken::where('email', $request->email)->update(['token' => $token, 'pin' => $pin]); // update token mới nếu đã có email trong database
-            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
+
+            $emailJob = new SendForgotPasswordMail($user, $token, $pin, $user->email);
+            dispatch($emailJob);
         } else {
             ResetPasswordToken::create($tokenData);
-            Mail::to($request->email)->send(new ForgotPasswordMail($user, $token, $pin));
+            $emailJob = new SendForgotPasswordMail($user, $token, $pin, $user->email);
+            dispatch($emailJob);
         }
         flash('Đã gửi tin nhắn đến mail của bạn vui lòng kiểm tra mail')->success();
 
