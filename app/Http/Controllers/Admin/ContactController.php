@@ -9,7 +9,6 @@ use App\Models\Contact;
 use App\Services\ContactService;
 use App\Services\StatusService;
 use Illuminate\Http\Request;
-use Mail;
 
 class ContactController extends Controller
 {

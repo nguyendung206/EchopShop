@@ -70,8 +70,8 @@ class ProductController extends Controller
                     $this->productService->createProductUnit([
                         'type' => $request->unittype,
                         'product_id' => $product->id,
-                        'color' => '',
-                        'size' => '',
+                        'color' => null,
+                        'size' => null,
                         'quantity' => $quantity > 0 ? $quantity : 1,
                     ]);
                 } elseif ($request->unittype == 2) {
@@ -125,8 +125,8 @@ class ProductController extends Controller
                     $details[] = [
                         'type' => $request->unittype,
                         'product_id' => $product->id,
-                        'color' => '',
-                        'size' => '',
+                        'color' => null,
+                        'size' => null,
                         'quantity' => $quantity > 0 ? $quantity : 1,
                     ];
                 } elseif ($request->unittype == 2) {
