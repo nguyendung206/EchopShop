@@ -231,6 +231,5 @@
         document.getElementById('identificationImageInput').click();
     });
 </script>
-@include('web.favorites')
 @include('admin.customer.province')
 @endsection
