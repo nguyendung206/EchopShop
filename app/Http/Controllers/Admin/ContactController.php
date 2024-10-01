@@ -10,6 +10,7 @@ use App\Services\ContactService;
 use App\Services\StatusService;
 use Illuminate\Http\Request;
 use Mail;
+use Exception;
 
 class ContactController extends Controller
 {

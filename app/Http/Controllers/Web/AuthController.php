@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Mail;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -86,7 +87,7 @@ class AuthController extends Controller
         $districts = District::where('province_id', $request->provinceId)->get();
 
         return response()->json([
-            'status' => 'success',
+            'status' => '200',
             'districts' => $districts,
             'message' => 'Danh sách quận huyện',
         ], 200);
@@ -97,7 +98,7 @@ class AuthController extends Controller
         $wards = Ward::where('district_id', $request->districtId)->get();
 
         return response()->json([
-            'status' => 'success',
+            'status' => '200',
             'wards' => $wards,
             'message' => 'Danh sách phường xã',
         ], 200);

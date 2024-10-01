@@ -8,6 +8,7 @@ use App\Models\Discount;
 use App\Services\DiscountService;
 use App\Services\StatusService;
 use Illuminate\Http\Request;
+use Exception;
 
 class DiscountController extends Controller
 {
@@ -98,12 +99,12 @@ class DiscountController extends Controller
             flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([
-                'status' => 'success',
+                'status' => '200',
                 'message' => 'Sửa thông tin thành công.',
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => '500',
                 'message' => 'Sửa thông tin thất bại.',
             ], 500);
         }

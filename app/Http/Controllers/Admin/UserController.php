@@ -12,6 +12,7 @@ use App\Services\StatusService;
 use App\Services\UserService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Exception;
 
 class UserController extends Controller
 {
@@ -131,12 +132,12 @@ class UserController extends Controller
             flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([
-                'status' => 'success',
+                'status' => '200',
                 'message' => 'Sửa thông tin thành công.',
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => '500',
                 'message' => 'Sửa thông tin thất bại.',
             ], 500);
         }

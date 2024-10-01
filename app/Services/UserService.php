@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Exception;
 
 class UserService
 {
@@ -128,7 +129,7 @@ class UserService
             ];
 
             return User::create($userData);
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             return false;
         }
     }
