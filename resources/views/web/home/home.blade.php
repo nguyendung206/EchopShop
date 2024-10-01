@@ -40,6 +40,7 @@ HOME
     @endif
 </div>
 
+
 <div class=" pt-2">
     <div class="container">
         <br>
@@ -48,15 +49,21 @@ HOME
     <div class="list-category mb-5">
         <div class="container">
             <div class="row">
-                @foreach ($brands as $brand)
+                @forelse ($brands as $brand)
                 <div class="col-lg-2 col-md-2 col-sm-3 col-4">
                     <img class="category-img" src="{{ getImage($brand->photo) }}" alt="">
                     <p class="category-name">{{$brand->name}}</p>
                 </div>
-                @endforeach
-                <div class="col-12 text-center my-4">
+                @empty
+                <div class="text-center w-100 py-5">
+                    <span class="" style="color:rgb(177,0,0);">Không có danh mục nào để hiển thị.</span>
+                </div>
+                @endforelse
+                @if ($brands->count() > 0)
+                <div class="col-12 text-right my-4">
                     <a href="" class="btn-all">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -123,7 +130,7 @@ HOME
                 @endforelse
             </div>
             @if ($exchangeProducts->isNotEmpty())
-            <div class="text-center py-5 divMoreExchange btn-more-wrap">
+            <div class="text-right py-5 divMoreExchange btn-more-wrap">
                 @if ($exchangeProducts->count() >= 8 && $exchangeProducts->hasMorePages())
                 <a id="btnMoreExchange" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm<i
                         class="fa-solid fa-angles-down"></i></a>
@@ -207,7 +214,7 @@ HOME
                 @endforelse
             </div>
             @if ($secondhandProducts->isNotEmpty())
-            <div class="text-center py-5 divMoreSecondhand btn-more-wrap">
+            <div class="text-right py-5 divMoreSecondhand btn-more-wrap">
                 @if ($secondhandProducts->count() >= 8 && $secondhandProducts->hasMorePages())
                 <a id="btnMoreSecondhand" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm mới<i
                         class="fa-solid fa-angles-right"></i></a>
@@ -222,7 +229,7 @@ HOME
         <img src=" {{ asset('/img/image/app.jpg') }}" alt="" class="w-100">
         <div class="container">
             <div class="test-3">
-                <div class="row">
+                <div class="row margin-responsive">
                     <img src=" {{ asset('/img/image/ip1.png') }}" alt="" class="ip1 col-sm-3 col-3">
                     <img src=" {{ asset('/img/image/ip2.png') }}" alt="" class="ip2 col-sm-3 col-3">
                     <div class="col-sm-6 col-6">
@@ -310,10 +317,13 @@ HOME
             @endforelse
 
         </div>
-        <div class="text-center  m-5">
-            <a class="all color-B10000 btn-more" href="{{ route('giveawayProduct') }}">Xem thêm sản phẩm mới <i
+        @if ($giveawayProducts->count() > 0)
+        <div class="text-right  my-5">
+            <a class="all color-B10000 btn-more" href="{{ route('giveawayProduct') }}">Xem tất cả <i
                     class="fa-solid fa-angles-right"></i></a>
         </div>
+            
+        @endif
     </div>
 </div>
 
