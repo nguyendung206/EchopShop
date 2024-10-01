@@ -185,7 +185,7 @@ HOME
                         <div class="buy-wrap">
                             <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
                             @auth
-                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
+                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                                 <i class="fa-solid fa-cart-shopping"></i>
                             </a>
                             @else
@@ -319,6 +319,62 @@ HOME
 
 <div>
     <img src="{{asset("/img/image/banner-home-2.png")}}" alt="" style="width: 100%">
+</div>
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Chi tiết sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modalProductId">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 id="productname"></h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Màu sắc</th>
+                                    <th>Kích cở</th>
+                                    <th>Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody id="unitTableBody">
+                                <!-- Thông tin sẽ được thêm động từ JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Bên phải: Input để thêm thông tin mới -->
+                    <div class="col-md-6">
+                        <div id="inputContainer">
+                            <div class="input-group mb-3 input-unit">
+                                <select class="form-control color-select">
+                                    <option value="">Màu sắc</option>
+                                    <!-- Các tùy chọn sẽ được thêm bởi JavaScript -->
+                                </select>
+                                <select class="form-control size-select">
+                                    <option value="">Kích cở</option>
+                                    <!-- Các tùy chọn sẽ được thêm bởi JavaScript -->
+                                </select>
+                                <input type="number" class="form-control quantity-input" placeholder="Số lượng">
+                                <button type="button" class="btn btn-danger btn-remove" style="margin-left: 5px;">&times;</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-success btn-add mt-2" type="button">Thêm</button>
+                        <button type="button" class="btn btn-primary mt-2" id="saveUnits" data-add-to-cart="{{ route('cart.store') }}">Lưu vào giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section('script')
