@@ -215,6 +215,7 @@ return [
         'TypeProductEnums' => \App\Enums\TypeProduct::class,
         'TypePolicyEnums' => \App\Enums\TypePolicy::class,
         'TypeDiscountEnums' => \App\Enums\TypeDiscount::class,
+        'StatusOrderEnums' => \App\Enums\StatusOrder::class,
     ])->toArray(),
 
 ];

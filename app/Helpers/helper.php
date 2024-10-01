@@ -22,6 +22,23 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
+if (! function_exists('calculateDiscountedPrice')) {
+    function calculateDiscountedPrice($type, $originalPrice, $value, $maxValue)
+    {
+        $discountAmount = $value;
+
+        if ($type == 1) { // %
+            $discountAmount = ($originalPrice * $value) / 100;
+            if ($discountAmount > $maxValue) {
+                $discountAmount = $maxValue;
+            }
+        }
+
+        $discounted = $originalPrice - $discountAmount;
+
+        return $discounted;
+    }
+}
 if (! function_exists('dateRemaining')) {
     function dateRemaining($endDate)
     {

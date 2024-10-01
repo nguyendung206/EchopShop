@@ -26,8 +26,8 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
-        $result = $this->cartService->store($request);
         if ($request->ajax() || $request->wantsJson()) {
+            $result = $this->cartService->store($request);
             if ($result) {
                 flash('Thêm vào giỏ thành công')->success();
 
@@ -41,7 +41,13 @@ class CartController extends Controller
                 'status' => 'fail',
                 'message' => 'Đã có lỗi xảy ra',
             ], 500);
+        } else {
+            $validatedData = $request->validate([
+                'productUnitId' => 'required',
+            ]);
         }
+
+        $result = $this->cartService->store($request);
 
         return redirect()->route('cart.index');
     }
@@ -64,5 +70,55 @@ class CartController extends Controller
         Cart::where('user_id', auth()->id())->delete();
 
         return redirect()->route('cart.index')->with('success', 'Giỏ hàng đã được xóa.');
+    }
+
+    public function updateProductUnit(Request $request, $id)
+    {
+        try {
+            $result = $this->cartService->updateProductUnit($request->all(), $id);
+            if ($result) {
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đổi loại hàng thành công',
+                    'cart' => $result,
+
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Đã có lỗi xảy ra',
+                ], 500);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Đã có lỗi xảy ra',
+            ], 500);
+        }
+    }
+
+    public function updateQuantityCart(Request $request, $id)
+    {
+        try {
+            $result = $this->cartService->updateQuantity($request->all(), $id);
+            if ($result) {
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đổi số lượng thành công',
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Đã có lỗi xảy ra',
+                ], 500);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Đã có lỗi xảy ra',
+            ], 500);
+        }
     }
 }

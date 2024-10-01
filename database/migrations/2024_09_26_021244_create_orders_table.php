@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer('status')->default(StatusOrder::PENDING->value);
             $table->integer('type_payment')->default(TypePayment::CARD->value);
             $table->string('shipping_address')->nullable();
-            $table->string('message')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('discount_id')->nullable();

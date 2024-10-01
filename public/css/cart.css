@@ -323,6 +323,37 @@ input[type="number"] {
     padding-bottom: 70px;
 }
 
+.type-product-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.type-product-modal {
+    background-color: #fff;
+    padding: 20px;
+    width: 50%;
+    margin: 300px auto;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1000;
+
+}
+
+.type-product-modal {
+    border: 1px solid #ccc;
+    padding: 10px 10px;
+}
+.type-product-title {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
 @media (max-width: 992px) {
     .line-clamp {
         display: -webkit-box;
@@ -351,6 +382,25 @@ input[type="number"] {
     .res-none {
         display: none;
     }
+    
+}
+
+@media (max-width: 1200px) {
+    .type-show {
+        display: block !important;
+    }
+}
+
+.type-show {
+    display: flex;
+}
+.item-details {
+    text-align: start;
+}
+.btn-apply {
+    line-height: 1.5rem;
+    font-size: 1rem;
+    padding: .375rem .75rem;
 }
 
 @media (max-width: 450px) {

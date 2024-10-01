@@ -78,6 +78,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::post('/store', [CartController::class, 'store'])->name('store');
         Route::get('/destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
         Route::get('/clear', [CartController::class, 'clear'])->name('clear');
+        Route::put('/update-product-unit/{id}', [CartController::class, 'updateProductUnit'])->name('updateProductUnit');
+        Route::put('/update-quantity-cart/{id}', [CartController::class, 'updateQuantityCart'])->name('updateQuantityCart');
     });
 
     Route::prefix('/order')->name('order.')->group(function () {
@@ -85,6 +87,7 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::post('/change-address', [OrderController::class, 'changeAddress'])->name('changeAddress');
         Route::post('/pay-order', [OrderController::class, 'store'])->name('payOrder');
     });
+    Route::get('/purchase', [OrderController::class, 'purchase'])->name('purchase');
 });
 
 Route::get('/category/{slug}', [ProductController::class, 'filterByCategory'])->name('filter.category');

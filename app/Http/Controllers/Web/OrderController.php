@@ -49,9 +49,20 @@ class OrderController extends Controller
         try {
             $order = $this->orderService->store($request->all());
 
-            return redirect()->route('order.index');
-        } catch (Exception $e) {
-            return $e;
+            return view('web.order.orderSuccess');
+        } catch (\Throwable $th) {
+            return $th;
+        }
+    }
+
+    public function purchase(Request $request)
+    {
+        try {
+            $orders = $this->orderService->purchase($request->all());
+
+            return view('web.order.purchase', compact('orders'));
+        } catch (\Throwable $th) {
+            return $th;
         }
     }
 }

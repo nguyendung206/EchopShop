@@ -5,16 +5,18 @@ namespace App\Enums;
 enum StatusOrder: int
 {
     case PENDING = 1;
-    case SHIPPING = 2;
-    case COMPLETED = 3;
-    case CANCELLED = 4;
-    case RETURN = 5;
+    case TRANSPORTING = 2;
+    case SHIPPING = 3;
+    case COMPLETED = 4;
+    case CANCELLED = 5;
+    case RETURN = 6;
 
     public function label(): string
     {
         return match ($this) {
             self::PENDING => 'Đang đợi',
-            self::SHIPPING => 'Đang vận chuyển',
+            self::TRANSPORTING => 'Đang vận chuyển',
+            self::SHIPPING => 'Đang giao hàng',
             self::COMPLETED => 'Đã hoàn thành',
             self::CANCELLED => 'Đã huỷ',
             self::RETURN => 'Trả hàng/Hoàn tiền',

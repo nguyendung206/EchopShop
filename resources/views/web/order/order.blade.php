@@ -25,18 +25,18 @@
                     <button class="change-address p-1 b-radius" id="btnChangeAddress">Thay đổi</button>
                 </div>
                 <div class="address-layer" id="addressLayer">
-                    <form action="{{ route('order.changeAddress') }}" method="POST" id="changeAddressForm">
+                    <form action="{{ route('order.changeAddress') }}" method="POST" id="changeAddressForm" >
                         @csrf
                         <div class="address-modal row" id="addressModal">
                             <h6 class="col-12 mt-3 mb-4">Cập nhật địa chỉ</h6>
-                            <div class="form-group col-6">
+                            <div class="form-group col-lg-6 col-12">
                                 <label class="address-label">Địa chỉ<span class="text-vali">&#9913;</span></label>
                                 <div class="">
                                     <input type="text" placeholder="Nhập địa chỉ" id="addressForm" name="address" class="form-control"
                                         value="{{ old('address') ? old('address') : $user->address }}">
                                 </div>
                             </div>
-                            <div class="form-group col-6">
+                            <div class="form-group col-lg-6 col-12">
                                 <label class="address-label">Số điện thoại<span class="text-vali">&#9913;</span></label>
                                 <div class="">
                                     <input type="text" placeholder="Nhập số điện thoại" id="phoneNumberForm" name="phone_number"
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-6">
+                            <div class="form-group col-lg-6 col-12">
                                 <label class="address-label">Quận/Huyện <span
                                         class="text-vali">&#9913;</span></label></label>
                                 <div class="">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-6">
+                            <div class="form-group col=lg-6 col-12">
                                 <label class="address-label">Phường/Thị xã <span
                                         class="text-vali">&#9913;</span></label></label>
                                 <div class="">
@@ -106,7 +106,7 @@
         </div>
     </div>
 
-    <form action="{{route('order.payOrder')}}" method="POST">
+    <form action="{{route('order.payOrder')}}" method="POST" style="background-color: #f5f5f5;">
         @csrf
         
         <div class="content-items">
@@ -118,11 +118,10 @@
                             <th>Đơn giá</th>
                             <th>Số lượng</th>
                             <th>Số tiền</th>
-                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($carts as $cart)
+                        @foreach ($carts as $cart)
                             @php
                                 $sum += $cart->products->price * $cart->quantity;
                             @endphp
@@ -153,49 +152,42 @@
                                 </td>
                                 <td class="total-amount align-middle">
                                     {{ format_price($cart->products->price * $cart->quantity) }}</td>
-                                <td class="align-middle">
-                                    <a href="{{ route('cart.destroy', $cart->id) }}" class="btn btn-danger"
-                                        style="color: white;"><i class="fa-regular fa-trash-can"></i></a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr class="text-center">
-                                <td class="align-middle" style="color: #B10000">Vui lòng chọn sản phẩm trước khi thanh toán
-                                </td>
-                                <td class="align-middle">...</td>
-                                <td class="align-middle">...</td>
-                                <td class="align-middle">...</td>
-                                <td class="align-middle">...</td>
-                            </tr>
-                        @endforelse
+                                
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                            <div class="content-pay">
+                                <div class="message-to-shop col-lg-5">
+                                    <p>Lời nhắn</p>
+                                    <textarea name="message-{{$cart->id}}"></textarea>
+                                </div>
+                                <div class="infor-to-pay col-lg-7">
+                                    {{-- <div class="unit-shipper col-lg-12">
+                                        <div class="name-shipper col-lg-3">Đơn vị vận chuyển</div>
+                                        <div class="infor-shipper col-lg-9">
+                                            <div class="unit-shipper-1">
+                                                Nhanh <button>Thay đổi</button> đ 50.100
+                                            </div>
+                                            <div class="unit-shipper-2">
+                                                <div class="unit-shipper-2-1">
+                                                    Đảm bảo nhận hàng từ 17 tháng 8 - 20 tháng 8
+                                                </div>
+                                                <div class="unit-shipper-2-2">Nhận bồi thường nếu đơn hàng được bàn giao sau ngày 20 tháng
+                                                    8</div>
+                                            </div>
+                                        </div>
+                                    </div> --}}
+                                    <div class="total-last col-lg-12">Tổng số tiền(<span
+                                            style="color: #B10000">{{ $carts->count() }}</span>): <b>{{ format_price($sum) }}</b></div>
+                                </div>
+                            </div>
+                        </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
 
-                <div class="content-pay">
-                    <div class="message-to-shop col-lg-5">
-                        <p>Lời nhắn</p>
-                        <textarea name="message"></textarea>
-                    </div>
-                    <div class="infor-to-pay col-lg-7">
-                        {{-- <div class="unit-shipper col-lg-12">
-                            <div class="name-shipper col-lg-3">Đơn vị vận chuyển</div>
-                            <div class="infor-shipper col-lg-9">
-                                <div class="unit-shipper-1">
-                                    Nhanh <button>Thay đổi</button> đ 50.100
-                                </div>
-                                <div class="unit-shipper-2">
-                                    <div class="unit-shipper-2-1">
-                                        Đảm bảo nhận hàng từ 17 tháng 8 - 20 tháng 8
-                                    </div>
-                                    <div class="unit-shipper-2-2">Nhận bồi thường nếu đơn hàng được bàn giao sau ngày 20 tháng
-                                        8</div>
-                                </div>
-                            </div>
-                        </div> --}}
-                        <div class="total-last col-lg-12">Tổng số tiền(<span
-                                style="color: #B10000">{{ $carts->count() }}</span>): <b>{{ format_price($sum) }}</b></div>
-                    </div>
-                </div>
+                
             </div>
         </div>
 

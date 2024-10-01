@@ -18,11 +18,20 @@ class Order extends Model
         'shipping_address',
         'user_id',
         'discount_id',
-        'message',
     ];
 
     protected $casts = [
         'type_payment' => TypePayment::class,
         'status' => StatusOrder::class,
     ];
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class, 'order_id', 'id');
+    }
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class, 'discount_id');
+    }
 }

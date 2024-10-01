@@ -378,27 +378,47 @@ $route = route('exchangeProduct');
                 $('.list-result').hide();
             }, 200);
         });
-    });
-    $('.list-result').on('mousedown', function(event) {
+
+        $('.list-result').on('mousedown', function(event) {
         event.preventDefault();
+        });
+        
+        let checkTimeout;
+        $('#search').on('input', function() {
+            var searchValue = $(this).val();
+            checkInputValue();
+            clearTimeout(checkTimeout);
+
+            checkTimeout = setTimeout(function() {
+                $.ajax({
+                    url: @json(route('search')),
+                    method: 'GET',
+                    data: {
+                        search: searchValue
+                    },
+                    success: function(response) {
+                        $('.list-result').empty();
+                        $('.list-result').append(response.resultHtml);
+                    },
+                    error: function(xhr, status, error) {
+                        $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
+                    }
+                });
+            }, 500)
+        });
+        checkInputValue();
+        function checkInputValue() {
+            // Nếu ô input không có giá trị, vô hiệu hóa nút
+            if ($('#search').val().trim() === '') {
+                $('.btn-search').prop('disabled', true);
+            } else {
+                $('.btn-search').prop('disabled', false);
+            }
+        }
+
     });
+    
 </script>
 <script>
-    $('#search').on('input', function() {
-        var searchValue = $(this).val();
-        $.ajax({
-            url: @json(route('search')),
-            method: 'GET',
-            data: {
-                search: searchValue
-            },
-            success: function(response) {
-                $('.list-result').empty();
-                $('.list-result').append(response.resultHtml);
-            },
-            error: function(xhr, status, error) {
-                $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
-            }
-        });
-    });
+    
 </script>

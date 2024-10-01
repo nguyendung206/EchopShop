@@ -517,6 +517,61 @@ body {
     width: 595px !important;
 }
 
+.table-unit {
+    background-color: rgba(208, 141, 141, 0.1);
+    border-radius: 8px;
+}
+.table thead th {
+    border-bottom: 2px solid #B10000;
+}
+.table td {
+    border-top: 1px solid rgba(177, 0, 0, 0.2);
+}
+.table th {
+    border: none;
+}
+.number-input {
+    display: inline-flex;
+    align-items: center;
+}
+
+.number-input button {
+    background-color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+}
+
+.number-input input[type="number"] {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.number-input button:focus {
+    outline: none;
+}
+
+.number-input button:hover {
+    background-color: #fff7f7;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
 @media (min-width: 1201px) {
     .col-lg-6.reviewr-content.slick-slide {
         width: 570px !important;

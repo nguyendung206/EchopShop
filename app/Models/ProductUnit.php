@@ -11,6 +11,15 @@ class ProductUnit extends Model
 
     protected $table = 'product_units';
 
+    protected $fillable = [
+        'type',
+        'color',
+        'size',
+        'quantity',
+        'remain',
+        'product_id',
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');

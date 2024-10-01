@@ -22,20 +22,58 @@ class CartService
     {
         $existingCartItem = Cart::where('user_id', Auth::id())
             ->where('product_id', $request->productId)
+            ->when($request->productUnitId, function ($query) use ($request) {
+                return $query->where('product_unit_id', $request->productUnitId);
+            })
             ->first();
-
         if ($existingCartItem) {
-            $existingCartItem->increment('quantity');
+
+            $countProductUnit = $existingCartItem->products->getProductUnitById($request->productUnitId)->quantity;
+            if (! empty($request->quantity) && $request->quantity + $existingCartItem->quantity > $countProductUnit) {
+                $request->quantity = $countProductUnit;
+                $existingCartItem->update(['quantity' => $request->quantity]);
+            } else {
+                $existingCartItem->increment('quantity', $request->quantity ?? 1);
+            }
 
             return $existingCartItem;
         } else {
             $newCartItem = Cart::create([
                 'user_id' => Auth::id(),
                 'product_id' => $request->productId,
-                'quantity' => 1,
+                'quantity' => $request->quantity ?? 1,
+                'product_unit_id' => $request->productUnitId,
             ]);
 
             return $newCartItem;
+        }
+    }
+
+    public function updateProductUnit($request, $id)
+    {
+        try {
+            $cart = Cart::findOrFail($id);
+            $cart->update([
+                'product_unit_id' => $request['productUnitId'],
+            ]);
+
+            return $cart;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function updateQuantity($request, $id)
+    {
+        try {
+            $cart = Cart::findOrFail($id);
+            $cart->update([
+                'quantity' => $request['quantity'],
+            ]);
+
+            return $cart;
+        } catch (\Throwable $th) {
+            return false;
         }
     }
 

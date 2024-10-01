@@ -180,7 +180,7 @@
     background-color: #fff;
     padding: 20px;
     width: 50%;
-    margin: 100px auto;
+    margin: 250px auto;
     border-radius: 8px;
     position: relative;
     z-index: 1000;
@@ -255,7 +255,7 @@
     background-color: #fff;
     padding: 20px;
     width: 50%;
-    margin: 100px auto;
+    margin: 250px auto;
     border-radius: 8px;
     position: relative;
     z-index: 1000;
@@ -354,6 +354,8 @@
 }
 
 
+
+
 @media (max-width: 450px) {
     .unit-shipper-1{
         display: block;
@@ -376,6 +378,22 @@
     }
 
 }
+
+@media (min-width: 320px) and (max-width: 768px) {
+    .btn-show-voucher {
+        width: auto;
+    }
+    .change-address {
+        display: block;
+        margin-left: 0px;
+        margin-top: 10px;
+    }
+    .address-modal {
+        padding: 10px 0px;
+    }
+}
+@media (min-width: 769px) and (max-width: 992px) {}
+@media (min-width: 992px) and (max-width: 1200px) {}
 @media (max-width: 992px) {
     .total-last.col-lg-12 {
         padding: 0;
