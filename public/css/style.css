@@ -36,6 +36,17 @@ a:hover {
     font-size: 12px;
 }
 
+.is_read {
+    background-color: #e0e0e0;
+}
+.is_read small {
+    color: #0866ff !important;
+}
+.py-notificaition {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
 .logo-vietnam {
     width: 28px;
     margin-right: 8px;

@@ -19,12 +19,14 @@
                 <h5 class="mb-0 h6">@lang('Chi tiết sản phẩm')</h5>
             </div>
             <div class="card-body">
+                @if(isset($product->shop->name))
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Cửa hàng:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->shop->name }}</p>
                     </div>
                 </div>
+                @endif
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tên sản phẩm:')</label>
                     <div class="col-sm-9">

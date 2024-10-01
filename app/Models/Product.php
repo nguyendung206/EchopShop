@@ -48,6 +48,11 @@ class Product extends Model
         return $this->hasMany(Cart::class, 'product_id', 'id');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     public function sluggable(): array
     {
         return [

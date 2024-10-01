@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\OrderController;
+use App\Http\Controllers\web\NotificationController;
 use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
@@ -88,6 +89,9 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::post('/pay-order', [OrderController::class, 'store'])->name('payOrder');
     });
     Route::get('/purchase', [OrderController::class, 'purchase'])->name('purchase');
+    Route::prefix('/notification')->name('notification.')->group(function () {
+        Route::get('/isreaded/{id}', [NotificationController::class, 'isreaded'])->name('isreaded');
+    });
 });
 
 Route::get('/category/{slug}', [ProductController::class, 'filterByCategory'])->name('filter.category');
