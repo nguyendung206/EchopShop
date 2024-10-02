@@ -63,19 +63,31 @@ class ProductController extends Controller
     {
         try {
             $product = $this->productService->createProduct($request);
-
             if ($product) {
-                $colors = $request->input('colors', []);
-                $sizes = $request->input('sizes', []);
-                $quantities = $request->input('quantities', []);
+                if ($request->unittype == 1) {
+                    $quantity = $request->quantity;
 
-                foreach ($colors as $index => $color) {
                     $this->productService->createProductUnit([
+                        'type' => $request->unittype,
                         'product_id' => $product->id,
-                        'color' => $color ?? '',
-                        'size' => $sizes[$index] ?? '',
-                        'quantity' => $quantities[$index] ?? 0,
+                        'color' => null,
+                        'size' => null,
+                        'quantity' => $quantity > 0 ? $quantity : 1,
                     ]);
+                } elseif ($request->unittype == 2) {
+                    $colors = $request->input('colors', []);
+                    $sizes = $request->input('sizes', []);
+                    $quantities = $request->input('quantities', []);
+
+                    foreach ($quantities as $index => $quantity) {
+                        $this->productService->createProductUnit([
+                            'type' => $request->unittype,
+                            'product_id' => $product->id,
+                            'color' => $colors[$index] ?? '',
+                            'size' => $sizes[$index] ?? '',
+                            'quantity' => $quantity > 0 ? $quantity : 1,
+                        ]);
+                    }
                 }
 
                 return redirect()->route('post.create')
@@ -84,7 +96,7 @@ class ProductController extends Controller
                 return redirect()->back()->with('error', 'Đăng bài thất bại.');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi: '.$e->getMessage());
         }
     }
 
@@ -107,17 +119,30 @@ class ProductController extends Controller
             $product = $this->productService->updateProduct($request, $id);
 
             if ($product) {
-                $colors = $request->input('colors', []);
-                $sizes = $request->input('sizes', []);
-                $quantities = $request->input('quantities', []);
-
                 $details = [];
-                foreach ($colors as $index => $color) {
+                if ($request->unittype == 1) {
+                    $quantity = $request->quantity;
                     $details[] = [
-                        'color' => $color ?? '',
-                        'size' => $sizes[$index] ?? '',
-                        'quantity' => $quantities[$index] ?? 0,
+                        'type' => $request->unittype,
+                        'product_id' => $product->id,
+                        'color' => null,
+                        'size' => null,
+                        'quantity' => $quantity > 0 ? $quantity : 1,
                     ];
+                } elseif ($request->unittype == 2) {
+                    $colors = $request->input('colors', []);
+                    $sizes = $request->input('sizes', []);
+                    $quantities = $request->input('quantities', []);
+
+                    foreach ($quantities as $index => $quantity) {
+                        $details[] = [
+                            'type' => $request->unittype,
+                            'product_id' => $product->id,
+                            'color' => $colors[$index] ?? '',
+                            'size' => $sizes[$index] ?? '',
+                            'quantity' => $quantity > 0 ? $quantity : 1,
+                        ];
+                    }
                 }
                 $this->productService->updateProductUnit($details, $id);
 

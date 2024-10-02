@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
-use App\Mail\ContactMail;
+use App\Jobs\SendContactMail;
 use App\Models\Contact;
 use App\Services\ContactService;
 use App\Services\StatusService;
 use Illuminate\Http\Request;
-use Mail;
 
 class ContactController extends Controller
 {
@@ -36,7 +35,8 @@ class ContactController extends Controller
     public function sendMail(ContactRequest $request)
     {
         try {
-            Mail::to($request->email)->send(new ContactMail($request->content, $request->contentUser));
+            $emailJob = new SendContactMail($request->content, $request->contentUser, $request->email);
+            dispatch($emailJob);
             flash('Đã gửi tin nhắn đến mail của người dùng')->success();
 
             return back();
