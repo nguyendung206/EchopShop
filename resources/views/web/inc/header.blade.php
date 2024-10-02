@@ -161,7 +161,7 @@ $route = route('exchangeProduct');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                                 </div>
-                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none search-input" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                                 <div class="input-group-append">
                                     <div style="position: relative;">
@@ -271,7 +271,7 @@ $route = route('exchangeProduct');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                                 </div>
-                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none search-input" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                                 <div class="input-group-append">
                                     <div style="position: relative;">
@@ -389,11 +389,11 @@ $route = route('exchangeProduct');
 
 <script>
     $(document).ready(function() {
-        $('#search').on('focus', function() {
+        $('.search-input').on('focus', function() {
             $('.list-result').show();
         });
 
-        $('#search').on('blur', function() {
+        $('.search-input').on('blur', function() {
             // Delay việc ẩn div để có thời gian chọn các item
             setTimeout(function() {
                 $('.list-result').hide();
@@ -405,7 +405,8 @@ $route = route('exchangeProduct');
         });
         
         let checkTimeout;
-        $('#search').on('input', function() {
+        $('.search-input').on('input', function() {
+            
             var searchValue = $(this).val();
             checkInputValue();
             clearTimeout(checkTimeout);
@@ -428,12 +429,21 @@ $route = route('exchangeProduct');
             }, 500)
         });
         checkInputValue();
+
         function checkInputValue() {
-            // Nếu ô input không có giá trị, vô hiệu hóa nút
-            if ($('#search').val().trim() === '') {
-                $('.btn-search').prop('disabled', true);
-            } else {
-                $('.btn-search').prop('disabled', false);
+            let isAnyInputFilled = false;
+
+            $('.search-input').each(function() {
+                if ($(this).val().trim() !== '') {
+                        isAnyInputFilled = true;
+                        return false;
+                    }
+                });
+
+                if (isAnyInputFilled) {
+                    $('.btn-search').prop('disabled', false);
+                } else {
+                    $('.btn-search').prop('disabled', true);
             }
         }
 

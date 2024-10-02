@@ -615,6 +615,12 @@
     flex-wrap: wrap;
 
     }
+    .button-page-wrap a {
+        margin-right: 0px;
+    }
+    .button-page-wrap .active {
+        margin-right: 0px;
+    }
 }
 @media (min-width: 769px) and (max-width: 992px) {
     .responsive-menu {

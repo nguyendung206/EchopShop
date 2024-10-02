@@ -10,6 +10,7 @@
 @section('content')
 @php
     $cartCount = 0;
+    // dd($carts);
     foreach ($carts as $cart) {
         if($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0) {
             $cartCount++;
@@ -53,6 +54,7 @@
                                             <div class="text-left type-product">
                                                 @if ( !empty($cart->products->getProductUnitById($cart->product_unit_id)))
                                                 <div class="type-show">
+                                                    @if (! empty($cart->products->getProductUnitById($cart->product_unit_id)->size) && ! empty($cart->products->getProductUnitById($cart->product_unit_id)->color))
                                                 <p>Phân loại hàng:</p>
                                                     <div class="type-size-{{$cart->id}}"> &nbsp; size {{$cart->products->getProductUnitById($cart->product_unit_id)->size}}, </div>
                                                     <div class="type-color-{{$cart->id}}">&nbsp; màu {{$cart->products->getProductUnitById($cart->product_unit_id)->color}}, </div>
@@ -64,6 +66,16 @@
                                                         @endif
                                                     </div>
                                                     <button class="btn-type-product" style="border: none" id="btnTypeProduct{{$cart->id}}" ><i class="fa-regular fa-pen-to-square"></i></button>
+                                                    @else
+                                                    <div class="type-quantity-{{$cart->id}}">
+                                                        @if ($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0)
+                                                            &nbsp;  còn {{$cart->products->getProductUnitById($cart->product_unit_id)->quantity}} sản phẩm.
+                                                        @else
+                                                        <p class='text-danger'>&nbsp; Hết hàng.</p>
+                                                        @endif
+                                                    </div>
+                                                    @endif
+
                                                 </div>
                                                 <div class="type-product-layer" id="typeProductLayer{{$cart->id}}" data-cart="{{$cart->products->productUnits}}" data-productunitid="{{$cart->products->getProductUnitById($cart->product_unit_id)->id}}">
                                                     <div class="type-product-modal" id="typeProductModal{{$cart->id}}">

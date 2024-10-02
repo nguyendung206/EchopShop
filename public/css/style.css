@@ -1131,7 +1131,7 @@ a:hover {
 }
 
 .list-result {
-    display: none;
+    /* display: none; */
     box-shadow: 5px 10px 10px 5px rgba(204, 204, 204, 0.5);
 }
 
@@ -1385,8 +1385,16 @@ a:hover {
 
     .product-name {
         font-size: 12px;
+        margin-top: 0px !important;
+        height: auto;
     }
 
+    .product-price {
+        font-size: 12px;
+    }
+    .btn-buy-product {
+        font-size: 12px;
+    }
     .slideshow-subheading {
         width: 160px;
         font-size: 10px;
@@ -1419,7 +1427,7 @@ a:hover {
     }
 
     .product-img {
-        height: 150px;
+        height: 150px !important;
     }
 
     .brand-img {

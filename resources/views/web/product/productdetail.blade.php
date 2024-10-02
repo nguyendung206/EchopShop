@@ -23,7 +23,7 @@ $items = [
 ];
 
 $user = Auth::user();
-$cart = $user->carts;
+$cart = $user ? $user->carts : collect();
 
 $totalQuantity = 0;
 
@@ -70,6 +70,7 @@ $totalQuantity = 0;
                 <p>{!! $product->description !!}</p>
             </div>
             <div class="product-unit">
+                @if ($product->productUnits[0]->type != TypeProductUnitEnums::ONLYQUANTITY->value)
                 <table class="table table-unit">
                     <thead>
                       <tr>
@@ -103,14 +104,17 @@ $totalQuantity = 0;
                     <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
 
                 @enderror
-                <div style="display: none" id="divQuantity"><span>Số Lượng</span> 
+                @endif
+                <div style="display: {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span> 
                     <div class="number-input">
                         <button class="minus">-</button>
                         <input class="quantity" type="number" value="1" min="1" max="100">
                         <button class="plus">+</button>
                     </div>
                     <div class="my-2">
-                        <span id="totalProduct">{{$totalQuantity}} Sản phẩm sẵn có </span>
+                        <span id="totalProduct">
+                            {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? $totalQuantity : $product->productUnits[0]->quantity}} Sản phẩm sẵn có 
+                        </span>
                         <span id="totalCartProduct"></span>
                     </div>
                         
@@ -122,7 +126,7 @@ $totalQuantity = 0;
                 @elseif($product->type->value == 2)
                 <form action="{{route("cart.store")}}" method="POST" class="d-inline">
                     <input type="hidden" name="productId" value="{{$product->id}}">
-                    <input type="hidden" name="productUnitId" id="productUnitId">
+                    <input type="hidden" name="productUnitId" id="productUnitId" value="{{$product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? '' : $product->productUnits[0]->id}}">
                     <input type="hidden" name="quantity" id="quantityValue" value="1">
                     @csrf
                     <button class="text-white">Mua hàng</button>
@@ -792,6 +796,18 @@ $totalQuantity = 0;
     var totalProduct = 0;
     var quantityCart = 0;
     
+    if(@json(isset($product->productUnits[0]) && $product->productUnits[0]->type == typeProductUnitEnums::ONLYQUANTITY->value)){
+        totalProduct = @json($product->productUnits[0]->quantity);
+
+        @json($cart).forEach(item => {
+            if(@json($product->productUnits[0]-> id) == item.product_unit_id){
+                quantityCart = item.quantity;
+                $('#totalCartProduct').text(" | " + quantityCart + " sản phẩm đã có trong giỏ.");
+            }
+        })
+        
+    }
+
 
     $(document).ready(function() {
         $(".slider-nav").slick({
@@ -826,6 +842,7 @@ $totalQuantity = 0;
         });
 
         $(".plus").on("click", function() {
+        
             const input = $(this).prev(".quantity")
             let currentValue = parseInt(input.val()) || 0;
             if (currentValue < totalProduct) {

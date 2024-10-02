@@ -127,7 +127,7 @@
                             @endphp
                             <tr class="text-center">
                                 <td class="align-middle">
-                                    <div class="d-flex">
+                                    <div class="infor-cart">
                                         <div class="img-item">
                                             <img src="{{ getImage($cart->products->photo) }}"
                                                 alt="{{ $cart->products->name }}" />
@@ -139,7 +139,17 @@
                                             <div class="item-meta mb-2">
                                                 <p>{!! $cart->products->description !!}</p>
                                             </div>
+
+                                            <div class="type-show">
+                                                @if (! empty($cart->products->getProductUnitById($cart->product_unit_id)->size) && ! empty($cart->products->getProductUnitById($cart->product_unit_id)->color))
+                                                <p>Phân loại hàng:</p>
+                                                <div class="type-size-{{$cart->id}}"> &nbsp; size {{$cart->products->getProductUnitById($cart->product_unit_id)->size}}, </div>
+                                                <div class="type-color-{{$cart->id}}">&nbsp; màu {{$cart->products->getProductUnitById($cart->product_unit_id)->color}}. </div>
+                                                @endif
+    
+                                            </div>
                                         </div>
+                                        
                                     </div>
                                 </td>
                                 <td class="align-middle">

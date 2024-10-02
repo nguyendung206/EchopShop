@@ -20,32 +20,36 @@ class CartService
 
     public function store($request)
     {
-        $existingCartItem = Cart::where('user_id', Auth::id())
-            ->where('product_id', $request->productId)
-            ->when($request->productUnitId, function ($query) use ($request) {
-                return $query->where('product_unit_id', $request->productUnitId);
-            })
-            ->first();
-        if ($existingCartItem) {
+        try {
+            $existingCartItem = Cart::where('user_id', Auth::id())
+                ->where('product_id', $request->productId)
+                ->when($request->productUnitId, function ($query) use ($request) {
+                    return $query->where('product_unit_id', $request->productUnitId);
+                })
+                ->first();
+            if ($existingCartItem) {
+                $countProductUnit = $existingCartItem->products->getProductUnitById($request->productUnitId)->quantity;
+                if (! empty($request->quantity) && $request->quantity + $existingCartItem->quantity > $countProductUnit) {
+                    $request->quantity = $countProductUnit;
+                    $existingCartItem->update(['quantity' => $request->quantity]);
+                } else {
+                    $existingCartItem->increment('quantity', $request->quantity ?? 1);
+                }
 
-            $countProductUnit = $existingCartItem->products->getProductUnitById($request->productUnitId)->quantity;
-            if (! empty($request->quantity) && $request->quantity + $existingCartItem->quantity > $countProductUnit) {
-                $request->quantity = $countProductUnit;
-                $existingCartItem->update(['quantity' => $request->quantity]);
+                return $existingCartItem;
             } else {
-                $existingCartItem->increment('quantity', $request->quantity ?? 1);
+                $newCartItem = Cart::create([
+                    'user_id' => Auth::id(),
+                    'product_id' => $request->productId,
+                    'quantity' => $request->quantity ?? 1,
+                    'product_unit_id' => $request->productUnitId,
+                ]);
+
+                return $newCartItem;
             }
-
-            return $existingCartItem;
-        } else {
-            $newCartItem = Cart::create([
-                'user_id' => Auth::id(),
-                'product_id' => $request->productId,
-                'quantity' => $request->quantity ?? 1,
-                'product_unit_id' => $request->productUnitId,
-            ]);
-
-            return $newCartItem;
+        } catch (\Exception $e) {
+            dd($e);
+            return $e;
         }
     }
 

@@ -26,30 +26,34 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->ajax() || $request->wantsJson()) {
-            $result = $this->cartService->store($request);
-            if ($result) {
-                flash('Thêm vào giỏ thành công')->success();
-
+        try {
+            if ($request->ajax() || $request->wantsJson()) {
+                $result = $this->cartService->store($request);
+                if ($result) {
+                    flash('Thêm vào giỏ thành công')->success();
+    
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Thêm vào giỏ thành công',
+                    ], 200);
+                }
+    
                 return response()->json([
-                    'status' => 'success',
-                    'message' => 'Thêm vào giỏ thành công',
-                ], 200);
+                    'status' => 'fail',
+                    'message' => 'Đã có lỗi xảy ra',
+                ], 500);
+            } else {
+                $validatedData = $request->validate([
+                    'productUnitId' => 'required',
+                ]);
             }
-
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Đã có lỗi xảy ra',
-            ], 500);
-        } else {
-            $validatedData = $request->validate([
-                'productUnitId' => 'required',
-            ]);
+    
+            $result = $this->cartService->store($request);
+    
+            return redirect()->route('cart.index');
+        } catch (\Exception $e) {
+            return $e;
         }
-
-        $result = $this->cartService->store($request);
-
-        return redirect()->route('cart.index');
     }
 
     public function destroy($id)
