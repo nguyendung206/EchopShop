@@ -152,8 +152,10 @@ $route = route('exchangeProduct');
                         </a>
                         <a href="{{route('favoriteProduct')}}" class="d-n display-none" style="position: relative;">
                             <i class="fa-regular fa-heart"></i>
-                            @if(isset($favorites) && $favorites->count() > 0)
-                            <span class="badge badge-danger" style="position: absolute;bottom: 13px; left: 15px;">{{ $favorites->count() }}</span>
+                            @if(isset($favoriteCount) && $favoriteCount->count() > 0)
+                            <span id="favoriteCount" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $favoriteCount->count() }}</span>
+                            @else
+                            <span id="favoriteCount" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px; display: none;">0</span>
                             @endif
                         </a>
                     </div>

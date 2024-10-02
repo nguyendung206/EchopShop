@@ -60,7 +60,6 @@ class CategoryController extends Controller
             $category = Category::findOrFail($id);
 
             return view('admin.category.edit', compact('category'));
-
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi tải thông tin loại hàng!')->error();
 
@@ -75,7 +74,6 @@ class CategoryController extends Controller
             flash('Cập nhật loại hàng thành công!')->success();
 
             return redirect()->route('admin.category.index');
-
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi cập nhật loại hàng!')->error();
 
@@ -86,7 +84,8 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         try {
-            if ($this->categoryService->deleteCategory($id)) {
+            $result = $this->categoryService->deleteCategory($id);
+            if ($result) {
                 flash('Xóa loại hàng thành công!')->success();
             } else {
                 flash('Đã xảy ra lỗi khi xóa loại hàng!')->error();
@@ -106,12 +105,10 @@ class CategoryController extends Controller
             flash('Thay đổi trạng thái thành công!')->success();
 
             return redirect()->route('admin.category.index');
-
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi thay đổi trạng thái!')->error();
 
             return redirect()->route('admin.category.index');
         }
-
     }
 }

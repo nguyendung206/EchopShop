@@ -55,8 +55,8 @@ class AppServiceProvider extends ServiceProvider
         if (Schema::hasTable('favorites')) {
             View::composer('*', function ($view) {
                 if (Auth::check()) {
-                    $favorites = Favorite::where('user_id', Auth::id())->get();
-                    $view->with('favorites', $favorites);
+                    $favoriteCount = Favorite::where('user_id', Auth::id())->get();
+                    $view->with('favoriteCount', $favoriteCount);
                 }
             });
         }
