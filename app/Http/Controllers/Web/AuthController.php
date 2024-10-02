@@ -86,7 +86,7 @@ class AuthController extends Controller
         $districts = District::where('province_id', $request->provinceId)->get();
 
         return response()->json([
-            'status' => '200',
+            'status' => 200,
             'districts' => $districts,
             'message' => 'Danh sách quận huyện',
         ], 200);
@@ -97,7 +97,7 @@ class AuthController extends Controller
         $wards = Ward::where('district_id', $request->districtId)->get();
 
         return response()->json([
-            'status' => '200',
+            'status' => 200,
             'wards' => $wards,
             'message' => 'Danh sách phường xã',
         ], 200);

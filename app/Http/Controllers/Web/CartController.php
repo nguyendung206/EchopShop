@@ -31,13 +31,13 @@ class CartController extends Controller
             flash('Thêm vào giỏ thành công')->success();
 
             return response()->json([
-                'status' => '200',
+                'status' => 200,
                 'message' => 'Thêm vào giỏ thành công',
             ], 200);
         }
 
         return response()->json([
-            'status' => '500',
+            'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
     }

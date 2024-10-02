@@ -99,12 +99,12 @@ class DiscountController extends Controller
             flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([
-                'status' => '200',
+                'status' => 200,
                 'message' => 'Sửa thông tin thành công.',
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => '500',
+                'status' => 500,
                 'message' => 'Sửa thông tin thất bại.',
             ], 500);
         }

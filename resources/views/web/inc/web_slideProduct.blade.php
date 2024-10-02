@@ -61,8 +61,8 @@
     <div class="category-3">
         <div class="box">
             <div class="min-max-slider" data-legendnum="3">
-                    <input id="min" class="min" name="min" type="range" step="1" min="0" max="{{ config('app.max_price_filter') }}" />
-                    <input id="max" class="max" name="max" type="range" step="1" min="0" max="{{ config('app.max_price_filter') }}" />
+                    <input id="min" class="min" name="min" type="range" step="1" min="0" max="{{ config('setting.max_price_filter') }}" />
+                    <input id="max" class="max" name="max" type="range" step="1" min="0" max="{{ config('setting.max_price_filter') }}" />
             </div>
         </div>
     </div>

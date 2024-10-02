@@ -27,12 +27,12 @@ class ContactController extends Controller
             $this->contactService->store($request->all());
 
             return response()->json([
-                'status' => '200',
+                'status' => 200,
                 'message' => 'gửi thành công',
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'status' => '500',
+                'status' => 500,
                 'message' => 'gửi thất bại',
             ], 500);
 
