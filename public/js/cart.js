@@ -148,6 +148,8 @@ $(document).ready(function () {
                     if (response.status === 200) {
                         toastr.success(response.message || 'Thêm vào giỏ hàng thành công', null, { positionClass: 'toast-bottom-left' });
                         $('#confirmationModal').modal('hide');
+                        $('#cart-count').text(response.cartCount);
+                        $('#cart-count').show();
                     } else {
                         toastr.error(response.message || 'Có lỗi xảy ra', null, { positionClass: 'toast-bottom-left' });
                     }
