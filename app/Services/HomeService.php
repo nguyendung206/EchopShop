@@ -37,7 +37,7 @@ class HomeService
             $brandIds = $request['brandIds'];
             $query = $query->whereIn('brand_id', $brandIds);
         }
-        if (! empty ($request['categoryIds'])) {
+        if (! empty($request['categoryIds'])) {
             $categoryIds = $request['categoryIds'];
             $query = $query->whereIn('category_id', $categoryIds);
         }

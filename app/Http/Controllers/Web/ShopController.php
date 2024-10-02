@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ShopRequest;
 use App\Services\ShopService;
 use Illuminate\Http\Request;
-use Exception;
 
 class ShopController extends Controller
 {

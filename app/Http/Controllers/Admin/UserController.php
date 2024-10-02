@@ -10,9 +10,9 @@ use App\Models\User;
 use App\Models\Ward;
 use App\Services\StatusService;
 use App\Services\UserService;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Exception;
 
 class UserController extends Controller
 {

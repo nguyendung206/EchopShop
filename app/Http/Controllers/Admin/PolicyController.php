@@ -7,8 +7,8 @@ use App\Http\Requests\PolicyRequest;
 use App\Models\Policy;
 use App\Services\PolicyService;
 use App\Services\StatusService;
-use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Http\Request;
 
 class PolicyController extends Controller
 {

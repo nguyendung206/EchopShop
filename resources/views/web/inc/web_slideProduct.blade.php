@@ -224,8 +224,8 @@
                     url: url,
                     method: 'GET',
                     beforeSend: function (xhr, setting) {
-                        $('.list-product').children().not('#loading-UI').css('visibility', 'hidden');
                         $('#loading-UI').fadeIn();  
+                        $('.list-product').empty();
                     },
                     data: {
                         brandIds: selectedBrands,

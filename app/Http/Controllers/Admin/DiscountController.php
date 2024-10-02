@@ -7,8 +7,8 @@ use App\Http\Requests\DiscountRequest;
 use App\Models\Discount;
 use App\Services\DiscountService;
 use App\Services\StatusService;
-use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {

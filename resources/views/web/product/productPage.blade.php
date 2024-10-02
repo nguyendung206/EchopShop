@@ -70,9 +70,9 @@ if (request()->query('type') == 1) {
                 Kết quả tìm kiếm của: {{$search}}
             </div>
             @endif
+            @include('web.UI.loading')
             <div class="row list-product">
         
-                @include('web.UI.loading')
 
                 @if ($case != TypeProductEnums::GIVEAWAY->value && $case != 0)
                     @forelse($products as $product)
