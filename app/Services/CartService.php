@@ -26,7 +26,6 @@ class CartService
         try {
             $userId = Auth::id();
 
-            // Ensure 'type' exists in the request and is an integer
             if ($request->has('type') && is_numeric($request->type)) {
                 if ($request->type == 1) {
                     $existingCartItem = Cart::where('user_id', $userId)
@@ -43,7 +42,7 @@ class CartService
                         ]);
                     }
 
-                    return ['status' => 'success'];
+                    return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
                 } elseif ($request->type == 2) {
                     if ($request->has('units') && is_array($request->units)) {
                         foreach ($request->units as $unit) {
@@ -56,16 +55,16 @@ class CartService
                             ]);
                         }
 
-                        return ['status' => 'success'];
+                        return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
                     }
                 }
             }
 
-            return ['status' => 'fail'];
+            return ['status' => 500, 'message' => 'Đã có lỗi xảy ra'];
         } catch (\Exception $e) {
             Log::error('Error adding to cart: '.$e->getMessage());
 
-            return ['status' => 'fail', 'message' => 'Đã có lỗi xảy ra'];
+            return ['status' => 500, 'message' => 'Đã có lỗi xảy ra'];
         }
     }
 
@@ -75,20 +74,23 @@ class CartService
 
         if (! $productUnit || $productUnit->type == 1) {
             return [
-                'status' => 'direct_add',
+                'status' => 200,
+                'type' => 'direct_add',
                 'message' => 'Sản phẩm này có thể thêm trực tiếp vào giỏ hàng.',
             ];
         } elseif ($productUnit->type == 2) {
             $units = ProductUnit::where('product_id', $request->productId)->get();
 
             return [
-                'status' => 'modal',
+                'status' => 200,
+                'type' => 'modal',
                 'message' => 'Sản phẩm này yêu cầu xác nhận trước khi thêm vào giỏ.',
                 'units' => $units,
             ];
         } else {
             return [
-                'status' => 'fail',
+                'status' => 500,
+                'type' => 'fail',
                 'message' => 'Đã có lỗi xảy ra',
             ];
         }

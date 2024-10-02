@@ -28,15 +28,15 @@ class CartController extends Controller
     {
         $result = $this->cartService->store($request);
 
-        if ($result['status'] === 'success') {
+        if ($result['status'] === 200) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Thêm vào giỏ thành công',
+                'status' => 200,
+                'message' => $result['message'],
             ], 200);
         }
 
         return response()->json([
-            'status' => 'fail',
+            'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
     }
@@ -45,7 +45,7 @@ class CartController extends Controller
     {
         $result = $this->cartService->check($request);
 
-        if ($result['status'] === 'fail') {
+        if ($result['status'] === 500) {
             return response()->json($result, 500);
         }
 

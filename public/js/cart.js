@@ -18,9 +18,9 @@ $(document).ready(function () {
             method: 'POST',
             data: { productId: productId },
             success: function (response) {
-                if (response.status === 'direct_add') {
+                if (response.status === 200 && response.type === 'direct_add') {
                     addToCart(urlAddToCart, productId, 1);
-                } else if (response.status === 'modal') {
+                } else if (response.status === 200 && response.type === 'modal') {
                     showConfirmationModal(productId, response.units);
                 } else {
                     showError(response.message);
@@ -41,7 +41,7 @@ $(document).ready(function () {
                 type: type
             },
             success: function (storeResponse) {
-                if (storeResponse.status === 'success') {
+                if (storeResponse.status === 200) {
                     toastr.success(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
                 } else {
                     toastr.error(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
@@ -143,11 +143,11 @@ $(document).ready(function () {
                     type: 2 // Đảm bảo đây là kiểu đúng
                 },
                 success: function (response) {
-                    if (response.status === 'success') {
-                        toastr.success('Thêm vào giỏ hàng thành công', null, { positionClass: 'toast-bottom-left' });
+                    if (response.status === 200) {
+                        toastr.success(response.message || 'Thêm vào giỏ hàng thành công', null, { positionClass: 'toast-bottom-left' });
                         $('#confirmationModal').modal('hide');
                     } else {
-                        toastr.error('Có lỗi xảy ra', null, { positionClass: 'toast-bottom-left' });
+                        toastr.error(response.message || 'Có lỗi xảy ra', null, { positionClass: 'toast-bottom-left' });
                     }
                 },
                 error: function () {
