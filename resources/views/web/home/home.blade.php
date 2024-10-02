@@ -135,7 +135,7 @@ HOME
                 <a id="btnMoreExchange" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm<i
                         class="fa-solid fa-angles-down"></i></a>
                 @endif
-                <a class="all color-B10000 btn-more" href="{{ route('exchangeProduct') }}">Xem tất cả <i
+                <a class="all color-B10000 btn-more" href="{{ route('listProducts', ['type' => TypeProductEnums::EXCHANGE]) }}">Xem tất cả <i
                         class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
@@ -219,7 +219,7 @@ HOME
                 <a id="btnMoreSecondhand" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm mới<i
                         class="fa-solid fa-angles-right"></i></a>
                 @endif
-                <a class="all color-B10000 btn-more" href="{{ route('secondhandProduct') }}">Xem tất cả <i
+                <a class="all color-B10000 btn-more" href="{{ route('listProducts', ['type' => TypeProductEnums::SECONDHAND]) }}">Xem tất cả <i
                         class="fa-solid fa-angles-right"></i></a>
             </div>
             @endif
@@ -319,7 +319,7 @@ HOME
         </div>
         @if ($giveawayProducts->count() > 0)
         <div class="text-right  my-5">
-            <a class="all color-B10000 btn-more" href="{{ route('giveawayProduct') }}">Xem tất cả <i
+            <a class="all color-B10000 btn-more" href="{{ route('listProducts', ['type' => TypeProductEnums::EXCHANGE]) }}">Xem tất cả <i
                     class="fa-solid fa-angles-right"></i></a>
         </div>
             

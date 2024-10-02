@@ -16,10 +16,13 @@ class HomeService
         return $products;
     }
 
-    public function filterProducts($request, $type)
+    public function filterProducts($request)
     {
+        $type = $request['type'] ?? null;
+        $categorySlug = $request['categorySlug'] ?? null;
+        $brandSlug = $request['brandSlug'] ?? null;
         $rangeInputMin = isset($request['rangeInputMin']) ? (float) $request['rangeInputMin'] : 0;
-        $rangeInputMax = isset($request['rangeInputMax']) ? (float) $request['rangeInputMax'] : PHP_INT_MAX;
+        $rangeInputMax = isset($request['rangeInputMax']) ? (float) $request['rangeInputMax'] : config('app.max_price_filter');
         $query = Product::query();
         if (! empty($request['search'])) {
             $query = $query->where('name', 'like', '%'.$request['search'].'%');
@@ -34,6 +37,10 @@ class HomeService
             $brandIds = $request['brandIds'];
             $query = $query->whereIn('brand_id', $brandIds);
         }
+        if (! empty ($request['categoryIds'])) {
+            $categoryIds = $request['categoryIds'];
+            $query = $query->whereIn('category_id', $categoryIds);
+        }
         if (! empty($request['provinceIds'])) {  // province ở thanh lọc product
             $provinceIds = $request['provinceIds'];
             $query = $query->whereHas('shop.user.province', function ($query) use ($provinceIds) {
@@ -43,7 +50,21 @@ class HomeService
         $products = $query->where('status', 1)
             ->where('price', '>=', $rangeInputMin)
             ->where('price', '<=', $rangeInputMax)
-            ->where('type', $type->value)
+            ->when($type, function ($query) use ($type) {
+                return $query->where('type', $type);
+            })
+            ->when($categorySlug, function ($query) use ($categorySlug) {
+                return $query->whereHas('category', function ($query) use ($categorySlug) {
+                    $query->where('slug', $categorySlug);
+                });
+            })
+            ->when($brandSlug, function ($query) use ($brandSlug) {
+                return $query->whereHas('brand', function ($query) use ($brandSlug) {
+                    $query->where('slug', $brandSlug);
+                });
+            })
+            ->with('category')
+            ->with('brand')
             ->with(['shop', 'shop.user', 'shop.user.province'])
             ->paginate(9);
 

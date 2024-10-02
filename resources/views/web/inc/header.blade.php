@@ -3,13 +3,13 @@ $search = request()->get('search');
 $provinceQuery = request()->get('province');
 
 $url = Str::lower(request()->url());
-$route = route('secondhandProduct');
+$route = route('listProducts', ['type' => TypeProductEnums::SECONDHAND]);
 
 if (Str::contains($url, 'giveaway')) {
-$route = route('giveawayProduct');
+$route = route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]);
 }
 if (Str::contains($url, 'exchange')) {
-$route = route('exchangeProduct');
+$route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
 }
 @endphp
 <div id="overlay">
@@ -75,19 +75,19 @@ $route = route('exchangeProduct');
                     </li>
 
                     <li>
-                        <a href="{{ route('exchangeProduct') }}" class="nav-link">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::EXCHANGE]) }}" class="nav-link">
                             <img src="{{asset('img/icon/exchange.png')}}" alt="" class="mr-2">
                             <span class="nav-text">Trao đổi hàng hóa</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('secondhandProduct') }}" class="nav-link">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::SECONDHAND]) }}" class="nav-link">
                             <img src="{{asset('img/icon/secondhand.png')}}" alt="" class="mr-2">
                             <span class="nav-text">Mua bán đồ secondhand</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('giveawayProduct') }}" class="nav-link">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]) }}" class="nav-link">
                             <img src="{{asset('img/icon/giveaway.png')}}" alt="" class="mr-2">
                             <span class="nav-text">Hàng cũ đem tặng</span>
                         </a>
@@ -312,7 +312,7 @@ $route = route('exchangeProduct');
                             <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" style="width: 250px;">
                                 @foreach($categories as $category)
                                 <li class="dropdown-submenu" style="position: relative;">
-                                    <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category', ['slug' => $category->slug]) }}">
+                                    <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['categorySlug' => $category->slug]) }}">
                                         <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
                                         <p class="dropdown-title">{{ $category->name }}</p>
                                         <i class="fa-solid fa-caret-right"></i>
@@ -321,7 +321,7 @@ $route = route('exchangeProduct');
                                     <ul class="dropdown-menu" style="width: 250px;">
                                         @foreach($category->activeBrands as $brand)
                                         <li>
-                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
                                                 <p class="dropdown-title">{{ $brand->name }}</p>
                                                 <i class="fa-solid fa-caret-right"></i>
                                             </a>
@@ -344,21 +344,21 @@ $route = route('exchangeProduct');
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('exchangeProduct') }}" class="row align-items-center mx-4">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::EXCHANGE]) }}" class="row align-items-center mx-4">
                             <img src="{{asset('img/icon/exchange.png')}}" alt="" class="mr-2">
                             <span>Trao đổi hàng hóa</span>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('secondhandProduct') }}" class="row align-items-center mx-4">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::SECONDHAND]) }}" class="row align-items-center mx-4">
                             <img src="{{asset('img/icon/secondhand.png')}}" alt="" class="mr-2">
                             <span>Mua bán đồ secondhand</span>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('giveawayProduct') }}" class="row align-items-center mx-4">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]) }}" class="row align-items-center mx-4">
                             <img src="{{asset('img/icon/giveaway.png')}}" alt="" class="mr-2">
                             <span>Hàng cũ đem tặng</span>
                         </a>

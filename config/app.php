@@ -217,4 +217,5 @@ return [
         'TypeDiscountEnums' => \App\Enums\TypeDiscount::class,
     ])->toArray(),
 
+    'max_price_filter' => env('MAX_PRICE_FILTER', 3000000),
 ];

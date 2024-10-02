@@ -51,23 +51,7 @@ class HomeController extends Controller
 
     public function filterProducts(Request $request)
     {
-        $type = null;
-        $currentUrl = $request->url();
-        switch (true) {
-            case stripos($currentUrl, 'exchange') !== false:
-                $type = TypeProduct::EXCHANGE;
-                break;
-            case stripos($currentUrl, 'secondhand') !== false:
-                $type = TypeProduct::SECONDHAND;
-                break;
-            case stripos($currentUrl, 'giveaway') !== false:
-                $type = TypeProduct::GIVEAWAY;
-                break;
-            default:
-                break;
-        }
-
-        $products = $this->homeService->filterProducts($request->all(), $type);
+        $products = $this->homeService->filterProducts($request->all());
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
