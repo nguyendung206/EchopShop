@@ -207,16 +207,16 @@ $route = route('exchangeProduct');
                                         <span class="badge badge-danger" style="position: absolute;bottom: 12px; left: 10px;">{{ $notifications->where('is_read', false)->count() }}</span>
                                         @endif
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 400px;">
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 400px; white-space: nowrap; overflow-x: hidden;">
                                         @if(isset($notifications) && count($notifications) > 0)
                                         @foreach($notifications as $notification)
-                                        <a class="py-notificaition dropdown-item d-flex align-items-start {{ !$notification->is_read ? 'is_read' : '' }}" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
+                                        <a class="py-notificaition dropdown-item d-flex align-items-center {{ !$notification->is_read ? 'is_read' : '' }}" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
                                             <div class="mr-3 mt-4">
                                                 <i class="fa-regular fa-bell"></i>
                                             </div>
                                             <div>
                                                 <strong>{{ $notification->title }}</strong>
-                                                <div class="text-muted my-2">{{ $notification->body }}</div>
+                                                <div class="text-muted my-2 text-body">{{ $notification->body }}</div>
                                                 <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                             </div>
                                         </a>
