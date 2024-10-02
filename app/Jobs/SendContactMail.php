@@ -2,14 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Mail\ContactMail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Mail;
-use App\Mail\ContactMail;
 
 class SendContactMail implements ShouldQueue
 {
@@ -25,6 +24,7 @@ class SendContactMail implements ShouldQueue
     protected $contentUser;
 
     protected $email;
+
     public function __construct($content, $contentUser, $email)
     {
         $this->content = $content;
