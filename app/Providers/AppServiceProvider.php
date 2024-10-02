@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Favorite;
 use App\Models\Notification;
 use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,14 @@ class AppServiceProvider extends ServiceProvider
                         ->get();
 
                     $view->with('notifications', $notifications);
+                }
+            });
+        }
+        if (Schema::hasTable('favorites')) {
+            View::composer('*', function ($view) {
+                if (Auth::check()) {
+                    $favorites = Favorite::where('user_id', Auth::id())->get();
+                    $view->with('favorites', $favorites);
                 }
             });
         }

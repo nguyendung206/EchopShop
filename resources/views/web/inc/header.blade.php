@@ -150,8 +150,11 @@ $route = route('exchangeProduct');
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
-                        <a href="{{route('favoriteProduct')}}" class="d-n display-none">
+                        <a href="{{route('favoriteProduct')}}" class="d-n display-none" style="position: relative;">
                             <i class="fa-regular fa-heart"></i>
+                            @if(isset($favorites) && $favorites->count() > 0)
+                            <span class="badge badge-danger" style="position: absolute;bottom: 13px; left: 15px;">{{ $favorites->count() }}</span>
+                            @endif
                         </a>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-3 col-1 menu">
@@ -191,7 +194,7 @@ $route = route('exchangeProduct');
                         <div class="row justify-content-around align-items-center">
                             <div class="header-icon">
                                 <div class="search">
-                                    <a href="{{route('cart.index')}}">
+                                    <a href="{{route('cart.index')}}" style="position: relative;">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                     </a>
                                 </div>
