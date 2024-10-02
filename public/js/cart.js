@@ -43,6 +43,8 @@ $(document).ready(function () {
             success: function (storeResponse) {
                 if (storeResponse.status === 200) {
                     toastr.success(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
+                    $('#cart-count').text(storeResponse.cartCount);
+                    $('#cart-count').show();
                 } else {
                     toastr.error(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
                 }

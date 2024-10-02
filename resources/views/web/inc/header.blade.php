@@ -191,8 +191,13 @@ $route = route('exchangeProduct');
                         <div class="row justify-content-around align-items-center">
                             <div class="header-icon">
                                 <div class="search">
-                                    <a href="{{route('cart.index')}}">
+                                    <a href="{{route('cart.index')}}" style="position: relative;">
                                         <i class="fa-solid fa-cart-shopping"></i>
+                                        @if(isset($carts) && $carts->count() > 0)
+                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $carts->count() }}</span>
+                                        @else
+                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px; display: none;">0</span>
+                                        @endif
                                     </a>
                                 </div>
                                 <div class="search d-n">

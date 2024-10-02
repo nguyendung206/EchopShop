@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Services\CartService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -27,11 +28,12 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $result = $this->cartService->store($request);
-
+        $cartCount = Cart::where('user_id', Auth::id())->count();
         if ($result['status'] === 200) {
             return response()->json([
                 'status' => 200,
                 'message' => $result['message'],
+                'cartCount' => $cartCount,
             ], 200);
         }
 
