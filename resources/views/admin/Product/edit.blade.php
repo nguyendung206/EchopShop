@@ -54,13 +54,15 @@
                     </div>
 
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Loại sản phẩm')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Loại hàng')</label>
                         <div class="col-sm-9">
-                            <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
-                                <option value="" {{ old('category_id', $brand->category_id ?? null) === null ? 'selected' : '' }}>@lang('Chọn loại sản phẩm')</option>
+                            <select class="form-control font-weight-500" name="category_id" id="categorySelect">
+                                <option value="" {{ old('category_id', $product->category_id ?? '') === null ? 'selected' : '' }}>
+                                    @lang('Chọn danh mục')
+                                </option>
                                 @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ $category->id == $product->category_id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                                <option value="{{ $category->id }}" {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                                    @lang($category->name)
                                 </option>
                                 @endforeach
                             </select>
@@ -71,15 +73,11 @@
                     </div>
 
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Hãng sản phẩm')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Thương hiệu')</label>
                         <div class="col-sm-9">
-                            <select class="form-control @error('brand_id') is-invalid @enderror" name="brand_id">
-                                <option value="" {{ old('brand_id', $brand->brand_id ?? null) === null ? 'selected' : '' }}>@lang('Chọn hãng sản phẩm')</option>
-                                @foreach($brands as $brand)
-                                <option value="{{ $brand->id }}" {{ $brand->id == $product->brand_id ? 'selected' : '' }}>
-                                    {{ $brand->name }}
-                                </option>
-                                @endforeach
+                            <select class="form-control font-weight-500" name="brand_id" id="brandSelect">
+                                <option value="">Chọn Thương hiệu</option>
+                                <!-- Các option sẽ được điền bởi JavaScript -->
                             </select>
                             @error('brand_id')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -88,7 +86,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Kiểu sản phẩm')</label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Hình thức')</label>
                         <div class="col-sm-9 mt-2">
                             @foreach(\App\Enums\TypeProduct::cases() as $type)
                             <div class="form-check form-check-inline">
@@ -124,19 +122,40 @@
                     </div>
 
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-from-label font-weight-500">@lang('Số lượng')</label>
+                        <label class="col-sm-3 col-form-label font-weight-500" style="font-size: 1rem;">@lang('Chi tiết')</label>
+                        <div class="col-sm-9 mt-2">
+                            <div class="form-check form-check-inline">
+                                <input name="unittype" type="radio" id="unitType1" class="form-check-input" value="1" {{ old('unittype', $product->productUnits->first()->type ?? null) == '1' ? 'checked' : '' }} style="cursor: pointer;" onchange="toggleDetailInput()">
+                                <label class="form-check-label" for="unitType1" style="font-size: 1rem; cursor: pointer;">Chỉ có số lượng</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input name="unittype" type="radio" id="unitType2" class="form-check-input" value="2" {{ old('unittype', $product->productUnits->first()->type ?? null) == '2' ? 'checked' : '' }} style="cursor: pointer;" onchange="toggleDetailInput()">
+                                <label class="form-check-label" for="unitType2" style="font-size: 1rem; cursor: pointer;">Kích cỡ, màu, số lượng</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="detailContainer" style="display: none;">
+                        <label class="col-sm-3 col-form-label font-weight-500" style="font-size: 1rem;">@lang('Chi tiết')</label>
                         <div class="col-sm-9">
                             <div id="color_boxes">
-                                @foreach ($product->productUnits as $unit)
+                                @foreach($product->productUnits as $unit)
                                 <div class="input-group mb-2">
-                                    <input type="text" name="colors[]" class="form-control" value="{{ $unit->color }}" placeholder="Nhập màu">
-                                    <input type="text" name="sizes[]" class="form-control ml-2" value="{{ $unit->size }}" placeholder="Nhập kích cỡ">
-                                    <input type="number" name="quantities[]" class="form-control ml-2" value="{{ $unit->quantity }}" placeholder="Nhập số lượng">
-                                    <button type="button" class="btn btn-danger ml-2" onclick="removeColorBox(this)">X</button>
+                                    <input type="text" name="colors[]" class="form-control" placeholder="Nhập màu" value="{{ old('colors.'.$loop->index, $unit->color) }}">
+                                    <input type="text" name="sizes[]" class="form-control ml-2" placeholder="Nhập kích cỡ" value="{{ old('sizes.'.$loop->index, $unit->size) }}">
+                                    <input type="number" name="quantities[]" class="form-control ml-2" placeholder="Nhập số lượng" value="{{ old('quantities.'.$loop->index, $unit->quantity) }}">
+                                    <button type="button" class="btn btn-danger ml-2" onclick="this.parentElement.remove()">X</button>
                                 </div>
                                 @endforeach
                             </div>
-                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ @lang('Chi tiết')</button>
+                            <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ Thêm chi tiết</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="detailQuantity" style="display: none;">
+                        <label class="col-sm-3 col-form-label font-weight-500" style="font-size: 1rem;">@lang('Số lượng')</label>
+                        <div class="col-sm-9">
+                            <input type="number" name="quantity" id="quantity" class="form-control" min="1" placeholder="Nhập số lượng" value="{{ old('quantity', $product->productUnits->isNotEmpty() ? $product->productUnits->first()->quantity : '') }}">
                         </div>
                     </div>
 
@@ -183,50 +202,109 @@
     </div>
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', toggleDetailInput);
+
+    function toggleDetailInput() {
+        const selectedValue = document.querySelector('input[name="unittype"]:checked').value;
+        const detailContainer = document.getElementById('detailContainer');
+        const detailQuantity = document.getElementById('detailQuantity');
+
+        if (selectedValue == '1') {
+            detailContainer.style.display = 'none';
+            detailQuantity.style.display = 'flex';
+        } else {
+            detailContainer.style.display = 'flex';
+            detailQuantity.style.display = 'none';
+        }
+    }
+
     function addColorBox() {
         const colorBoxContainer = document.getElementById('color_boxes');
+        const newColorBox = createColorBox();
+        colorBoxContainer.appendChild(newColorBox);
+    }
 
-        const newColorBox = document.createElement('div');
-        newColorBox.className = 'input-group mb-2';
+    function createColorBox(color = '', size = '', quantity = '') {
+        const colorBox = document.createElement('div');
+        colorBox.className = 'input-group mb-2';
 
         const colorInput = document.createElement('input');
         colorInput.type = 'text';
         colorInput.name = 'colors[]';
         colorInput.className = 'form-control';
         colorInput.placeholder = 'Nhập màu';
+        colorInput.value = color;
 
         const sizeInput = document.createElement('input');
         sizeInput.type = 'text';
         sizeInput.name = 'sizes[]';
         sizeInput.className = 'form-control ml-2';
         sizeInput.placeholder = 'Nhập kích cỡ';
+        sizeInput.value = size;
 
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
         quantityInput.name = 'quantities[]';
         quantityInput.className = 'form-control ml-2';
         quantityInput.placeholder = 'Nhập số lượng';
+        quantityInput.value = quantity;
 
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
         removeButton.className = 'btn btn-danger ml-2';
         removeButton.textContent = 'X';
         removeButton.onclick = function() {
-            colorBoxContainer.removeChild(newColorBox);
+            colorBox.remove();
         };
 
-        newColorBox.appendChild(colorInput);
-        newColorBox.appendChild(sizeInput);
-        newColorBox.appendChild(quantityInput);
-        newColorBox.appendChild(removeButton);
+        colorBox.appendChild(colorInput);
+        colorBox.appendChild(sizeInput);
+        colorBox.appendChild(quantityInput);
+        colorBox.appendChild(removeButton);
 
-        colorBoxContainer.appendChild(newColorBox);
+        return colorBox;
     }
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const brands = @json($brands);
+        const categorySelect = document.getElementById('categorySelect');
+        const brandSelect = document.getElementById('brandSelect');
 
-    existingColors.forEach(item => addColorBox(item.name, item.quantity));
-    existingSizes.forEach(item => addSizeBox(item.name, item.quantity));
+        const selectedCategoryId = "{{ old('category_id', $product->category_id ?? '') }}";
+        const selectedBrandId = "{{ old('brand_id', $product->brand_id ?? '') }}";
 
+        // Hàm hiển thị danh sách thương hiệu theo danh mục đã chọn
+        function populateBrands(categoryId) {
+            brandSelect.innerHTML = '<option value="">Chọn Thương hiệu</option>';
+
+            if (categoryId) {
+                const filteredBrands = brands.filter(brand => brand.category_id == categoryId);
+
+                filteredBrands.forEach(brand => {
+                    const option = document.createElement('option');
+                    option.value = brand.id;
+                    option.textContent = brand.name;
+                    if (brand.id == selectedBrandId) {
+                        option.selected = true;
+                    }
+                    brandSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Hiển thị danh sách thương hiệu khi danh mục được chọn
+        categorySelect.addEventListener('change', function() {
+            populateBrands(this.value);
+        });
+
+        // Gọi hàm để hiển thị thương hiệu khi tải trang
+        populateBrands(selectedCategoryId);
+    });
+</script>
+
+<script>
     function previewPhoto(input) {
         const preview = document.getElementById('photo_preview');
         if (input.files && input.files[0]) {
