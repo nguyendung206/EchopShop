@@ -7,6 +7,7 @@ use App\Enums\StatusOrder;
 use App\Enums\TypePayment;
 use App\Models\Cart;
 use App\Models\Discount;
+use App\Models\DiscountUser;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\ProductUnit;
@@ -26,7 +27,7 @@ class OrderService
             $vouchers = Discount::query()
                             ->where('status', Status::ACTIVE)
                             ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
-                            ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
+                            ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->with('discountUsers')->get();
             if (! empty($request['cart_ids'])) {
                 $cartIds = $request['cart_ids'];
                 $carts = Cart::whereIn('id', $cartIds)->with('products')->get();
@@ -57,6 +58,27 @@ class OrderService
             }
             // tạo hoá đơn
             $order = Order::create($orderData);
+            // Trừ số lượng mã giảm giá
+            if (! empty($request['discount_id'])) {
+                $discount = Discount::findOrFail($request['discount_id']);
+                $discount->increment('quantity_used');
+
+                $discountUser = DiscountUser::where('user_id', Auth::id())
+                    ->where('discount_id', $discount->id)
+                    ->first();
+                if ($discountUser) {
+                    // Nếu đã có bản ghi, tăng number_used lên 1
+                    $discountUser->increment('number_used');
+                } else {
+                    // Nếu chưa có, tạo mới bản ghi
+                    DiscountUser::create([
+                        'user_id' => Auth::id(),
+                        'discount_id' => $discount->id,
+                        'number_used' => 1,
+                    ]);
+                }
+
+            }
 
             foreach ($request['carts'] as $cart) {
                 $decoded = json_decode($cart, true);
@@ -100,6 +122,7 @@ class OrderService
             dispatch($emailJob);
             return $order;
         } catch (Exception $e) {
+            dd($e);
             return $e;
         }
 

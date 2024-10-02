@@ -197,7 +197,7 @@
                     Phương thức thanh toán
                 </div>
                 <div class="row align-items-center">
-                    <div class="voucher col-5 text-center" id="voucherShow">
+                    <div class="voucher col-lg-5 col-12 text-center" id="voucherShow">
                         <button id="btnVoucher" class="btn-show-voucher b-radius" type="button">Chọn
                             Voucher</button>
                         <div class="voucher-layer" id="voucherLayer">
@@ -205,12 +205,11 @@
                                 <p class="voucher-title">Áp mã để giảm giá</p>
                                 <div class="voucher-code">
                                     <p class="col-3 code-title">Mã Voucher</p>
-                                    <div class="col-6 code-input">
+                                    <div class="col-9 code-input">
                                         <input type="text" id="voucherCode">
+                                        <p class="btn-show-voucher b-radius submitVoucher btn-apply-voucher line-clamp-1" data-voucher="code" type="button">Áp dụng</p>
                                     </div>
-                                    <div class="col-3 code-button">
-                                        <button class="btn-show-voucher b-radius submitVoucher line-clamp-1" data-voucher="code" type="button">Áp dụng</button>
-                                    </div>
+                                    
                                 </div>
                                 <div id="errorCode">
 
@@ -227,10 +226,23 @@
                                                 @if ($voucher->type == TypeDiscountEnums::PERCENT)
                                                     <p>Giảm tối đa: {{format_price($voucher->max_value)}}</p>
                                                 @endif
+                                                    @php
+                                                        $discountUser = $voucher->getDiscountUserByUserId(Auth::id());
+                                                        $numberUsed = $discountUser ? $discountUser->number_used : 0;
+                                                    @endphp
+                                                <p>Số lần dùng: {{ $numberUsed .' /'. $voucher->limit_uses}}</p>
+                                                <p>Còn lại: {{$voucher->max_uses - $voucher->quantity_used}}</p>
                                                 <p>Hết hạn sau: {{dateRemaining($voucher->end_time)}}</p>
                                             </div>
-                                            <div class="voucher-button col-3"><input class=" d-block" type="radio"
-                                                    name="radioVoucher" id="radio-{{$voucher->id}}" value="{{$voucher->id}}"></div>
+                                            <div class="voucher-button col-3">
+                                                @if ($voucher->getDiscountUserByUserId(Auth::id()) && $voucher->getDiscountUserByUserId(Auth::id())->number_used == $voucher->limit_uses)
+                                                    <p style="color: #B10000">Hết lượt</p>
+                                                @elseif ($voucher->max_uses - $voucher->quantity_used == 0)
+                                                    <p style="color: #B10000">Hết Voucher</p>
+                                                @else
+                                                    <input class=" d-block" type="radio" name="radioVoucher" id="radio-{{$voucher->id}}" value="{{$voucher->id}}">
+                                                @endif
+                                            </div>
                                         </div>
                                     @empty
                                     <p class="align-middle text-center my-3 w-100" style="color: #B10000">Hiện không có mã giảm giá nào.</p>
@@ -249,7 +261,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="total-price-pay-method col-lg-7">
+                    <div class="total-price-pay-method col-lg-7 col-12">
                         <div class="sum-price pb-2">
                             <div>Tổng tiền hàng</div> <b class="sum-pay">{{ format_price($sum) }}</b>
                         </div>
@@ -406,20 +418,43 @@
                     var voucherCodeInput = $('#voucherCode').val();
                     var voucherType = $(this).data('voucher');
                     if(voucherType == 'code' && voucherCodeInput.length > 0) {
-                        console.log("alo");
                         
                         vouchers.forEach(function(item) {
                             if(item.code == voucherCodeInput){
                                 voucherSelected = item;
                                 voucherId = item.id;
+                                console.log(voucherSelected);
+                                
                             } 
                         })
+                        
                         if(!voucherSelected) {
                             $('#errorCode').empty();
                             $('#errorCode').append(`
-                                <p class="text-danger">Mã giảm giá không hợp lệ</p>
+                                <p class="text-danger code-error">Mã giảm giá không hợp lệ</p>
                             `)
                             return;
+                        }
+                        if(voucherSelected && voucherSelected.discount_users.length > 0) {
+                            var userId = {{ Auth::id() }};
+                            var discountUser = voucherSelected.discount_users.find(discountUser => discountUser.user_id === userId);
+                            console.log(discountUser);
+                            if(voucherSelected.limit_uses == discountUser.number_used) {
+                                $('#errorCode').empty();
+                                $('#errorCode').append(`
+                                    <p class="text-danger code-error">Đã hết lượt dùng voucher này</p>
+                                `)
+                                return;
+                            }
+                        }
+                        if(voucherSelected) {
+                            if(voucherSelected.max_uses == voucherSelected.quantity_used) {
+                                $('#errorCode').empty();
+                                $('#errorCode').append(`
+                                    <p class="text-danger code-error">Voucher này đã hết</p>
+                                `)
+                                return;
+                            }
                         }
                         
                     }else {

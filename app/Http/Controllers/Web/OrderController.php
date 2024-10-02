@@ -53,6 +53,7 @@ class OrderController extends Controller
 
             return view('web.order.orderSuccess');
         } catch (\Throwable $th) {
+            dd($th);
             return $th;
         }
     }

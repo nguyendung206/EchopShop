@@ -273,15 +273,25 @@
     width: 75px;
     height: 75px;
 }
-
+.btn-apply-voucher {
+    position: absolute;
+    border: none;
+    top: 0;
+    right: 0;
+    margin: 0;
+    background-color: transparent;
+    font-size: 15px;
+    border-radius: 0px;
+    
+}
 .code-input {
+    position: relative;
     padding-right: 0px;
 }
 .code-input input {
     width: 100%;
     padding: 6px 6px;
     border: 1px solid #B10000;
-    border-right: none;
 }
 .code-button {
     padding-left: 0px;
@@ -376,7 +386,7 @@
     .message-to-shop input {
         margin-left: 0px;
     }
-
+    
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
@@ -390,6 +400,35 @@
     }
     .address-modal {
         padding: 10px 0px;
+        width: 80% !important;
+    }
+    .voucher-modal {
+        width: 80% !important;
+        margin: 200px auto;
+
+    }
+    .voucher-image img {
+        width: 40px;
+        height: 40px;
+    }
+    .voucher-content p{
+        text-align: left;
+        margin: 5px 0px;
+    }
+    .code-error {
+        font-size: 12px;
+        margin: 4px 0;
+    }
+    .submitVoucher {
+        font-size: 14px;
+        padding: 7px 16px;
+    }
+    .btn-apply-voucher {
+        padding: 8px 16px !important;
+    }
+    #submitChangeAddress {
+        font-size: 12px;
+        padding: 6px 16px;
     }
 }
 @media (min-width: 769px) and (max-width: 992px) {}

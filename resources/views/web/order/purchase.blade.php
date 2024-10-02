@@ -15,7 +15,7 @@
 @endphp
 <div class="content">
     <div class=" container content-purchase">
-        <div class="row purchase-title button-page-wrap">
+        <div class=" purchase-title button-page-wrap ">
             <a class='col-14 purchase-title-item {{empty($type) ? 'active' : '' }}' href="{{route("purchase")}}">Tất cả</a>
             <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::PENDING->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::PENDING])}}">Chờ thanh toán</a>
             <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::TRANSPORTING->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::TRANSPORTING])}}">Vận chuyển</a>
@@ -65,7 +65,7 @@
                 <hr/>
             @empty
                 <div class="text-center mt-2">
-                    <img src="{{asset('/img/image/noorder.png')}}" alt="">
+                    <img src="{{asset('/img/image/noorder.png')}}" class=" empty-image" alt="">
                 </div>
             @endforelse
         </div>

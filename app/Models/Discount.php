@@ -31,4 +31,14 @@ class Discount extends Model
         'type' => TypeDiscount::class,
         'status' => Status::class,
     ];
+
+    public function discountUsers()
+    {
+        return $this->hasMany(DiscountUser::class, 'discount_id', 'id');
+    }
+
+    public function getDiscountUserByUserId($userId)
+    {
+        return $this->discountUsers()->where('user_id', $userId)->first();
+    }
 }
