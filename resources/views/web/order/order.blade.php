@@ -432,7 +432,6 @@
                         })
                     }
                     
-                    console.log(voucherSelected);
                     if (voucherSelected != null) {
                         $('#voucherShowHtml').remove();
                             let voucherHtml =`

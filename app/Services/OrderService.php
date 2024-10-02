@@ -23,7 +23,10 @@ class OrderService
             $carts = collect();
             $vouchers = collect();
             $datas = [];
-            $vouchers = Discount::query()->where('status', Status::ACTIVE)->where('end_time', '>=', Carbon::now('Asia/Bangkok'))->get();
+            $vouchers = Discount::query()
+                            ->where('status', Status::ACTIVE)
+                            ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
+                            ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
             if (! empty($request['cart_ids'])) {
                 $cartIds = $request['cart_ids'];
                 $carts = Cart::whereIn('id', $cartIds)->with('products')->get();
