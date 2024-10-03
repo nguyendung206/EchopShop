@@ -61,8 +61,8 @@ class OrderService
             if (! empty($request['discount_id'])) {
                 $discount = Discount::findOrFail($request['discount_id']);
                 $discount->increment('quantity_used');
-                $discount->user_used = $discount->user_used 
-                    ? $discount->user_used . ',' . Auth::id() 
+                $discount->user_used = $discount->user_used
+                    ? $discount->user_used.','.Auth::id()
                     : Auth::id();
                 $discount->save();
             }

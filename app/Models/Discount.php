@@ -25,7 +25,7 @@ class Discount extends Model
         'quantity_used',
         'limit_uses',
         'status',
-        'user_used'
+        'user_used',
     ];
 
     protected $casts = [

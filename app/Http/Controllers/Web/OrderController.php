@@ -49,6 +49,7 @@ class OrderController extends Controller
     {
         try {
             $order = $this->orderService->store($request->all());
+
             return view('web.order.orderSuccess');
         } catch (\Exception $e) {
             return $e;
