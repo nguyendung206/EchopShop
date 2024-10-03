@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/admin.php';
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name('exchangeProduct');
-Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
-Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
+Route::get('/list-product', [HomeController::class, 'filterProducts'])->name('listProducts');
+// Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
+// Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
 Route::get('/favoriteProduct', [FavoriteController::class, 'index'])->name('favoriteProduct');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 
