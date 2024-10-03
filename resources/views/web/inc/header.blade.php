@@ -426,7 +426,7 @@ $route = route('exchangeProduct');
                         $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
                     }
                 });
-            }, 500)
+            }, 300)
         });
         checkInputValue();
 
@@ -448,8 +448,5 @@ $route = route('exchangeProduct');
         }
 
     });
-    
-</script>
-<script>
     
 </script>

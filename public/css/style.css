@@ -1142,6 +1142,7 @@ a:hover {
 
 .list-product-result .list-group-item.active {
     border-top-left-radius: .85rem;
+    border-top-right-radius: .85rem;
 }
 
 .list-group-item {
@@ -1154,6 +1155,10 @@ a:hover {
     font-weight: 500;
     background-color: #FF7A00;
     border: none;
+}
+.list-group-item:last-child {
+    border-bottom-right-radius: 0px; 
+    border-bottom-left-radius: 0px;
 }
 
 .dropdown-submenu>.dropdown-menu {
@@ -1249,6 +1254,11 @@ a:hover {
 
 .pt-200 {
     padding-top: 200px;
+}
+
+.margin-responsive {
+    margin-right: 0px;
+    margin-left: 0px;
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
