@@ -122,7 +122,7 @@ $dataUrl = route('exchangeProduct');
                             <a href="#" class="btn-chat-product"><i
                                     class="fa-regular fa-comment-dots"></i></a>
                             @auth
-                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
+                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                                 <i class="fa-solid fa-cart-shopping"></i>
                             </a>
                             @else

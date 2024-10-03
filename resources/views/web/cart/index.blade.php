@@ -39,6 +39,7 @@ HOME
                                 </div>
                                 <div class="item-meta mb-2">
                                     <p>{!! $cart->products->description !!}</p>
+                                    <p class="mt-2"> {{ $cart->color }}, {{ $cart->size }}</p>
                                 </div>
                             </div>
                         </div>
@@ -47,11 +48,14 @@ HOME
                         <span class="original-price">{{format_price($cart->products->price)}}</span>
                     </td>
                     <td class="align-middle">
-                        <div class="number-input">
-                            <button class="minus">-</button>
-                            <input class="quantity" type="number" value="{{ $cart->quantity }}" min="1" max="100">
-                            <button class="plus">+</button>
-                        </div>
+                        <form action="{{ route('cart.update', $cart->id) }}" method="POST" class="quantity-form">
+                            @csrf
+                            <div class="number-input">
+                                <button type="button" class="minus">-</button>
+                                <input class="quantity" type="number" name="quantity" value="{{ $cart->quantity }}" min="1" max="100">
+                                <button type="button" class="plus">+</button>
+                            </div>
+                        </form>
                     </td>
                     <td class="total-amount align-middle">{{ format_price($cart->products->price * $cart->quantity) }}</td>
                     <td class="align-middle">
@@ -192,7 +196,7 @@ HOME
         button.addEventListener("click", function() {
             const input = this.previousElementSibling; // Lấy ô nhập số lượng
             input.value = parseInt(input.value) + 1; // Tăng số lượng lên 1
-            calculateTotalAmount(this.closest('tr')); // Cập nhật tổng tiền cho sản phẩm
+            input.closest('form').submit(); // Gửi form để cập nhật số lượng
         });
     });
 
@@ -202,7 +206,7 @@ HOME
             const input = this.nextElementSibling; // Lấy ô nhập số lượng
             if (parseInt(input.value) > 1) { // Đảm bảo số lượng không nhỏ hơn 1
                 input.value = parseInt(input.value) - 1; // Giảm số lượng xuống 1
-                calculateTotalAmount(this.closest('tr')); // Cập nhật tổng tiền cho sản phẩm
+                input.closest('form').submit(); // Gửi form để cập nhật số lượng
             }
         });
     });
@@ -210,7 +214,7 @@ HOME
     // Cập nhật tổng tiền khi người dùng nhập vào ô số lượng
     document.querySelectorAll(".number-input input").forEach(input => {
         input.addEventListener("input", function() {
-            calculateTotalAmount(this.closest('tr')); // Cập nhật tổng tiền cho sản phẩm
+            this.closest('form').submit(); // Gửi form để cập nhật số lượng
         });
     });
 
