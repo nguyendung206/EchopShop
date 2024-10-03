@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\Status;
 use App\Enums\StatusOrder;
 use App\Enums\TypePayment;
+use App\Jobs\SendOrderSuccessMail;
 use App\Models\Cart;
 use App\Models\Discount;
 use App\Models\DiscountUser;
@@ -14,7 +15,6 @@ use App\Models\ProductUnit;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use App\Jobs\SendOrderSuccessMail;
 
 class OrderService
 {
@@ -25,9 +25,9 @@ class OrderService
             $vouchers = collect();
             $datas = [];
             $vouchers = Discount::query()
-                            ->where('status', Status::ACTIVE)
-                            ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
-                            ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->with('discountUsers')->get();
+                ->where('status', Status::ACTIVE)
+                ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
+                ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->with('discountUsers')->get();
             if (! empty($request['cart_ids'])) {
                 $cartIds = $request['cart_ids'];
                 $carts = Cart::whereIn('id', $cartIds)->with('products')->get();
@@ -104,7 +104,7 @@ class OrderService
                 // xoá khỏi giỏ
                 Cart::where('id', $cartId)->delete();
             }
-            
+
             // lấy thông tin đưa vào mail
             $orderCreated = Order::query()
                 ->where('id', $order->id)
@@ -112,17 +112,19 @@ class OrderService
                 ->with([
                     'discount',
                     'customer.province',
-                    'customer.district',  
-                    'customer.ward',      
-                    'orderDetails.product'
+                    'customer.district',
+                    'customer.ward',
+                    'orderDetails.product',
                 ])
                 ->first();
             $emailUser = Auth::user()->email;
             $emailJob = new SendOrderSuccessMail($emailUser, $orderCreated);
             dispatch($emailJob);
+
             return $order;
         } catch (Exception $e) {
             dd($e);
+
             return $e;
         }
 

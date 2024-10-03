@@ -10,10 +10,10 @@ class DiscountUser extends Model
     use HasFactory;
 
     protected $table = 'discount_user';
-    
+
     protected $fillable = [
         'user_id',
         'discount_id',
-        'number_used'
+        'number_used',
     ];
 }

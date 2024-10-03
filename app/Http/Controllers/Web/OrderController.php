@@ -7,7 +7,6 @@ use App\Services\OrderService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
-
 class OrderController extends Controller
 {
     protected $userService;
@@ -24,7 +23,7 @@ class OrderController extends Controller
     {
 
         $datas = $this->orderService->index($request->all());
-        
+
         return view('web.order.order', ['carts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
     }
 
@@ -54,6 +53,7 @@ class OrderController extends Controller
             return view('web.order.orderSuccess');
         } catch (\Throwable $th) {
             dd($th);
+
             return $th;
         }
     }
