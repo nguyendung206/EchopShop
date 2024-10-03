@@ -10,7 +10,6 @@
 @section('content')
 @php
     $cartCount = 0;
-    // dd($carts);
     foreach ($carts as $cart) {
         if($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0) {
             $cartCount++;

@@ -58,8 +58,7 @@ class PartnerService
 
             return $partner;
         } catch (\Throwable $th) {
-            dd($request);
-            dd($th);
+            return $th;
         }
     }
 

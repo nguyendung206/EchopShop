@@ -237,20 +237,23 @@
                                                     <p>Giảm tối đa: {{format_price($voucher->max_value)}}</p>
                                                 @endif
                                                     @php
-                                                        $discountUser = $voucher->getDiscountUserByUserId(Auth::id());
-                                                        $numberUsed = $discountUser ? $discountUser->number_used : 0;
+                                                        $userUsedArray = explode(',', $voucher->user_used);
+                                                        $userId = Auth::id();
+                                                        $numberUsed = count(array_filter($userUsedArray, function($id) use ($userId) {
+                                                                                return $id == $userId;
+                                                                            }));
                                                     @endphp
                                                 <p>Số lần dùng: {{ $numberUsed .' /'. $voucher->limit_uses}}</p>
                                                 <p>Còn lại: {{$voucher->max_uses - $voucher->quantity_used}}</p>
                                                 <p>Hết hạn sau: {{dateRemaining($voucher->end_time)}}</p>
                                             </div>
                                             <div class="voucher-button col-3">
-                                                @if ($voucher->getDiscountUserByUserId(Auth::id()) && $voucher->getDiscountUserByUserId(Auth::id())->number_used == $voucher->limit_uses)
+                                                @if ($voucher->limit_uses == $numberUsed)
                                                     <p style="color: #B10000">Hết lượt</p>
                                                 @elseif ($voucher->max_uses - $voucher->quantity_used == 0)
                                                     <p style="color: #B10000">Hết Voucher</p>
                                                 @else
-                                                    <input class=" d-block" type="radio" name="radioVoucher" id="radio-{{$voucher->id}}" value="{{$voucher->id}}">
+                                                <input class=" d-block" type="radio" name="radioVoucher" id="radio-{{$voucher->id}}" value="{{$voucher->id}}">
                                                 @endif
                                             </div>
                                         </div>
@@ -260,7 +263,7 @@
                                     
                                 </div>
                                 @foreach ($carts as $cart)
-                                    <input type="hidden" name="carts[]" value="{{ $cart }}">
+                                    <input type="hidden" name="cartIds[]" value="{{ $cart->id }}">
                                 @endforeach
                                 <input type="hidden" name="total_amount" value="{{$sum}}">
                                 <input type="hidden" name="shipping_address" value="{{ $user->address .', ' . $user->ward->ward_name .', ' . $user->district->district_name .', ' . $user->province->province_name }}">
@@ -369,6 +372,13 @@
                 if(type == 1) { // %
                     discountAmount = (originalPrice * value) / 100;
                     if(discountAmount > maxValue) discountAmount = maxValue;
+                }else {
+                    discountAmount = (originalPrice - value);
+                    console.log(discountAmount);
+                    
+                    if (discountAmount > maxValue) {
+                        discountAmount = maxValue;
+                    }
                 }
                 let discounted = originalPrice - discountAmount;
                 return discounted;

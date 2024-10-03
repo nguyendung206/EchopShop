@@ -19,10 +19,10 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
-    public function index(Request $request)
+    public function getCartsAndVouchers(Request $request)
     {
 
-        $datas = $this->orderService->index($request->all());
+        $datas = $this->orderService->getCartsAndVouchers($request->all());
 
         return view('web.order.order', ['carts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
     }
@@ -49,12 +49,9 @@ class OrderController extends Controller
     {
         try {
             $order = $this->orderService->store($request->all());
-
             return view('web.order.orderSuccess');
-        } catch (\Throwable $th) {
-            dd($th);
-
-            return $th;
+        } catch (\Exception $e) {
+            return $e;
         }
     }
 

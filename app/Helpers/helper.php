@@ -32,6 +32,11 @@ if (! function_exists('calculateDiscountedPrice')) {
             if ($discountAmount > $maxValue) {
                 $discountAmount = $maxValue;
             }
+        } else {
+            $discountAmount = ($originalPrice - $value);
+            if ($discountAmount > $maxValue) {
+                $discountAmount = $maxValue;
+            }
         }
 
         $discounted = $originalPrice - $discountAmount;

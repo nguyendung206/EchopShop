@@ -48,7 +48,6 @@ class CartService
                 return $newCartItem;
             }
         } catch (\Exception $e) {
-            dd($e);
 
             return $e;
         }
