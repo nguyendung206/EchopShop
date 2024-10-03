@@ -39,9 +39,20 @@ a:hover {
 .is_read {
     background-color: #e0e0e0;
 }
+
 .is_read small {
     color: #0866ff !important;
 }
+
+.text-body {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .py-notificaition {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
@@ -1525,28 +1536,36 @@ a:hover {
     .carousel-control-next {
         display: none;
     }
+
     .margin-responsive {
         margin-left: 0px;
         margin-right: 0px;
     }
+
     .app-content {
         display: none;
     }
+
     .col-custom {
         width: 50%;
     }
+
     .app-btn {
         display: none;
     }
+
     .appstore {
         display: none;
     }
+
     .ggplay {
-        display:none;
+        display: none;
     }
+
     .ip1 {
         margin-top: -5px;
     }
+
     .ip2 {
         margin-top: 25px;
     }
@@ -1764,6 +1783,7 @@ a:hover {
     .pt-120 {
         padding-top: 120px;
     }
+
     .col-custom {
         width: 33%;
     }

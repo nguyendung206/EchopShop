@@ -76,8 +76,10 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
         Route::post('/store', [CartController::class, 'store'])->name('store');
+        Route::post('/check', [CartController::class, 'check'])->name('check');
         Route::get('/destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
         Route::get('/clear', [CartController::class, 'clear'])->name('clear');
+        Route::post('/update/{id}', [CartController::class, 'update'])->name('update');
     });
 
     Route::prefix('/notification')->name('notification.')->group(function () {

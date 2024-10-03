@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Services\CartService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -27,12 +28,12 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $result = $this->cartService->store($request);
-        if ($result) {
-            flash('Thêm vào giỏ thành công')->success();
-
+        $cartCount = Cart::where('user_id', Auth::id())->count();
+        if ($result['status'] === 200) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Thêm vào giỏ thành công',
+                'message' => $result['message'],
+                'cartCount' => $cartCount,
             ], 200);
         }
 
@@ -40,6 +41,17 @@ class CartController extends Controller
             'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
+    }
+
+    public function check(Request $request)
+    {
+        $result = $this->cartService->check($request);
+
+        if ($result['status'] === 500) {
+            return response()->json($result, 500);
+        }
+
+        return response()->json($result, 200);
     }
 
     public function destroy($id)
@@ -60,5 +72,20 @@ class CartController extends Controller
         Cart::where('user_id', auth()->id())->delete();
 
         return redirect()->route('cart.index')->with('success', 'Giỏ hàng đã được xóa.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $cart = $this->cartService->updateQuantity($id, $request->input('quantity'));
+
+        if ($cart) {
+            return redirect()->route('cart.index')->with('success', 'Cập nhật số lượng thành công.');
+        }
+
+        return redirect()->route('cart.index')->with('error', 'Sản phẩm không tìm thấy.');
     }
 }

@@ -68,7 +68,7 @@ $items = [
                 @elseif($product->type->value == 2)
                 <a class="text-white">Mua hàng</a>
                 @auth
-                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
+                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                     Thêm hàng vào giỏ
                 </a>
                 @else
