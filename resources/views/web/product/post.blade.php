@@ -112,7 +112,6 @@
                 <label for="colors">Chi tiết màu sắc</label>
                 <div id="color_boxes"></div>
                 <button type="button" class="btn btn-secondary mt-2" onclick="addColorBox()">+ Thêm chi tiết</button>
-                <div id="colorError" class="invalid-feedback d-none">Vui lòng nhập thông tin màu sắc, kích cỡ và số lượng.</div>
             </div>
 
             <div class="form-group">
@@ -176,15 +175,14 @@
         const quantityInput = document.getElementById('quantityInput');
         const colorSizeInput = document.getElementById('colorSizeInput');
         const colorBoxContainer = document.getElementById('color_boxes');
-        const colorError = document.getElementById('colorError');
 
         colorSizeInput.style.display = 'none';
         quantityInput.style.display = 'none';
         colorBoxContainer.innerHTML = '';
-        colorError.classList.add('d-none');
 
         if (unitType1) {
             quantityInput.style.display = 'block';
+            colorSizeInput.style.display = 'none';
         } else if (unitType2) {
             quantityInput.style.display = 'none';
             colorSizeInput.style.display = 'block';
@@ -205,19 +203,19 @@
         const colorInput = document.createElement('input');
         colorInput.type = 'text';
         colorInput.name = 'colors[]';
-        colorInput.className = 'form-control';
+        colorInput.className = 'form-control @error("colors") is-invalid @enderror';
         colorInput.placeholder = 'Nhập màu';
 
         const sizeInput = document.createElement('input');
         sizeInput.type = 'text';
         sizeInput.name = 'sizes[]';
-        sizeInput.className = 'form-control ml-2';
+        sizeInput.className = 'form-control ml-2 @error("sizes") is-invalid @enderror';
         sizeInput.placeholder = 'Nhập kích cỡ';
 
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
         quantityInput.name = 'quantities[]';
-        quantityInput.className = 'form-control ml-2';
+        quantityInput.className = 'form-control ml-2 @error("quantities") is-invalid @enderror';
         quantityInput.placeholder = 'Nhập số lượng';
 
         const removeButton = createRemoveButton(colorBox);
@@ -239,39 +237,6 @@
             box.parentNode.removeChild(box);
         };
         return removeButton;
-    }
-
-    function validateInputs() {
-        const unitType1 = document.getElementById('unitType1').checked;
-        const unitType2 = document.getElementById('unitType2').checked;
-        const colorError = document.getElementById('colorError');
-
-        if (unitType1) {
-            const quantity = document.getElementsByName('quantity')[0].value;
-            if (!quantity || quantity < 1) {
-                alert('Vui lòng nhập số lượng lớn hơn 0.');
-                return false;
-            }
-        } else if (unitType2) {
-            const colorInputs = document.getElementsByName('colors[]');
-            const sizeInputs = document.getElementsByName('sizes[]');
-            const quantityInputs = document.getElementsByName('quantities[]');
-            let valid = true;
-
-            for (let i = 0; i < colorInputs.length; i++) {
-                if (!colorInputs[i].value || !sizeInputs[i].value || !quantityInputs[i].value) {
-                    valid = false;
-                    break;
-                }
-            }
-
-            if (!valid) {
-                colorError.classList.remove('d-none');
-                return false;
-            }
-        }
-
-        return true;
     }
 
     document.addEventListener('DOMContentLoaded', toggleDetailInput);
