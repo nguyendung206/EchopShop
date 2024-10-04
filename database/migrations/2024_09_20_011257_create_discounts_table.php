@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('code')->unique();
             $table->tinyInteger('type');
-            $table->float('value')->default(0);
-            $table->float('max_value')->default(0);
+            $table->double('value')->default(0);
+            $table->double('max_value')->default(0);
             $table->string('photo')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');

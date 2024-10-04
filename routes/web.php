@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\web\NotificationController;
+use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
@@ -79,9 +80,17 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::post('/check', [CartController::class, 'check'])->name('check');
         Route::get('/destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
         Route::get('/clear', [CartController::class, 'clear'])->name('clear');
+        Route::put('/update-product-unit/{id}', [CartController::class, 'updateProductUnit'])->name('updateProductUnit');
+        Route::put('/update-quantity-cart/{id}', [CartController::class, 'updateQuantityCart'])->name('updateQuantityCart');
         Route::post('/update/{id}', [CartController::class, 'update'])->name('update');
     });
 
+    Route::prefix('/order')->name('order.')->group(function () {
+        Route::get('/', [OrderController::class, 'getCartsAndVouchers'])->name('index');
+        Route::post('/change-address', [OrderController::class, 'changeAddress'])->name('changeAddress');
+        Route::post('/pay-order', [OrderController::class, 'store'])->name('payOrder');
+    });
+    Route::get('/purchase', [OrderController::class, 'purchase'])->name('purchase');
     Route::prefix('/notification')->name('notification.')->group(function () {
         Route::get('/isreaded/{id}', [NotificationController::class, 'isreaded'])->name('isreaded');
     });

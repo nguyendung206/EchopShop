@@ -74,6 +74,55 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Giỏ hàng đã được xóa.');
     }
 
+    public function updateProductUnit(Request $request, $id)
+    {
+        try {
+            $result = $this->cartService->updateProductUnit($request->all(), $id);
+            if ($result) {
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đổi loại hàng thành công',
+                    'cart' => $result,
+
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Đã có lỗi xảy ra',
+                ], 500);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Đã có lỗi xảy ra',
+            ], 500);
+        }
+    }
+
+    public function updateQuantityCart(Request $request, $id)
+    {
+        try {
+            $result = $this->cartService->updateQuantityCart($request->all(), $id);
+            if ($result) {
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đổi số lượng thành công',
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Đã có lỗi xảy ra',
+                ], 500);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Đã có lỗi xảy ra',
+            ], 500);
+        }
+    }
     public function update(Request $request, $id)
     {
         $request->validate([

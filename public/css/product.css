@@ -521,12 +521,13 @@
 
 .button-page-wrap .active {
     padding: 12px 44px;
-    background-color: #B10000;
+    background-color: #B10000 !important;
     color: white;
     margin-right: 11px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
+
 
 
 .list-product {
@@ -639,6 +640,12 @@
     .footer-wrap {
     flex-wrap: wrap;
 
+    }
+    .button-page-wrap a {
+        margin-right: 0px;
+    }
+    .button-page-wrap .active {
+        margin-right: 0px;
     }
 }
 @media (min-width: 769px) and (max-width: 992px) {

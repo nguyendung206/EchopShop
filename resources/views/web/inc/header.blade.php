@@ -161,7 +161,7 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                                 </div>
-                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none search-input" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                                 <div class="input-group-append">
                                     <div style="position: relative;">
@@ -276,7 +276,7 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                                 </div>
-                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none search-input" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                                 <div class="input-group-append">
                                     <div style="position: relative;">
@@ -394,37 +394,64 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
 
 <script>
     $(document).ready(function() {
-        $('#search').on('focus', function() {
+        $('.search-input').on('focus', function() {
             $('.list-result').show();
         });
 
-        $('#search').on('blur', function() {
+        $('.search-input').on('blur', function() {
             // Delay việc ẩn div để có thời gian chọn các item
             setTimeout(function() {
                 $('.list-result').hide();
             }, 200);
         });
-    });
-    $('.list-result').on('mousedown', function(event) {
+
+        $('.list-result').on('mousedown', function(event) {
         event.preventDefault();
-    });
-</script>
-<script>
-    $('#search').on('input', function() {
-        var searchValue = $(this).val();
-        $.ajax({
-            url: @json(route('search')),
-            method: 'GET',
-            data: {
-                search: searchValue
-            },
-            success: function(response) {
-                $('.list-result').empty();
-                $('.list-result').append(response.resultHtml);
-            },
-            error: function(xhr, status, error) {
-                $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
-            }
         });
+        
+        let checkTimeout;
+        $('.search-input').on('input', function() {
+            
+            var searchValue = $(this).val();
+            checkInputValue();
+            clearTimeout(checkTimeout);
+
+            checkTimeout = setTimeout(function() {
+                $.ajax({
+                    url: @json(route('search')),
+                    method: 'GET',
+                    data: {
+                        search: searchValue
+                    },
+                    success: function(response) {
+                        $('.list-result').empty();
+                        $('.list-result').append(response.resultHtml);
+                    },
+                    error: function(xhr, status, error) {
+                        $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
+                    }
+                });
+            }, 300)
+        });
+        checkInputValue();
+
+        function checkInputValue() {
+            let isAnyInputFilled = false;
+
+            $('.search-input').each(function() {
+                if ($(this).val().trim() !== '') {
+                        isAnyInputFilled = true;
+                        return false;
+                    }
+                });
+
+                if (isAnyInputFilled) {
+                    $('.btn-search').prop('disabled', false);
+                } else {
+                    $('.btn-search').prop('disabled', true);
+            }
+        }
+
     });
+    
 </script>

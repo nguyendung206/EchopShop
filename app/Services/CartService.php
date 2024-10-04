@@ -39,6 +39,7 @@ class CartService
                             'user_id' => $userId,
                             'product_id' => $request->productId,
                             'quantity' => 1,
+                            'product_unit_id' => $request->product_unit_id,
                         ]);
                     }
 
@@ -93,6 +94,34 @@ class CartService
                 'type' => 'fail',
                 'message' => 'Đã có lỗi xảy ra',
             ];
+        }
+    }
+
+    public function updateProductUnit($request, $id)
+    {
+        try {
+            $cart = Cart::findOrFail($id);
+            $cart->update([
+                'product_unit_id' => $request['productUnitId'],
+            ]);
+
+            return $cart;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function updateQuantityCart($request, $id)
+    {
+        try {
+            $cart = Cart::findOrFail($id);
+            $cart->update([
+                'quantity' => $request['quantity'],
+            ]);
+
+            return $cart;
+        } catch (\Throwable $th) {
+            return false;
         }
     }
 

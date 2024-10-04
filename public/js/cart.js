@@ -10,6 +10,7 @@ $(document).ready(function () {
         event.preventDefault();
         var productId = $(this).data('id');
         var urlCheck = $(this).data('url-check');
+        var productUnitId = $(this).data('productunitid');
         var urlAddToCart = $(this).data('url-add-to-cart');
 
         // Kiểm tra loại sản phẩm
@@ -19,7 +20,7 @@ $(document).ready(function () {
             data: { productId: productId },
             success: function (response) {
                 if (response.status === 200 && response.type === 'direct_add') {
-                    addToCart(urlAddToCart, productId, 1);
+                    addToCart(urlAddToCart, productId, 1, productUnitId);
                 } else if (response.status === 200 && response.type === 'modal') {
                     showConfirmationModal(productId, response.units);
                 } else {
@@ -32,12 +33,13 @@ $(document).ready(function () {
         });
     });
 
-    function addToCart(url, productId, type) {
+    function addToCart(url, productId, type, productUnitId) {
         $.ajax({
             url: url,
             method: 'POST',
             data: {
                 productId: productId,
+                product_unit_id: productUnitId,
                 type: type
             },
             success: function (storeResponse) {
