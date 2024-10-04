@@ -35,13 +35,13 @@ class FavoriteController extends Controller
             flash('Thêm yêu thích thành công')->success();
 
             return response()->json([
-                'status' => 'success',
+                'status' => 200,
                 'message' => 'Thêm yêu thích thành công',
             ], 200);
         }
 
         return response()->json([
-            'status' => 'fail',
+            'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
 
@@ -52,13 +52,13 @@ class FavoriteController extends Controller
         $result = $this->favoriteService->destroy($id);
         if ($result) {
             return response()->json([
-                'status' => 'success',
+                'status' => 200,
                 'message' => 'Xoá yêu thích thành công',
             ], 200);
         }
 
         return response()->json([
-            'status' => 'fail',
+            'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
     }

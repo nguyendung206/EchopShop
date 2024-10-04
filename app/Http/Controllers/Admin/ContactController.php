@@ -8,6 +8,7 @@ use App\Jobs\SendContactMail;
 use App\Models\Contact;
 use App\Services\ContactService;
 use App\Services\StatusService;
+use Exception;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller

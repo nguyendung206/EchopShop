@@ -25,10 +25,21 @@ class Discount extends Model
         'quantity_used',
         'limit_uses',
         'status',
+        'user_used',
     ];
 
     protected $casts = [
         'type' => TypeDiscount::class,
         'status' => Status::class,
     ];
+
+    // public function discountUsers()
+    // {
+    //     return $this->hasMany(DiscountUser::class, 'discount_id', 'id');
+    // }
+
+    // public function getDiscountUserByUserId($userId)
+    // {
+    //     return $this->discountUsers()->where('user_id', $userId)->first();
+    // }
 }

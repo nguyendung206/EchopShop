@@ -27,7 +27,7 @@
     <div class="category-1">
         @forelse($categories as $category)
         <div class="category-item">
-            <label>{{$category->name}}</label><img src="{{ asset('/img/icon/extend.png') }}" alt="" />
+            <div class="custom-checkbox-category" data-categoryid="{{$category->id}}"></div><label>{{$category->name}}</label><img src="{{ asset('/img/icon/extend.png') }}" alt="" />
             <div class="category-item-wrap">
                 @forelse($category->activeBrands as $brand)
                 <div class="category-1-item" data-brandid="{{ $brand->id }}">
@@ -61,8 +61,8 @@
     <div class="category-3">
         <div class="box">
             <div class="min-max-slider" data-legendnum="3">
-                    <input id="min" class="min" name="min" type="range" step="1" min="0" max="3000000" />
-                    <input id="max" class="max" name="max" type="range" step="1" min="0" max="3000000" />
+                    <input id="min" class="min" name="min" type="range" step="1" min="0" max="{{ config('setting.max_price_filter') }}" />
+                    <input id="max" class="max" name="max" type="range" step="1" min="0" max="{{ config('setting.max_price_filter') }}" />
             </div>
         </div>
     </div>
@@ -146,6 +146,16 @@
                 item.classList.toggle("checked-text");
             })
         );
+
+        const checkCategory = document.querySelectorAll(".custom-checkbox-category");
+        
+        checkCategory.forEach(item => {
+            item.addEventListener("click", function() {
+                item.classList.toggle("checked");
+                item.classList.toggle("checked-text");
+                event.stopPropagation(); 
+            });
+        });
     </script>
     <script>    // radio
         const radio = document.querySelectorAll(".custom-radio");
@@ -181,10 +191,17 @@
 
             $('#filter-button').on('click', function() {
                 var selectedBrands = [];
+                var selectedCategories = [];
                 $('.category-1-item.checked-text').each(function() {
                     var brandId = $(this).data('brandid');
                     selectedBrands.push(brandId);
                 });
+
+                $('.custom-checkbox-category.checked-text').each(function() {
+                    var categoryId = $(this).data('categoryid');
+                    selectedCategories.push(categoryId);
+                });
+
 
                 var selectedProvinces = [];
                 $('.category-2-item.checked-text').each(function() {
@@ -206,8 +223,13 @@
                 $.ajax({
                     url: url,
                     method: 'GET',
+                    beforeSend: function (xhr, setting) {
+                        $('#loading-UI').fadeIn();  
+                        $('.list-product').empty();
+                    },
                     data: {
                         brandIds: selectedBrands,
+                        categoryIds: selectedCategories,
                         provinceIds: selectedProvinces,
                         rangeInputMin: rangeInput,
                         rangeInputMax: rangeInput2,
@@ -217,7 +239,6 @@
                         search: @json($search = request()->get('search')),
                     },
                     success: function(response) {
-                        console.log(response);
                         
                         $('.list-product').html(response.productHtml);
                         if(response.hasMorePages) {
@@ -226,6 +247,9 @@
                             $('#btn-more').hide()
                         }
                        
+                    },
+                    complete: function(data) {
+                        $('#loading-UI').fadeOut();
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);

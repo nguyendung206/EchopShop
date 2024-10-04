@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class UserService
 {
@@ -128,7 +130,26 @@ class UserService
             ];
 
             return User::create($userData);
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
+            return false;
+        }
+    }
+
+    public function changeAddress($request)
+    {
+        try {
+            $user = Auth::user();
+            $updateData = [
+                'phone_number' => $request['phone_number'],
+                'province_id' => $request['province_id'],
+                'district_id' => $request['district_id'],
+                'ward_id' => $request['ward_id'],
+                'address' => $request['address'],
+            ];
+            $result = $user->update($updateData);
+
+            return $result;
+        } catch (\Throwable $th) {
             return false;
         }
     }

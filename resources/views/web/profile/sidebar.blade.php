@@ -11,7 +11,7 @@
             <i class="fa-regular fa-circle-user mr-1"></i>
             Hồ sơ của tôi
         </a>
-        <a href="#" class="profile-tab" data-tab="orders">
+        <a href="{{route('purchase')}}" class="profile-tab" data-tab="orders">
             <i class="fa-solid fa-cart-plus mr-1"></i>
             Đơn hàng của tôi
         </a>

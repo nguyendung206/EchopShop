@@ -42,11 +42,11 @@
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Ngày bắt đầu</h6>
-                                <p class="text-muted">{{$discount->start_date}}</p>
+                                <p class="text-muted">{{$discount->start_time}}</p>
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Ngày kết thúc</h6>
-                                <p class="text-muted">{{$discount->end_date}}</p>
+                                <p class="text-muted">{{$discount->end_time}}</p>
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Số lượng</h6>

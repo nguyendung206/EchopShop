@@ -34,6 +34,11 @@ class Product extends Model
         return $this->hasMany(ProductUnit::class, 'product_id', 'id');
     }
 
+    public function getProductUnitById($unitId)
+    {
+        return $this->productUnits()->where('id', $unitId)->first();
+    }
+
     public function shop()
     {
         return $this->belongsTo(Shop::class, 'shop_id', 'id');
