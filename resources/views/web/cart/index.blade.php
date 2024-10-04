@@ -318,25 +318,6 @@
             document.querySelector('.all-check').checked = allChecked; // Đặt trạng thái của checkbox "Chọn tất cả"
         }
 
-        // // Tăng số lượng
-        // document.querySelectorAll(".plus").forEach(button => {
-        //     button.addEventListener("click", function() {
-        //         const input = this.previousElementSibling; // Lấy ô nhập số lượng
-        //         input.value = parseInt(input.value) + 1; // Tăng số lượng lên 1
-        //         calculateTotalAmount(this.closest('tr')); // Cập nhật tổng tiền cho sản phẩm
-        //     });
-        // });
-
-        // // Giảm số lượng
-        // document.querySelectorAll(".minus").forEach(button => {
-        //     button.addEventListener("click", function() {
-        //         const input = this.nextElementSibling; // Lấy ô nhập số lượng
-        //         if (parseInt(input.value) > 1) { // Đảm bảo số lượng không nhỏ hơn 1
-        //             input.value = parseInt(input.value) - 1; // Giảm số lượng xuống 1
-        //             calculateTotalAmount(this.closest('tr')); // Cập nhật tổng tiền cho sản phẩm
-        //         }
-        //     });
-        // });
 
         // Cập nhật tổng tiền khi người dùng nhập vào ô số lượng
         document.querySelectorAll(".number-input input").forEach(input => {

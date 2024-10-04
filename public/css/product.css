@@ -297,6 +297,32 @@
 .category-title:nth-of-type(2){
     margin-top: 25px;
 }
+
+.custom-checkbox-category {
+    margin-bottom: -2px;
+    width: 18px;
+    height: 18px;
+    /* border: 1px solid rgba(177, 0, 0, 1); */
+    border: 1px solid #ccc;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.custom-checkbox-category.checked {
+    border: 1px solid rgba(177, 0, 0, 1);
+}
+.custom-checkbox-category.checked::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid rgba(177, 0, 0, 1);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
 /* input slider */
 
 

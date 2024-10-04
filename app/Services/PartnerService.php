@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Partner;
+use Exception;
 
 class PartnerService
 {
@@ -57,8 +58,8 @@ class PartnerService
             }
 
             return $partner;
-        } catch (\Throwable $th) {
-            return $th;
+        } catch (Exception $th) {
+            return false;
         }
     }
 

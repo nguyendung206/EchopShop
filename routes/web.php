@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/admin.php';
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/exchangeProduct', [HomeController::class, 'filterProducts'])->name('exchangeProduct');
-Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
-Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
+Route::get('/list-product', [HomeController::class, 'filterProducts'])->name('listProducts');
+// Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
+// Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
 Route::get('/favoriteProduct', [FavoriteController::class, 'index'])->name('favoriteProduct');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 
@@ -77,10 +77,12 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
         Route::post('/store', [CartController::class, 'store'])->name('store');
+        Route::post('/check', [CartController::class, 'check'])->name('check');
         Route::get('/destroy/{id}', [CartController::class, 'destroy'])->name('destroy');
         Route::get('/clear', [CartController::class, 'clear'])->name('clear');
         Route::put('/update-product-unit/{id}', [CartController::class, 'updateProductUnit'])->name('updateProductUnit');
         Route::put('/update-quantity-cart/{id}', [CartController::class, 'updateQuantityCart'])->name('updateQuantityCart');
+        Route::post('/update/{id}', [CartController::class, 'update'])->name('update');
     });
 
     Route::prefix('/order')->name('order.')->group(function () {

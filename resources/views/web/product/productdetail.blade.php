@@ -132,7 +132,7 @@ $totalQuantity = 0;
                     <button class="text-white">Mua hàng</button>
                 </form>
                 @auth
-                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
+                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                     Thêm hàng vào giỏ
                 </a>
                 @else

@@ -33,8 +33,8 @@ function draw(slider,splitvalue) {
     /* write value and labels */
     max.value = max.getAttribute('data-value'); 
     min.value = min.getAttribute('data-value');
-    lower.innerHTML = min.getAttribute('data-value');
-    upper.innerHTML = max.getAttribute('data-value');
+    lower.innerHTML = formatCurrency(min.getAttribute('data-value'));
+    upper.innerHTML = formatCurrencyWithUnit(max.getAttribute('data-value'));
 
 }
 
@@ -109,3 +109,11 @@ var sliders = document.querySelectorAll('.min-max-slider');
 sliders.forEach( function(slider) {
     init(slider);
 });
+
+function formatCurrency(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function formatCurrencyWithUnit(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VNĐ";
+}
