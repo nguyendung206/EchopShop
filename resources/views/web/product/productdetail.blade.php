@@ -31,7 +31,7 @@ $totalQuantity = 0;
 @include('components.breadcrumb', ['items' => $items])
 <div class="content">
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-lg-7 col-md-12">
             <div class="row w-100">
                 <div class="slider-nav col-md-3">
                     <div>
@@ -51,107 +51,109 @@ $totalQuantity = 0;
             </div>
         </div>
 
-        <div class="information-product col-md-5">
-            <div class="wrap-heart">
-                @auth
-                <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}">
-                    <i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home " style="position: relative; bottom:0; right:0; font-size:24px;"></i>
-                </a>
-                @else
-                <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
-                @endauth
-            </div>
-            <div class="name-product">
-                {{$product->name}}
-            </div>
-            
-            <div class="price-product">{{format_price($product->price)}}</div>
-            <div class="detail-product">
-                <p>{!! $product->description !!}</p>
-            </div>
-            <div class="product-unit">
-                @if ($product->productUnits[0]->type != TypeProductUnitEnums::ONLYQUANTITY->value)
-                <table class="table table-unit">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Màu</th>
-                        <th scope="col">SIZE</th>
-                        <th scope="col">Còn lại</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ( $product->productUnits as $unit)
-                        @php
-                            $totalQuantity += $unit->quantity
-                        @endphp
-                        <tr>
-
-                            <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'">' : '' !!}</td>
-                            <td>{{$unit->color}}</td>
-                            <td>{{$unit->size}}</td>
-                            <td>{!!$unit->quantity > 0 ? $unit->quantity : '<p class="text-danger"> Hết hàng </p>' !!}</td>
-                        </tr>
-                        @empty
-                            <tr>Chưa có thông tin chi tiết</th>
-                            <tr>...</tr>
-                            <tr>...</tr>
-                            <tr>...</tr>
-                        @endforelse
-                    </tbody>
-                  </table>
-                @error('productUnitId')
-                    <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
-
-                @enderror
-                @endif
-                <div style="display: {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span> 
-                    <div class="number-input">
-                        <button class="minus">-</button>
-                        <input class="quantity" type="number" value="1" min="1" max="100">
-                        <button class="plus">+</button>
-                    </div>
-                    <div class="my-2">
-                        <span id="totalProduct">
-                            {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? $totalQuantity : $product->productUnits[0]->quantity}} Sản phẩm sẵn có 
-                        </span>
-                        <span id="totalCartProduct"></span>
-                    </div>
-                        
+        <div class="information-product col-lg-5 col-md-12">
+            <div class="responsive-width">
+                <div class="wrap-heart">
+                    @auth
+                    <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}">
+                        <i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home " style="position: relative; bottom:0; right:0; font-size:24px;"></i>
+                    </a>
+                    @else
+                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                    @endauth
                 </div>
+                <div class="name-product">
+                    {{$product->name}}
                 </div>
-            <div class="product-button">
-                @if($product->type->value == 1)
-                <button>Trao đổi</button>
-                @elseif($product->type->value == 2)
-                <form action="{{route("cart.store")}}" method="POST" class="d-inline">
-                    <input type="hidden" name="productId" value="{{$product->id}}">
-                    <input type="hidden" name="productUnitId" id="productUnitId" value="{{$product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? '' : $product->productUnits[0]->id}}">
-                    <input type="hidden" name="quantity" id="quantityValue" value="1">
-                    @csrf
-                    <button class="text-white">Mua hàng</button>
-                </form>
-                @auth
-                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
-                    Thêm hàng vào giỏ
-                </a>
-                @else
-                <a href="{{ route('web.login') }}" class="btn-cart-product">
-                    Thêm hàng vào giỏ
-                </a>
-                @endauth
-                @elseif($product->type->value == 3)
-                <button>Nhận quà tặng</button>
-                @endif
-            </div>
-
-            <div class="product-share">
-                <div>Chia sẻ</div>
-                <div class="icon-wrap">
-                    <div><img src="{{asset('/img/image/logos_facebook.png')}}" alt="" /></div>
-                    <div><img src="{{asset('/img/image/logos_instagram.png')}}" alt="" /></div>
-                    <div><img src="{{asset('/img/image/logos_twitter.png')}}" alt="" /></div>
-                    <div><img src="{{asset('/img/image/logos_messenger.png')}}" alt="" /></div>
+                
+                <div class="price-product">{{format_price($product->price)}}</div>
+                <div class="detail-product">
+                    <p>{!! $product->description !!}</p>
+                </div>
+                <div class="product-unit">
+                    @if ($product->productUnits[0]->type != TypeProductUnitEnums::ONLYQUANTITY->value)
+                    <table class="table table-unit">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Màu</th>
+                            <th scope="col">SIZE</th>
+                            <th scope="col">Còn lại</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ( $product->productUnits as $unit)
+                            @php
+                                $totalQuantity += $unit->quantity
+                            @endphp
+                            <tr>
+    
+                                <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'">' : '' !!}</td>
+                                <td>{{$unit->color}}</td>
+                                <td>{{$unit->size}}</td>
+                                <td>{!!$unit->quantity > 0 ? $unit->quantity : '<p class="text-danger"> Hết hàng </p>' !!}</td>
+                            </tr>
+                            @empty
+                                <tr>Chưa có thông tin chi tiết</th>
+                                <tr>...</tr>
+                                <tr>...</tr>
+                                <tr>...</tr>
+                            @endforelse
+                        </tbody>
+                      </table>
+                    @error('productUnitId')
+                        <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
+    
+                    @enderror
+                    @endif
+                    <div style="display: {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span> 
+                        <div class="number-input">
+                            <button class="minus">-</button>
+                            <input class="quantity" type="number" value="1" min="1" max="100">
+                            <button class="plus">+</button>
+                        </div>
+                        <div class="my-2">
+                            <span id="totalProduct">
+                                {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? $totalQuantity : $product->productUnits[0]->quantity}} Sản phẩm sẵn có 
+                            </span>
+                            <span id="totalCartProduct"></span>
+                        </div>
+                            
+                    </div>
+                    </div>
+                <div class="product-button">
+                    @if($product->type->value == 1)
+                    <button>Trao đổi</button>
+                    @elseif($product->type->value == 2)
+                    <form action="{{route("cart.store")}}" method="POST" class="d-inline">
+                        <input type="hidden" name="productId" value="{{$product->id}}">
+                        <input type="hidden" name="productUnitId" id="productUnitId" value="{{$product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? '' : $product->productUnits[0]->id}}">
+                        <input type="hidden" name="quantity" id="quantityValue" value="1">
+                        @csrf
+                        <button class="text-white">Mua hàng</button>
+                    </form>
+                    @auth
+                    <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
+                        Thêm hàng vào giỏ
+                    </a>
+                    @else
+                    <a href="{{ route('web.login') }}" class="btn-cart-product">
+                        Thêm hàng vào giỏ
+                    </a>
+                    @endauth
+                    @elseif($product->type->value == 3)
+                    <button>Nhận quà tặng</button>
+                    @endif
+                </div>
+    
+                <div class="product-share">
+                    <div>Chia sẻ</div>
+                    <div class="icon-wrap">
+                        <div><img src="{{asset('/img/image/logos_facebook.png')}}" alt="" /></div>
+                        <div><img src="{{asset('/img/image/logos_instagram.png')}}" alt="" /></div>
+                        <div><img src="{{asset('/img/image/logos_twitter.png')}}" alt="" /></div>
+                        <div><img src="{{asset('/img/image/logos_messenger.png')}}" alt="" /></div>
+                    </div>
                 </div>
             </div>
         </div>
