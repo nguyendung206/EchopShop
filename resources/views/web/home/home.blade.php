@@ -319,7 +319,7 @@ HOME
         </div>
         @if ($giveawayProducts->count() > 0)
         <div class="text-right  my-5">
-            <a class="all color-B10000 btn-more" href="{{ route('listProducts', ['type' => TypeProductEnums::EXCHANGE]) }}">Xem tất cả <i
+            <a class="all color-B10000 btn-more" href="{{ route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]) }}">Xem tất cả <i
                     class="fa-solid fa-angles-right"></i></a>
         </div>
             
