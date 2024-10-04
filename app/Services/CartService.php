@@ -39,6 +39,7 @@ class CartService
                             'user_id' => $userId,
                             'product_id' => $request->productId,
                             'quantity' => 1,
+                            'product_unit_id' => $request->product_unit_id,
                         ]);
                     }
 
