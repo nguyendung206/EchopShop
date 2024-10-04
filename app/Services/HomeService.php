@@ -33,13 +33,25 @@ class HomeService
                 $query->where('id', $provinceId);
             });
         }
-        if (! empty($request['brandIds'])) {
+
+        if (! empty($request['brandIds']) && ! empty($request['categoryIds'])) {  // nếu có cả 2
             $brandIds = $request['brandIds'];
-            $query = $query->whereIn('brand_id', $brandIds);
-        }
-        if (! empty($request['categoryIds'])) {
             $categoryIds = $request['categoryIds'];
-            $query = $query->whereIn('category_id', $categoryIds);
+
+            $query = $query->where(function ($query) use ($brandIds, $categoryIds) {
+                $query->whereIn('brand_id', $brandIds)
+                    ->orWhereIn('category_id', $categoryIds);
+            });
+        } else {                                                                // Nếu có 1 trong 2
+            if (! empty($request['brandIds'])) {
+                $brandIds = $request['brandIds'];
+                $query = $query->whereIn('brand_id', $brandIds);
+            }
+
+            if (! empty($request['categoryIds'])) {
+                $categoryIds = $request['categoryIds'];
+                $query = $query->whereIn('category_id', $categoryIds);
+            }
         }
         if (! empty($request['provinceIds'])) {  // province ở thanh lọc product
             $provinceIds = $request['provinceIds'];
@@ -47,6 +59,7 @@ class HomeService
                 $query->whereIn('id', $provinceIds);
             });
         }
+
         $products = $query->where('status', 1)
             ->where('price', '>=', $rangeInputMin)
             ->where('price', '<=', $rangeInputMax)
