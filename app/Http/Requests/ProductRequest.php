@@ -36,7 +36,8 @@ class ProductRequest extends FormRequest
             'colors.*' => 'nullable|string',
             'sizes.*' => 'nullable|string',
             'quantities.*' => 'nullable|integer|min:0',
-            'types.*' => 'nullable|string|in:color,size',
+            'unittype' => 'required|integer|in:1,2',
+            'quantity' => 'required_if:unittype,1|integer|min:1',
         ];
     }
 

@@ -31,6 +31,11 @@ class Category extends Model
         return $this->hasMany(Product::class, 'category_id', 'id');
     }
 
+    public function waitproducts()
+    {
+        return $this->hasMany(WaitProduct::class, 'category_id', 'id');
+    }
+
     public function sluggable(): array
     {
         return [

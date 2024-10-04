@@ -8,6 +8,23 @@
     <td class="align-middle">{{ $data->created_at->format('d/m/Y') }}</td>
     <td class="align-middle">{{ $data->status->label() }}</td>
     <td class="align-middle">
+        @if ($data->status->value == 1)
+        <a class="btn btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
+            data-id="{{ $data->id }}"
+            data-href="{{ route('post.status', $data->id) }}"
+            data-status="{{$data->status}}"
+            title="Tạm dừng">
+            <i class="fa-solid fa-ban"></i>
+        </a>
+        @elseif ($data->status->value == 0)
+        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
+            data-id="{{ $data->id }}"
+            data-href="{{ route('post.status', $data->id) }}"
+            data-status="{{$data->status}}"
+            title="Kích hoạt">
+            <i class="fa-regular fa-circle-check"></i>
+        </a>
+        @endif
         <a href="{{ route('post.edit', $data->id) }}" class="btn btn-sm btn-product">
             <i class="fa-regular fa-pen-to-square"></i>
         </a>
