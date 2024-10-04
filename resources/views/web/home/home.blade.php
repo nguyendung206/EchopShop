@@ -192,7 +192,7 @@ HOME
                         <div class="buy-wrap">
                             <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
                             @auth
-                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid = "{{$product->productUnits[0]->id}}" data-url-check="{{ route('cart.check') }}">
+                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid = "{{$product->productUnits->count() ? $product->productUnits[0]->id : 0}}" data-url-check="{{ route('cart.check') }}">
                                 <i class="fa-solid fa-cart-shopping"></i>
                             </a>
                             @else
