@@ -577,7 +577,9 @@
                     input.val(quantityProductUnit);
                 }
                 if(input.val() < 1) {
+                    
                     input.val(1);
+                    calculateTotalAmount(this.closest('tr'));
                 }
 
                 clearTimeout(checkTimeout); // xoá sau khi thay đổi 2s
