@@ -6,8 +6,8 @@ enum TypeNotification: int
 {
     case ACTIVE = 1;
     case INACTIVE = 2;
-    case REJECT = 2;
-    case ACCEPT = 2;
+    case REJECT = 3;
+    case ACCEPT = 4;
 
     public function label(): string
     {
