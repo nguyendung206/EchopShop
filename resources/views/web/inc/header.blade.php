@@ -150,14 +150,20 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
-                        <a href="{{route('favoriteProduct')}}" class="d-n display-none" style="position: relative;">
+                        <a href="{{ route('favoriteProduct') }}" class="d-n display-none" style="position: relative;">
                             <i class="fa-regular fa-heart"></i>
-                            @if(isset($favoriteCount) && $favoriteCount->count() > 0)
-                            <span id="favoriteCount" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $favoriteCount->count() }}</span>
+                            @if(Auth::check())
+                            @php
+                            $favoriteCount = \App\Models\Favorite::getUserFavoriteCount(Auth::id());
+                            @endphp
+                            @if($favoriteCount > 0)
+                            <span id="favoriteCount" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $favoriteCount }}</span>
                             @else
                             <span id="favoriteCount" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px; display: none;">0</span>
                             @endif
+                            @endif
                         </a>
+
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-3 col-1 menu">
                         <form action="{{$route}}" method="GET" class="display-none">
@@ -198,10 +204,15 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 <div class="search">
                                     <a href="{{route('cart.index')}}" style="position: relative;">
                                         <i class="fa-solid fa-cart-shopping"></i>
-                                        @if(isset($carts) && $carts->count() > 0)
-                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $carts->count() }}</span>
+                                        @if(Auth::check())
+                                        @php
+                                        $cartCount = \App\Models\Cart::getUserCartCount(Auth::id());
+                                        @endphp
+                                        @if($cartCount > 0)
+                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $cartCount }}</span>
                                         @else
                                         <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px; display: none;">0</span>
+                                        @endif
                                         @endif
                                     </a>
                                 </div>
@@ -411,12 +422,12 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
         });
 
         $('.list-result').on('mousedown', function(event) {
-        event.preventDefault();
+            event.preventDefault();
         });
-        
+
         let checkTimeout;
         $('.search-input').on('input', function() {
-            
+
             var searchValue = $(this).val();
             checkInputValue();
             clearTimeout(checkTimeout);
@@ -445,18 +456,17 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
 
             $('.search-input').each(function() {
                 if ($(this).val().trim() !== '') {
-                        isAnyInputFilled = true;
-                        return false;
-                    }
-                });
+                    isAnyInputFilled = true;
+                    return false;
+                }
+            });
 
-                if (isAnyInputFilled) {
-                    $('.btn-search').prop('disabled', false);
-                } else {
-                    $('.btn-search').prop('disabled', true);
+            if (isAnyInputFilled) {
+                $('.btn-search').prop('disabled', false);
+            } else {
+                $('.btn-search').prop('disabled', true);
             }
         }
 
     });
-    
 </script>

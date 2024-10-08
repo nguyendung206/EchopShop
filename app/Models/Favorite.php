@@ -15,4 +15,9 @@ class Favorite extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
+    public static function getUserFavoriteCount($userId)
+    {
+        return self::where('user_id', $userId)->count();
+    }
 }

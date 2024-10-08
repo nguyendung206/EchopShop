@@ -34,18 +34,17 @@ class FavoriteController extends Controller
     {
         $result = $this->favoriteService->store($request->all());
         if ($result) {
-            flash('Thêm yêu thích thành công')->success();
-            $favoriteCount = Favorite::where('user_id', Auth::id())->count();
+            $favoriteCount = Favorite::getUserFavoriteCount(Auth::id());
 
             return response()->json([
-                'status' => 200,
+                'status' => 'success',
                 'message' => 'Thêm yêu thích thành công',
                 'favoriteCount' => $favoriteCount,
             ], 200);
         }
 
         return response()->json([
-            'status' => 500,
+            'status' => 'error',
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
     }
@@ -54,17 +53,17 @@ class FavoriteController extends Controller
     {
         $result = $this->favoriteService->destroy($id);
         if ($result) {
-            $favoriteCount = Favorite::where('user_id', Auth::id())->count();
+            $favoriteCount = Favorite::getUserFavoriteCount(Auth::id());
 
             return response()->json([
-                'status' => 200,
+                'status' => 'success',
                 'message' => 'Xoá yêu thích thành công',
                 'favoriteCount' => $favoriteCount,
             ], 200);
         }
 
         return response()->json([
-            'status' => 500,
+            'status' => 'error',
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
     }

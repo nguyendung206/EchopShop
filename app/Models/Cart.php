@@ -27,4 +27,9 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public static function getUserCartCount($userId)
+    {
+        return self::where('user_id', $userId)->count();
+    }
 }

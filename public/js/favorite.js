@@ -19,7 +19,7 @@ $(document).on('click', '.product-heart', function (event) {
             success: function (response) {
                 $this.toggleClass('favorite-active');
                 $icon.removeClass('fa-solid').addClass('fa-regular');
-                if (response.status === 'success') {
+                if (response.status === 200) {
                     toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
                     $('#favoriteCount').text(response.favoriteCount);
                     $('#favoriteCount').show();
@@ -38,7 +38,7 @@ $(document).on('click', '.product-heart', function (event) {
             success: function (response) {
                 $this.toggleClass('favorite-active');
                 $icon.removeClass('fa-regular').addClass('fa-solid');
-                if (response.status === 'success') {
+                if (response.status === 200) {
                     toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
                     $('#favoriteCount').text(response.favoriteCount);
                     $('#favoriteCount').show();

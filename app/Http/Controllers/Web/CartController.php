@@ -28,7 +28,7 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $result = $this->cartService->store($request);
-        $cartCount = Cart::where('user_id', Auth::id())->count();
+        $cartCount = Cart::getUserCartCount(Auth::id());
         if ($result['status'] === 200) {
             return response()->json([
                 'status' => 200,
