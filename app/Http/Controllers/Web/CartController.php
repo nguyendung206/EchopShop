@@ -123,6 +123,7 @@ class CartController extends Controller
             ], 500);
         }
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([

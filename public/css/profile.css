@@ -271,7 +271,7 @@ button.form-btn-save {
     width: 250px;
     display:flex;
     align-items: center;
-    margin: 30px auto 60px auto;
+    margin: 30px auto;
     justify-content: center;
     font-size: 16px;
 }

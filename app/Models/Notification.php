@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\TypeNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'type' => TypeNotification::class,
+    ];
 
     protected $fillable = [
         'user_id',
@@ -26,5 +31,10 @@ class Notification extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public static function getNotificationCount($userId)
+    {
+        return self::where('user_id', $userId)->where('is_read', false)->count();
     }
 }

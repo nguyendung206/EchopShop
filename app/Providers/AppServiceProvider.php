@@ -47,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
                         ->orderBy('created_at', 'desc')
                         ->limit(20)
                         ->get();
-
                     $view->with('notifications', $notifications);
                 }
             });
