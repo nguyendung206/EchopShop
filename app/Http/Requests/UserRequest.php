@@ -48,7 +48,6 @@ class UserRequest extends FormRequest
             $rule['passwordConfirm'] = [];
         }
 
-        // dd($rule);
         return $rule;
     }
 

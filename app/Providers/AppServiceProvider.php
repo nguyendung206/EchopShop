@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Favorite;
 use App\Models\Notification;
@@ -57,6 +58,14 @@ class AppServiceProvider extends ServiceProvider
                 if (Auth::check()) {
                     $favoriteCount = Favorite::where('user_id', Auth::id())->get();
                     $view->with('favoriteCount', $favoriteCount);
+                }
+            });
+        }
+        if (Schema::hasTable('carts')) {
+            View::composer('*', function ($view) {
+                if (Auth::check()) {
+                    $carts = Cart::where('user_id', Auth::id())->get();
+                    $view->with('carts', $carts);
                 }
             });
         }

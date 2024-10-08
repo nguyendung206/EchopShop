@@ -38,14 +38,14 @@ class FavoriteController extends Controller
             $favoriteCount = Favorite::where('user_id', Auth::id())->count();
 
             return response()->json([
-                'status' => 'success',
+                'status' => 200,
                 'message' => 'Thêm yêu thích thành công',
                 'favoriteCount' => $favoriteCount,
             ], 200);
         }
 
         return response()->json([
-            'status' => 'fail',
+            'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
     }
@@ -57,14 +57,14 @@ class FavoriteController extends Controller
             $favoriteCount = Favorite::where('user_id', Auth::id())->count();
 
             return response()->json([
-                'status' => 'success',
+                'status' => 200,
                 'message' => 'Xoá yêu thích thành công',
                 'favoriteCount' => $favoriteCount,
             ], 200);
         }
 
         return response()->json([
-            'status' => 'fail',
+            'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
     }

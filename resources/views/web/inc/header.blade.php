@@ -3,13 +3,13 @@ $search = request()->get('search');
 $provinceQuery = request()->get('province');
 
 $url = Str::lower(request()->url());
-$route = route('secondhandProduct');
+$route = route('listProducts', ['type' => TypeProductEnums::SECONDHAND]);
 
 if (Str::contains($url, 'giveaway')) {
-$route = route('giveawayProduct');
+$route = route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]);
 }
 if (Str::contains($url, 'exchange')) {
-$route = route('exchangeProduct');
+$route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
 }
 @endphp
 <div id="overlay">
@@ -75,19 +75,19 @@ $route = route('exchangeProduct');
                     </li>
 
                     <li>
-                        <a href="{{ route('exchangeProduct') }}" class="nav-link">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::EXCHANGE]) }}" class="nav-link">
                             <img src="{{asset('img/icon/exchange.png')}}" alt="" class="mr-2">
                             <span class="nav-text">Trao đổi hàng hóa</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('secondhandProduct') }}" class="nav-link">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::SECONDHAND]) }}" class="nav-link">
                             <img src="{{asset('img/icon/secondhand.png')}}" alt="" class="mr-2">
                             <span class="nav-text">Mua bán đồ secondhand</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('giveawayProduct') }}" class="nav-link">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]) }}" class="nav-link">
                             <img src="{{asset('img/icon/giveaway.png')}}" alt="" class="mr-2">
                             <span class="nav-text">Hàng cũ đem tặng</span>
                         </a>
@@ -166,7 +166,7 @@ $route = route('exchangeProduct');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                                 </div>
-                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none search-input" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                                 <div class="input-group-append">
                                     <div style="position: relative;">
@@ -198,6 +198,11 @@ $route = route('exchangeProduct');
                                 <div class="search">
                                     <a href="{{route('cart.index')}}" style="position: relative;">
                                         <i class="fa-solid fa-cart-shopping"></i>
+                                        @if(isset($carts) && $carts->count() > 0)
+                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $carts->count() }}</span>
+                                        @else
+                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px; display: none;">0</span>
+                                        @endif
                                     </a>
                                 </div>
                                 <div class="search d-n">
@@ -212,16 +217,16 @@ $route = route('exchangeProduct');
                                         <span class="badge badge-danger" style="position: absolute;bottom: 12px; left: 10px;">{{ $notifications->where('is_read', false)->count() }}</span>
                                         @endif
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 400px;">
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 400px; white-space: nowrap; overflow-x: hidden;">
                                         @if(isset($notifications) && count($notifications) > 0)
                                         @foreach($notifications as $notification)
-                                        <a class="py-notificaition dropdown-item d-flex align-items-start {{ !$notification->is_read ? 'is_read' : '' }}" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
+                                        <a class="py-notificaition dropdown-item d-flex align-items-center {{ !$notification->is_read ? 'is_read' : '' }}" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
                                             <div class="mr-3 mt-4">
                                                 <i class="fa-regular fa-bell"></i>
                                             </div>
                                             <div>
                                                 <strong>{{ $notification->title }}</strong>
-                                                <div class="text-muted my-2">{{ $notification->body }}</div>
+                                                <div class="text-muted my-2 text-body">{{ $notification->body }}</div>
                                                 <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                             </div>
                                         </a>
@@ -276,7 +281,7 @@ $route = route('exchangeProduct');
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                                 </div>
-                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none search-input" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
 
                                 <div class="input-group-append">
                                     <div style="position: relative;">
@@ -317,7 +322,7 @@ $route = route('exchangeProduct');
                             <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" style="width: 250px;">
                                 @foreach($categories as $category)
                                 <li class="dropdown-submenu" style="position: relative;">
-                                    <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category', ['slug' => $category->slug]) }}">
+                                    <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['categorySlug' => $category->slug]) }}">
                                         <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
                                         <p class="dropdown-title">{{ $category->name }}</p>
                                         <i class="fa-solid fa-caret-right"></i>
@@ -326,7 +331,7 @@ $route = route('exchangeProduct');
                                     <ul class="dropdown-menu" style="width: 250px;">
                                         @foreach($category->activeBrands as $brand)
                                         <li>
-                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
                                                 <p class="dropdown-title">{{ $brand->name }}</p>
                                                 <i class="fa-solid fa-caret-right"></i>
                                             </a>
@@ -349,21 +354,21 @@ $route = route('exchangeProduct');
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('exchangeProduct') }}" class="row align-items-center mx-4">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::EXCHANGE]) }}" class="row align-items-center mx-4">
                             <img src="{{asset('img/icon/exchange.png')}}" alt="" class="mr-2">
                             <span>Trao đổi hàng hóa</span>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('secondhandProduct') }}" class="row align-items-center mx-4">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::SECONDHAND]) }}" class="row align-items-center mx-4">
                             <img src="{{asset('img/icon/secondhand.png')}}" alt="" class="mr-2">
                             <span>Mua bán đồ secondhand</span>
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ route('giveawayProduct') }}" class="row align-items-center mx-4">
+                        <a href="{{ route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]) }}" class="row align-items-center mx-4">
                             <img src="{{asset('img/icon/giveaway.png')}}" alt="" class="mr-2">
                             <span>Hàng cũ đem tặng</span>
                         </a>
@@ -394,37 +399,64 @@ $route = route('exchangeProduct');
 
 <script>
     $(document).ready(function() {
-        $('#search').on('focus', function() {
+        $('.search-input').on('focus', function() {
             $('.list-result').show();
         });
 
-        $('#search').on('blur', function() {
+        $('.search-input').on('blur', function() {
             // Delay việc ẩn div để có thời gian chọn các item
             setTimeout(function() {
                 $('.list-result').hide();
             }, 200);
         });
-    });
-    $('.list-result').on('mousedown', function(event) {
+
+        $('.list-result').on('mousedown', function(event) {
         event.preventDefault();
-    });
-</script>
-<script>
-    $('#search').on('input', function() {
-        var searchValue = $(this).val();
-        $.ajax({
-            url: @json(route('search')),
-            method: 'GET',
-            data: {
-                search: searchValue
-            },
-            success: function(response) {
-                $('.list-result').empty();
-                $('.list-result').append(response.resultHtml);
-            },
-            error: function(xhr, status, error) {
-                $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
-            }
         });
+        
+        let checkTimeout;
+        $('.search-input').on('input', function() {
+            
+            var searchValue = $(this).val();
+            checkInputValue();
+            clearTimeout(checkTimeout);
+
+            checkTimeout = setTimeout(function() {
+                $.ajax({
+                    url: @json(route('search')),
+                    method: 'GET',
+                    data: {
+                        search: searchValue
+                    },
+                    success: function(response) {
+                        $('.list-result').empty();
+                        $('.list-result').append(response.resultHtml);
+                    },
+                    error: function(xhr, status, error) {
+                        $('.list-result').append('<li class="list-group-item">Đã có lỗi xảy ra vui lòng thử lại sau</li>');
+                    }
+                });
+            }, 300)
+        });
+        checkInputValue();
+
+        function checkInputValue() {
+            let isAnyInputFilled = false;
+
+            $('.search-input').each(function() {
+                if ($(this).val().trim() !== '') {
+                        isAnyInputFilled = true;
+                        return false;
+                    }
+                });
+
+                if (isAnyInputFilled) {
+                    $('.btn-search').prop('disabled', false);
+                } else {
+                    $('.btn-search').prop('disabled', true);
+            }
+        }
+
     });
+    
 </script>

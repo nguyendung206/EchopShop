@@ -21,6 +21,12 @@ $items = [
 'label' => $product->name,
 ]
 ];
+
+$user = Auth::user();
+$cart = $user ? $user->carts : collect();
+
+$totalQuantity = 0;
+
 @endphp
 @include('components.breadcrumb', ['items' => $items])
 <div class="content">
@@ -58,17 +64,75 @@ $items = [
             <div class="name-product">
                 {{$product->name}}
             </div>
+            
             <div class="price-product">{{format_price($product->price)}}</div>
             <div class="detail-product">
                 <p>{!! $product->description !!}</p>
             </div>
+            <div class="product-unit">
+                @if ($product->productUnits[0]->type != TypeProductUnitEnums::ONLYQUANTITY->value)
+                <table class="table table-unit">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Màu</th>
+                        <th scope="col">SIZE</th>
+                        <th scope="col">Còn lại</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ( $product->productUnits as $unit)
+                        @php
+                            $totalQuantity += $unit->quantity
+                        @endphp
+                        <tr>
+
+                            <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'">' : '' !!}</td>
+                            <td>{{$unit->color}}</td>
+                            <td>{{$unit->size}}</td>
+                            <td>{!!$unit->quantity > 0 ? $unit->quantity : '<p class="text-danger"> Hết hàng </p>' !!}</td>
+                        </tr>
+                        @empty
+                            <tr>Chưa có thông tin chi tiết</th>
+                            <tr>...</tr>
+                            <tr>...</tr>
+                            <tr>...</tr>
+                        @endforelse
+                    </tbody>
+                  </table>
+                @error('productUnitId')
+                    <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
+
+                @enderror
+                @endif
+                <div style="display: {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span> 
+                    <div class="number-input">
+                        <button class="minus">-</button>
+                        <input class="quantity" type="number" value="1" min="1" max="100">
+                        <button class="plus">+</button>
+                    </div>
+                    <div class="my-2">
+                        <span id="totalProduct">
+                            {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? $totalQuantity : $product->productUnits[0]->quantity}} Sản phẩm sẵn có 
+                        </span>
+                        <span id="totalCartProduct"></span>
+                    </div>
+                        
+                </div>
+                </div>
             <div class="product-button">
                 @if($product->type->value == 1)
                 <button>Trao đổi</button>
                 @elseif($product->type->value == 2)
-                <a class="text-white">Mua hàng</a>
+                <form action="{{route("cart.store")}}" method="POST" class="d-inline">
+                    <input type="hidden" name="productId" value="{{$product->id}}">
+                    <input type="hidden" name="productUnitId" id="productUnitId" value="{{$product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? '' : $product->productUnits[0]->id}}">
+                    <input type="hidden" name="quantity" id="quantityValue" value="1">
+                    @csrf
+                    <button class="text-white">Mua hàng</button>
+                </form>
                 @auth
-                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
+                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                     Thêm hàng vào giỏ
                 </a>
                 @else
@@ -659,6 +723,9 @@ $items = [
 <script type="text/javascript" src="{{asset('/slick/slick.min.js')}}"></script>
 
 <script>
+
+    
+
     $(".multiple-items-1").slick({
         infinite: true,
         slidesToShow: 4,
@@ -726,6 +793,22 @@ $items = [
 </script>
 
 <script>
+    var totalProduct = 0;
+    var quantityCart = 0;
+    
+    if(@json(isset($product->productUnits[0]) && $product->productUnits[0]->type == typeProductUnitEnums::ONLYQUANTITY->value)){
+        totalProduct = @json($product->productUnits[0]->quantity);
+
+        @json($cart).forEach(item => {
+            if(@json($product->productUnits[0]-> id) == item.product_unit_id){
+                quantityCart = item.quantity;
+                $('#totalCartProduct').text(" | " + quantityCart + " sản phẩm đã có trong giỏ.");
+            }
+        })
+        
+    }
+
+
     $(document).ready(function() {
         $(".slider-nav").slick({
             slidesToShow: 4,
@@ -745,6 +828,72 @@ $items = [
             } else {
                 $(this).slick('slickNext');
             }
+        });
+
+        $('.quantity').on('change', function() {
+            let quantity = $(this).val();
+            
+            if(quantity > totalProduct - quantityCart) {
+                $(this).val(totalProduct - quantityCart);
+            }
+            if(quantity < 1) {
+                $(this).val(1);
+            }
+        });
+
+        $(".plus").on("click", function() {
+        
+            const input = $(this).prev(".quantity")
+            let currentValue = parseInt(input.val()) || 0;
+            if (currentValue < totalProduct) {
+                currentValue += 1;
+                if (currentValue > totalProduct - quantityCart) {
+                    currentValue = totalProduct - quantityCart;
+                }
+                input.val(currentValue);
+            }
+            $('#quantityValue').val(currentValue);
+        });
+
+        $(".minus").on("click", function() {
+            const input = $(this).next(".quantity");
+            let currentValue = parseInt(input.val()) || 0;
+
+            if (currentValue > 1) {
+                currentValue -= 1;
+                input.val(currentValue);
+                $('#quantityValue').val(currentValue);
+            }
+        });
+
+        $('input[name="radio-unit"]').change(function() {
+            $('#divQuantity').fadeIn();
+            var selectedUnitId = $(this).val();
+            totalProduct = $(this).data('total-product');
+            
+            if($('.quantity').val() > totalProduct) {
+                $('.quantity').val(totalProduct);
+            }
+            $('#totalProduct').text("Hiện có " + totalProduct + " sản phẩm loại này");
+
+            let carts = @json($cart);
+
+            quantityCart  = null;
+            carts.forEach(cart => {
+                if (cart.product_unit_id == selectedUnitId) {
+                    quantityCart = cart.quantity;  // Lấy ra số lượng sản phẩm đã có trong giỏ
+                } 
+            });
+            
+            if(quantityCart) {
+                $('#totalCartProduct').text(" | " + quantityCart + " sản phẩm đã có trong giỏ.");
+                $('#totalCartProduct').fadeIn();
+            } else {
+                $('#totalCartProduct').fadeOut();
+            }
+            $('.quantity').trigger('change');
+            
+            $('#productUnitId').val(selectedUnitId);
         });
     });
 

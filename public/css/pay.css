@@ -1,0 +1,467 @@
+.border-pay {
+    background-image: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);
+    background-position-x: -30px;
+    background-size: 116px 3px;
+    height: 3px;
+    width: 100%;
+}
+.content-address {
+    background-color: #f5f5f5;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+.content-address-main {
+    background-color: white;
+    padding: 20px 20px;
+}
+.location-address {
+    margin: 20px 0;
+    color: rgb(177,0,0,1);
+    font-size: 24px;
+}
+.location-address i {
+    color: rgb(177,0,0,1);
+}
+.information-receive {
+    margin-bottom: 20px;
+}
+.change-address {
+    background-color: transparent;
+    color: rgba(177,0,0,1);
+    margin-left: 20px;
+    border: 1px solid rgba(177,0,0,1);
+}
+.change-address:hover {
+    background-color: rgba(177,0,0,1);
+    color: white;
+}
+.res-change-item {
+    display: flex;
+}
+.content-items {
+    background-color: #f5f5f5;
+}
+.content-wrap.container {
+    background-color: white;
+}
+.cart-item {
+    justify-content: center;
+}
+.unit-price {
+    justify-content: center;
+}
+.quantity-item {
+    justify-content: center;
+}
+.content-pay {
+    display: flex;
+}
+.message-to-shop {
+    font-size: 12px;
+    margin: 20px 0px;
+}
+.message-to-shop p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.message-to-shop textarea {
+    border: 1px solid rgba(204, 204, 204,0.8);
+    width: 100%;
+    font-size: 14px;
+    padding: 4px;
+}
+.infor-to-pay {
+    margin: 20px 10px;
+
+}
+.unit-shipper {
+    display: flex;
+    font-size: 14px;
+    width: 100%;
+}
+.infor-shipper {
+    margin-left: 20px;
+    font-size: 12px;
+}
+.unit-shipper-1 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.unit-shipper-1 button {
+    color: rgba(177,0,0,1);
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+.name-shipper {
+    padding: 0px;
+}
+.unit-shipper-2-1 {
+    color: rgb(0, 103, 62);
+}
+.unit-shipper-2-2 {
+    color: rgb(130, 129, 129);
+}
+.total-last {
+    text-align: end;
+    margin: 15px 0;
+    font-size: 14px;
+    color: rgb(130, 129, 129);
+}
+.total-last b {
+    color: rgba(177,0,0,1);
+}
+.content-pay-method {
+    background-color: #f5f5f5;
+    padding: 40px 0;
+}
+.pay-method-wrap{
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.pay-method-title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(204, 204, 204,0.8);
+    font-size: 16px;
+    font-weight: 500;
+}
+.total-price-pay-method {
+    padding-top: 10px;
+    font-size: 14px;
+}
+.sum-price {
+    display: flex;
+    justify-content: space-between;
+}
+.shipper-price {
+    display: flex;
+    justify-content: space-between;
+}
+.total-pay {
+    display: flex;
+    justify-content: space-between;
+}
+.total-price-pay-method.col-lg-4 {
+    padding-left: 0;
+}
+.button-pay {
+    margin: 10px 0;
+}
+.button-pay button {
+    border: none;
+    background-color: rgba(177,0,0,1);
+    color: white;
+    padding: 8px 16px;
+}
+.button-pay button:hover {
+    background-color: rgba(177,0,0,0.8);
+    
+}
+.pay-method-show {
+    height: 150px;
+}
+
+.address-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.address-modal {
+    background-color: #fff;
+    padding: 20px;
+    width: 50%;
+    margin: 250px auto;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1000;
+}
+
+.change-address {
+    cursor: pointer;
+}
+
+.text-vali {
+    color: #b10000;
+    position: absolute;
+    top: -7px;
+}
+.address-label {
+    position: absolute;
+    color: rgba(0, 0, 0, .4);;
+    background-color: #fff;
+    z-index: 1;
+    left: 30px;
+    font-weight: 400;
+    font-size: 10px;
+    top: -5px;
+}
+.form-group {
+    position: relative;
+}
+
+.cancel {
+    border: none;
+    background-color: rgba(0, 0, 0, .4);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16.41px;
+    padding: 8px 24px;
+    color: white;
+}
+.cancel:hover {
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+}
+
+.btn-show-voucher {
+    font-size:14px;
+     color:#B10000;
+    border: 1px solid #B10000;
+    width: 30%;
+    margin: 10px auto;
+    padding: 8px 8px 7px 8px;
+    background-color: white;
+}
+.btn-show-voucher:hover {
+    color: white !important;
+    background-color: #B10000;
+}
+.b-radius {
+    border-radius: 4px;
+}
+
+.voucher-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.voucher-modal {
+    background-color: #fff;
+    padding: 20px;
+    width: 50%;
+    margin: 250px auto;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1000;
+}
+
+.voucher-modal {
+    border: 1px solid #ccc;
+    padding: 10px 10px;
+}
+.voucher-title {
+    font-size: 18px;
+    margin: 10px 0;
+}
+.voucher-image img {
+    width: 75px;
+    height: 75px;
+}
+.btn-apply-voucher {
+    position: absolute;
+    border: none;
+    top: 0;
+    right: 0;
+    margin: 0;
+    background-color: transparent;
+    font-size: 15px;
+    border-radius: 0px;
+    
+}
+.code-input {
+    position: relative;
+    padding-right: 0px;
+}
+.code-input input {
+    width: 100%;
+    padding: 6px 6px;
+    border: 1px solid #B10000;
+}
+.code-button {
+    padding-left: 0px;
+}
+.code-button button {
+    width: 100%;
+    border-left: none;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.voucher-code {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+}
+.voucher-image {
+    border-right: 1px solid rgba(204, 204, 204, 0.6);
+}
+.voucher-list {
+    margin: 5px 0px;
+    max-height: 300px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.voucher-item {
+    display: flex;
+    border: 1px solid rgba(204, 204, 204, 0.6);
+    box-sizing: border-box;
+    padding: 6px 6px;
+}
+.voucher-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    border-right: 1px solid rgba(204, 204, 204, 0.6);
+    font-size: 13px;
+}
+.voucher-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.voucher-button input {
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    appearance: none;
+    border: 2px solid rgb(177, 0, 0, 0.5); /* Màu viền ban đầu */
+    border-radius: 50%;
+    position: relative;
+}
+.voucher-button input:checked {
+    border-color: rgb(177, 0, 0, 1); /* Màu viền khi được chọn */
+}
+.voucher-button input::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-color: #B10000; /* Màu của chấm thumb */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Ban đầu thumb không hiện */
+    transition: transform 0.2s ease-in-out;
+}
+.voucher-button input:checked::after {
+    transform: translate(-50%, -50%) scale(1); /* Thumb hiện ra */
+}
+
+
+.infor-cart {
+    display: flex;
+}
+
+.name-item-cart {
+    font-weight: 600;
+}
+.type-show p {
+    font-weight: 500;
+}
+
+@media (max-width: 450px) {
+    .unit-shipper-1{
+        display: block;
+    }
+    .infor-to-pay.col-lg-7 {
+        padding: 0px;
+    }
+    .unit-shipper.col-lg-12 {
+        display: block;
+    }
+    .unit-shipper-1 button {
+        display: block;
+
+    }
+    .total-amount {
+        font-size: 12px;
+    }
+    .message-to-shop input {
+        margin-left: 0px;
+    }
+    .original-price {
+        font-size: 12px;
+    }
+    .number-input {
+        font-size: 12px;
+    }
+    .total-last {
+        line-height: 20px;
+    }
+    
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+    .btn-show-voucher {
+        width: auto;
+    }
+    .change-address {
+        display: block;
+        margin-left: 0px;
+        margin-top: 10px;
+    }
+    .address-modal {
+        padding: 10px 0px;
+        width: 80% !important;
+    }
+    .voucher-modal {
+        width: 80% !important;
+        margin: 200px auto;
+
+    }
+    .voucher-image img {
+        width: 40px;
+        height: 40px;
+    }
+    .voucher-content p{
+        text-align: left;
+        margin: 5px 0px;
+    }
+    .code-error {
+        font-size: 12px;
+        margin: 4px 0;
+    }
+    .submitVoucher {
+        font-size: 14px;
+        padding: 7px 16px;
+    }
+    .btn-apply-voucher {
+        padding: 8px 16px !important;
+    }
+    #submitChangeAddress {
+        font-size: 12px;
+        padding: 6px 16px;
+    }
+
+    .infor-cart {
+        display: block;
+    }
+    .infor-cart .type-show {
+        font-size: 12px;
+    }
+}
+@media (min-width: 769px) and (max-width: 992px) {}
+@media (min-width: 992px) and (max-width: 1200px) {}
+@media (max-width: 992px) {
+    .total-last.col-lg-12 {
+        padding: 0;
+    }
+    .total-last.col-lg-12 b {
+        display: block;
+    }
+}

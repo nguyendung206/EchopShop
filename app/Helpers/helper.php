@@ -16,10 +16,48 @@ use App\Models\Food;
 use App\Models\Material;
 use App\Models\Menu;
 use App\Models\MenuItem;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+
+if (! function_exists('calculateDiscountedPrice')) {
+    function calculateDiscountedPrice($type, $originalPrice, $value, $maxValue)
+    {
+        $discountAmount = $value;
+
+        if ($type == 1) { // %
+            $discountAmount = ($originalPrice * $value) / 100;
+            if ($discountAmount > $maxValue) {
+                $discountAmount = $maxValue;
+            }
+        } else {
+            $discountAmount = ($originalPrice - $value);
+            if ($discountAmount > $maxValue) {
+                $discountAmount = $maxValue;
+            }
+        }
+
+        $discounted = $originalPrice - $discountAmount;
+
+        return $discounted;
+    }
+}
+if (! function_exists('dateRemaining')) {
+    function dateRemaining($endDate)
+    {
+        date_default_timezone_set('Asia/Bangkok');
+        $currentDate = Carbon::now(); // Thay thế bằng thời gian hiện tại
+        $endDate = Carbon::parse($endDate);
+        $daysRemaining = $endDate->diffInDays($currentDate);
+        $hoursRemaining = $endDate->copy()->subDays($daysRemaining)->diffInHours($currentDate);
+        $minutesRemaining = $endDate->copy()->subDays($daysRemaining)->subHours($hoursRemaining)->diffInMinutes($currentDate);
+
+        return $daysRemaining.' ngày '.$hoursRemaining.' giờ '.$minutesRemaining.' phút.';
+    }
+
+}
 
 if (! function_exists('getImage')) {
     function getImage($path = null)
