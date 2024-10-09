@@ -322,7 +322,7 @@ HOME
             <a class="all color-B10000 btn-more" href="{{ route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]) }}">Xem tất cả <i
                     class="fa-solid fa-angles-right"></i></a>
         </div>
-            
+
         @endif
     </div>
 </div>

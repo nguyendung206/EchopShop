@@ -26,6 +26,11 @@ class Brand extends Model
         return $this->hasMany(Product::class, 'brand_id', 'id');
     }
 
+    public function waitproducts()
+    {
+        return $this->hasMany(WaitProduct::class, 'brand_id', 'id');
+    }
+
     public function sluggable(): array
     {
         return [

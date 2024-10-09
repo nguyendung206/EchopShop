@@ -81,6 +81,12 @@
                                 <span class="aiz-side-nav-text">Sản phẩm</span>
                             </a>
                         </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.wait.index') }}" class="aiz-side-nav-link ">
+                                <i class="las la-box aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">Chỉnh sửa sản phẩm</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

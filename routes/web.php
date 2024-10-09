@@ -73,6 +73,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     });
 
     Route::resource('/post', ProductController::class);
+    Route::post('post/status/{id}', [ProductController::class, 'status'])->name('post.status');
+    Route::post('/product/createwait', [ProductController::class, 'waitcreate'])->name('product.wait.create');
 
     Route::prefix('/cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
@@ -93,6 +95,7 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::get('/purchase', [OrderController::class, 'purchase'])->name('purchase');
     Route::prefix('/notification')->name('notification.')->group(function () {
         Route::get('/isreaded/{id}', [NotificationController::class, 'isreaded'])->name('isreaded');
+        Route::get('/all', [NotificationController::class, 'index'])->name('index');
     });
 });
 

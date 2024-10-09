@@ -9,7 +9,9 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Province;
+use App\Models\WaitProduct;
 use App\Services\ProductService;
+use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -17,15 +19,20 @@ class ProductController extends Controller
 {
     protected $productService;
 
-    public function __construct(ProductService $productService)
+    protected $statusService;
+
+    public function __construct(ProductService $productService, StatusService $statusService)
     {
         $this->productService = $productService;
+        $this->statusService = $statusService;
     }
 
     public function index(Request $request)
     {
         try {
-            $datas = $this->productService->getPosts(10);
+            $searchpost = $request->input('searchpost');
+            $datas = $this->productService->getPosts(10, $searchpost);
+
             if ($request->ajax()) {
                 $productHtml = view('web.profile.morePost', compact('datas'))->render();
                 $hasMorePage = $datas->hasMorePages();
@@ -113,48 +120,80 @@ class ProductController extends Controller
         return view('web.product.editpost', compact('post', 'categories', 'brands'));
     }
 
-    public function update(ProductRequest $request, $id)
+    public function waitcreate(Request $request)
     {
         try {
-            $product = $this->productService->updateProduct($request, $id);
+            $result = WaitProduct::where('product_id', $request->product_id)->exists();
+            if (! $result) {
+                $product = $this->productService->createwaitProduct($request);
+                if ($product) {
+                    if ($request->unittype == 1) {
+                        $quantity = $request->quantity;
 
-            if ($product) {
-                $details = [];
-                if ($request->unittype == 1) {
-                    $quantity = $request->quantity;
-                    $details[] = [
-                        'type' => $request->unittype,
-                        'product_id' => $product->id,
-                        'color' => null,
-                        'size' => null,
-                        'quantity' => $quantity > 0 ? $quantity : 1,
-                    ];
-                } elseif ($request->unittype == 2) {
-                    $colors = $request->input('colors', []);
-                    $sizes = $request->input('sizes', []);
-                    $quantities = $request->input('quantities', []);
+                        $this->productService->createWaitProductUnit([
+                            'type' => $request->unittype,
+                            'wait_product_id' => $product->id,
+                            'color' => null,
+                            'size' => null,
+                            'quantity' => $quantity > 0 ? $quantity : 1,
+                        ]);
+                    } elseif ($request->unittype == 2) {
+                        $colors = $request->input('colors', []);
+                        $sizes = $request->input('sizes', []);
+                        $quantities = $request->input('quantities', []);
 
-                    foreach ($quantities as $index => $quantity) {
+                        foreach ($quantities as $index => $quantity) {
+                            $this->productService->createWaitProductUnit([
+                                'type' => $request->unittype,
+                                'wait_product_id' => $product->id,
+                                'color' => $colors[$index] ?? '',
+                                'size' => $sizes[$index] ?? '',
+                                'quantity' => $quantity > 0 ? $quantity : 1,
+                            ]);
+                        }
+                    }
+
+                    return redirect()->route('post.index')
+                        ->with('success', 'Cập nhật thành công! Vui lòng chờ kiểm duyệt!');
+                } else {
+                    return redirect()->back()->with('error', 'Cập nhật thất bại.');
+                }
+            } else {
+                $product = $this->productService->updateWaitProduct($request, $request->product_id);
+                if ($product) {
+                    $details = [];
+                    if ($request->unittype == 1) {
+                        $quantity = $request->quantity;
                         $details[] = [
                             'type' => $request->unittype,
                             'product_id' => $product->id,
-                            'color' => $colors[$index] ?? '',
-                            'size' => $sizes[$index] ?? '',
+                            'color' => null,
+                            'size' => null,
                             'quantity' => $quantity > 0 ? $quantity : 1,
                         ];
-                    }
-                }
-                $this->productService->updateProductUnit($details, $id);
+                    } elseif ($request->unittype == 2) {
+                        $colors = $request->input('colors', []);
+                        $sizes = $request->input('sizes', []);
+                        $quantities = $request->input('quantities', []);
 
-                return redirect()->route('post.index')
-                    ->with('success', 'Cập nhật bài viết thành công!');
-            } else {
-                return redirect()->back()->withInput()
-                    ->with('error', 'Không thể cập nhật bài viết, vui lòng thử lại.');
+                        foreach ($quantities as $index => $quantity) {
+                            $details[] = [
+                                'type' => $request->unittype,
+                                'product_id' => $product->id,
+                                'color' => $colors[$index] ?? '',
+                                'size' => $sizes[$index] ?? '',
+                                'quantity' => $quantity > 0 ? $quantity : 1,
+                            ];
+                        }
+                    }
+                    $this->productService->updateWaitProductUnit($details, $product->id);
+
+                    return redirect()->route('post.index')
+                        ->with('success', 'Cập nhật thành công! Vui lòng chờ kiểm duyệt!');
+                }
             }
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()
-                ->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi: '.$e->getMessage());
         }
     }
 
@@ -209,5 +248,17 @@ class ProductController extends Controller
             'categoryNames' => $category,
             'brandNames' => $brand,
         ]);
+    }
+
+    public function status($id)
+    {
+        try {
+            $product = Product::findOrFail($id);
+            $this->statusService->pauseStatus($product);
+
+            return response()->json(['success' => true, 'message' => 'Trạng thái đã được thay đổi.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Có lỗi xảy ra.'], 500);
+        }
     }
 }
