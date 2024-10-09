@@ -10,11 +10,11 @@
         <h1 class="profile-title">Thông tin sản phẩm</h1>
     </div>
     <div class="p-4">
-        <form action="{{ route('post.update', $post->id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('product.wait.create') }}" method="post" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
             <input type="hidden" name="shop_id" value="{{ optional(Auth::user()->shop)->id }}">
             <input type="hidden" name="status" value="{{$post->status}}">
+            <input type="hidden" name="product_id" value="{{$post->id}}">
             <div class="form-group">
                 <label for="productName">Tên sản phẩm *</label>
                 <input name="name" type="text" id="productName" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $post->name) }}" placeholder="Tên sản phẩm">
@@ -126,8 +126,9 @@
             <div class="form-group">
                 <label for="photoImage">Ảnh chính *</label>
                 <div id="photoImageContainer">
-                    <img id="photoImagePreview" src="{{ getImage($post->photo) }}" alt="Ảnh sản phẩm" class="upload-img" style="cursor: pointer; object-fit:cover; margin: 0; width:200px; height:auto;">
+                    <img id="photoImagePreview" src="{{ getImage($post->photo) }}" alt="Ảnh sản phẩm" class="upload-img" style="cursor: pointer; object-fit: cover; margin: 0; width: 200px; height: auto;">
                     <input type="file" id="photoImageInput" name="photo" style="display: none;" accept="image/*" onchange="previewPhotoImage(event)">
+                    <input type="hidden" name="photo_to_keep" value="{{ $post->photo }}">
                 </div>
             </div>
             @error('photo')
@@ -141,7 +142,7 @@
                     @if($post->list_photo)
                     @foreach(json_decode($post->list_photo) as $index => $photo)
                     <div class="position-relative m-2">
-                        <img src="{{ asset('storage/'.$photo) }}" class="img img-bordered" style="width: 200px;">
+                        <img src="{{ asset('storage/' . $photo) }}" class="img img-bordered" style="width: 200px;">
                         <button type="button" class="btn btn-danger btn-sm position-absolute" style="top: 0; right: 0;" data-index="{{ $index }}" onclick="removePhoto(this.dataset.index)">&times;</button>
                         <input type="hidden" name="photos_to_keep[]" value="{{ $photo }}">
                     </div>
@@ -206,7 +207,7 @@
         quantityInput.name = 'quantities[]';
         quantityInput.className = 'form-control ml-2';
         quantityInput.placeholder = 'Nhập số lượng';
-        quantityInput.min = 1; 
+        quantityInput.min = 1;
         quantityInput.value = quantity;
 
         const removeButton = createRemoveButton(colorBox);
@@ -235,31 +236,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         const categories = @json($categories);
         const brands = @json($brands);
-        const categorySelect = document.getElementById('inputCategory');
-        const brandSelect = document.getElementById('inputBrand');
-
-        categorySelect.addEventListener('change', function() {
-            const selectedCategoryId = this.value;
-
-            brandSelect.innerHTML = '<option value="">Chọn Thương hiệu</option>';
-
-            if (selectedCategoryId) {
-                const filteredBrands = brands.filter(brand => brand.category_id == selectedCategoryId);
-
-                filteredBrands.forEach(brand => {
-                    const option = document.createElement('option');
-                    option.value = brand.id;
-                    option.textContent = brand.name;
-                    brandSelect.appendChild(option);
-                });
-            }
-        });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const categories = @json($categories);
-        const brands = @json($brands);
         const categorySelect = document.getElementById('categorySelect');
         const brandSelect = document.getElementById('brandSelect');
 
@@ -283,7 +259,6 @@
 </script>
 
 <script>
-    // Preview ảnh chính
     function previewPhotoImage(event) {
         var reader = new FileReader();
         reader.onload = function() {
@@ -299,13 +274,11 @@
         document.getElementById('photoImageInput').click();
     });
 
-    // Preview nhiều ảnh
     function previewListPhotos(input) {
         const previewContainer = document.getElementById('list_photo_preview');
         previewContainer.innerHTML = '';
 
         const files = Array.from(input.files);
-
         files.forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -318,14 +291,14 @@
                 img.style.width = '200px';
 
                 const deleteBtn = document.createElement('button');
-                deleteBtn.type = 'button'; // Ngăn chặn việc gửi form
+                deleteBtn.type = 'button';
                 deleteBtn.className = 'btn btn-danger btn-sm position-absolute';
                 deleteBtn.style.top = '0';
                 deleteBtn.style.right = '0';
                 deleteBtn.innerHTML = '&times;';
-                deleteBtn.dataset.index = index; // Gán chỉ số vào thuộc tính dữ liệu
+                deleteBtn.dataset.index = index;
                 deleteBtn.onclick = function() {
-                    removePhoto(this.dataset.index); // Sử dụng thuộc tính dữ liệu để lấy chỉ số
+                    removePhoto(this.dataset.index);
                 };
 
                 imgWrapper.appendChild(img);
@@ -336,31 +309,24 @@
         });
     }
 
-    // Hàm xóa ảnh
     function removePhoto(index) {
         const previewContainer = document.getElementById('list_photo_preview');
-        const photosToKeepInput = document.querySelector('input[name="photos_to_keep[]"]');
         const input = document.querySelector('input[name="list_photo[]"]');
         const files = Array.from(input.files);
 
-        // Xóa ảnh trong giao diện
         if (index >= 0 && index < previewContainer.children.length) {
             previewContainer.children[index].remove();
 
-            // Tạo một mảng file mới sau khi xóa
             const dt = new DataTransfer();
             files.forEach((file, i) => {
-                if (i !== parseInt(index, 10)) { // Đảm bảo rằng chỉ số được so sánh đúng kiểu dữ liệu
-                    dt.items.add(file); // Giữ lại các file không bị xóa
+                if (i !== parseInt(index, 10)) {
+                    dt.items.add(file);
                 }
             });
 
-            // Cập nhật lại input với danh sách file mới
             input.files = dt.files;
-
-            // Nếu không còn ảnh nào, reset input file
             if (previewContainer.children.length === 0) {
-                input.value = ''; // Reset input file nếu không còn ảnh nào
+                input.value = '';
             }
         } else {
             console.error('Index không hợp lệ hoặc ảnh không tồn tại.');

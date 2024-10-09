@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\TypeNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'type' => TypeNotification::class,
+    ];
 
     protected $fillable = [
         'user_id',

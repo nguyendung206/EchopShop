@@ -94,14 +94,17 @@
                 </div>
 
                 @error('unittype')
-                <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
             <!-- Phần nhập chỉ có số lượng -->
             <div class="form-group" id="quantityInput" style="display: none;">
                 <label for="quantity">Số lượng</label>
-                <input type="number" name="quantity" id="quantity" class="form-control" min="1" placeholder="Nhập số lượng">
+                <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" min="1" placeholder="Nhập số lượng" value="{{ old('quantity') }}">
+                @error('quantity')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Phần nhập chi tiết màu sắc -->
@@ -200,19 +203,19 @@
         const colorInput = document.createElement('input');
         colorInput.type = 'text';
         colorInput.name = 'colors[]';
-        colorInput.className = 'form-control';
+        colorInput.className = 'form-control @error("colors") is-invalid @enderror';
         colorInput.placeholder = 'Nhập màu';
 
         const sizeInput = document.createElement('input');
         sizeInput.type = 'text';
         sizeInput.name = 'sizes[]';
-        sizeInput.className = 'form-control ml-2';
+        sizeInput.className = 'form-control ml-2 @error("sizes") is-invalid @enderror';
         sizeInput.placeholder = 'Nhập kích cỡ';
 
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
         quantityInput.name = 'quantities[]';
-        quantityInput.className = 'form-control ml-2';
+        quantityInput.className = 'form-control ml-2 @error("quantities") is-invalid @enderror';
         quantityInput.placeholder = 'Nhập số lượng';
 
         const removeButton = createRemoveButton(colorBox);

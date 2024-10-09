@@ -73,6 +73,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     });
 
     Route::resource('/post', ProductController::class);
+    Route::post('post/status/{id}', [ProductController::class, 'status'])->name('post.status');
+    Route::post('/product/createwait', [ProductController::class, 'waitcreate'])->name('product.wait.create');
 
     Route::prefix('/cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');

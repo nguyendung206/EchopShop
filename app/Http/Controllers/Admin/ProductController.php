@@ -6,15 +6,19 @@ use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Jobs\CreateNotificationJob;
+use App\Jobs\DeleteProductJob;
 use App\Mail\ProductStatusMail;
+use App\Mail\UpdateProductMail;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\WaitProduct;
 use App\Services\NotificationService;
 use App\Services\ProductService;
 use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
@@ -88,6 +92,12 @@ class ProductController extends Controller
                 return redirect()->back()->withInput();
             }
         } catch (\Exception $e) {
+            Log::error('Error rejecting product update:', [
+                'error' => $e->getMessage(),
+                'product_id' => $request->id,
+                'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             flash('Đã xảy ra lỗi, vui lòng thử lại.')->error();
 
             return redirect()->back()->withInput();
@@ -238,5 +248,103 @@ class ProductController extends Controller
         $product = Product::where('id', $id)->first();
 
         return view('admin.userproduct.show', compact('product'));
+    }
+
+    public function wait(Request $request)
+    {
+        $datas = $this->productService->getWaitProducts($request->all());
+
+        return view('admin.waitproduct.index', compact('datas'));
+    }
+
+    public function waitshow($id)
+    {
+        $product = Product::where('id', $id)->first();
+        $wait = WaitProduct::where('product_id', $id)->first();
+
+        return view('admin.waitproduct.show', compact('product', 'wait'));
+    }
+
+    public function reject(Request $request)
+    {
+        try {
+            $product = WaitProduct::findOrFail($request->id);
+            $title = 'Sản phẩm đã bị từ chối cập nhật';
+            $body = 'Sản phẩm "'.$product->name.'" đã bị từ chối cập nhật.';
+            $type = 3;
+
+            Mail::to($product->shop->email)
+                ->later(now()->addSeconds(2), new UpdateProductMail($product, $title, $body, $type));
+
+            Mail::to($product->shop->user->email)
+                ->later(now()->addSeconds(2), new UpdateProductMail($product, $title, $body, $type));
+
+            CreateNotificationJob::dispatch([
+                'user_id' => $product->shop->user->id,
+                'type' => $type,
+                'title' => $title,
+                'body' => $body,
+                'product_id' => $product->product_id,
+            ])->delay(now()->addSeconds(2));
+
+            DeleteProductJob::dispatch($product)->delay(now()->addSeconds(10));
+
+            flash('Thay đổi trạng thái thành công')->success();
+        } catch (\Exception $e) {
+            Log::error('Error rejecting product update:', [
+                'error' => $e->getMessage(),
+                'product_id' => $request->id,
+                'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
+
+            return redirect()->route('admin.wait.index');
+        }
+
+        return redirect()->route('admin.wait.index');
+    }
+
+    public function accept(Request $request)
+    {
+        try {
+            $product = Product::findOrFail($request->product_id);
+            $waitProduct = WaitProduct::findOrFail($request->id);
+
+            $this->productService->updateUserProduct($request);
+
+            $title = 'Sản phẩm đã được cập nhật';
+            $body = 'Sản phẩm "'.$product->name.'" đã được cập nhật.';
+            $type = 4;
+            Mail::to($product->shop->email)
+                ->later(now()->addSeconds(2), new UpdateProductMail($product, $title, $body, $type));
+
+            Mail::to($product->shop->user->email)
+                ->later(now()->addSeconds(2), new UpdateProductMail($product, $title, $body, $type));
+
+            CreateNotificationJob::dispatch([
+                'user_id' => $product->shop->user->id,
+                'type' => $type,
+                'title' => $title,
+                'body' => $body,
+                'product_id' => $request->product_id,
+            ])->delay(now()->addSeconds(2));
+
+            DeleteProductJob::dispatch($waitProduct)->delay(now()->addSeconds(10));
+
+            flash('Thay đổi trạng thái thành công')->success();
+        } catch (\Exception $e) {
+            Log::error('Error rejecting product update:', [
+                'error' => $e->getMessage(),
+                'product_id' => $request->id,
+                'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            flash('Đã có lỗi xảy ra khi thay đổi trạng thái')->error();
+
+            return redirect()->route('admin.wait.index');
+        }
+
+        return redirect()->route('admin.wait.index');
     }
 }

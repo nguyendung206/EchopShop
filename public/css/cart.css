@@ -2,10 +2,6 @@ body {
     font-family: 'roboto';
 }
 
-.row {
-    padding: 0;
-}
-
 .header {
     border-bottom: 1px solid rgba(204, 204, 204, 0.5);
 }

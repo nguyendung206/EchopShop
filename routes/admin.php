@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/admin/login', [AuthController::class, 'index'])->name('admin.login');
 Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login');
 Route::get('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
@@ -82,5 +83,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::get('/', [ProductController::class, 'userproduct'])->name('index');
         Route::get('/show/{id}', [ProductController::class, 'showuserproduct'])->name('show');
         Route::post('/changestatus/{id}', [ProductController::class, 'statususerproduct'])->name('changestatus');
+    });
+
+    Route::prefix('wait')->name('wait.')->group(function () {
+        Route::get('/', [ProductController::class, 'wait'])->name('index');
+        Route::get('/show/{id}', [ProductController::class, 'waitshow'])->name('show');
+        Route::post('/reject', [ProductController::class, 'reject'])->name('reject');
+        Route::post('/accept', [ProductController::class, 'accept'])->name('accept');
     });
 });
