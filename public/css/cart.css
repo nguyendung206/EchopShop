@@ -388,9 +388,9 @@ input[type="number"] {
     }
 }
 
-.type-show {
-    display: flex;
-}
+    .type-show {
+        display: block;
+    }
 .item-details {
     text-align: start;
 }

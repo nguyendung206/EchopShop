@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\ProductUnit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -21,43 +20,49 @@ class CartService
         return collect();
     }
 
-    public function store(Request $request)
+    public function store($request)
     {
         try {
             $userId = Auth::id();
+            $existingCartItem = Cart::where('user_id', $userId)
+                ->where('product_unit_id', $request->productUnitId)
+                ->first();
+            if (! empty($existingCartItem)) {
+                $getProductUnit = ProductUnit::where('id', $request->productUnitId)->first();
+
+                $quantityToIncrease = $request->quantity ? $request->quantity : 1;
+
+                $existingCartItem->increment('quantity', $quantityToIncrease);
+                if ($existingCartItem->quantity > $getProductUnit->quantity) {
+                    $existingCartItem->quantity = $getProductUnit->quantity;
+                    $existingCartItem->save();
+                }
+
+                return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
+            }
 
             if ($request->has('type') && is_numeric($request->type)) {
                 if ($request->type == 1) {
-                    $existingCartItem = Cart::where('user_id', $userId)
-                        ->where('product_id', $request->productId)
-                        ->first();
 
-                    if ($existingCartItem) {
-                        $existingCartItem->increment('quantity');
-                    } else {
-                        Cart::create([
-                            'user_id' => $userId,
-                            'product_id' => $request->productId,
-                            'quantity' => 1,
-                            'product_unit_id' => $request->product_unit_id,
-                        ]);
-                    }
+                    Cart::create([
+                        'user_id' => $userId,
+                        'product_id' => $request->productId,
+                        'quantity' => 1,
+                        'product_unit_id' => $request->product_unit_id,
+                    ]);
 
                     return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
-                } elseif ($request->type == 2) {
-                    if ($request->has('units') && is_array($request->units)) {
-                        foreach ($request->units as $unit) {
-                            Cart::create([
-                                'user_id' => $userId,
-                                'product_id' => $request->productId,
-                                'color' => $unit['color'],
-                                'size' => $unit['size'],
-                                'quantity' => $unit['quantity'],
-                            ]);
-                        }
+                } else {
+                    Cart::create([
+                        'user_id' => $userId,
+                        'product_id' => $request->productId,
+                        'product_unit_id' => $request->productUnitId,
+                        'color' => $request->color,
+                        'size' => $request->size,
+                        'quantity' => $request->quantity,
+                    ]);
 
-                        return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
-                    }
+                    return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
                 }
             }
 

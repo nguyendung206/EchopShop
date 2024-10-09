@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CartRequest;
 use App\Models\Cart;
 use App\Services\CartService;
 use Exception;
@@ -25,22 +26,27 @@ class CartController extends Controller
         return view('web.cart.index', compact('carts'));
     }
 
-    public function store(Request $request)
+    public function store(CartRequest $request)
     {
         $result = $this->cartService->store($request);
         $cartCount = Cart::where('user_id', Auth::id())->count();
-        if ($result['status'] === 200) {
-            return response()->json([
-                'status' => 200,
-                'message' => $result['message'],
-                'cartCount' => $cartCount,
-            ], 200);
-        }
 
-        return response()->json([
-            'status' => 500,
-            'message' => 'Đã có lỗi xảy ra',
-        ], 500);
+        if ($request->ajax() || $request->wantsJson()) {
+            if ($result['status'] === 200) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => $result['message'],
+                    'cartCount' => $cartCount,
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Đã có lỗi xảy ra',
+                ], 500);
+            }
+        } else {
+            return redirect()->route('cart.index');
+        }
     }
 
     public function check(Request $request)
@@ -81,20 +87,20 @@ class CartController extends Controller
             if ($result) {
 
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 200,
                     'message' => 'Đổi loại hàng thành công',
                     'cart' => $result,
 
                 ], 200);
             } else {
                 return response()->json([
-                    'status' => 'fail',
+                    'status' => 500,
                     'message' => 'Đã có lỗi xảy ra',
                 ], 500);
             }
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'fail',
+                'status' => 500,
                 'message' => 'Đã có lỗi xảy ra',
             ], 500);
         }
@@ -107,18 +113,18 @@ class CartController extends Controller
             if ($result) {
 
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 200,
                     'message' => 'Đổi số lượng thành công',
                 ], 200);
             } else {
                 return response()->json([
-                    'status' => 'fail',
+                    'status' => 500,
                     'message' => 'Đã có lỗi xảy ra',
                 ], 500);
             }
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'fail',
+                'status' => 500,
                 'message' => 'Đã có lỗi xảy ra',
             ], 500);
         }

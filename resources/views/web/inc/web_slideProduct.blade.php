@@ -188,7 +188,7 @@
             var rangeInput= null;
             var rangeInput2= null;
             var option= null;
-
+            var type = @json(request()->query('type')) ? @json(request()->query('type')) : null;
             $('#filter-button').on('click', function() {
                 var selectedBrands = [];
                 var selectedCategories = [];
@@ -198,10 +198,13 @@
                 });
 
                 $('.custom-checkbox-category.checked-text').each(function() {
+                    
+                    
                     var categoryId = $(this).data('categoryid');
                     selectedCategories.push(categoryId);
                 });
-
+                console.log(selectedCategories);
+                
 
                 var selectedProvinces = [];
                 $('.category-2-item.checked-text').each(function() {
@@ -234,12 +237,15 @@
                         rangeInputMin: rangeInput,
                         rangeInputMax: rangeInput2,
                         option: option,
-                        provinceIds: selectedProvinces,
                         province: @json(request()->get('province')),
-                        search: @json($search = request()->get('search')),
+                        search: @json(request()->get('search')),
+                        type: type,
                     },
                     success: function(response) {
-                        
+                        if(selectedBrands.length != 0 || selectedCategories.length != 0){
+                            
+                            $('.product-title-line').hide();
+                        }
                         $('.list-product').html(response.productHtml);
                         if(response.hasMorePages) {
                             $('#btn-more').show()
@@ -263,18 +269,20 @@
                     url: url,
                     method: 'GET',
                     data: {
-                        brandId: [],
+                        brandIds: [],
+                        categoryIds: [],
                         provinceIds: null,
                         rangeInputMin: null,
                         rangeInputMax: null,
                         option: null,
                         provinceIds: [],
-                        
+                        province: null,
+                        search: null,
+                        type: type,
                     },
                     success: function(response) {
                         $('.list-product').html(response.productHtml);
                         
-                        console.log(response);
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);

@@ -24,7 +24,7 @@ class OrderController extends Controller
 
         $datas = $this->orderService->getCartsAndVouchers($request->all());
 
-        return view('web.order.order', ['carts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
+        return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
     }
 
     public function changeAddress(Request $request)

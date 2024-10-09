@@ -13,16 +13,16 @@ $provinceQuery = request()->get('province');
 $case = 0;
 $dataUrl = route('listProducts');
 if(request()->query('type') == 3){
-    $case = '3';
+    $case = 3;
     $dataUrl = route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]);
 }
     
 if (request()->query('type') == 2) {
-$case = '2';
+$case = 2;
 $dataUrl = route('listProducts', ['type' => TypeProductEnums::SECONDHAND]);
 }
 if (request()->query('type') == 1) {
-    $case = '1';
+    $case = 1;
     $dataUrl = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
 }
 @endphp
@@ -36,28 +36,27 @@ if (request()->query('type') == 1) {
 @section('content')
 <div class="title-line">
     <div class="title-text">
-        @if ($case == TypeProductEnums::EXCHANGE)
+        @if ($case == TypeProductEnums::EXCHANGE->value)
         Trao đổi hàng hoá
-        @elseif ($case == TypeProductEnums::SECONDHAND)
+        @elseif ($case == TypeProductEnums::SECONDHAND->value)
         Mua bán đồ SECONDHAND
-        @elseif ($case == TypeProductEnums::GIVEAWAY)
+        @elseif ($case == TypeProductEnums::GIVEAWAY->value)
         Hàng cũ đem tặng
         @else
-        Danh sách sản phẩm
+        Danh sách sản phẩm theo danh mục
         @endif
     </div>
 </div>
 
 <div class="content container">
-
     @if ($case != 0)
         
-    <div class="row">
+    <div class="row product-title-line">
         <div class="col-lg-3"></div>
         <div class="col-lg-9 button-page-wrap">
-            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::SECONDHAND])}}" class="{{ $case == TypeProductEnums::SECONDHAND ? 'active' : '' }}">Mua bán</a>
-            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::EXCHANGE]) }}" class="{{ $case == TypeProductEnums::EXCHANGE ? 'active' : '' }}">Trao đổi</a>
-            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::GIVEAWAY]) }}" class="{{ $case == TypeProductEnums::GIVEAWAY ? 'active' : '' }}">Hàng tặng</a>
+            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::SECONDHAND])}}" class="{{ $case == TypeProductEnums::SECONDHAND->value ? 'active' : '' }}">Mua bán</a>
+            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::EXCHANGE]) }}" class="{{ $case == TypeProductEnums::EXCHANGE->value ? 'active' : '' }}">Trao đổi</a>
+            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::GIVEAWAY]) }}" class="{{ $case == TypeProductEnums::GIVEAWAY->value ? 'active' : '' }}">Hàng tặng</a>
         </div>
     </div>
     @endif
@@ -134,7 +133,7 @@ if (request()->query('type') == 1) {
                                 <a href="#" class="btn-chat-product"><i
                                         class="fa-regular fa-comment-dots"></i></a>
                                 @auth
-                                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}">
+                                <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid = "{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </a>
                                 @else
@@ -157,7 +156,7 @@ if (request()->query('type') == 1) {
                     </div>
                     @endforelse
                 @endif
-                @if ($case = TypeProductEnums::GIVEAWAY->value && $case != 0)
+                @if ($case == TypeProductEnums::GIVEAWAY->value && $case != 0)
                 @forelse($products as $product)
                 <div class="gift-item m-2 col-lg-4 col-6"
                     style="margin-left: 0px !important;margin-right: 0px !important">
@@ -217,6 +216,8 @@ if (request()->query('type') == 1) {
                             <a href="#" class="buy">Trao đổi</a>
                             @elseif($product->type->value == 2)
                             <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
+                            @elseif($product->type->value == 3)
+                            <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Nhận quà tặng</a>
                             @endif
                         </div>
                     </div>
@@ -259,11 +260,19 @@ if (request()->query('type') == 1) {
         })
         $('#btn-more').click(function(event) {
 
+
+
             var selectedBrands = [];
-            $('.category-1-item.checked-text').each(function() {
-                var brandId = $(this).data('brandid');
-                selectedBrands.push(brandId);
-            });
+                var selectedCategories = [];
+                $('.category-1-item.checked-text').each(function() {
+                    var brandId = $(this).data('brandid');
+                    selectedBrands.push(brandId);
+                });
+
+                $('.custom-checkbox-category.checked-text').each(function() {
+                    var categoryId = $(this).data('categoryid');
+                    selectedCategories.push(categoryId);
+                });
 
             var selectedProvinces = [];
             $('.category-2-item.checked-text').each(function() {
@@ -290,6 +299,7 @@ if (request()->query('type') == 1) {
                 method: 'GET',
                 data: {
                     brandIds: selectedBrands,
+                    categoryIds: selectedCategories,
                     provinceIds: selectedProvinces,
                     rangeInputMin: rangeInput,
                     rangeInputMax: rangeInput2,
@@ -300,6 +310,7 @@ if (request()->query('type') == 1) {
                     page: currentPage
                 },
                 success: function(response) {
+                    
                     $('.list-product').append(response.productHtml);
 
                     if (response.hasMorePages) {

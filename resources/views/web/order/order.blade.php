@@ -121,7 +121,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($carts as $cart)
+                       
+                        @foreach ($orderCarts as $cart)
                             @php
                                 $sum += $cart->products->price * $cart->quantity;
                             @endphp
@@ -188,7 +189,7 @@
                                         </div>
                                     </div> --}}
                                     <div class="total-last col-lg-12">Tổng số tiền(<span
-                                            style="color: #B10000">{{ $carts->count() }}</span>): <b>{{ format_price($sum) }}</b></div>
+                                            style="color: #B10000">{{ $orderCarts->count() }}</span>): <b>{{ format_price($sum) }}</b></div>
                                 </div>
                             </div>
                         </td>
@@ -262,7 +263,7 @@
                                     @endforelse
                                     
                                 </div>
-                                @foreach ($carts as $cart)
+                                @foreach ($orderCarts as $cart)
                                     <input type="hidden" name="cartIds[]" value="{{ $cart->id }}">
                                 @endforeach
                                 <input type="hidden" name="total_amount" value="{{$sum}}">
@@ -374,7 +375,6 @@
                     if(discountAmount > maxValue) discountAmount = maxValue;
                 }else {
                     discountAmount = (originalPrice - value);
-                    console.log(discountAmount);
                     
                     if (discountAmount > maxValue) {
                         discountAmount = maxValue;
@@ -407,7 +407,6 @@
                     }
 
                     var formData = $('#changeAddressForm').serialize();
-                    console.log(addressValue + "|" + phoneNumberValue);
                     
                     $.ajax({
                         url: $('#changeAddressForm').attr('action'),
@@ -443,7 +442,6 @@
                             if(item.code == voucherCodeInput){
                                 voucherSelected = item;
                                 voucherId = item.id;
-                                console.log(voucherSelected);
                                 
                             } 
                         })
@@ -451,18 +449,16 @@
                         if(!voucherSelected) {
                             $('#errorCode').empty();
                             $('#errorCode').append(`
-                                <p class="text-danger code-error">Mã giảm giá không hợp lệ</p>
+                                <p class="text-danger code-error my-1">Mã giảm giá không hợp lệ</p>
                             `)
                             return;
                         }
-                        if(voucherSelected && voucherSelected.discount_users.length > 0) {
-                            var userId = {{ Auth::id() }};
-                            var discountUser = voucherSelected.discount_users.find(discountUser => discountUser.user_id === userId);
-                            console.log(discountUser);
-                            if(voucherSelected.limit_uses == discountUser.number_used) {
+                        
+                        if(voucherSelected ) {
+                            if(voucherSelected.user_used.split(',').filter(id => id == @json(Auth::id())).length >= voucherSelected.limit_uses) {
                                 $('#errorCode').empty();
                                 $('#errorCode').append(`
-                                    <p class="text-danger code-error">Đã hết lượt dùng voucher này</p>
+                                    <p class="text-danger code-error my-1">Đã hết lượt dùng voucher này</p>
                                 `)
                                 return;
                             }

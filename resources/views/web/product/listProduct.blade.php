@@ -108,7 +108,7 @@ if (request()->query('type') == 1) {
                     </div>
                     @endforelse
                 @endif
-                @if ($case = TypeProductEnums::GIVEAWAY->value && $case != 0)
+                @if ($case == TypeProductEnums::GIVEAWAY->value && $case != 0)
                 @forelse($products as $product)
                 <div class="gift-item m-2 col-lg-4 col-6"
                     style="margin-left: 0px !important;margin-right: 0px !important">
@@ -168,6 +168,8 @@ if (request()->query('type') == 1) {
                             <a href="#" class="buy">Trao đổi</a>
                             @elseif($product->type->value == 2)
                             <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
+                            @elseif($product->type->value == 3)
+                            <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Nhận quà tặng</a>
                             @endif
                         </div>
                     </div>
