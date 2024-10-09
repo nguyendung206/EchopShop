@@ -133,7 +133,7 @@
             method: "DELETE",
             success: function(response) {
 
-                if (response.status === 'success') {
+                if (response.status === 200) {
                     $('#product-' + productId).remove();
                     toastr.success(response.message, null, {
                         positionClass: 'toast-bottom-left'

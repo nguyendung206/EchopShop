@@ -19,9 +19,11 @@
                 success: function(response) {
                     $this.toggleClass('favorite-active');
                     $icon.removeClass('fa-solid').addClass('fa-regular');
-                    if (response.status === 'success') {
+                    if (response.status === 200) {
+                        
                         toastr.success(response.message, null, {positionClass: 'toast-bottom-left'});
                     } else {
+                        
                         toastr.error(response.message, null, {positionClass: 'toast-bottom-left'});
                     }
                 }
@@ -36,7 +38,7 @@
                 success: function(response) {
                     $this.toggleClass('favorite-active');
                     $icon.removeClass('fa-regular').addClass('fa-solid');
-                    if (response.status === 'success') {
+                    if (response.status === 200) {
                         toastr.success(response.message,null, {positionClass: 'toast-bottom-left'});
                     } else {
                         toastr.error(response.message, null, {positionClass: 'toast-bottom-left'});

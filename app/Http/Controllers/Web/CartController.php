@@ -81,14 +81,14 @@ class CartController extends Controller
             if ($result) {
 
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 200,
                     'message' => 'Đổi loại hàng thành công',
                     'cart' => $result,
 
                 ], 200);
             } else {
                 return response()->json([
-                    'status' => 'fail',
+                    'status' => 500,
                     'message' => 'Đã có lỗi xảy ra',
                 ], 500);
             }
@@ -107,12 +107,12 @@ class CartController extends Controller
             if ($result) {
 
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 200,
                     'message' => 'Đổi số lượng thành công',
                 ], 200);
             } else {
                 return response()->json([
-                    'status' => 'fail',
+                    'status' => 500,
                     'message' => 'Đã có lỗi xảy ra',
                 ], 500);
             }
