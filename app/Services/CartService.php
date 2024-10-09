@@ -28,8 +28,15 @@ class CartService
                 ->where('product_unit_id', $request->productUnitId)
                 ->first();
             if (! empty($existingCartItem)) {
+                $getProductUnit = ProductUnit::where('id', $request->productUnitId)->first();
+
                 $quantityToIncrease = $request->quantity ? $request->quantity : 1;
+
                 $existingCartItem->increment('quantity', $quantityToIncrease);
+                if ($existingCartItem->quantity > $getProductUnit->quantity) {
+                    $existingCartItem->quantity = $getProductUnit->quantity;
+                    $existingCartItem->save();
+                }
 
                 return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
             }

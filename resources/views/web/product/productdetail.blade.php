@@ -106,7 +106,7 @@ $totalQuantity = 0;
                         <div class="number-input">
                             <button class="minus">-</button>
                             <input class="quantity" type="number" value="1" min="1" max="100">
-                            <button class="plus">+</button>
+                            <button class="plus" >+</button>
                         </div>
                         <div class="my-2">
                             <span id="totalProduct">
@@ -902,11 +902,14 @@ $totalQuantity = 0;
             $('#colorValue').val(color);
             $('#sizeValue').val(size);
         });
+
+        $('.quantity').trigger('change');
     });
 
     function changeMainImage(imageSrc) {
         document.getElementById('main-image').src = imageSrc;
     }
+    
 </script>
 <script src="{{ asset('/js/favorite.js') }}"></script>
 <script src="{{ asset('/js/cart.js')}}"></script>
