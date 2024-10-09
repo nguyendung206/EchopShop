@@ -45,6 +45,19 @@ class Product extends Model
         return null;
     }
 
+    public function hasQuantityProduct()
+    {
+        $productUnits = $this->productUnits;
+
+        foreach ($productUnits as $productUnit) {
+            if ($productUnit->quantity > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getProductUnitById($unitId)
     {
         return $this->productUnits()->where('id', $unitId)->first();
