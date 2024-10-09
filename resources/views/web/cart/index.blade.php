@@ -52,14 +52,14 @@
                                             </div>
                                             <div class="text-left type-product">
                                                 @if ( !empty($cart->products->getProductUnitById($cart->product_unit_id)))
-                                                <div class="type-show">
+                                                <div class="type-show ">
                                                     @if (! empty($cart->products->getProductUnitById($cart->product_unit_id)->size) && ! empty($cart->products->getProductUnitById($cart->product_unit_id)->color))
                                                 <p>Phân loại hàng:</p>
-                                                    <div class="type-size-{{$cart->id}}"> &nbsp; size {{$cart->products->getProductUnitById($cart->product_unit_id)->size}}, </div>
-                                                    <div class="type-color-{{$cart->id}}">&nbsp; màu {{$cart->products->getProductUnitById($cart->product_unit_id)->color}}, </div>
-                                                    <div class="type-quantity-{{$cart->id}}">
+                                                    <div class="type-size-{{$cart->id}} "> &nbsp;size {{$cart->products->getProductUnitById($cart->product_unit_id)->size}} </div>
+                                                    <div class="type-color-{{$cart->id}} ">&nbsp;màu {{$cart->products->getProductUnitById($cart->product_unit_id)->color}} </div>
+                                                    <div class="type-quantity-{{$cart->id}} ">
                                                         @if ($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0)
-                                                            &nbsp;  còn {{$cart->products->getProductUnitById($cart->product_unit_id)->quantity}} sản phẩm.
+                                                            còn {{$cart->products->getProductUnitById($cart->product_unit_id)->quantity}} sản phẩm.
                                                         @else
                                                         <p class='text-danger'>&nbsp; Hết hàng.</p>
                                                         @endif
@@ -68,7 +68,7 @@
                                                     @else
                                                     <div class="type-quantity-{{$cart->id}}">
                                                         @if ($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0)
-                                                            &nbsp;  còn {{$cart->products->getProductUnitById($cart->product_unit_id)->quantity}} sản phẩm.
+                                                            còn {{$cart->products->getProductUnitById($cart->product_unit_id)->quantity}} sản phẩm.
                                                         @else
                                                         <p class='text-danger'>&nbsp; Hết hàng.</p>
                                                         @endif
@@ -376,12 +376,17 @@
         });
 
         function updateBuyButton() {
+
             const selectedCartIds = [];
-            let isValid = true;
+            
+            let isValid = true; 
+
             document.querySelectorAll('.custom-checkbox:checked').forEach(checkbox => {
                 const cartId = checkbox.getAttribute('data-cart-id');
                 selectedCartIds.push(cartId);
             });
+
+            
             
             // Cập nhật URL của nút Mua hàng
             const buyButton = document.getElementById('buyButton');
@@ -394,8 +399,9 @@
             if (selectedCartIds.length === 0) {
                 buyButton.removeEventListener('click', navigateToOrder); // Ngăn hành động chuyển hướng
                 buyButton.addEventListener('click', showSelectProductModal);
+                buyButton.removeEventListener('click', showQuantityProductModal);
             } else {
-                // kiểm tra xem hàng chọn có vượt quá số lượng không
+                
                 selectedCartIds.forEach(cartId => {
                     const checkbox = document.querySelector(`.custom-checkbox[data-cart-id="${cartId}"]`);
                     if (checkbox) {
@@ -410,14 +416,16 @@
                         }
                     }
                 });
+                
 
                 
                 buyButton.removeEventListener('click', showSelectProductModal);
-                buyButton.addEventListener('click', navigateToOrder);
-                if(!isValid) {
-                    buyButton.removeEventListener('click', navigateToOrder); // Ngăn hành động chuyển hướng
+                if (isValid) {
+                    buyButton.removeEventListener('click', showQuantityProductModal);
+                    buyButton.addEventListener('click', navigateToOrder);
+                } else {
+                    buyButton.removeEventListener('click', navigateToOrder);
                     buyButton.addEventListener('click', showQuantityProductModal);
-
                 }
             }
         }
@@ -492,9 +500,9 @@
                     },
                     success: function(response) {
                         let cart = response.cart;
-                        $(`.type-size-${cartId}`).text(`Size ${sizeShow}`);
-                        $(`.type-color-${cartId}`).text(`Màu ${colorShow}`)    
-                        $(`.type-quantity-${cartId}`).html(quantityShow > 0 ? `Số lượng ${quantityShow}` : '<p class="text-danger">Hết hàng</p>')
+                        $(`.type-size-${cartId}`).text(`\u00A0size ${sizeShow}`);
+                        $(`.type-color-${cartId}`).text(`\u00A0màu ${colorShow}`)    
+                        $(`.type-quantity-${cartId}`).html(quantityShow > 0 ? `\u00A0còn ${quantityShow} sản phẩm.` : '<p class="text-danger">Hết hàng</p>')
                         $(`.quantity-${cartId}`).data('productunitid', productUnitId).trigger('change') // cập nhật số lượng
                         $(`.td-quantity-${cartId}`).html(
                             quantityShow > 0 ?

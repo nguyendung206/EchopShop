@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Status;
 use App\Enums\TypeProduct;
+use App\Enums\TypeProductUnit;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +32,17 @@ class Product extends Model
     public function productUnits()
     {
         return $this->hasMany(ProductUnit::class, 'product_id', 'id');
+    }
+
+    public function getProductUnitTypeOne()
+    {
+        foreach ($this->productUnits as $productUnit) {
+            if ($productUnit->type == typeProductUnit::ONLYQUANTITY->value) {
+                return $productUnit;
+            }
+        }
+
+        return null;
     }
 
     public function getProductUnitById($unitId)

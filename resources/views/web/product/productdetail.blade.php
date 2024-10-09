@@ -71,7 +71,7 @@ $totalQuantity = 0;
                     <p>{!! $product->description !!}</p>
                 </div>
                 <div class="product-unit">
-                    @if ($product->productUnits[0]->type != TypeProductUnitEnums::ONLYQUANTITY->value)
+                    @if (empty($product->getProductUnitTypeOne()))
                     <table class="table table-unit">
                         <thead>
                           <tr>
@@ -82,23 +82,19 @@ $totalQuantity = 0;
                           </tr>
                         </thead>
                         <tbody>
-                            @forelse ( $product->productUnits as $unit)
+                            @foreach ( $product->productUnits as $unit)
                             @php
                                 $totalQuantity += $unit->quantity
                             @endphp
                             <tr>
     
-                                <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'">' : '' !!}</td>
+                                <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'" data-size="'.$unit->size.'" data-color="'.$unit->color.'" >' : '' !!}</td>
                                 <td>{{$unit->color}}</td>
                                 <td>{{$unit->size}}</td>
                                 <td>{!!$unit->quantity > 0 ? $unit->quantity : '<p class="text-danger"> Hết hàng </p>' !!}</td>
                             </tr>
-                            @empty
-                                <tr>Chưa có thông tin chi tiết</th>
-                                <tr>...</tr>
-                                <tr>...</tr>
-                                <tr>...</tr>
-                            @endforelse
+                            
+                            @endforeach
                         </tbody>
                       </table>
                     @error('productUnitId')
@@ -106,7 +102,7 @@ $totalQuantity = 0;
     
                     @enderror
                     @endif
-                    <div style="display: {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span> 
+                    <div style="display: {{ empty($product->getProductUnitTypeOne()) ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span> 
                         <div class="number-input">
                             <button class="minus">-</button>
                             <input class="quantity" type="number" value="1" min="1" max="100">
@@ -114,7 +110,7 @@ $totalQuantity = 0;
                         </div>
                         <div class="my-2">
                             <span id="totalProduct">
-                                {{ $product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? $totalQuantity : $product->productUnits[0]->quantity}} Sản phẩm sẵn có 
+                                {{ empty($product->getProductUnitTypeOne()) ? $totalQuantity : $product->getProductUnitTypeOne()->quantity}} Sản phẩm sẵn có 
                             </span>
                             <span id="totalCartProduct"></span>
                         </div>
@@ -127,8 +123,11 @@ $totalQuantity = 0;
                     @elseif($product->type->value == 2)
                     <form action="{{route("cart.store")}}" method="POST" class="d-inline">
                         <input type="hidden" name="productId" value="{{$product->id}}">
-                        <input type="hidden" name="productUnitId" id="productUnitId" value="{{$product->productUnits[0]->type != typeProductUnitEnums::ONLYQUANTITY->value ? '' : $product->productUnits[0]->id}}">
+                        <input type="hidden" name="type" value="{{$product->type}}">
+                        <input type="hidden" name="productUnitId" id="productUnitId" value="{{ empty($product->getProductUnitTypeOne()) ? '' : $product->getProductUnitTypeOne()->id}}">
                         <input type="hidden" name="quantity" id="quantityValue" value="1">
+                        <input type="hidden" name="color" id="colorValue" value="">
+                        <input type="hidden" name="size" id="sizeValue" value="">
                         @csrf
                         <button class="text-white">Mua hàng</button>
                     </form>
@@ -798,11 +797,12 @@ $totalQuantity = 0;
     var totalProduct = 0;
     var quantityCart = 0;
     
-    if(@json(isset($product->productUnits[0]) && $product->productUnits[0]->type == typeProductUnitEnums::ONLYQUANTITY->value)){
-        totalProduct = @json($product->productUnits[0]->quantity);
+    if(@json($product->getProductUnitTypeOne()) != null){
+        let unitOnlyQuantity = @json($product->getProductUnitTypeOne()); 
+        totalProduct = unitOnlyQuantity.quantity;
 
         @json($cart).forEach(item => {
-            if(@json($product->productUnits[0]-> id) == item.product_unit_id){
+            if(unitOnlyQuantity.id == item.product_unit_id){
                 quantityCart = item.quantity;
                 $('#totalCartProduct').text(" | " + quantityCart + " sản phẩm đã có trong giỏ.");
             }
@@ -872,6 +872,8 @@ $totalQuantity = 0;
             $('#divQuantity').fadeIn();
             var selectedUnitId = $(this).val();
             totalProduct = $(this).data('total-product');
+            let color = $(this).data('color');
+            let size = $(this).data('size');
             
             if($('.quantity').val() > totalProduct) {
                 $('.quantity').val(totalProduct);
@@ -884,6 +886,7 @@ $totalQuantity = 0;
             carts.forEach(cart => {
                 if (cart.product_unit_id == selectedUnitId) {
                     quantityCart = cart.quantity;  // Lấy ra số lượng sản phẩm đã có trong giỏ
+
                 } 
             });
             
@@ -896,6 +899,8 @@ $totalQuantity = 0;
             $('.quantity').trigger('change');
             
             $('#productUnitId').val(selectedUnitId);
+            $('#colorValue').val(color);
+            $('#sizeValue').val(size);
         });
     });
 
