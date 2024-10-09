@@ -32,4 +32,9 @@ class Notification extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public static function getNotificationCount($userId)
+    {
+        return self::where('user_id', $userId)->where('is_read', false)->count();
+    }
 }

@@ -150,7 +150,7 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
-                        <a href="{{route('favoriteProduct')}}" class="d-n display-none">
+                        <a href="{{route('favoriteProduct')}}" class="d-n display-none profile-tab" data-tab="favoriteProduct">
                             <i class="fa-regular fa-heart"></i>
                         </a>
                     </div>
@@ -208,24 +208,43 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 <div class="search" style="position: relative;">
                                     <a href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa-regular fa-bell"></i>
-                                        @if(isset($notifications) && $notifications->where('is_read', false)->count() > 0)
-                                        <span class="badge badge-danger" style="position: absolute;bottom: 12px; left: 10px;">{{ $notifications->where('is_read', false)->count() }}</span>
-                                        @endif
+                                        @if(Auth::check())
+                                        @php
+                                        $notificationCount = \App\Models\Notification::getNotificationCount(Auth::id());
+                                        @endphp
+                                        @if($notificationCount > 0 && $notificationCount < 100)
+                                            <span id="notificationCount" class="badge badge-danger" style="position: absolute; bottom: 12px; left: 10px;">{{ $notificationCount }}</span>
+                                            @else
+                                            <span id="notificationCount" class="badge badge-danger" style="position: absolute; bottom: 12px; left: 10px;">99+</span>
+                                            @endif
+                                            @endif
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 400px; white-space: nowrap; overflow-x: hidden;">
+                                    <div class="dropdown-menu dropdown-menu-right px-2" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 450px; white-space: nowrap; overflow-x: hidden;">
+                                        <div class="notification-header mx-3 py-3 mb-2 row justify-content-between align-items-center">
+                                            <strong style="font-size: 24px;">Thông báo</strong>
+                                            <a href="#" style="font-size: 14px;">Đánh dấu đã đọc tất cả</a>
+                                        </div>
                                         @if(isset($notifications) && count($notifications) > 0)
                                         @foreach($notifications as $notification)
-                                        <a class="py-notificaition dropdown-item d-flex align-items-center {{ !$notification->is_read ? 'is_read' : '' }}" href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
-                                            <div class="mr-3 mt-4">
-                                                <i class="fa-regular fa-bell"></i>
-                                            </div>
-                                            <div>
-                                                <strong>{{ $notification->title }}</strong>
-                                                <div class="text-muted my-2 text-body">{{ $notification->body }}</div>
-                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                        <a href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
+                                            <div style="border-radius: 10px;" class="py-notificaition dropdown-item d-flex align-items-center notification {{ !$notification->is_read ? 'is_read' : '' }}">
+                                                <div class="mr-3">
+                                                    <img style="height: 50px;width: 50px; border-radius: 50%; object-fit: cover;" src="{{ getImage($notification->product->photo) }}">
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-between w-100">
+                                                    <div style="max-width: 95%;">
+                                                        <strong>{{ $notification->title }}</strong>
+                                                        <div class="text-muted my-2 text-body">{{ $notification->body }}</div>
+                                                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                    </div>
+                                                    <div class="ml-auto {{ !$notification->is_read ? 'dot' : '' }}"></div>
+                                                </div>
                                             </div>
                                         </a>
                                         @endforeach
+                                        <a class="notification-all profile-tab" href="{{route('notification.index')}}" data-tab="notifications">
+                                            Xem tất cả
+                                        </a>
                                         @else
                                         <div class="dropdown-item text-center">@lang('Không có thông báo mới')</div>
                                         @endif
@@ -406,12 +425,12 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
         });
 
         $('.list-result').on('mousedown', function(event) {
-        event.preventDefault();
+            event.preventDefault();
         });
-        
+
         let checkTimeout;
         $('.search-input').on('input', function() {
-            
+
             var searchValue = $(this).val();
             checkInputValue();
             clearTimeout(checkTimeout);
@@ -440,18 +459,17 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
 
             $('.search-input').each(function() {
                 if ($(this).val().trim() !== '') {
-                        isAnyInputFilled = true;
-                        return false;
-                    }
-                });
+                    isAnyInputFilled = true;
+                    return false;
+                }
+            });
 
-                if (isAnyInputFilled) {
-                    $('.btn-search').prop('disabled', false);
-                } else {
-                    $('.btn-search').prop('disabled', true);
+            if (isAnyInputFilled) {
+                $('.btn-search').prop('disabled', false);
+            } else {
+                $('.btn-search').prop('disabled', true);
             }
         }
 
     });
-    
 </script>
