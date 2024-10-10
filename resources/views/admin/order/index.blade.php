@@ -2,6 +2,15 @@
 @section('title')
     @lang('Banner')
 @endsection
+@section('style')
+    <link rel="stylesheet" href="{{ static_asset('css/inputRanger.css')}}">
+@endsection
+@section('header')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+@endsection
 @section('content')
 
     <div class="aiz-titlebar text-left mt-2 mb-3">
@@ -19,10 +28,26 @@
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input type="text" class="form-control res-placeholder res-FormControl" id="search" name="search"
-                        value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên địa chỉ nhận hàng')">
+                        value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên địa chỉ nhận hàng hoặc tên khách hàng')">
                 </div>
-                
-                <div class="col-md-6 text-md-right download" style="padding-left: 3px">
+
+                <div class="col-md-3 text-md-right d-flex align-items-center" style="padding-left: 5px">
+                    <div class="category-title mt-4 text-left" style="margin-top: -12px !important;height: 0px !important;font-size: 14px">Mức giá:</div>
+                    <div class="category-3">
+                        <div class="box">
+                            <div class="min-max-slider" data-legendnum="3" style="margin-bottom: 0px;position: absolute;left: 20%;top: -2px;">
+                                    <input id="min" class="min" name="min" type="range" step="1" min="0" max="{{ config('setting.max_price_filter_admin') }}" 
+                                        style="background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(190, 228, 239) 30%, rgb(190, 225, 239) 60%, transparent 60%, transparent 100%);"
+                                    />
+                                    <input id="max" class="max" name="max" type="range" step="1" min="0"  max="{{ config('setting.max_price_filter_admin') }}" 
+                                        style="background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(190, 228, 239) 30%, rgb(190, 225, 239) 60%, transparent 60%, transparent 100%);"
+                                    />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 text-md-right download" style="padding-left: 3px">
                     <a href="" type="button"
                         class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
                         <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
@@ -31,11 +56,8 @@
                 </div>
             </div>
             <div class="row gutters-5 mb-3 custom-change">
-                <div class="col-md-3 ">
-                    <input type="text" onkeypress='return event.charCode >=48 && event.charCode<=57' autocomplete="off"
-                        class="form-control custom-placeholder" name="joined_date" id="joined_date"
-                        placeholder="{{ __('Ngày tạo') }}" value="{{ request('joined_date') }}">
-                    <div class="custom-down"><i class="fas fa-chevron-down"></i></div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="daterange" id="daterange" placeholder="Chọn khoảng thời gian" onkeypress='return event.charCode >=48 && event.charCode<=57' autocomplete="off">
                 </div>
                 <div class="col-md-3 res-status">
                     <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500"
@@ -95,13 +117,15 @@
             <table class="table aiz-table mb-0 table_repon">
                 <thead>
                     <tr class="text-center">
-                        <th class="w-20 font-weight-800">STT</th>
-                        <th class="w-20">@lang('Tên khách hàng')</th>
-                        <th class="w-20">@lang('Ngày tạo')</th>
-                        <th class="w-20">@lang('Địa chỉ nhận hàng')</th>
-                        <th class="">@lang('Thành tiền')</th>
-                        <th class="w-30">@lang('Trạng thái')</th>
-                        <th class="w-30">@lang('Điều chỉnh')</th>
+                        <th class="font-weight-800">STT</th>
+                        <th >@lang('Tên khách hàng')</th>
+                        <th >@lang('Ngày tạo')</th>
+                        <th >@lang('Địa chỉ nhận hàng')</th>
+                        <th >@lang('Giá gốc')</th>
+                        <th >@lang('Giảm giá')</th>
+                        <th >@lang('Thành tiền')</th>
+                        <th >@lang('Trạng thái')</th>
+                        <th >@lang('Điều chỉnh')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,6 +137,12 @@
                                     <td class="font-weight-400 align-middle text-overflow">{{ optional($order)->customer->name }}</td>   
                                 <td class="font-weight-400 align-middle text-overflow">{{ optional($order)->created_at }}</td>
                                 <td class="font-weight-400 align-middle">{{ $order->shipping_address}}</td>
+                                <td class="font-weight-400 align-middle">
+                                    {{ format_price($order->total_amount)}}
+                                </td>
+                                <td class="font-weight-400 align-middle">
+                                    {{!empty($order->discount) ? format_price(calculateDiscountAmount($order->discount->type->value, $order->total_amount, $order->discount->value, $order->discount->max_value)) : 'Không giảm giá'}}
+                                </td>
                                 <td class="font-weight-400 align-middle">
                                     {{!empty($order->discount) ? format_price(calculateDiscountedPrice($order->discount->type->value, $order->total_amount, $order->discount->value, $order->discount->max_value)) : format_price($order->total_amount)}}
                                 </td>
@@ -190,87 +220,44 @@
 
 
         //Date
-        $('#joined_date').daterangepicker({
-            autoUpdateInput: false,
-            minDate: '1921/01/01',
-            singleDatePicker: true,
-            showDropdowns: true,
-            locale: {
-                format: 'YYYY/MM/DD',
-                applyLabel: "Ok",
-                cancelLabel: "Cancel",
-                "monthNames": [
-                    "@lang('Tháng 1')",
-                    "@lang('Tháng 2')",
-                    "@lang('Tháng 3')",
-                    "@lang('Tháng 4')",
-                    "@lang('Tháng 5')",
-                    "@lang('Tháng 6')",
-                    "@lang('Tháng 7')",
-                    "@lang('Tháng 8')",
-                    "@lang('Tháng 9')",
-                    "@lang('Tháng 10')",
-                    "@lang('Tháng 11')",
-                    "@lang('Tháng 12')",
-                ],
-                daysOfWeek: [
-                    "@lang('Chủ nhật')",
-                    "@lang('Thứ 2')",
-                    "@lang('Thứ 3')",
-                    "@lang('Thứ 4')",
-                    "@lang('Thứ 5')",
-                    "@lang('Thứ 6')",
-                    "@lang('Thứ 7')",
-                ]
+        $(function() {
+            var startDay = moment().startOf('month');
+            var endDay = moment().endOf('month');
+
+            function getParameterByName(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
             }
-        });
-        $('#joined_date').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('YYYY/MM/DD'));
-        });
 
-        $('#joined_date').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
-        });
+            let daterange = getParameterByName('daterange');
 
-        @if (request('joined_date'))
-            $('#joined_date').value("{{ request('joined_date') }}");
-        @endif
-        $('input[name="joined_date"]').val('');
+            if (daterange) {
+                console.log(daterange);
+                
+                let dates = daterange.split(' - '); 
+                startDay = moment(dates[0], 'DD/MM/YYYY');
+                endDay = moment(dates[1], 'DD/MM/YYYY');
+            }
 
-        //
-        $(document).on('click', '.changeStatus', function() {
-            let id = $(this).attr('data-id');
-            let href = $(this).attr('data-href');
-            
-            Swal.fire({
-                title: '@lang('Trạng thái')',
-                text: '@lang('Bạn muốn thay đổi trạng thái Banner này?')',
-                confirmButtonText: '@lang('Có')',
-                cancelButtonText: '@lang('Không')',
-                showCancelButton: true,
-                showCloseButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "PUT",
-                        url: href,
-                        success: function(response) {
-                            Swal.fire({
-                                title: 'Thông báo!',
-                                text: 'Thay đổi trạng thái thành công!',
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            }).then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(err) {
-                            Swal.fire('Đã xảy ra lỗi!', 'Không thể thay đổi trạng thái.',
-                                'error');
-                        }
-                    });
-                }
+            $('#daterange').daterangepicker({
+                locale: {
+                    format: 'DD/MM/YYYY',
+                    applyLabel: "Áp dụng",
+                    cancelLabel: "Hủy",
+                    fromLabel: "Từ ngày",
+                    toLabel: "Đến ngày",
+                    customRangeLabel: "Tùy chỉnh",
+                    daysOfWeek: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+                    monthNames: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"]
+                },
+                startDate: startDay, 
+                endDate: endDay
             });
         });
+
+        
+
     </script>
+    <script src="{{asset('/js/inputRange.js')}}"></script>
+    
 @endsection

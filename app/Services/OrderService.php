@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\Status;
 use App\Enums\StatusOrder;
 use App\Enums\TypePayment;
+use App\Jobs\SendChangeStatusOrderMail;
 use App\Jobs\SendOrderSuccessMail;
 use App\Models\Cart;
 use App\Models\Discount;
@@ -130,12 +131,25 @@ class OrderService
 
     public function index($request)
     {
+
         $query = Order::query();
         if (! empty($request['search'])) {
             $query->where('shipping_address', 'like', '%'.$request['search'].'%');
         }
         if (! empty($request['status'])) {
             $query->where('status', $request['status']);
+        }
+        if (! empty($request['daterange'])) {
+            $dates = explode(' - ', $request['daterange']);
+            $startDay = Carbon::createFromFormat('d/m/Y', $dates[0])->startOfDay();
+            $endDay = Carbon::createFromFormat('d/m/Y', $dates[1])->endOfDay();
+            $query->whereBetween('created_at', [$startDay, $endDay]);
+        }
+        // dd($request);
+        if (! empty($request['min']) && ! empty($request['max'])) {
+            $min = $request['min'];
+            $max = $request['max'];
+            $query->whereBetween('total_amount', [$min, $max]);
         }
 
         return $query->with(['discount', 'customer'])->paginate(15);
@@ -151,12 +165,21 @@ class OrderService
     public function updateStatus($request, $id)
     {
         try {
-            $order = Order::findOrFail($id);
+            $order = Order::with('customer')->findOrFail($id);
+            $statusInit = $order->status->value;
+
             $order->status = $request['status'];
             $order->save();
 
+            if ($statusInit != $request['status']) {
+                $emailJob = new SendChangeStatusOrderMail($order, $order->customer->email);
+                dispatch($emailJob);
+            }
+
             return $order;
         } catch (\Throwable $th) {
+            dd($th);
+
             return $th;
         }
 

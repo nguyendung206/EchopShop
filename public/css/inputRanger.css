@@ -1,0 +1,54 @@
+.min-max-slider {
+    position: relative;
+    width: 200px;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .min-max-slider > label {
+    display: none;
+  }
+  
+  .min-max-slider > .legend {
+    display: flex;
+    justify-content: space-between;
+  }
+  .min-max-slider > .legend > * {
+    font-size: small;
+    opacity: 0.25;
+  }
+  .min-max-slider > input {
+    cursor: pointer;
+    position: absolute;
+  }
+/* webkit specific styling */
+.min-max-slider > input {
+    -webkit-appearance: none;
+    outline: none !important;
+    background: transparent;
+    background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(239, 190, 190) 30%, rgb(239, 190, 190) 60%, transparent 60%, transparent 100%);
+  }
+  .min-max-slider > input::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 14px; /* Set a specific slider handle width */
+    height: 14px; /* Slider handle height */
+    background: #17a2b8; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+    border: 1px solid white;
+    border-radius: 100%;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  .min-max-slider > input::-webkit-slider-runnable-track {
+    cursor: pointer;
+  }
+
+  .lower {
+    position: absolute;
+    left: 0px;
+    top: 35px;
+  }
+  .upper {
+    position: absolute;
+    left: 96px;
+    top: 35px;
+  }
