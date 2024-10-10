@@ -33,11 +33,12 @@ if (! function_exists('calculateDiscountAmount')) {
                 $discountAmount = $maxValue;
             }
         } else {
-            $discountAmount =  $value;
+            $discountAmount = $value;
             if ($discountAmount > $maxValue) {
                 $discountAmount = $maxValue;
             }
         }
+
         return $discountAmount;
     }
 }
@@ -58,9 +59,9 @@ if (! function_exists('calculateDiscountedPrice')) {
                 $discountAmount = $maxValue;
             }
         }
-        
+
         $discounted = $originalPrice - $discountAmount;
-        if($discountAmount < 0) {
+        if ($discountAmount < 0) {
             $discounted = 0;
         }
 

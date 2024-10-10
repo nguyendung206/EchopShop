@@ -138,23 +138,27 @@ class OrderService
             $query->where('status', $request['status']);
         }
 
-        return $query->with(['discount','customer'])->paginate(15);
+        return $query->with(['discount', 'customer'])->paginate(15);
     }
 
-    public function getOrderById($id) {
+    public function getOrderById($id)
+    {
         $order = Order::query()->with(['customer', 'orderDetails.product', 'discount'])->findOrFail($id);
+
         return $order;
     }
 
-    public function updateStatus($request, $id) {
+    public function updateStatus($request, $id)
+    {
         try {
             $order = Order::findOrFail($id);
             $order->status = $request['status'];
             $order->save();
+
             return $order;
         } catch (\Throwable $th) {
             return $th;
         }
-        
+
     }
 }
