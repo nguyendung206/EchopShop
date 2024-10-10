@@ -374,12 +374,14 @@
                     discountAmount = (originalPrice * value) / 100;
                     if(discountAmount > maxValue) discountAmount = maxValue;
                 }else {
-                    discountAmount = (originalPrice - value);
+                    
+                    discountAmount = value;
                     
                     if (discountAmount > maxValue) {
                         discountAmount = maxValue;
                     }
                 }
+
                 let discounted = originalPrice - discountAmount;
                 
                 if(discountAmount < 0) {

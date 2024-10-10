@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -71,11 +72,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::resource('/banner', BannerController::class);
     Route::put('banner/changeStatus/{id}', [BannerController::class, 'changeStatus'])->name('banner.changeStatus');
 
-    //banner
+    //brand
     Route::resource('/brand', BrandController::class);
     Route::put('brand/changestatus/{id}', [BrandController::class, 'changestatus'])->name('brand.changestatus');
 
-    //banner
+    //product
     Route::resource('/product', ProductController::class);
     Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
 
@@ -91,4 +92,13 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::post('/reject', [ProductController::class, 'reject'])->name('reject');
         Route::post('/accept', [ProductController::class, 'accept'])->name('accept');
     });
+
+    Route::prefix('order')->name('order.')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::post('/create', [OrderController::class, 'create'])->name('create');
+        Route::get('/{order}', [OrderController::class, 'show'])->name('show');
+        Route::post('/updateStatus/{id}', [OrderController::class, 'updateStatus'])->name('updateStatus');
+
+    });
+
 });

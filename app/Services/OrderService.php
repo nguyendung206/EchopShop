@@ -127,4 +127,34 @@ class OrderService
             return $e;
         }
     }
+
+    public function index($request)
+    {
+        $query = Order::query();
+        if (! empty($request['search'])) {
+            $query->where('shipping_address', 'like', '%'.$request['search'].'%');
+        }
+        if (! empty($request['status'])) {
+            $query->where('status', $request['status']);
+        }
+
+        return $query->with(['discount','customer'])->paginate(15);
+    }
+
+    public function getOrderById($id) {
+        $order = Order::query()->with(['customer', 'orderDetails.product', 'discount'])->findOrFail($id);
+        return $order;
+    }
+
+    public function updateStatus($request, $id) {
+        try {
+            $order = Order::findOrFail($id);
+            $order->status = $request['status'];
+            $order->save();
+            return $order;
+        } catch (\Throwable $th) {
+            return $th;
+        }
+        
+    }
 }
