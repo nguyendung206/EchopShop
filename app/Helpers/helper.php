@@ -61,7 +61,7 @@ if (! function_exists('calculateDiscountedPrice')) {
         }
 
         $discounted = $originalPrice - $discountAmount;
-        if ($discountAmount < 0) {
+        if ($discounted < 0) {
             $discounted = 0;
         }
 

@@ -114,7 +114,7 @@
                                 <td class="font-weight-400 align-middle text-overflow">{{ optional($order)->created_at }}</td>
                                 <td class="font-weight-400 align-middle">{{ $order->shipping_address}}</td>
                                 <td class="font-weight-400 align-middle">
-                                    {{ format_price($order->total_amount) }}
+                                    {{!empty($order->discount) ? format_price(calculateDiscountedPrice($order->discount->type->value, $order->total_amount, $order->discount->value, $order->discount->max_value)) : format_price($order->total_amount)}}
                                 </td>
                                 <td>
                                     @foreach (StatusOrderEnums::cases() as $statusOrder)

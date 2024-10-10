@@ -384,7 +384,7 @@
 
                 let discounted = originalPrice - discountAmount;
                 
-                if(discountAmount < 0) {
+                if(discounted < 0) {
                     discounted = 0;
                 }
                 return discounted;
