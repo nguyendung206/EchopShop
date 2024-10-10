@@ -190,15 +190,15 @@ html {
         <form>
           <header>
             <h2>Đơn hàng của bạn
-                 @if (StatusOrderEnums::COMPLETED->value == $order->status->value)
-                <span style="color: #28a745">{{$order->status->label()}}</span>
-                @elseif (StatusOrderEnums::CANCELLED->value == $order->status->value)
-                <span style="color: #dc3545">{{$order->status->label()}}</span>
-                @elseif (StatusOrderEnums::RETURN->value == $order->status->value)
-                <span style="color: #ffc107">{{$order->status->label()}}</span>
-                @else
-                <span>{{$order->status->label()}}</span>
-            @endif
+                @if (StatusOrderEnums::COMPLETED->value == $order->status->value)
+                    <span style="color: #28a745"> {{$order->status->label()}} </span>
+                    @elseif (StatusOrderEnums::CANCELLED->value == $order->status->value)
+                    <span style="color: #dc3545"> {{$order->status->label()}} </span>
+                    @elseif (StatusOrderEnums::RETURN->value == $order->status->value)
+                    <span style="color: #ffc107"> {{$order->status->label()}} </span>
+                    @else
+                    <span> {{$order->status->label()}} </span>
+                @endif
                 </h2>
             <div class="company">
               <div class="name"><strong>{{$order->customer->name}}</strong></div>
