@@ -25,11 +25,24 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         try {
-            $orders = $this->orderService->index($request->all());
 
-            return view('admin.order.index', compact('orders'));
+            $datas = $this->orderService->create();
+
+            return view('admin.order.create', ['products' => $datas['products'], 'customers' => $datas['customers']]);
         } catch (\Throwable $th) {
             return $th;
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $order = $this->orderService->storeCMS($request->all());
+            flash('Thêm đơn hàng thành công')->success();
+
+            return redirect()->route('admin.order.index');
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 

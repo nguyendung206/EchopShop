@@ -16,6 +16,7 @@ class OrderDetail extends Model
         'product_id',
         'quantity',
         'message',
+        'product_unit_id',
     ];
 
     public function product()

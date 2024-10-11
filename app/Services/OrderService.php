@@ -11,7 +11,9 @@ use App\Models\Cart;
 use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
 use App\Models\ProductUnit;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -183,5 +185,83 @@ class OrderService
             return $th;
         }
 
+    }
+
+    public function create()
+    {
+        try {
+            $products = Product::with('productUnits')->where('status', 1)->get();
+            $customers = User::where('status', 1)->get();
+
+            return ['products' => $products, 'customers' => $customers];
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function storeCMS($request)
+    {
+        try {
+            $orderData = [
+                'total_amount' => $request['total_amount'],
+                'type_payment' => TypePayment::CARD,
+                'shipping_address' => $request['shipping_address'],
+                'user_id' => $request['customerId'],
+                'status' => StatusOrder::PENDING,
+            ];
+            if (! empty($request['discountId'])) {
+                $orderData['discountId'] = $request['discountId'];
+            }
+            // tạo hoá đơn
+            if (! empty($request['discountId'])) {
+                $orderData['discount_id'] = $request['discountId'];
+            }
+            $order = Order::create($orderData);
+
+            // Trừ số lượng mã giảm giá
+            if (! empty($request['discountId'])) {
+                $discount = Discount::findOrFail($request['discountId']);
+                $discount->increment('quantity_used');
+                $discount->user_used = $discount->user_used
+                    ? $discount->user_used.','.Auth::id()
+                    : Auth::id();
+                $discount->save();
+            }
+            // lấy ra các product-unit đã chọn
+            $productUnits = [];
+            foreach ($request as $key => $value) {
+                if (strpos($key, 'quantity-') === 0) {
+                    $productUnitId = str_replace('quantity-', '', $key);
+                    $quantity = $value;
+                    $productUnits[$productUnitId] = $quantity;
+                }
+            }
+            foreach ($productUnits as $productUnitId => $quantity) {
+                $productUnit = ProductUnit::with('product')->find($productUnitId);
+                if ($productUnit) {
+                    $currentQuantity = $productUnit->quantity;
+                    $newQuantity = $currentQuantity - $quantity;
+                    if ($newQuantity > 0) {
+                        $productUnit->quantity = $newQuantity;
+                        $productUnit->save();
+                    } else {
+                        $productUnit->quantity = 0;
+                        $productUnit->save();
+                    }
+                }
+
+                OrderDetail::create([
+                    'product_id' => $productUnit->product->id,
+                    'order_id' => $order->id,
+                    'quantity' => $quantity,
+                    'product_unit_id' => $productUnitId,
+                ]);
+            }
+
+            return $order;
+        } catch (Exception $e) {
+
+            return $e;
+        }
     }
 }
