@@ -28,7 +28,6 @@ class CartController extends Controller
 
     public function store(CartRequest $request)
     {
-        dd($request->all());
         $result = $this->cartService->store($request);
         $cartCount = Cart::where('user_id', Auth::id())->count();
 

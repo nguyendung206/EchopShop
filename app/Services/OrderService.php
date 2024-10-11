@@ -71,7 +71,7 @@ class OrderService
             }
 
             foreach ($request['cartIds'] as $cartId) {
-                $cart = Cart::with('products')->find($cartId);
+                $cart = Cart::with(['products', 'productUnit'])->find($cartId);
                 $messageKey = 'message-'.$cartId; // message của từng cart
                 $message = array_key_exists($messageKey, $request) ? $request[$messageKey] : null;
 
@@ -81,6 +81,7 @@ class OrderService
                     'order_id' => $order->id,
                     'quantity' => $cart->quantity,
                     'message' => $message,
+                    'product_unit_id' => $cart->productUnit->id,
                 ]);
 
                 // cập nhật lại số lượng của hàng
@@ -147,7 +148,6 @@ class OrderService
             $endDay = Carbon::createFromFormat('d/m/Y', $dates[1])->endOfDay();
             $query->whereBetween('created_at', [$startDay, $endDay]);
         }
-        // dd($request);
         if (! empty($request['min']) && ! empty($request['max'])) {
             $min = $request['min'];
             $max = $request['max'];
@@ -180,8 +180,6 @@ class OrderService
 
             return $order;
         } catch (\Throwable $th) {
-            dd($th);
-
             return $th;
         }
 
