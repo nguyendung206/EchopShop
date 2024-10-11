@@ -134,6 +134,13 @@
                         <span class="aiz-side-nav-text">Giảm giá</span>
                     </a>
                 </li>
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('admin.order.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['admin.order.index']) }}">
+                        <i class="las la-money-bill aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Đơn hàng</span>
+                    </a>
+                </li>
 
 
             </ul><!-- .aiz-side-nav -->

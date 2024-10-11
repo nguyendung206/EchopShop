@@ -22,6 +22,27 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
+if (! function_exists('calculateDiscountAmount')) {
+    function calculateDiscountAmount($type, $originalPrice, $value, $maxValue)
+    {
+        $discountAmount = $value;
+
+        if ($type == 1) { // %
+            $discountAmount = ($originalPrice * $value) / 100;
+            if ($discountAmount > $maxValue) {
+                $discountAmount = $maxValue;
+            }
+        } else {
+            $discountAmount = $value;
+            if ($discountAmount > $maxValue) {
+                $discountAmount = $maxValue;
+            }
+        }
+
+        return $discountAmount;
+    }
+}
+
 if (! function_exists('calculateDiscountedPrice')) {
     function calculateDiscountedPrice($type, $originalPrice, $value, $maxValue)
     {
@@ -33,13 +54,16 @@ if (! function_exists('calculateDiscountedPrice')) {
                 $discountAmount = $maxValue;
             }
         } else {
-            $discountAmount = ($originalPrice - $value);
+            $discountAmount = $value;
             if ($discountAmount > $maxValue) {
                 $discountAmount = $maxValue;
             }
         }
 
         $discounted = $originalPrice - $discountAmount;
+        if ($discounted < 0) {
+            $discounted = 0;
+        }
 
         return $discounted;
     }
