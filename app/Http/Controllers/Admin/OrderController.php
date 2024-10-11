@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\TypeNotification;
 use App\Http\Controllers\Controller;
+use App\Services\NotificationService;
 use App\Services\OrderService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     protected $orderService;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(OrderService $orderService, NotificationService $notificationService)
     {
         $this->orderService = $orderService;
+        $this->notificationService = $notificationService;
     }
 
     public function index(Request $request)
@@ -61,11 +65,22 @@ class OrderController extends Controller
     {
         try {
             $order = $this->orderService->updateStatus($request->all(), $id);
+            $date = Carbon::createFromFormat('Y-m-d H:i:s', $order->created_at, 'UTC')->setTimezone('Asia/Bangkok')->format('d-m-Y H:i:s');
+            $title = 'Đơn hàng đã được cập nhật';
+            $body = 'Đơn hàng của quý khách '.$order->customer->name.' đặt lúc '.$date.' đã chuyển thành "'.$order->status->label().'".Vui lòng kiểm tra email của bạn để biết thêm chi tiết.';
+            $this->notificationService->createNotification([
+                'user_id' => $order->user_id,
+                'type' => TypeNotification::CHANGESTATUSORDER,
+                'title' => $title,
+                'body' => $body,
+            ]);
             flash('Thay đổi trạng thái thành công!')->success();
 
             return redirect()->back();
-        } catch (\Throwable $th) {
-            return $th;
+        } catch (\Exception $e) {
+            dd($e);
+
+            return $e;
         }
     }
 }
