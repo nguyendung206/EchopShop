@@ -1,6 +1,7 @@
 @extends('web.layout.app')
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/inputRangerQuality.css') }}">
 @endsection
 
 @section('content')
@@ -115,6 +116,29 @@
             </div>
 
             <div class="form-group">
+                <label >Tình trạng sản phẩm </label>
+                <div>
+                    <div class="range">
+                        <input type="range" min="0" max="100" step="10" value="100" name="quality">
+                    </div>
+                  
+                    <ul class="range-labels range-labels-web">
+                        <li class="text-left">0</li>
+                      <li class="text-left">10</li>
+                      <li class="text-left">20</li>
+                      <li class="text-left">30</li>
+                      <li class="text-left">40</li>
+                      <li class="text-left">50</li>
+                      <li class="text-left">60</li>
+                      <li class="text-left">70</li>
+                      <li class="text-left">80</li>
+                      <li class="text-left">90</li>
+                      <li class="text-left final-text">100% (hàng mới)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group mt-5">
                 <label for="photoImage">Ảnh chính *</label>
                 <div id="photoImageContainer">
                     <img id="photoImagePreview" src="{{ asset('/img/image/upload.png') }}" alt="Ảnh sản phẩm" class="upload-img" style="cursor: pointer; object-fit:cover; margin: 0;">

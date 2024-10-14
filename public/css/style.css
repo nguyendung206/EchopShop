@@ -391,7 +391,7 @@ a:hover {
     color: #B10000;
     font-size: 18px;
     font-weight: 500;
-    margin: 70px 0px;
+    margin: 70px auto;
     cursor: pointer;
 }
 
@@ -1303,7 +1303,7 @@ a:hover {
     margin-left: 0px;
 }
 
-#loading-UI {
+.loading-UI {
     height: 15px;
     width: 15px;
     aspect-ratio: 1;

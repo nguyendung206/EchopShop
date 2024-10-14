@@ -17,8 +17,6 @@ require __DIR__.'/admin.php';
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/list-product', [HomeController::class, 'filterProducts'])->name('listProducts');
-// Route::get('/secondhandProduct', [HomeController::class, 'filterProducts'])->name('secondhandProduct');
-// Route::get('/giveawayProduct', [HomeController::class, 'filterProducts'])->name('giveawayProduct');
 Route::get('/favoriteProduct', [FavoriteController::class, 'index'])->name('favoriteProduct');
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 
@@ -52,7 +50,6 @@ Route::prefix('/policy')->name('policy.')->group(function () {
     Route::get('/communicate', [PolicyController::class, 'getPolicy'])->name('communicate');
     Route::get('/safeToUse', [PolicyController::class, 'getPolicy'])->name('safeToUse');
 });
-Route::get('/product', [ProductController::class, 'filterProduct'])->name('product');
 
 Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
@@ -98,7 +95,3 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::get('/all', [NotificationController::class, 'index'])->name('index');
     });
 });
-
-Route::get('/category/{slug}', [ProductController::class, 'filterByCategory'])->name('filter.category');
-Route::get('/category/{categorySlug}/brand/{brandSlug}', [ProductController::class, 'filterByCategoryAndBrand'])->name('filter.category.brand');
-Route::get('/filter-products', [ProductController::class, 'filterProducts'])->name('filterProducts');

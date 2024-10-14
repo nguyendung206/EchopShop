@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Status;
+use App\Enums\TypeProduct;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -28,8 +31,8 @@ class ProductRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'list_photo.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
-            'status' => 'required|integer|in:1,2',
-            'type' => 'required|integer|in:1,2,3',
+            'status' => ['required', 'integer', Rule::in(array_column(Status::cases(), 'value'))],
+            'type' => ['required', 'integer', Rule::in(array_column(TypeProduct::cases(), 'value'))],
             'description' => 'nullable|string',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'nullable|exists:categories,id',

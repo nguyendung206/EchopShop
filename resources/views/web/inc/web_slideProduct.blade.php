@@ -1,23 +1,6 @@
 @php
-    $currentUrl = url()->current();
-    $route = '';
-
-    switch (true) {
-        case strpos($currentUrl, 'secondhand') !== false:
-            $route = route('secondhandProduct');
-            break;
-        case strpos($currentUrl, 'exchange') !== false:
-            $route = route('exchangeProduct');
-            break;
-            case strpos($currentUrl, 'giveaway') !== false:
-            $route = route('giveawayProduct');
-            break;
-        default:
-            $route = '#'; // Giá trị mặc định nếu không khớp với bất kỳ trường hợp nào
-            break;
-    }
+    $oldProduct = request()->has('type') && request()->get('type') == TypeProductEnums::GIVEAWAY->value ? true : false;
 @endphp
-
 <div class="col-lg-3 col-12 category-title-wrap-1">
 <div class="category-title-wrap">
     <div class="category-title">Danh mục sản phẩm</div>
@@ -40,7 +23,7 @@
         </div>
         @empty
             <div class="text-center w-100 py-5">
-                <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
+                <span class="" style="color:rgb(177,0,0);">Không có mục nào để hiển thị.</span>
             </div>
         @endforelse
     </div>
@@ -67,28 +50,34 @@
         </div>
     </div>
 
-    <div class="category-4">
-        <div class="category-title mt-4">Tình trạng sản phẩm</div>
+    @if ($oldProduct)
         <div class="category-4">
-            <div class="custom-radio css-radio">
-                <input type="radio" id="option1" name="option" value="1" checked />
-                <label for="option1" class="checked-text">Mới&nbsp; <b>80 - 100%</b></label>
-            </div>
-            <div class="custom-radio css-radio">
-                <input type="radio" id="option2" name="option" value="2" />
-                <label for="option2">Mới &nbsp; <b>50 - 70%</b></label>
-            </div>
-            <div class="custom-radio css-radio">
-                <input type="radio" id="option3" name="option" value="3" />
-                <label for="option3">Dưới &nbsp; <b>50%</b></label>
-            </div>
-
-            <div class="group-button-category-4">
-                <button id="destroy-filter-button" data-url="{{ $route }}">Huỷ</button>
-                <button id="filter-button" data-url="{{ $route }}">Lọc</button>
+            <div class="category-title mt-4">Tình trạng sản phẩm</div>
+            <div class="category-4">
+                <div class="custom-radio css-radio radio-all">
+                    <input type="radio" id="option4" name="option" value="" checked/>
+                    <label for="option4" class="checked-text">Tất cả</label>
+                </div>
+                <div class="custom-radio css-radio">
+                    <input type="radio" id="option1" name="option" value="1" />
+                    <label for="option1" >Mới&nbsp; <b>80 - 100%</b></label>
+                </div>
+                <div class="custom-radio css-radio">
+                    <input type="radio" id="option2" name="option" value="2" />
+                    <label for="option2">Mới &nbsp; <b>50 - 70%</b></label>
+                </div>
+                <div class="custom-radio css-radio">
+                    <input type="radio" id="option3" name="option" value="3" />
+                    <label for="option3">Dưới &nbsp; <b>50%</b></label>
+                </div>
             </div>
         </div>
+    @endif
+    <div class="group-button-category-4">
+        <button id="destroy-filter-button" data-url="{{ route("listProducts") }}">Huỷ</button>
+        <button id="filter-button" data-url="{{ route("listProducts") }}">Lọc</button>
     </div>
+
 </div>
 </div>
 
@@ -190,7 +179,6 @@
             var option= null;
             var type = @json(request()->query('type')) ? @json(request()->query('type')) : null;
             $('#filter-button').on('click', function() {
-                console.log("abc 132");
                 
                 var selectedBrands = [];
                 var selectedCategories = [];
@@ -223,14 +211,16 @@
 
                 var rangeInput = $('#min').val();
                 var rangeInput2 = $('#max').val();
+                console.log(url);
                 
                 $.ajax({
                     url: url,
                     method: 'GET',
                     beforeSend: function (xhr, setting) {
                         
-                        $('#loading-UI').fadeIn();  
+                        $('.loading-UI.product-show-loading').fadeIn();
                         $('.list-product').empty();
+                     
                     },
                     data: {
                         brandIds: selectedBrands,
@@ -254,7 +244,7 @@
                        
                     },
                     complete: function(data) {
-                        $('#loading-UI').fadeOut();
+                        $('.loading-UI').fadeOut();
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
@@ -267,6 +257,11 @@
                 $.ajax({
                     url: url,
                     method: 'GET',
+                    beforeSend: function (xhr, setting) {
+                        
+                        $('.loading-UI').fadeIn();  
+                        $('.list-product').empty();
+                    },
                     data: {
                         brandIds: [],
                         categoryIds: [],
@@ -282,6 +277,9 @@
                     success: function(response) {
                         $('.list-product').html(response.productHtml);
                         
+                    },
+                    complete: function(data) {
+                        $('.loading-UI').hide();
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);

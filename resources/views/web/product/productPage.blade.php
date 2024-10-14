@@ -71,7 +71,7 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
                 Kết quả tìm kiếm của: {{$search}}
             </div>
             @endif
-            @include('web.UI.loading')
+            <div class="loading-UI product-show-loading" style="margin: 70px auto"></div>
             <div class="row list-product">
         
 
@@ -250,12 +250,12 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
                 @endif
 
             </div>
-
             <div class="text-center more-wrap">
                 <button id="btn-more" style="display: {{$products->hasMorePages() ? 'block' : 'none'}};">
                     Xem thêm
                 </button>
             </div>
+                <div class="loading-UI btn-more-loading" style="margin: 70px auto"></div>
         </div>
 
 
@@ -316,6 +316,11 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
             $.ajax({
                 url: @json($dataUrl),
                 method: 'GET',
+                beforeSend: function (xhr, setting) {
+                        
+                        $('.loading-UI.btn-more-loading').fadeIn();  
+                        $('.more-wrap').hide();
+                    },
                 data: {
                     brandIds: selectedBrands,
                     categoryIds: selectedCategories,
@@ -341,6 +346,10 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
                         $('#btn-more').hide();
                     }
                 },
+                complete: function(data) {
+                        $('.loading-UI').fadeOut();
+                        $('.more-wrap').show();
+                    },
                 error: function(xhr, status, error) {
 
                 }

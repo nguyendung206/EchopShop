@@ -2,6 +2,9 @@
 @section('title')
 @lang('Tạo loại hàng')
 @endsection
+@section('css')
+<link rel="stylesheet" href="{{ static_asset('css/inputRangerQuality.css') }}">
+@endsection
 
 @section('content')
 <div class="backnow">
@@ -97,6 +100,36 @@
                             </div>
                             @endforeach
                             @error('type')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Tình trạng sản phẩm')</label>
+                        <div class="col-sm-9 mt-2">
+
+                            <div>
+                                <div class="range">
+                                    <input type="range" min="0" max="100" step="10" value="100" name="quality">
+                                </div>
+                              
+                                <ul class="range-labels">
+                                  <li class="text-left">0</li>
+                                  <li class="text-left">10</li>
+                                  <li class="text-left">20</li>
+                                  <li class="text-left">30</li>
+                                  <li class="text-left">40</li>
+                                  <li class="text-left">50</li>
+                                  <li class="text-left">60</li>
+                                  <li class="text-left">70</li>
+                                  <li class="text-left">80</li>
+                                  <li class="text-left">90</li>
+                                  <li class="text-left final-text">100% (hàng mới)</li>
+                                </ul>
+                            </div>
+
+                            @error('quality')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
@@ -356,4 +389,6 @@
             console.error(error);
         });
 </script>
+
+
 @endsection

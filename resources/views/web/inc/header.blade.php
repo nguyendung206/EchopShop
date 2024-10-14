@@ -58,7 +58,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                                 <ul class="custom-dropdown-submenu" style="display: none;">
                                     @foreach($category->activeBrands as $brand)
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                        <a class="dropdown-item" href="{{ route('listProducts', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
                                             <p class="dropdown-title">{{ $brand->name }}</p>
                                         </a>
                                     </li>

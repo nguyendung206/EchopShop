@@ -433,6 +433,9 @@
     border-radius: 50%;
     background-color: rgba(177, 0, 0, 1);
 }
+.radio-all input[type="radio"]:checked + label::after  {
+    left: 7%;
+}
 .checked-text {
     color: rgba(177, 0, 0, 1);
 }
