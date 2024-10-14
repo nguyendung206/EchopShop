@@ -124,7 +124,7 @@ class OrderService
         try {
             $orders = Order::query()->when(isset($request['type']) && ! empty($request['type']), function ($query) use ($request) {
                 return $query->where('status', $request['type']);
-            })->where('user_id', Auth::id())->with('discount')->with('orderDetails.product')->get();
+            })->where('user_id', Auth::id())->with(['discount', 'orderDetails.product', 'orderDetails.productUnit'])->get();
 
             return $orders;
         } catch (Exception $e) {
