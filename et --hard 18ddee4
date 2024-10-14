@@ -1,0 +1,19 @@
+* [33m18ddee4[m[33m ([m[1;36mHEAD -> [m[1;32mfixpullmain[m[33m, [m[1;31morigin/fixpullmain[m[33m)[m fix model
+*   [33ma8f232c[m fix conflict
+[32m|[m[33m\[m  
+[32m|[m *   [33mb40ef4e[m[33m ([m[1;32mmain[m[33m)[m Merge branch 'orderProduct' into 'main'
+[32m|[m [34m|[m[35m\[m  
+[32m|[m [34m|[m * [33mb0f9a7d[m fix conflic
+[32m|[m [34m|[m * [33mb261d51[m fix conflic
+[32m|[m [34m|[m *   [33m4117d6d[m fix conflic
+[32m|[m [34m|[m [36m|[m[34m\[m  
+[32m|[m [34m|[m [36m|[m[34m/[m  
+[32m|[m [34m|[m[34m/[m[36m|[m   
+[32m|[m * [36m|[m   [33m69cdd4d[m Merge branch 'fixFilter' into 'main'
+[32m|[m [1;32m|[m[1;33m\[m [36m\[m  
+[32m|[m [1;32m|[m * [36m\[m   [33m662dd1a[m fix conflic
+[32m|[m [1;32m|[m [1;34m|[m[1;35m\[m [36m\[m  
+[32m|[m [1;32m|[m [1;34m|[m * [36m\[m   [33mc2c3e3f[m Merge branch 'main' of https://gitlab.com/buubuubuu288/echop-laravel
+[32m|[m [1;32m|[m [1;34m|[m [1;36m|[m[1;32m\[m [36m\[m  
+[32m|[m [1;32m|[m [1;34m|[m[1;32m_[m[1;36m|[m[1;32m/[m [36m/[m  
+[32m|[m [1;32m|[m[1;32m/[m[1;34m|[m [1;36m|[m [36m|[m   

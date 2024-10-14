@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Province;
@@ -48,14 +47,6 @@ class AppServiceProvider extends ServiceProvider
                         ->limit(20)
                         ->get();
                     $view->with('notifications', $notifications);
-                }
-            });
-        }
-        if (Schema::hasTable('carts')) {
-            View::composer('*', function ($view) {
-                if (Auth::check()) {
-                    $carts = Cart::where('user_id', Auth::id())->get();
-                    $view->with('carts', $carts);
                 }
             });
         }

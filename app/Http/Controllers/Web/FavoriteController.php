@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Services\FavoriteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
@@ -32,7 +33,6 @@ class FavoriteController extends Controller
     {
         $result = $this->favoriteService->store($request->all());
         if ($result) {
-            flash('Thêm yêu thích thành công')->success();
 
             return response()->json([
                 'status' => 200,
@@ -44,13 +44,13 @@ class FavoriteController extends Controller
             'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
-
     }
 
     public function destroy($id)
     {
         $result = $this->favoriteService->destroy($id);
         if ($result) {
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Xoá yêu thích thành công',
@@ -61,5 +61,22 @@ class FavoriteController extends Controller
             'status' => 500,
             'message' => 'Đã có lỗi xảy ra',
         ], 500);
+    }
+
+    public function getFavoriteCount()
+    {
+        if (Auth::check()) {
+            $favoriteCount = Auth::user()->countFavorite();
+
+            return response()->json([
+                'status' => 200,
+                'favoriteCount' => $favoriteCount,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'favoriteCount' => 0,
+        ]);
     }
 }

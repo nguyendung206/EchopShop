@@ -24,14 +24,14 @@ class CartRequest extends FormRequest
     public function rules()
     {
         return [
-            'productUnitId' => 'required',
+            'product_unit_id' => 'required',
         ];
     }
 
     public function attributes()
     {
         return [
-            'productUnitId' => 'Loại hàng',
+            'product_unit_id' => 'Loại hàng',
         ];
     }
 }

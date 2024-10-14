@@ -45,8 +45,7 @@ $(document).ready(function () {
             success: function (storeResponse) {
                 if (storeResponse.status === 200) {
                     toastr.success(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
-                    $('#cart-count').text(storeResponse.cartCount);
-                    $('#cart-count').show();
+                    updateCartCount();
                 } else {
                     toastr.error(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
                 }
@@ -56,115 +55,128 @@ $(document).ready(function () {
             }
         });
     }
-
+    function updateCartCount() {
+        $.ajax({
+            url: '/cart/count',
+            method: 'GET',
+            success: function (response) {
+                if (response.status === 200) {
+                    $('#cart-count').text(response.cartCount);
+                    $('#cart-count').show();
+                } else {
+                    $('#cart-count').hide();
+                }
+            },
+            error: function () {
+                console.error('Không thể cập nhật số lượng giỏ hàng.');
+            }
+        });
+    }
     // Hiện modal xác nhận và thiết lập dữ liệu
     function showConfirmationModal(productId, units) {
         $('#confirmationModal').modal('show');
         $('#modalProductId').val(productId);
-        var unitTableBody = $('#unitTableBody');
-        unitTableBody.empty();
+        const unitContainer = $('#unitContainer');
+        unitContainer.empty();
 
-        // Đưa dữ liệu units vào bảng
-        units.forEach(function (unit) {
-            unitTableBody.append(`
-                <tr>
-                    <td>${unit.color}</td>
-                    <td>${unit.size}</td>
-                    <td>${unit.quantity}</td>
-                </tr>
+        // Thêm các đơn vị sản phẩm với radio button
+        units.forEach(function (unit, index) {
+            unitContainer.append(`
+                <div class="product-unit d-flex align-items-center p-2 border mb-2">
+                    <input type="radio" name="selectedUnit" value="${unit.id}" ${index === 0 ? 'checked' : ''} class="mr-3 unit-radio">
+                    <div>
+                        <p><strong>Màu sắc:</strong> ${unit.color}</p>
+                        <p><strong>Kích cỡ:</strong> ${unit.size}</p>
+                        <p><strong>Số lượng có sẵn:</strong> <span class="available-quantity">${unit.quantity}</span></p>
+                    </div>
+                </div>
             `);
         });
 
-        // Ghi nhận dữ liệu units để sử dụng khi thêm mới
-        window.unitsData = units;
-        setupSelectOptions(units);
-    }
+        // Cập nhật giới hạn số lượng khi radio được chọn
+        $('input[name="selectedUnit"]').change(updateMaxQuantity);
 
-    // Thiết lập các tùy chọn cho select
-    function setupSelectOptions(units) {
-        $('.color-select').empty().append('<option value="">Màu sắc</option>');
-        $('.size-select').empty().append('<option value="">Kích cỡ</option>');
+        // Thiết lập số lượng ban đầu dựa trên radio đang chọn
+        updateMaxQuantity();
 
-        units.forEach(function (unit) {
-            $('.color-select').append(new Option(unit.color, unit.color));
-            $('.size-select').append(new Option(unit.size, unit.size));
+        // Xử lý sự kiện tăng số lượng
+        $('.plus').click(function () {
+            const maxQuantity = getMaxQuantity();
+            let currentVal = parseInt($('#quantityInput').val());
+            if (currentVal < maxQuantity) {
+                $('#quantityInput').val(currentVal + 1);
+            }
         });
-    }
 
-    // Thêm unit mới
-    $(document).on('click', '.btn-add', function () {
-        var firstUnit = $('.input-unit').first();
-        var newInputUnit = `
-            <div class="input-group mb-3 input-unit">
-                <select class="form-control color-select">
-                    ${firstUnit.find('.color-select').html()}
-                </select>
-                <select class="form-control size-select">
-                    ${firstUnit.find('.size-select').html()}
-                </select>
-                <input type="number" class="form-control quantity-input" placeholder="Số lượng" min="1">
-                <button type="button" class="btn btn-danger btn-remove" style="margin-left: 5px;">&times;</button>
-            </div>
-        `;
-        $('#inputContainer').append(newInputUnit);
-    });
+        // Xử lý sự kiện giảm số lượng
+        $('.minus').click(function () {
+            let currentVal = parseInt($('#quantityInput').val());
+            if (currentVal > 1) {
+                $('#quantityInput').val(currentVal - 1);
+            }
+        });
 
-    // Xóa input-unit
-    $(document).on('click', '.btn-remove', function () {
-        if ($('.input-unit').length > 1) {
-            $(this).closest('.input-unit').remove();
-        } else {
-            toastr.warning('Phải có ít nhất một mục nhập.', null, { positionClass: 'toast-bottom-left' });
+        // Giới hạn số lượng khi nhập tay
+        $('#quantityInput').on('input', function () {
+            const maxQuantity = getMaxQuantity();
+            let value = parseInt($(this).val());
+
+            if (isNaN(value) || value < 1) {
+                $(this).val(1);
+            } else if (value > maxQuantity) {
+                $(this).val(maxQuantity);
+            }
+        });
+
+        // Hàm lấy số lượng tối đa từ radio đang chọn
+        function getMaxQuantity() {
+            const selectedUnitId = $('input[name="selectedUnit"]:checked').val();
+            const selectedUnit = units.find(unit => unit.id == selectedUnitId);
+            return selectedUnit ? parseInt(selectedUnit.quantity) : 0;
         }
-    });
 
-    // Lưu thông tin vào giỏ hàng
-    $(document).on('click', '#saveUnits', function () {
-        var units = [];
-        var urlAddToCart = $(this).data('add-to-cart');
+        // Cập nhật số lượng tối đa khi chọn radio khác
+        function updateMaxQuantity() {
+            const maxQuantity = getMaxQuantity();
+            $('#quantityInput').attr('max', maxQuantity).val(1); // Reset về 1 khi chọn đơn vị mới
+        }
+    }
 
-        $('.input-unit').each(function () {
-            var color = $(this).find('.color-select').val();
-            var size = $(this).find('.size-select').val();
-            var quantity = $(this).find('.quantity-input').val();
-            console.log("Color:", color, "Size:", size, "Quantity:", quantity); // Thêm dòng này
+    // Xử lý sự kiện khi bấm nút "Lưu vào giỏ hàng"
+    $('#saveSelectedUnit').on('click', function () {
+        const selectedUnitId = $('input[name="selectedUnit"]:checked').val();
+        const quantity = $('#quantityInput').val();
+        const addToCartUrl = $(this).data('add-to-cart');
+        const dataToSend = {
+            productId: $('#modalProductId').val(),
+            product_unit_id: selectedUnitId,
+            quantity: quantity,
+            type: 2,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        };
 
-            units.push({
-                color: color,
-                size: size,
-                quantity: parseInt(quantity)
-            });
-        });
-        console.log("Units:", units);
-        // Kiểm tra nếu có ít nhất một unit
-        if (units.length > 0) {
-            $.ajax({
-                url: urlAddToCart,
-                method: 'POST',
-                data: {
-                    productId: $('#modalProductId').val(),
-                    units: units,
-                    type: 2 // Đảm bảo đây là kiểu đúng
-                },
-                success: function (response) {
-                    if (response.status === 200) {
-                        toastr.success(response.message || 'Thêm vào giỏ hàng thành công', null, { positionClass: 'toast-bottom-left' });
-                        $('#confirmationModal').modal('hide');
-                        $('#cart-count').text(response.cartCount);
-                        $('#cart-count').show();
-                    } else {
-                        toastr.error(response.message || 'Có lỗi xảy ra', null, { positionClass: 'toast-bottom-left' });
-                    }
-                },
-                error: function () {
-                    toastr.error('Đã có lỗi xảy ra khi lưu vào giỏ hàng.', null, { positionClass: 'toast-bottom-left' });
+        console.log('Dữ liệu gửi đi:', dataToSend);
+        $.ajax({
+            url: addToCartUrl,
+            method: 'POST',
+            data: dataToSend,
+            success: function (response) {
+                if (response.status === 200) {
+                    toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
+
+                    updateCartCount();
+
+                    $('#confirmationModal').modal('hide');
+                } else {
+                    toastr.error(response.message, null, { positionClass: 'toast-bottom-left' });
                 }
-            });
-        } else {
-            toastr.warning('Phải có ít nhất một mục nhập với đầy đủ thông tin.', null, { positionClass: 'toast-bottom-left' });
-        }
-    });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, { positionClass: 'toast-bottom-left' });
+            }
 
+        });
+    });
 
     // Thông báo lỗi
     function showError(message) {

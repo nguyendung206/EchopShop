@@ -25,10 +25,10 @@ class CartService
         try {
             $userId = Auth::id();
             $existingCartItem = Cart::where('user_id', $userId)
-                ->where('product_unit_id', $request->productUnitId)
+                ->where('product_unit_id', $request->product_unit_id)
                 ->first();
             if (! empty($existingCartItem)) {
-                $getProductUnit = ProductUnit::where('id', $request->productUnitId)->first();
+                $getProductUnit = ProductUnit::where('id', $request->product_unit_id)->first();
 
                 $quantityToIncrease = $request->quantity ? $request->quantity : 1;
 
@@ -53,12 +53,13 @@ class CartService
 
                     return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
                 } else {
+                    $productUnit = ProductUnit::find($request->product_unit_id);
                     Cart::create([
                         'user_id' => $userId,
                         'product_id' => $request->productId,
-                        'product_unit_id' => $request->productUnitId,
-                        'color' => $request->color,
-                        'size' => $request->size,
+                        'product_unit_id' => $request->product_unit_id,
+                        'color' => $productUnit->color,
+                        'size' => $productUnit->size,
                         'quantity' => $request->quantity,
                     ]);
 

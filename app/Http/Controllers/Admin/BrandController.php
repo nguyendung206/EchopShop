@@ -104,7 +104,8 @@ class BrandController extends Controller
     public function destroy($id)
     {
         try {
-            if ($this->brandService->deleteBrand($id)) {
+            $result = $this->brandService->deleteBrand($id);
+            if ($result) {
                 flash('Xóa thương hiệu thành công!')->success();
             } else {
                 flash('Đã xảy ra lỗi khi xóa thương hiệu!')->error();

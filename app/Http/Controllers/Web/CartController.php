@@ -9,6 +9,7 @@ use App\Services\CartService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -28,24 +29,28 @@ class CartController extends Controller
 
     public function store(CartRequest $request)
     {
-        $result = $this->cartService->store($request);
-        $cartCount = Cart::where('user_id', Auth::id())->count();
+        try {
+            $result = $this->cartService->store($request);
 
-        if ($request->ajax() || $request->wantsJson()) {
-            if ($result['status'] === 200) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => $result['message'],
-                    'cartCount' => $cartCount,
-                ], 200);
+            if ($request->ajax() || $request->wantsJson()) {
+                if ($result['status'] === 200) {
+                    return response()->json([
+                        'status' => 200,
+                        'message' => $result['message'],
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'status' => 500,
+                        'message' => 'Đã có lỗi xảy ra',
+                    ], 500);
+                }
             } else {
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'Đã có lỗi xảy ra',
-                ], 500);
+                return redirect()->route('cart.index');
             }
-        } else {
-            return redirect()->route('cart.index');
+        } catch (\Exception $e) {
+            Log::error('Error adding to cart: '.$e->getMessage());
+
+            return ['status' => 500, 'message' => 'Đã có lỗi xảy ra'];
         }
     }
 
@@ -143,5 +148,22 @@ class CartController extends Controller
         }
 
         return redirect()->route('cart.index')->with('error', 'Sản phẩm không tìm thấy.');
+    }
+
+    public function getCartCount()
+    {
+        if (Auth::check()) {
+            $cartCount = Auth::user()->countCart();
+
+            return response()->json([
+                'status' => 200,
+                'cartCount' => $cartCount,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'cartCount' => 0,
+        ]);
     }
 }
