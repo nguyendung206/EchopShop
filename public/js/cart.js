@@ -45,8 +45,7 @@ $(document).ready(function () {
             success: function (storeResponse) {
                 if (storeResponse.status === 200) {
                     toastr.success(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
-                    $('#cart-count').text(storeResponse.cartCount);
-                    $('#cart-count').show();
+                    updateCartCount();
                 } else {
                     toastr.error(storeResponse.message, null, { positionClass: 'toast-bottom-left' });
                 }
@@ -56,7 +55,23 @@ $(document).ready(function () {
             }
         });
     }
-
+    function updateCartCount() {
+        $.ajax({
+            url: '/cart/count',
+            method: 'GET',
+            success: function (response) {
+                if (response.status === 200) {
+                    $('#cart-count').text(response.cartCount);
+                    $('#cart-count').show();
+                } else {
+                    $('#cart-count').hide();
+                }
+            },
+            error: function () {
+                console.error('Không thể cập nhật số lượng giỏ hàng.');
+            }
+        });
+    }
     // Hiện modal xác nhận và thiết lập dữ liệu
     function showConfirmationModal(productId, units) {
         $('#confirmationModal').modal('show');
@@ -149,8 +164,7 @@ $(document).ready(function () {
                 if (response.status === 200) {
                     toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
 
-                    $('#cart-count').text(response.cartCount);
-                    $('#cart-count').show();
+                    updateCartCount();
 
                     $('#confirmationModal').modal('hide');
                 } else {

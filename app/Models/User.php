@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasMany(Favorite::class, 'user_id', 'id');
     }
 
+    public function countFavorite()
+    {
+        return $this->favorites()->count();
+    }
+
     public function shop()
     {
         return $this->hasOne(Shop::class, 'user_id', 'id');
@@ -82,8 +87,18 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class, 'user_id', 'id');
     }
 
+    public function countCart()
+    {
+        return $this->carts()->count();
+    }
+
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'user_id', 'id');
+    }
+
+    public function countNotification()
+    {
+        return $this->notifications()->where('is_read', false)->count();
     }
 }

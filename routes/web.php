@@ -70,6 +70,7 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/favorite')->name('favorite.')->group(function () {
         Route::post('/', [FavoriteController::class, 'store'])->name('store');
         Route::delete('/{id}', [FavoriteController::class, 'destroy'])->name('destroy');
+        Route::get('/count', [FavoriteController::class, 'getFavoriteCount'])->name('count');
     });
 
     Route::resource('/post', ProductController::class);
@@ -85,6 +86,7 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::put('/update-product-unit/{id}', [CartController::class, 'updateProductUnit'])->name('updateProductUnit');
         Route::put('/update-quantity-cart/{id}', [CartController::class, 'updateQuantityCart'])->name('updateQuantityCart');
         Route::post('/update/{id}', [CartController::class, 'update'])->name('update');
+        Route::get('/count', [CartController::class, 'getCartCount'])->name('count');
     });
 
     Route::prefix('/order')->name('order.')->group(function () {

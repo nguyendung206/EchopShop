@@ -31,14 +31,12 @@ class CartController extends Controller
     {
         try {
             $result = $this->cartService->store($request);
-            $cartCount = Cart::where('user_id', Auth::id())->count();
 
             if ($request->ajax() || $request->wantsJson()) {
                 if ($result['status'] === 200) {
                     return response()->json([
                         'status' => 200,
                         'message' => $result['message'],
-                        'cartCount' => $cartCount,
                     ], 200);
                 } else {
                     return response()->json([
@@ -150,5 +148,22 @@ class CartController extends Controller
         }
 
         return redirect()->route('cart.index')->with('error', 'Sản phẩm không tìm thấy.');
+    }
+
+    public function getCartCount()
+    {
+        if (Auth::check()) {
+            $cartCount = Auth::user()->countCart();
+
+            return response()->json([
+                'status' => 200,
+                'cartCount' => $cartCount,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'cartCount' => 0,
+        ]);
     }
 }

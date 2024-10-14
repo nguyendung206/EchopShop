@@ -150,9 +150,18 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
-                        <a href="{{route('favoriteProduct')}}" class="d-n display-none profile-tab" data-tab="favoriteProduct">
+                        <a href="{{route('favoriteProduct')}}" class="d-n display-none profile-tab" data-tab="favoriteProduct" style="position: relative;">
                             <i class="fa-regular fa-heart"></i>
+                            @if (Auth::check())
+                            @if (Auth::user()->countFavorite() > 0)
+                            <span id="favoriteCount" class="badge badge-danger"
+                                style="position: absolute; bottom: 13px; left: 15px;">
+                                {{ Auth::user()->countFavorite() }}
+                            </span>
+                            @endif
+                            @endif
                         </a>
+
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-3 col-1 menu">
                         <form action="{{$route}}" method="GET" class="display-none">
@@ -191,12 +200,15 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                         <div class="row justify-content-around align-items-center">
                             <div class="header-icon">
                                 <div class="search">
-                                    <a href="{{route('cart.index')}}" style="position: relative;">
+                                    <a href="{{ route('cart.index') }}" style="position: relative;">
                                         <i class="fa-solid fa-cart-shopping"></i>
-                                        @if(isset($carts) && $carts->count() > 0)
-                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px;">{{ $carts->count() }}</span>
-                                        @else
-                                        <span id="cart-count" class="badge badge-danger" style="position: absolute; bottom: 13px; left: 15px; display: none;">0</span>
+                                        @if (Auth::check())
+                                        @if (Auth::user()->countCart() > 0)
+                                        <span id="cart-count" class="badge badge-danger"
+                                            style="position: absolute; bottom: 13px; left: 15px;">
+                                            {{ Auth::user()->countCart() }}
+                                        </span>
+                                        @endif
                                         @endif
                                     </a>
                                 </div>
@@ -208,14 +220,17 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 <div class="search" style="position: relative;">
                                     <a href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa-regular fa-bell"></i>
-                                        @if(Auth::check())
-                                        @php
-                                        $notificationCount = \App\Models\Notification::getNotificationCount(Auth::id());
-                                        @endphp
-                                        @if($notificationCount > 0 && $notificationCount < 100)
-                                            <span id="notificationCount" class="badge badge-danger" style="position: absolute; bottom: 12px; left: 10px;">{{ $notificationCount }}</span>
-                                            @else
-                                            <span id="notificationCount" class="badge badge-danger" style="position: absolute; bottom: 12px; left: 10px;">99+</span>
+                                        @if (Auth::check())
+                                        @if (Auth::user()->countNotification() > 0 && Auth::user()->countNotification() < 100)
+                                            <span id="notificationCount" class="badge badge-danger"
+                                            style="position: absolute; bottom: 12px; left: 10px;">
+                                            {{ Auth::user()->countNotification() }}
+                                            </span>
+                                            @elseif(Auth::user()->countNotification() >= 100)
+                                            <span id="notificationCount" class="badge badge-danger"
+                                                style="position: absolute; bottom: 12px; left: 10px;">
+                                                99+
+                                            </span>
                                             @endif
                                             @endif
                                     </a>
