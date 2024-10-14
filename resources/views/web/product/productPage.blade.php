@@ -12,18 +12,18 @@ $provinceQuery = request()->get('province');
 }
 $case = 0;
 $dataUrl = route('listProducts');
-if(request()->query('type') == 3){
+if(request()->query('type') == TypeProductEnums::GIVEAWAY->value){
     $case = 3;
-    $dataUrl = route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]);
+    $dataUrl = route('listProducts', ['type' => TypeProductEnums::GIVEAWAY->value]);
 }
     
-if (request()->query('type') == 2) {
+if (request()->query('type') == TypeProductEnums::SECONDHAND->value) {
 $case = 2;
-$dataUrl = route('listProducts', ['type' => TypeProductEnums::SECONDHAND]);
+$dataUrl = route('listProducts', ['type' => TypeProductEnums::SECONDHAND->value]);
 }
-if (request()->query('type') == 1) {
+if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
     $case = 1;
-    $dataUrl = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
+    $dataUrl = route('listProducts', ['type' => TypeProductEnums::EXCHANGE->value]);
 }
 @endphp
 
@@ -42,6 +42,8 @@ if (request()->query('type') == 1) {
         Mua bán đồ SECONDHAND
         @elseif ($case == TypeProductEnums::GIVEAWAY->value)
         Hàng cũ đem tặng
+        @elseif (request()->has('province') )
+        Danh sách sản phẩm theo địa điểm.
         @else
         Danh sách sản phẩm theo danh mục
         @endif
@@ -210,6 +212,25 @@ if (request()->query('type') == 1) {
                             <p class="product-name pt-2">{{ $product->name }}</p>
                             <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
                         </a>
+                        <div class="user-product-wrap my-1">
+                            @if (isset($product->shop))
+                            <img class="mini-avatar" src="{{ getImage($product->shop->logo) }}"
+                                alt="">
+                            <div class="user-product ">
+                                <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
+                                        src="{{ asset('/img/icon/doc-top.png') }}"
+                                        alt="">&nbsp;
+                                    {{ $product->shop->user->province->province_name }}
+                                </p>
+                            </div>
+                            @else
+                            <img src="{{ asset('/img/image/logo.png') }}" alt=""
+                                class="mini-avatar-admin">
+                            <div class="user-product " style="width: 77%">
+                                <p class="line-clamp-1">Sản phẩm của echop</p>
+                            </div>
+                            @endif
+                        </div>
                         <div class="product-actions" style="display: block; margin-top: 16px;">
                             @if ($product->type->value == 1)
                             <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
@@ -231,11 +252,9 @@ if (request()->query('type') == 1) {
             </div>
 
             <div class="text-center more-wrap">
-                @if ($products->hasMorePages())
-                <button id="btn-more">
+                <button id="btn-more" style="display: {{$products->hasMorePages() ? 'block' : 'none'}};">
                     Xem thêm
                 </button>
-                @endif
             </div>
         </div>
 
@@ -312,7 +331,7 @@ if (request()->query('type') == 1) {
                 success: function(response) {
                     
                     $('.list-product').append(response.productHtml);
-
+                    
                     if (response.hasMorePages) {
                         if ($('.more-wrap').children().length === 0) {
                             $('.more-wrap').append(

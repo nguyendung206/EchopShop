@@ -190,6 +190,8 @@
             var option= null;
             var type = @json(request()->query('type')) ? @json(request()->query('type')) : null;
             $('#filter-button').on('click', function() {
+                console.log("abc 132");
+                
                 var selectedBrands = [];
                 var selectedCategories = [];
                 $('.category-1-item.checked-text').each(function() {
@@ -203,7 +205,6 @@
                     var categoryId = $(this).data('categoryid');
                     selectedCategories.push(categoryId);
                 });
-                console.log(selectedCategories);
                 
 
                 var selectedProvinces = [];
@@ -227,6 +228,7 @@
                     url: url,
                     method: 'GET',
                     beforeSend: function (xhr, setting) {
+                        
                         $('#loading-UI').fadeIn();  
                         $('.list-product').empty();
                     },
@@ -242,10 +244,7 @@
                         type: type,
                     },
                     success: function(response) {
-                        if(selectedBrands.length != 0 || selectedCategories.length != 0){
-                            
-                            $('.product-title-line').hide();
-                        }
+                        
                         $('.list-product').html(response.productHtml);
                         if(response.hasMorePages) {
                             $('#btn-more').show()

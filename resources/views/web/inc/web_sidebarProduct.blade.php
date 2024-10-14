@@ -127,6 +127,8 @@
 
         // Apply filter
         $('#filter-button').on('click', function() {
+            console.log("123");
+            
             $.ajax({
                 url: '{{ route("filterProducts") }}',
                 method: 'GET',
