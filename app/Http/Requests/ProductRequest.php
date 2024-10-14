@@ -34,28 +34,7 @@ class ProductRequest extends FormRequest
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'nullable|exists:categories,id',
             'unittype' => 'required|integer|in:1,2',
-            'quantity' => 'required_if:unittype,1|integer|min:1',
-            'quantities' => 'required_if:unittype,2|integer',
-            'quantities.*' => 'required_if:unittype,2|string|distinct',
-            'colors' => 'required_if:unittype,2|array',
-            'colors.*' => 'required_if:unittype,2|string|distinct',
-            'sizes' => 'required_if:unittype,2|array',
-            'sizes.*' => 'required_if:unittype,2|string|distinct',
         ];
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-
-            if ($this->input('unittype') == 2 && empty($this->input('colors'))) {
-                $validator->errors()->add('colors', 'Bạn cần nhập ít nhất một màu sắc khi chọn loại đơn vị là Kích cỡ, màu, số lượng.');
-            }
-
-            if ($this->input('unittype') == 2 && empty($this->input('quantities'))) {
-                $validator->errors()->add('quantities', 'Bạn cần nhập số lượng cho từng màu sắc khi chọn loại đơn vị là Kích cỡ, màu, số lượng.');
-            }
-        });
     }
 
     public function attributes()
@@ -70,10 +49,7 @@ class ProductRequest extends FormRequest
             'description' => 'Mô tả sản phẩm',
             'brand_id' => 'Thương hiệu',
             'category_id' => 'Loại sản phẩm',
-            'unittype' => 'Kiểu sản phẩm',
-            'quantity' => 'Số lượng',
-            'colors.*' => 'Màu sắc',
-            'sizes.*' => 'Kích thước',
+            'unittype' => 'Chi tiết sản phẩm',
         ];
     }
 }
