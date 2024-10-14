@@ -192,7 +192,7 @@ HOME
                         <div class="buy-wrap">
                             <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
                             @auth
-                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid = "{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
+                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid="{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
                                 <i class="fa-solid fa-cart-shopping"></i>
                             </a>
                             @else
@@ -332,7 +332,7 @@ HOME
 </div>
 <!-- Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="max-width: 1000px;">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 700px;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="confirmationModalLabel">Chi tiết sản phẩm</h5>
@@ -342,50 +342,31 @@ HOME
             </div>
             <div class="modal-body">
                 <input type="hidden" id="modalProductId">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2 id="productname"></h2>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Màu sắc</th>
-                                    <th>Kích cở</th>
-                                    <th>Số lượng</th>
-                                </tr>
-                            </thead>
-                            <tbody id="unitTableBody">
-                                <!-- Thông tin sẽ được thêm động từ JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
 
-                    <!-- Bên phải: Input để thêm thông tin mới -->
-                    <div class="col-md-6">
-                        <div id="inputContainer">
-                            <div class="input-group mb-3 input-unit">
-                                <select class="form-control color-select">
-                                    <option value="">Màu sắc</option>
-                                    <!-- Các tùy chọn sẽ được thêm bởi JavaScript -->
-                                </select>
-                                <select class="form-control size-select">
-                                    <option value="">Kích cở</option>
-                                    <!-- Các tùy chọn sẽ được thêm bởi JavaScript -->
-                                </select>
-                                <input type="number" class="form-control quantity-input" placeholder="Số lượng">
-                                <button type="button" class="btn btn-danger btn-remove" style="margin-left: 5px;">&times;</button>
-                            </div>
-                        </div>
-                        <button class="btn btn-success btn-add mt-2" type="button">Thêm</button>
-                        <button type="button" class="btn btn-primary mt-2" id="saveUnits" data-add-to-cart="{{ route('cart.store') }}">Lưu vào giỏ hàng</button>
+                <div id="unitContainer" class="mb-3">
+                    <!-- Các đơn vị sản phẩm sẽ được thêm từ JavaScript -->
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <label for="quantityInput" class="mr-3"><strong>Số lượng:</strong></label>
+                    <div class="number-input d-flex">
+                        <button class="minus btn btn-outline-secondary">-</button>
+                        <input id="quantityInput" class="form-control mx-2 text-center" type="number" value="1" min="1" style="width: 80px;">
+                        <button class="plus btn btn-outline-secondary">+</button>
                     </div>
                 </div>
             </div>
+
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveSelectedUnit" data-add-to-cart="{{ route('cart.store') }}">
+                    Lưu vào giỏ hàng
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
             </div>
         </div>
     </div>
 </div>
+
 
 @section('script')
 <script src="{{ asset('/js/favorite.js') }}"></script>

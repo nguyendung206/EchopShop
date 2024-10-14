@@ -3,6 +3,19 @@ body {
     font-family: 'Roboto', 'Alatsi', sans-serif;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    /* Ẩn các nút mũi tên trong Chrome và Safari */
+    margin: 0;
+    /* Đặt khoảng cách bằng 0 */
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    /* Ẩn các nút mũi tên trong Firefox */
+}
+
 .l-navbar {
     display: none;
 }
