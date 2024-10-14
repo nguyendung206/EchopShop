@@ -39,7 +39,9 @@
                             </div>
                             <div class="purchase-content">
                                 <div class="purchase-name">{{$product->name}}</div>
-                                <div class="purchase-type">Phân loại</div>
+                                @if (!empty($orderDetail->productUnit) && $orderDetail->productUnit->type == 2)
+                                <div class="purchase-type">Phân loại: màu {{$orderDetail->productUnit->color}}, size {{$orderDetail->productUnit->size}}</div>
+                                @endif
                                 <div class="purchase-quatity">x{{$orderDetail->quantity}}</div>
                             </div>
                         </div>

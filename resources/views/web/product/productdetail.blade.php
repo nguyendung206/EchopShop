@@ -833,6 +833,7 @@ $totalQuantity = 0;
         });
 
         $('.quantity').on('change', function() {
+            
             let quantity = $(this).val();
             
             if(quantity > totalProduct - quantityCart) {
@@ -841,6 +842,9 @@ $totalQuantity = 0;
             if(quantity < 1) {
                 $(this).val(1);
             }
+            
+            $('#quantityValue').val(quantity);
+            
         });
 
         $(".plus").on("click", function() {
@@ -855,6 +859,8 @@ $totalQuantity = 0;
                 input.val(currentValue);
             }
             $('#quantityValue').val(currentValue);
+            $('.quantity').trigger('change');
+
         });
 
         $(".minus").on("click", function() {
@@ -865,7 +871,10 @@ $totalQuantity = 0;
                 currentValue -= 1;
                 input.val(currentValue);
                 $('#quantityValue').val(currentValue);
+                
             }
+            $('.quantity').trigger('change');
+
         });
 
         $('input[name="radio-unit"]').change(function() {

@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\Status;
 use App\Models\Discount;
+use Carbon\Carbon;
 use Exception;
 
 class DiscountService
@@ -95,6 +97,21 @@ class DiscountService
             return $check;
         } catch (Exception $e) {
             return false;
+        }
+    }
+
+    public function getDiscountJson()
+    {
+        try {
+            $discounts = Discount::query()
+                ->where('status', Status::ACTIVE)
+                ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
+                ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
+
+            return $discounts;
+
+        } catch (\Exception $e) {
+            return $e;
         }
     }
 }

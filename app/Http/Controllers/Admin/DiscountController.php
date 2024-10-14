@@ -109,4 +109,24 @@ class DiscountController extends Controller
             ], 500);
         }
     }
+
+    public function getDiscountJson()
+    {
+        try {
+            $discounts = $this->discountService->getDiscountJson();
+
+            return response()->json([
+                'status' => 200,
+                'discounts' => $discounts,
+                'message' => 'Lấy thông tin thành công.',
+            ], 200);
+        } catch (\Exception $e) {
+            dd($e);
+
+            return response()->json([
+                'status' => 500,
+                'message' => 'Lấy thông tin thất bại',
+            ]);
+        }
+    }
 }

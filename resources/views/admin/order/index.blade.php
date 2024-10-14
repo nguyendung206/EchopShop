@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 @section('title')
-    @lang('Banner')
+    @lang('Đơn hàng')
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{ static_asset('css/inputRanger.css')}}">
@@ -15,7 +15,7 @@
 
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3"><strong>Banner</strong></h1>
+            <h1 class="h3"><strong>Đơn hàng</strong></h1>
         </div>
     </div>
     <div class="filter">
@@ -48,10 +48,14 @@
                 </div>
 
                 <div class="col-md-3 text-md-right download" style="padding-left: 3px">
-                    <a href="" type="button"
-                        class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
-                        <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
-                        <span class="custom-FontSize ml-1">{{ __('Tải về') }}</span>
+                    <a href="{{ route('admin.order.create') }}"
+                        class="btn btn-info btn-add-food d-flex justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>@lang('Bổ sung')</span>
                     </a>
                 </div>
             </div>
@@ -176,50 +180,10 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
-        //deletee
-        $(document).on('click', '.btn-delete', function() {
-            let delete_id = $(this).attr('data-id');
-            let delete_href = $(this).attr('data-href');
-
-            Swal.fire({
-                title: '@lang('Xóa Banner')',
-                text: '@lang('Bạn có muốn xóa Banner này không ?')',
-                icon: 'warning',
-                confirmButtonText: '@lang('Có')',
-                cancelButtonText: '@lang('Không')',
-                showCancelButton: true,
-                showCloseButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "POST",
-                        url: delete_href,
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            "_method": "DELETE",
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                title: 'Xóa thành công!',
-                                text: 'Banner đã được xóa.',
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            }).then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(err) {
-
-                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Banner.', 'error');
-                        }
-                    });
-                }
-            });
-        });
+   
 
 
-        //Date
+        <script>
         $(function() {
             var startDay = moment().startOf('month');
             var endDay = moment().endOf('month');
@@ -232,7 +196,6 @@
             let daterange = getParameterByName('daterange');
 
             if (daterange) {
-                console.log(daterange);
                 
                 let dates = daterange.split(' - '); 
                 startDay = moment(dates[0], 'DD/MM/YYYY');

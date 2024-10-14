@@ -16,10 +16,16 @@ class OrderDetail extends Model
         'product_id',
         'quantity',
         'message',
+        'product_unit_id',
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function productUnit()
+    {
+        return $this->belongsTo(ProductUnit::class, 'product_unit_id');
     }
 }

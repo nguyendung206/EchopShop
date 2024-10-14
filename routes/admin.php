@@ -40,6 +40,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     //discount
     Route::resource('/discount', DiscountController::class);
     Route::put('discount/changeStatus/{id}', [DiscountController::class, 'changeStatus'])->name('discount.changeStatus');
+    Route::get('/getDiscountJson', [DiscountController::class, 'getDiscountJson'])->name('discount.getDiscountJson');
 
     //contact
     Route::prefix('contact')->name('contact.')->group(function () {
@@ -95,7 +96,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::post('/create', [OrderController::class, 'create'])->name('create');
+        Route::get('/create', [OrderController::class, 'create'])->name('create');
+        Route::post('/store', [OrderController::class, 'store'])->name('store');
         Route::get('/{order}', [OrderController::class, 'show'])->name('show');
         Route::post('/updateStatus/{id}', [OrderController::class, 'updateStatus'])->name('updateStatus');
 

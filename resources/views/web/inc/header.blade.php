@@ -229,7 +229,7 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                         <a href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
                                             <div style="border-radius: 10px;" class="py-notificaition dropdown-item d-flex align-items-center notification {{ !$notification->is_read ? 'is_read' : '' }}">
                                                 <div class="mr-3">
-                                                    <img style="height: 50px;width: 50px; border-radius: 50%; object-fit: cover;" src="{{ getImage($notification->product->photo) }}">
+                                                    <img style="height: 50px;width: 50px; border-radius: 50%; object-fit: cover;" src="{{$notification->product ? getImage($notification->product->photo) : asset('/img/image/change-status-order.png') }}">
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between w-100">
                                                     <div style="max-width: 95%;">
