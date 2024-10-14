@@ -168,7 +168,8 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            if ($this->productService->deleteProduct($id)) {
+            $result = $this->productService->deleteProduct($id);
+            if ($result) {
                 flash('Xóa sản phẩm thành công!')->success();
             } else {
                 flash('Đã xảy ra lỗi khi xóa sản phẩm!')->error();
