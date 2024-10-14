@@ -203,18 +203,21 @@
         colorInput.name = 'colors[]';
         colorInput.className = 'form-control';
         colorInput.placeholder = 'Nhập màu';
+        colorInput.required = true;
 
         const sizeInput = document.createElement('input');
         sizeInput.type = 'text';
         sizeInput.name = 'sizes[]';
         sizeInput.className = 'form-control ml-2';
         sizeInput.placeholder = 'Nhập kích cỡ';
+        sizeInput.required = true;
 
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
         quantityInput.name = 'quantities[]';
         quantityInput.className = 'form-control ml-2';
         quantityInput.placeholder = 'Nhập số lượng';
+        quantityInput.required = true;
 
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
