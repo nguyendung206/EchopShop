@@ -80,7 +80,8 @@
 .range-labels li {
     position: relative;
     float: left;
-    width: 75.25px;
+    max-width: 75.25px;
+    width: 8.8%;
     text-align: center;
     color: #b2b2b2;
     font-size: 14px;
