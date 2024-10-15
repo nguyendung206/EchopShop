@@ -37,7 +37,7 @@ class ProductRequest extends FormRequest
             'description' => 'nullable|string',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'nullable|exists:categories,id',
-            'unittype' => 'required|integer|in:1,2',
+            'unittype' => ['required', 'integer', Rule::in(array_column(TypeProductUnit::cases(), 'value'))],
             'quantity' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::ONLYQUANTITY), 'nullable', 'integer', 'min:1'],
             'quantities' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL)],
             'quantities.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'integer', 'distinct'],
