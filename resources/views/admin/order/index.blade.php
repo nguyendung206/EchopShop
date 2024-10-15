@@ -2,9 +2,6 @@
 @section('title')
     @lang('Đơn hàng')
 @endsection
-@section('style')
-    <link rel="stylesheet" href="{{ static_asset('css/inputRanger.css')}}">
-@endsection
 @section('header')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -31,18 +28,14 @@
                         value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên địa chỉ nhận hàng hoặc tên khách hàng')">
                 </div>
 
-                <div class="col-md-3 text-md-right d-flex align-items-center" style="padding-left: 5px">
-                    <div class="category-title mt-4 text-left" style="margin-top: -12px !important;height: 0px !important;font-size: 14px">Mức giá:</div>
-                    <div class="category-3">
-                        <div class="box">
-                            <div class="min-max-slider" data-legendnum="3" style="margin-bottom: 0px;position: absolute;left: 20%;top: -2px;">
-                                    <input id="min" class="min" name="min" type="range" step="1" min="0" max="{{ config('setting.max_price_filter_admin') }}" 
-                                        style="background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(190, 228, 239) 30%, rgb(190, 225, 239) 60%, transparent 60%, transparent 100%);"
-                                    />
-                                    <input id="max" class="max" name="max" type="range" step="1" min="0"  max="{{ config('setting.max_price_filter_admin') }}" 
-                                        style="background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, rgb(190, 228, 239) 30%, rgb(190, 225, 239) 60%, transparent 60%, transparent 100%);"
-                                    />
-                            </div>
+                <div class="col-md-3">
+                    <div class="row  align-items-center">
+                        <div class="col-3" >Mức giá </div>
+                        <div class="col-4" style="padding-left: 0px;">
+                            <input type="number" class="w-100 form-control " name="min" min="0"  placeholder="từ" value="{{ request()->get('min') }}"> 
+                        </div>
+                        <div class="col-5" style="padding-left: 0px;">
+                            <input type="number" class="w-100 form-control " name="max" placeholder="đến (VNĐ)" value="{{ request()->get('max') }}"> 
                         </div>
                     </div>
                 </div>
@@ -221,6 +214,5 @@
         
 
     </script>
-    <script src="{{asset('/js/inputRange.js')}}"></script>
     
 @endsection
