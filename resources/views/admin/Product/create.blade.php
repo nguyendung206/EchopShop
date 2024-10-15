@@ -111,7 +111,7 @@
 
                             <div>
                                 <div class="range">
-                                    <input type="range" min="0" max="100" step="10" value="100" name="quality">
+                                    <input type="range" min="0" max="100" step="10" value="{{old('quality') ? old('quality') : 100}}" name="quality">
                                 </div>
                               
                                 <ul class="range-labels">

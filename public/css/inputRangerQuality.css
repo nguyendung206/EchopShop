@@ -2,6 +2,8 @@
     position: relative;
     width: 90%;
     height: 5px;
+    max-width: 766.93px;
+
 }
 .range input {
     width: 100%;
@@ -78,7 +80,8 @@
 .range-labels li {
     position: relative;
     float: left;
-    width: 75.25px;
+    max-width: 75.25px;
+    width: 8.8%;
     text-align: center;
     color: #b2b2b2;
     font-size: 14px;
@@ -100,3 +103,20 @@
 .final-text {
     width: 70px !important;
 }
+@media only screen and (max-width: 768px) {
+    .range-labels li {
+        width: 8.6%;
+    }
+    .final-text {
+        width: 8.6% !important;
+    }
+  }
+
+  @media only screen and (min-width: 769px) and (max-width: 1200px) {
+    .range-labels li {
+        width: 8.8%;
+    }
+    .final-text {
+        width: 8.8% !important;
+    }
+  }

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Status;
 use App\Enums\TypeProduct;
+use App\Enums\TypeProductUnit;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -36,14 +37,14 @@ class ProductRequest extends FormRequest
             'description' => 'nullable|string',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'nullable|exists:categories,id',
-            'unittype' => 'required|integer|in:1,2',
-            'quantity' => 'required_if:unittype,1|integer|min:1',
-            'quantities' => 'required_if:unittype,2|integer',
-            'quantities.*' => 'required_if:unittype,2|string|distinct',
-            'colors' => 'required_if:unittype,2|array',
-            'colors.*' => 'required_if:unittype,2|string|distinct',
-            'sizes' => 'required_if:unittype,2|array',
-            'sizes.*' => 'required_if:unittype,2|string|distinct',
+            'unittype' => ['required', 'integer', Rule::in(array_column(TypeProductUnit::cases(), 'value'))],
+            'quantity' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::ONLYQUANTITY), 'nullable', 'integer', 'min:1'],
+            'quantities' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL)],
+            'quantities.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'integer', 'distinct'],
+            'colors' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'array'],
+            'colors.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'string', 'distinct'],
+            'sizes' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'array'],
+            'sizes.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'string', 'distinct'],
         ];
     }
 
