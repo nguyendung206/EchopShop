@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Status;
+use App\Enums\TypeDiscount;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DiscountRequest extends FormRequest
 {
@@ -28,14 +31,14 @@ class DiscountRequest extends FormRequest
             'description' => 'nullable|string',
             'photo' => 'file|max:10240',
             'code' => 'required|string|max:50|unique:discounts,code,'.$this->route('discount'),
-            'type' => 'required|in:1,2',
+            'type' => ['required', Rule::in(array_column(TypeDiscount::cases(), 'value'))],
             'value' => 'required|numeric|min:0',
             'maxValue' => 'required|numeric|min:0',
             'startTime' => 'required|date',
             'endTime' => 'required|date|after_or_equal:startTime',
             'maxUses' => 'required|numeric|min:0',
             'limitUses' => 'required|numeric|min:0',
-            'status' => 'required|in:1,2',
+            'status' => ['required', Rule::in(array_column(Status::cases(), 'value'))],
         ];
 
         return $rules;
@@ -47,8 +50,11 @@ class DiscountRequest extends FormRequest
             if ($this->limitUses > $this->maxUses) {
                 $validator->errors()->add('limitUses', 'Số lượt dùng của mỗi người phải nhỏ hơn hoặc bằng với số lượng mã');
             }
-            if ($this->maxValue < $this->value) {
+            if ($this->type != TypeDiscount::PERCENT->value && $this->maxValue < $this->value) {
                 $validator->errors()->add('maxValue', 'Số tiền giảm giá tối đa phải lớn hơn số tiền giảm giá');
+            }
+            if ($this->type == TypeDiscount::PERCENT->value && $this->value > 100) {
+                $validator->errors()->add('value', 'Số tiền giảm giá phải bé hơn hoặc bằng 100%');
             }
         });
     }

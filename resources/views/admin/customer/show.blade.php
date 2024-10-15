@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Giới tính</h6>
-                                <p class="text-muted">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</p>
+                                <p class="text-muted">{{$user->gender->label()}}</p>
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Thành Phố</h6>

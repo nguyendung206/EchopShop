@@ -2,16 +2,16 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-/**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
- */
-final class UserGender extends Enum
+enum UserGender: int
 {
-    const Male = 0;
+    case Male = 0;
+    case Female = 1;
 
-    const Female = 1;
+    public function label(): string
+    {
+        return match ($this) {
+            self::Male => 'Nam',
+            self::Female => 'Nữ',
+        };
+    }
 }
