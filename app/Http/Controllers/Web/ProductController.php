@@ -8,7 +8,6 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Province;
 use App\Models\WaitProduct;
 use App\Services\ProductService;
 use App\Services\StatusService;
@@ -208,46 +207,6 @@ class ProductController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi, vui lòng thử lại.');
         }
-    }
-
-    public function filterByCategory($slug)
-    {
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $products = $this->productService->filterByCategory($category->id);
-        $provinces = Province::all();
-
-        return view('web.product.product', compact('products', 'category', 'provinces'));
-    }
-
-    public function filterByCategoryAndBrand($categorySlug, $brandSlug)
-    {
-        $category = Category::where('slug', $categorySlug)->firstOrFail();
-        $brand = Brand::where('slug', $brandSlug)->firstOrFail();
-        $products = $this->productService->filterByCategoryAndBrand($category->id, $brand->id);
-        $provinces = Province::all();
-
-        return view('web.product.product', compact('products', 'category', 'brand', 'provinces'));
-    }
-
-    public function filterProducts(Request $request)
-    {
-        $selectedCategories = $request->input('categories', []);
-        $selectedBrands = $request->input('brands', []);
-        $selectedProvinces = $request->input('provinces', []);
-        $rangeInputMin = $request->input('rangeInputMin', null);
-        $rangeInputMax = $request->input('rangeInputMax', null);
-        $provinces = Province::all();
-
-        $category = Category::whereIn('id', $selectedCategories)->pluck('name')->toArray();
-        $brand = Brand::whereIn('id', $selectedBrands)->pluck('name')->toArray();
-
-        $products = $this->productService->filterProducts($selectedCategories, $selectedBrands, $selectedProvinces, $rangeInputMin, $rangeInputMax);
-
-        return response()->json([
-            'productHtml' => view('web.product.product_list', compact('products', 'provinces'))->render(),
-            'categoryNames' => $category,
-            'brandNames' => $brand,
-        ]);
     }
 
     public function status($id)

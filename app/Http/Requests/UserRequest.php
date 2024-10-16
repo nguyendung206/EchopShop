@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Status;
+use App\Enums\UserGender;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -37,6 +40,8 @@ class UserRequest extends FormRequest
             'province_id' => ['not_in:0'],
             'district_id' => ['not_in:0'],
             'ward_id' => ['not_in:0'],
+            'status' => ['required', Rule::in(array_column(Status::cases(), 'value'))],
+            'gender' => ['required', Rule::in(array_column(UserGender::cases(), 'value'))],
         ];
         if ($this->has('password')) {
             $rule['password'] = ['required', 'min:3', 'max:255'];
@@ -67,6 +72,8 @@ class UserRequest extends FormRequest
             'district_id' => 'Quận/huyện',
             'ward_id' => 'Phường/thị xã',
             'address' => 'Địa chỉ chi tiết',
+            'status' => 'Trạng thái',
+            'gender' => 'giới tính',
         ];
     }
 }

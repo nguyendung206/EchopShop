@@ -168,19 +168,25 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Giới tính</label>
                         <div class="col-sm-9">
-                            <select class=" form-control font-weight-500" name="gender" >
+                            <select class=" form-control font-weight-500  @error('gender') is-invalid  @enderror" name="gender" >
                                 <option class=" " value="{{ App\Enums\UserGender::Male}}" {!! old('gender') != null && old('gender') == 0 ? ' selected' : null !!}>Nam</option>
                                 <option class=" " value="{{ App\Enums\UserGender::Female }}" {!! old('gender') != null && old('gender') == 1 ? ' selected' : null !!}>Nữ</option>
                             </select>
+                            @error('gender')
+                                <div style="width: 100%;margin-top: .25rem;font-size: 12px;color: #dc3545;">{{ $message }}</div>
+                                @enderror
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Trạng thái tài khoản</label>
                         <div class="col-sm-9">
-                            <select class=" form-control font-weight-500" name="status" >
+                            <select class=" form-control font-weight-500 @error('status') is-invalid  @enderror" name="status" >
                                 <option class=" " value="{{StatusEnums::ACTIVE}}" {!! old('status') != null && old('status') == 0 ? ' selected' : null !!}>Đang hoạt động</option>
                                 <option class=" " value="{{StatusEnums::INACTIVE}}" {!! old('status') != null && old('status') == 1 ? ' selected' : null !!}>Đã bị khoá</option>
                             </select>
+                            @error('status')
+                                <div style="width: 100%;margin-top: .25rem;font-size: 12px;color: #dc3545;">{{ $message }}</div>
+                                @enderror
                         </div>
                     </div>
                     <div class="form-group row">

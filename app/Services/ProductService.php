@@ -116,6 +116,7 @@ class ProductService
         $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->quality = $request->quality;
 
         if ($request->hasFile('photo')) {
             $product->photo = uploadImage($request->file('photo'), 'upload/product/');
@@ -377,42 +378,5 @@ class ProductService
         } catch (\Exception $e) {
             return false;
         }
-    }
-
-    public function filterByCategory($categoryId)
-    {
-        return Product::where('category_id', $categoryId)->get();
-    }
-
-    public function filterByCategoryAndBrand($categoryId, $brandId)
-    {
-        return Product::where('category_id', $categoryId)
-            ->where('brand_id', $brandId)
-            ->get();
-    }
-
-    public function filterProducts($categoryIds = [], $brandIds = [], $provinceIds = [], $minPrice = null, $maxPrice = null, $condition = null)
-    {
-        $query = Product::query();
-
-        if (! empty($categoryIds)) {
-            $query->whereIn('category_id', $categoryIds);
-        }
-
-        if (! empty($brandIds)) {
-            $query->whereIn('brand_id', $brandIds);
-        }
-
-        if (! empty($provinceIds)) {
-            $query->whereHas('province', function ($q) use ($provinceIds) {
-                $q->whereIn('id', $provinceIds);
-            });
-        }
-
-        if ($minPrice !== null && $maxPrice !== null) {
-            $query->whereBetween('price', [$minPrice, $maxPrice]);
-        }
-
-        return $query->get();
     }
 }

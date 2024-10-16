@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TypePolicy;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PolicyRequest extends FormRequest
 {
@@ -25,7 +27,7 @@ class PolicyRequest extends FormRequest
     {
         return [
             'description' => ['required', 'max: 1000'],
-            'type' => ['required', 'integer', 'in:1,2,3,4,5'],
+            'type' => ['required', 'integer', Rule::in(array_column(TypePolicy::cases(), 'value'))],
         ];
     }
 

@@ -60,7 +60,15 @@ class HomeController extends Controller
             ]);
         }
 
-        return view('web.product.productPage', compact('products', 'provinces'));
+        $queryParams = $request->query();
+        if (isset($queryParams['type'])) {
+            $queryParams = [0 => $queryParams['type']];
+
+            return view('web.product.productPage', ['products' => $products, 'provinces' => $provinces])->withQueryString($queryParams);
+        }
+
+        return view('web.product.productPage', ['products' => $products, 'provinces' => $provinces]);
+
     }
 
     public function search(Request $request)
