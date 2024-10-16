@@ -133,7 +133,7 @@ class ProductService
         return $product;
     }
 
-    public function createwaitProduct(Request $request)
+    public function createwaitProduct(ProductRequest $request)
     {
         $product = new WaitProduct;
         $product->product_id = $request->product_id;
@@ -145,6 +145,7 @@ class ProductService
         $product->type = $request->type;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->quality = $request->quality;
 
         $photoToKeep = $request->input('photo_to_keep', 'noproduct.png');
 
@@ -217,6 +218,7 @@ class ProductService
         $product->shop_id = $request->shop_id;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->quality = $request->quality;
 
         if ($request->hasFile('photo')) {
             if ($product->photo && $product->photo !== 'noproduct.png') {
@@ -271,7 +273,7 @@ class ProductService
         return true;
     }
 
-    public function updateWaitProduct(Request $request, $id)
+    public function updateWaitProduct(ProductRequest $request, $id)
     {
         $product = WaitProduct::where('product_id', $id)->first();
         $product->product_id = $id;
@@ -283,6 +285,7 @@ class ProductService
         $product->shop_id = $request->shop_id;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->quality = $request->quality;
 
         if ($request->hasFile('photo')) {
             if ($product->photo && $product->photo !== 'noproduct.png') {
@@ -347,6 +350,7 @@ class ProductService
         $product->shop_id = $waitProduct->shop_id;
         $product->category_id = $waitProduct->category_id;
         $product->brand_id = $waitProduct->brand_id;
+        $product->quality = $waitProduct->quality;
 
         $product->save();
 

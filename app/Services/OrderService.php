@@ -221,8 +221,8 @@ class OrderService
                 $discount = Discount::findOrFail($request['discountId']);
                 $discount->increment('quantity_used');
                 $discount->user_used = $discount->user_used
-                    ? $discount->user_used.','.Auth::id()
-                    : Auth::id();
+                    ? $discount->user_used.','.$request['customerId']
+                    : $request['customerId'];
                 $discount->save();
             }
             // lấy ra các product-unit đã chọn
@@ -255,6 +255,21 @@ class OrderService
                     'product_unit_id' => $productUnitId,
                 ]);
             }
+
+            // lấy thông tin đưa vào mail
+            $orderCreated = Order::query()
+                ->where('id', $order->id)
+                ->with([
+                    'discount',
+                    'customer.province',
+                    'customer.district',
+                    'customer.ward',
+                    'orderDetails.product',
+                ])
+                ->first();
+            $emailUser = User::find($request['customerId'])->email;
+            $emailJob = new SendOrderSuccessMail($emailUser, $orderCreated);
+            dispatch($emailJob);
 
             return $order;
         } catch (Exception $e) {

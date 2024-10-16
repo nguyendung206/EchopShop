@@ -1,12 +1,12 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Thương hi')
+@lang('Thương hiệu')
 @endsection
 @section('content')
 
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="align-items-center">
-        <h1 class="h3"><strong>@lang('Thương hi')</strong></h1>
+        <h1 class="h3"><strong>@lang('Thương hiệu')</strong></h1>
     </div>
 </div>
 <div class="filter">
@@ -209,8 +209,8 @@
         let delete_href = $(this).attr('data-href');
 
         Swal.fire({
-            title: '@lang("Xóa Thương hi")',
-            text: '@lang("Bạn có muốn xóa Thương hi này không ?")',
+            title: '@lang("Xóa Thương hiệu")',
+            text: '@lang("Bạn có muốn xóa Thương hiệu này không ?")',
             icon: 'warning',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
@@ -228,7 +228,7 @@
                     success: function(response) {
                         Swal.fire({
                             title: 'Xóa thành công!',
-                            text: 'Thương hi đã được xóa.',
+                            text: 'Thương hiệu đã được xóa.',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -236,7 +236,7 @@
                         });
                     },
                     error: function(err) {
-                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Thương hi.', 'error');
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Thương hiệu.', 'error');
                     }
                 });
             }

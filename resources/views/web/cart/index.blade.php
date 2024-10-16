@@ -48,7 +48,7 @@ $allowSend = true;
                                     {{ $cart->products->name }}
                                 </div>
                                 <div class="item-meta mb-2">
-                                    <p>{!! $cart->products->description !!}</p>
+                                    <p style="max-width: 400px;">{{strip_tags($cart->products->description)}}</p>
                                 </div>
                                 <div class="text-left type-product">
                                     @if ( !empty($cart->products->getProductUnitById($cart->product_unit_id)))
@@ -290,7 +290,7 @@ $allowSend = true;
             '')); // Lấy giá gốc và loại bỏ các ký tự không cần thiết
         const quantity = parseInt(row.querySelector('.quantity').value); // Lấy số lượng
         const totalAmount = price * quantity; // Tính tổng tiền
-        row.querySelector('.total-amount').textContent = formatCurrency(totalAmount); // Hiển thị tổng tiền
+        row.querySelector('.total-amount').textContent = formatCurrency(totalAmount ? totalAmount : price); // Hiển thị tổng tiền
         calculateGrandTotal(); // Cập nhật tổng thanh toán
     }
 
@@ -593,7 +593,7 @@ $allowSend = true;
                 input.val(1);
                 calculateTotalAmount(this.closest('tr'));
             }
-
+            calculateGrandTotal()
             clearTimeout(checkTimeout); // xoá sau khi thay đổi 2s
 
             checkTimeout = setTimeout(function() {
