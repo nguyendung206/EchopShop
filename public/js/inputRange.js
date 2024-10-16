@@ -111,9 +111,13 @@ sliders.forEach( function(slider) {
 });
 
 function formatCurrency(value) {
+    value = Math.floor(value / 10000) * 10000;
+    document.getElementById('min').value = value;
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 function formatCurrencyWithUnit(value) {
+    value = Math.floor(value / 10000) * 10000;
+    document.getElementById('max').value = value;
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " VNĐ";
 }

@@ -258,6 +258,8 @@
             updateTotalDiscountedPrice();
         });
         $('.select-user').on('change', function () {
+            console.log("alo");
+            
             var selectedOption = $('.select-user').find('option:selected');
             var shippingAddress = selectedOption.data('shipping-address');
             $('.shipping_address').val(shippingAddress); // đưa vào địa chỉ giao hàng
@@ -275,7 +277,9 @@
 
                         // Lặp qua mảng discounts
                         $.each(discounts, function (index, discount) {
-                            let userIdArray = discount.user_used.split(','); // lấy ra mảng người dùng
+                            console.log(discount);
+                            
+                            let userIdArray = discount.user_used ? discount.user_used.split(',') : []; // lấy ra mảng người dùng
                             let countUserId = userIdArray.filter(userId => userId == selectedOption.val()).length; // đếm số lượt dùng
                             discountHtml += `
                                 <option value="${discount.id}" 

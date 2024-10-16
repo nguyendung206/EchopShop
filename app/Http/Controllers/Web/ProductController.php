@@ -119,7 +119,7 @@ class ProductController extends Controller
         return view('web.product.editpost', compact('post', 'categories', 'brands'));
     }
 
-    public function waitcreate(Request $request)
+    public function waitcreate(ProductRequest $request)
     {
         try {
             $result = WaitProduct::where('product_id', $request->product_id)->exists();

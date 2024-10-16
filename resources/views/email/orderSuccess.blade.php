@@ -169,6 +169,16 @@ input[disabled] {
   text-align: center;
   padding: 1rem;
 }
+.init-money {
+  text-decoration: line-through;
+    color: #757575;
+    font-size: 14px;
+}
+.discount-money {
+  color: #B10000;
+    font-size: 16px;
+    margin-left: 10px;
+}
 
 /* template */
 
