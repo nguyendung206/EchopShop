@@ -17,6 +17,11 @@
         @include('web.profile.sidebar')
 
         <div class="col-lg-9 col-sm-12 col-12 mt-4">
+            <div class="text-right">
+                <a class="text-center" href="#" id="markAllAsRead" data-href="{{ route('notification.readall') }}" style="font-size: 14px;">
+                    Đánh dấu đã đọc tất cả
+                </a>
+            </div>
             <div id="notification-list">
                 @foreach ($datas as $data)
                 <a href="{{ route('notification.isreaded', ['id' => $data->id]) }}">
@@ -49,6 +54,28 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+<script>
+    $(document).on('click', '#markAllAsRead', function(e) {
+        e.preventDefault();
+
+        let url = $(this).data('href');
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response) {
+                if (response.status === 200) {
+                    $('.dot').removeClass('dot');
+                    $('.notification').removeClass('is_read');
+                    $('#notificationCount').text('');
+                }
+            },
+            error: function() {
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        });
+    });
+</script>
 <script>
     var currentPage = 1;
 

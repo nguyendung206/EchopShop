@@ -217,7 +217,7 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                         <i class="fa-regular fa-comment-dots"></i>
                                     </a>
                                 </div>
-                                <div class="search" style="position: relative;">
+                                <div id="notification" class="search" style="position: relative;">
                                     <a href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa-regular fa-bell"></i>
                                         @if (Auth::check())
@@ -234,32 +234,38 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                             @endif
                                             @endif
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right px-2" aria-labelledby="notificationDropdown" style="max-height: 450px; overflow-y: auto; width: 450px; white-space: nowrap; overflow-x: hidden;">
+                                    <div id="notificationList" class="dropdown-menu dropdown-menu-right px-2"
+                                        aria-labelledby="notificationDropdown"
+                                        style="max-height: 450px; overflow-y: auto; width: 450px; white-space: nowrap; overflow-x: hidden;">
                                         <div class="notification-header mx-3 py-3 mb-2 row justify-content-between align-items-center">
                                             <strong style="font-size: 24px;">Thông báo</strong>
-                                            <a href="#" style="font-size: 14px;">Đánh dấu đã đọc tất cả</a>
+                                            <a href="#" id="markAllAsRead" data-href="{{ route('notification.readall') }}"
+                                                style="font-size: 14px;">Đánh dấu đã đọc tất cả</a>
                                         </div>
+
                                         @if(isset($notifications) && count($notifications) > 0)
                                         @foreach($notifications as $notification)
                                         <a href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
-                                            <div style="border-radius: 10px;" class="py-notificaition dropdown-item d-flex align-items-center notification {{ !$notification->is_read ? 'is_read' : '' }}">
+                                            <div style="border-radius: 10px;"
+                                                class="py-notification dropdown-item d-flex align-items-center notification {{ !$notification->is_read ? 'is_read' : '' }}">
                                                 <div class="mr-3">
-                                                    <img style="height: 50px;width: 50px; border-radius: 50%; object-fit: cover;" src="{{$notification->product ? getImage($notification->product->photo) : asset('/img/image/change-status-order.png') }}">
+                                                    <img style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover;"
+                                                        src="{{ $notification->product ? getImage($notification->product->photo) : asset('/img/image/change-status-order.png') }}">
                                                 </div>
+
                                                 <div class="d-flex align-items-center justify-content-between w-100">
                                                     <div style="max-width: 95%;">
                                                         <strong>{{ $notification->title }}</strong>
                                                         <div class="text-muted my-2 text-body">{{ $notification->body }}</div>
                                                         <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                                     </div>
-                                                    <div class="ml-auto {{ !$notification->is_read ? 'dot' : '' }}"></div>
+                                                    <div id="dot" class="ml-auto {{ !$notification->is_read ? 'dot' : '' }}"></div>
                                                 </div>
                                             </div>
                                         </a>
                                         @endforeach
-                                        <a class="notification-all profile-tab" href="{{route('notification.index')}}" data-tab="notifications">
-                                            Xem tất cả
-                                        </a>
+                                        <a class="notification-all profile-tab" href="{{ route('notification.index') }}"
+                                            data-tab="notifications">Xem tất cả</a>
                                         @else
                                         <div class="dropdown-item text-center">@lang('Không có thông báo mới')</div>
                                         @endif
@@ -409,6 +415,36 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
 </header>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        $('#notificationDropdown').on('click', function(e) {
+            e.preventDefault();
+            $(this).next('.dropdown-menu').toggle();
+        });
+
+        $(document).on('click', '#markAllAsRead', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            let url = $(this).data('href');
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function(response) {
+                    if (response.status === 200) {
+                        $('.dot').removeClass('dot');
+                        $('.notification').removeClass('is_read');
+                        $('#notificationCount').text('');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function() {
