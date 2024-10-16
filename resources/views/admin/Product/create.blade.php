@@ -161,6 +161,9 @@
                                 <input name="unittype" type="radio" id="unitType2" class="form-check-input" value="2" {{ old('unittype') == '2' ? 'checked' : '' }} style="cursor: pointer;" onchange="toggleDetailInput()">
                                 <label class="form-check-label" for="unitType2" style="font-size: 1rem; cursor: pointer;">Kích cỡ, màu, số lượng</label>
                             </div>
+                            @error('unittype')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -233,18 +236,21 @@
         colorInput.name = 'colors[]';
         colorInput.className = 'form-control';
         colorInput.placeholder = 'Nhập màu';
+        colorInput.required = true;
 
         const sizeInput = document.createElement('input');
         sizeInput.type = 'text';
         sizeInput.name = 'sizes[]';
         sizeInput.className = 'form-control ml-2';
         sizeInput.placeholder = 'Nhập kích cỡ';
+        sizeInput.required = true;
 
         const quantityInput = document.createElement('input');
         quantityInput.type = 'number';
         quantityInput.name = 'quantities[]';
         quantityInput.className = 'form-control ml-2';
         quantityInput.placeholder = 'Nhập số lượng';
+        quantityInput.required = true;
 
         const removeButton = document.createElement('button');
         removeButton.type = 'button';
