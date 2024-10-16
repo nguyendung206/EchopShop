@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Status;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PartnerRequest extends FormRequest
 {
@@ -28,7 +30,7 @@ class PartnerRequest extends FormRequest
             'phone_number' => ['required', 'numeric', 'digits:10'],
             'email' => ['required', 'email', 'unique:partners,email,'.$this->route('partner')],
             'photo' => ['file', 'max:10240'],
-            'status' => ['required', 'in:1,2'],
+            'status' => ['required', Rule::in(array_column(Status::cases(), 'value'))],
         ];
     }
 

@@ -107,7 +107,7 @@
                         <td class="font-weight-400 align-middle">{{$user->email}}</td>
                         <td class="font-weight-400 align-middle">{{$user->address}}</td>
                         <td class="font-weight-400 align-middle">{!! $user->status == StatusEnums::ACTIVE ? 'Đang hoạt động' : 'Đã bị khoá' !!}</td>
-                        <td class="font-weight-400 align-middle">{{ App\Enums\UserGender::getKey($user->gender) == 'Male' ? 'Nam' : 'Nữ' }}</td>
+                        <td class="font-weight-400 align-middle">{{ $user->gender->label() }}</td>
                         <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>
                         <td class="">
                             @if ($user->status == StatusEnums::ACTIVE)

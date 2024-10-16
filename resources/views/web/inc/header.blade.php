@@ -3,13 +3,10 @@ $search = request()->get('search');
 $provinceQuery = request()->get('province');
 
 $url = Str::lower(request()->url());
-$route = route('listProducts', ['type' => TypeProductEnums::SECONDHAND]);
+$route = route('listProducts');
 
-if (Str::contains($url, 'giveaway')) {
-$route = route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]);
-}
-if (Str::contains($url, 'exchange')) {
-$route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
+if (request()->has('type')) {
+$route = route('listProducts', ['type' => request()->get('type')]);
 }
 @endphp
 <div id="overlay">
@@ -61,7 +58,7 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 <ul class="custom-dropdown-submenu" style="display: none;">
                                     @foreach($category->activeBrands as $brand)
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('filter.category.brand', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                        <a class="dropdown-item" href="{{ route('listProducts', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
                                             <p class="dropdown-title">{{ $brand->name }}</p>
                                         </a>
                                     </li>
@@ -175,9 +172,12 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 <div class="input-group-append">
                                     <div style="position: relative;">
                                         <div style="border-left: 2px solid #000; height: 50%; position: absolute; left: 1px; top: 25%;"></div>
-
-                                        <select class="form-control w-120px forcus-none" name="province">
+                                        @if (request()->has('type'))
+                                        <input type="hidden" name="type" value="{{request()->get('type')}}">
+                                        @endif
+                                        <select class="form-control w-120px forcus-none province-select"  name="province">
                                             <option value="0" disabled selected>Địa điểm</option>
+                                            <option value="" {{request()->has('province') && empty($provinceQuery) ? 'selected' : ''}}>Tất cả</option>
                                             @foreach ($provinces as $province)
                                             <option value="{{$province->id}}" {{$provinceQuery && $provinceQuery == $province->id ? 'selected' : ''}}>{{$province->province_name}}</option>
                                             @endforeach
@@ -186,7 +186,7 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                 </div>
                                 <div class="input-group-append">
                                     <button class="btn btn-search" type="submit">
-                                        Tìm kiếm
+                                    Tìm kiếm 
                                     </button>
                                 </div>
 
@@ -316,8 +316,9 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                                     <div style="position: relative;">
                                         <div style="border-left: 2px solid #000; height: 50%; position: absolute; left: 1px; top: 25%;"></div>
 
-                                        <select class="form-control w-120px forcus-none" name="province">
+                                        <select class="form-control w-120px forcus-none province-select" name="province">
                                             <option value="0" disabled selected>Địa điểm</option>
+                                            <option value="" {{request()->has('province') && empty($provinceQuery) ? 'selected' : ''}}>Tất cả</option>
                                             @foreach ($provinces as $province)
                                             <option value="{{$province->id}}" {{$provinceQuery && $provinceQuery == $province->id ? 'selected' : ''}}>{{$province->province_name}}</option>
                                             @endforeach
@@ -485,6 +486,21 @@ $route = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
                 $('.btn-search').prop('disabled', true);
             }
         }
+
+        var selectedValue = $('.province-select').val();
+        function checkProvinceValue() {
+            if (selectedValue !== 0 && selectedValue !== null) {
+                
+                    $('.btn-search').prop('disabled', false);
+                } else {
+                    $('.btn-search').prop('disabled', true);
+                }
+        }
+        checkProvinceValue();
+        $('.province-select').on('change', function() {
+                 selectedValue = $(this).val();
+                 checkProvinceValue();
+            });
 
     });
 </script>

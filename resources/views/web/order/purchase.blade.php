@@ -39,7 +39,7 @@
                             </div>
                             <div class="purchase-content">
                                 <div class="purchase-name">{{$product->name}}</div>
-                                @if (!empty($orderDetail->productUnit) && $orderDetail->productUnit->type == 2)
+                                @if (!empty($orderDetail->productUnit) && $orderDetail->productUnit->type == TypeProductUnitEnums::FULL->value)
                                 <div class="purchase-type">Phân loại: màu {{$orderDetail->productUnit->color}}, size {{$orderDetail->productUnit->size}}</div>
                                 @endif
                                 <div class="purchase-quatity">x{{$orderDetail->quantity}}</div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Status;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BannerRequest extends FormRequest
 {
@@ -28,7 +30,7 @@ class BannerRequest extends FormRequest
             'description' => ['required', 'max: 255'],
             'link' => ['required', 'max:255'],
             'photo' => ['file', 'max:10240'],
-            'status' => ['required', 'in:1,2'],
+            'status' => ['required', Rule::in(array_column(Status::cases(), 'value'))],
         ];
 
         return $rule;

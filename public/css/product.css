@@ -315,8 +315,8 @@
 .custom-checkbox-category.checked::before {
     content: "";
     position: absolute;
-    left: 5px;
-    top: 2px;
+    left: 30%;
+    top: 10%;
     width: 6px;
     height: 10px;
     border: solid rgba(177, 0, 0, 1);
@@ -425,13 +425,16 @@
 .custom-radio input[type="radio"]:checked + label::after {
     content: "";
     position: absolute;
-    left: 4.7px;
+    left: 4%;
     top: 50%;
     transform: translateY(-50%);
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background-color: rgba(177, 0, 0, 1);
+}
+.radio-all input[type="radio"]:checked + label::after  {
+    left: 7%;
 }
 .checked-text {
     color: rgba(177, 0, 0, 1);

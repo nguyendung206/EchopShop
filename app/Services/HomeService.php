@@ -23,7 +23,17 @@ class HomeService
         $brandSlug = $request['brandSlug'] ?? null;
         $rangeInputMin = isset($request['rangeInputMin']) ? (float) $request['rangeInputMin'] : 0;
         $rangeInputMax = isset($request['rangeInputMax']) ? (float) $request['rangeInputMax'] : config('setting.max_price_filter');
+        $option = isset($request['option']) ? $request['option'] : null;
         $query = Product::query();
+
+        if ($option == 1) {
+            $query->whereBetween('quality', [70, 100]);
+        } elseif ($option == 2) {
+            $query->whereBetween('quality', [50, 70]);
+        } elseif ($option == 3) {
+            $query->where('quality', '<=', 50);
+        }
+
         if (! empty($request['search'])) {
             $query = $query->where('name', 'like', '%'.$request['search'].'%');
         }
