@@ -46,6 +46,8 @@ if (request()->query('type') == TypeProductEnums::SALE->value) {
         Mua bán đồ SECONDHAND
         @elseif ($case == TypeProductEnums::GIVEAWAY->value)
         Hàng cũ đem tặng
+        @elseif ($case == TypeProductEnums::SALE->value)
+        Hàng được bày bán
         @elseif (request()->has('province') )
         Danh sách sản phẩm theo địa điểm.
         @else
