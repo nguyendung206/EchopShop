@@ -57,10 +57,18 @@
                         <p  class="my-1">{{$order->shipping_address}}</p>
                     </div>
                     @if ($order->discount)
-                        
                     <div class="text-right total-price-purchase col-6">Thành tiền: <span class="init-money">{{format_price($order->total_amount)}}</span> <span class="discount-money">{{format_price(calculateDiscountedPrice($order->discount->type->value, $order->total_amount, $order->discount->value, $order->discount->max_value))}}</span></div>
                     @else
                     <div class="text-right total-price-purchase col-6">Thành tiền: <span class="discount-money">{{format_price($order->total_amount)}}</span> </div>
+                    @endif
+
+                    @if($order->status->value == StatusOrderEnums::CANCELLED->value)
+                    <div class="col-6"></div>
+                    <div class="col-6 text-right">
+                        <div class="btn-post" style="color: white">
+                            <a href="#">Mua lại</a>
+                        </div>
+                    </div>
                     @endif
                     <div></div>
                 </div>

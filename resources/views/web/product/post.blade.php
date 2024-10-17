@@ -119,21 +119,11 @@
                 <label >Tình trạng sản phẩm </label>
                 <div>
                     <div class="range">
-                        <input type="range" min="0" max="100" step="10" value="100" name="quality">
+                        <input type="range" min="0" step="1" max="100"  value="{{old('quality') ? old('quality') : 100}}" name="quality" id="qualityRange">
                     </div>
                   
-                    <ul class="range-labels range-labels-web">
-                        <li class="text-left">0</li>
-                      <li class="text-left">10</li>
-                      <li class="text-left">20</li>
-                      <li class="text-left">30</li>
-                      <li class="text-left">40</li>
-                      <li class="text-left">50</li>
-                      <li class="text-left">60</li>
-                      <li class="text-left">70</li>
-                      <li class="text-left">80</li>
-                      <li class="text-left">90</li>
-                      <li class="text-left final-text">100% (hàng mới)</li>
+                    <ul class="range-labels">
+                      <li id="qualityLabel">Chất lượng sản phẩm: {{old('quality') ? old('quality') : 100}}%</li>
                     </ul>
                 </div>
             </div>
@@ -382,5 +372,12 @@
         .catch(error => {
             console.error(error);
         });
+</script>
+<script>
+    const qualityRange = document.getElementById('qualityRange');
+    const qualityLabel = document.getElementById('qualityLabel');
+    qualityRange.addEventListener('input', function() {
+        qualityLabel.textContent = `Chất lượng sản phẩm: ${this.value}%`;
+    });
 </script>
 @endsection
