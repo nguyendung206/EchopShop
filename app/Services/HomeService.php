@@ -19,8 +19,8 @@ class HomeService
     public function filterProducts($request)
     {
         $type = $request['type'] ?? null;
-        $categorySlug = $request['categorySlug'] ?? null;
-        $brandSlug = $request['brandSlug'] ?? null;
+        $categorySlug = $request['category-slug'] ?? null;
+        $brandSlug = $request['brand-slug'] ?? null;
         $rangeInputMin = isset($request['rangeInputMin']) ? (float) $request['rangeInputMin'] : 0;
         $rangeInputMax = isset($request['rangeInputMax']) ? (float) $request['rangeInputMax'] : config('setting.max_price_filter');
         $option = isset($request['option']) ? $request['option'] : null;

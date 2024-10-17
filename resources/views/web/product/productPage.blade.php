@@ -13,17 +13,21 @@ $provinceQuery = request()->get('province');
 $case = 0;
 $dataUrl = route('listProducts');
 if(request()->query('type') == TypeProductEnums::GIVEAWAY->value){
-    $case = 3;
+    $case = TypeProductEnums::GIVEAWAY->value;
     $dataUrl = route('listProducts', ['type' => TypeProductEnums::GIVEAWAY->value]);
 }
     
 if (request()->query('type') == TypeProductEnums::SECONDHAND->value) {
-$case = 2;
+$case = TypeProductEnums::SECONDHAND->value;
 $dataUrl = route('listProducts', ['type' => TypeProductEnums::SECONDHAND->value]);
 }
 if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
-    $case = 1;
+    $case = TypeProductEnums::EXCHANGE->value;
     $dataUrl = route('listProducts', ['type' => TypeProductEnums::EXCHANGE->value]);
+}
+if (request()->query('type') == TypeProductEnums::SALE->value) {
+    $case = TypeProductEnums::SALE->value;
+    $dataUrl = route('listProducts', ['type' => TypeProductEnums::SALE->value]);
 }
 @endphp
 
@@ -59,6 +63,7 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
             <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::SECONDHAND])}}" class="{{ $case == TypeProductEnums::SECONDHAND->value ? 'active' : '' }}">Mua bán</a>
             <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::EXCHANGE]) }}" class="{{ $case == TypeProductEnums::EXCHANGE->value ? 'active' : '' }}">Trao đổi</a>
             <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::GIVEAWAY]) }}" class="{{ $case == TypeProductEnums::GIVEAWAY->value ? 'active' : '' }}">Hàng tặng</a>
+            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::SALE]) }}" class="{{ $case == TypeProductEnums::SALE->value ? 'active' : '' }}">Hàng bán</a>
         </div>
     </div>
     @endif
@@ -118,8 +123,8 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
                                 </div>
                             </a>
                             <br>
-                            @switch($case)
-                            @case(TypeProductEnums::EXCHANGE->value)
+                        @switch($case)
+                        @case(TypeProductEnums::EXCHANGE->value)
                             <div class="buy-wrap-exchange">
                                 <a class="btn-chat-exchange"
                                     href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i
@@ -130,7 +135,7 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
                             </div>
                             @break
 
-                            @case(TypeProductEnums::SECONDHAND->value)
+                        @case(TypeProductEnums::SECONDHAND->value)
                             <div class="buy-wrap">
                                 <a href="#" class="btn-chat-product"><i
                                         class="fa-regular fa-comment-dots"></i></a>
@@ -147,9 +152,19 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
                                     href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Mua
                                     ngay</a>
                             </div>
-
-                            @default
-                            @endswitch
+                            @break
+                        @case(TypeProductEnums::SALE->value)
+                            <div class="buy-wrap-exchange">
+                                <a id="btn-cart " href="#" class="btn-cart btn-cart-product btn-cart-sale" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid = "{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
+                                    <i class="fa-solid fa-cart-shopping"></i> Thêm vào  giỏ
+                                </a>
+                                <a class="btn-buy-exchange"
+                                    href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi
+                                    hàng</a>
+                            </div>
+                            @break
+                        @default
+                        @endswitch
                         </div>
                     </div>
                     @empty
@@ -232,12 +247,12 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
                             @endif
                         </div>
                         <div class="product-actions" style="display: block; margin-top: 16px;">
-                            @if ($product->type->value == 1)
+                            @if ($product->type->value == TypeProductEnums::EXCHANGE->value)
                             <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
-                            <a href="#" class="buy">Trao đổi</a>
-                            @elseif($product->type->value == 2)
+                            <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" class="buy">Trao đổi</a>
+                            @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
                             <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
-                            @elseif($product->type->value == 3)
+                            @elseif($product->type->value == TypeProductEnums::GIVEAWAY->value)
                             <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Nhận quà tặng</a>
                             @endif
                         </div>
@@ -261,6 +276,42 @@ if (request()->query('type') == TypeProductEnums::EXCHANGE->value) {
 
     </div>
 
+</div>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Chi tiết sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modalProductId">
+
+                <div id="unitContainer" class="mb-3">
+                    <!-- Các đơn vị sản phẩm sẽ được thêm từ JavaScript -->
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <label for="quantityInput" class="mr-3"><strong>Số lượng:</strong></label>
+                    <div class="number-input d-flex">
+                        <button class="minus btn btn-outline-secondary">-</button>
+                        <input id="quantityInput" class="form-control mx-2 text-center" type="number" value="1" min="1" style="width: 80px;">
+                        <button class="plus btn btn-outline-secondary">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveSelectedUnit" data-add-to-cart="{{ route('cart.store') }}">
+                    Lưu vào giỏ hàng
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section('script')

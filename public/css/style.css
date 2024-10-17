@@ -413,6 +413,7 @@ a:hover {
     background-color: #B10000;
 }
 
+
 .category-img {
     width: 150px;
     height: 150px;
@@ -653,6 +654,34 @@ a:hover {
 .btn-cart-product {
     width: 20%;
     position: relative;
+}
+
+.btn-cart-sale {
+    width: 100%;
+    padding: 9px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.btn-cart-sale:hover {
+    color: white;
+    background-color: #ff0000;
+}
+
+.btn-cart-sale:hover i{
+    color: white;
+    background-color: #ff0000;
+}
+
+.btn-cart-sale i {
+    margin-right: 6px;
 }
 
 .btn-cart-product img {
