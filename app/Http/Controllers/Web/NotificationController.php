@@ -4,10 +4,12 @@ namespace App\Http\Controllers\web;
 
 use App\Enums\TypeNotification;
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Services\NotificationService;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -32,6 +34,18 @@ class NotificationController extends Controller
         }
 
         return redirect()->route('web.productdetail.index', ['slug' => $notification->product->slug]);
+    }
+
+    public function readAll()
+    {
+        $user = Auth::user();
+
+        // Đánh dấu tất cả thông báo là đã đọc
+        Notification::where('user_id', $user->id)->update(['is_read' => true]);
+
+        return response()->json([
+            'status' => 200,
+        ]);
     }
 
     public function index(Request $request)

@@ -67,7 +67,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //shop
     Route::resource('/shop', ShopController::class);
-    Route::put('shop/changestatus/{id}', [ShopController::class, 'changestatus'])->name('shop.changestatus');
+    Route::post('shop/changestatus/{id}', [ShopController::class, 'status'])->name('shop.changestatus');
 
     //banner
     Route::resource('/banner', BannerController::class);
@@ -75,7 +75,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //brand
     Route::resource('/brand', BrandController::class);
-    Route::put('brand/changestatus/{id}', [BrandController::class, 'changestatus'])->name('brand.changestatus');
+    Route::post('brand/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
 
     //product
     Route::resource('/product', ProductController::class);
