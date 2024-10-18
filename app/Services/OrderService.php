@@ -203,14 +203,21 @@ class OrderService
     public function updateStatus($request, $id)
     {
         try {
-            $order = Order::with('customer')->findOrFail($id);
+            $order = Order::with(['customer','orderDetails.productUnit'])->findOrFail($id);
             $statusInit = $order->status->value;
             $order->status = $request['status'];
             if(!empty($request['cancel_reason'])) {
                 $order->cancel_reason = $request['cancel_reason'];
             }
             $order->save();
-
+            $orderDetails = $order->orderDetails;
+            if($request['status'] == StatusOrder::CANCELLED->value || $request['status'] == StatusOrder::RETURN->value) {
+                foreach ($orderDetails as $orderDetail) {
+                    $productUnit = $orderDetail->productUnit;
+                    $productUnit->quantity = $productUnit->quantity + $orderDetail->quantity;
+                    $productUnit->save();
+                }
+            }
             if ($statusInit != $request['status']) {
                 $emailJob = new SendChangeStatusOrderMail($order, $order->customer->email);
                 dispatch($emailJob);

@@ -67,11 +67,17 @@
                     <div class="col-6 text-right">
                         <div>
 
-                            <a href="{{route('restoreCart', $order->id)}}" class="btn-purchase">Mua lại</a>
-                            <a href="#" class="btn-purchase-light">Xem chi tiết huỷ đơn</a>
+                            <a href="{{route('restoreCart', $order->id)}}" data-orderid="{{$order->id}}" class="btn-purchase">Mua lại</a>
+                            <button class="btn-cancel-reason btn-purchase-light" data-order-id="{{ $order->id }}">Xem chi tiết huỷ đơn</button>
+                        </div>
+                    </div>
+                    <div class="my-4  text-right col-12">
+                        <div class="cancel-reason-{{ $order->id }} text-right "  style="display: none;">
+                            Lý do: <span>{{optional($order->cancel_reason)->label()}}</span>
                         </div>
                     </div>
                     @endif
+                    
 
                     @if($order->status->value == StatusOrderEnums::PENDING->value)
                     <div class="col-6"></div>
@@ -123,6 +129,9 @@
     <div class="confirm-modal">
         <h5>Khôi phục đơn hàng</h5>
         <p class="my-3">Mặt hàng có trong hoá đơn này sẽ được thêm lại vào giỏ</p>
+        <div class="modal-restore-content">
+
+        </div>
         <div class="col-12 text-right mt-4">
             <button id="confirmNo" class="cancel b-radius">Huỷ</button>
             <button id="confirmYes" class="buy b-radius" >Thêm vào giỏ</button>
@@ -132,7 +141,19 @@
 
 
 @section('script')
-<script>
+<script>  
+    function getImage(path = null) {
+        const defaultImage = '/img/image/nodiscount.png';
+        if (!path) {
+            return defaultImage;
+        }
+        if (path.includes('upload')) {
+            return `/storage/${path}`;
+        }
+        return `/img/image/${path}`;
+    }
+                
+    var orders = @json($orders);
     $(document).ready(function() {
         $('.btn-cancel-order').on('click', function() {
             var orderId = $(this).data('id');
@@ -161,10 +182,39 @@
 
     $(document).ready(function() {
         $('.btn-purchase').on('click', function(e) {
-
             e.preventDefault();
-
+            $('.modal-restore-content').empty();
             var url = $(this).attr('href');
+            var orderId = $(this).data('orderid')
+            var orderSelected = null;
+            var orderDetailHtml = ''
+            orders.forEach(order => {
+                if(order.id == orderId) {
+                    orderSelected = order;
+                }
+            });
+            
+            if (orderSelected !== null) {
+                orderSelected.order_details.forEach(orderDetail => {
+                var product = orderDetail.product;
+                var productUnit = orderDetail.productUnit;
+                orderDetailHtml += `
+                    <div class="purchase-item py-2 row">
+                        <div class="col-9 d-flex align-items-center">
+                            <div class="purchase-image">
+                                <img src="${getImage(product.photo)}" alt="">
+                            </div>
+                            <div class="purchase-content">
+                                <div class="purchase-name">${product.name}</div>
+                                <div class="purchase-name">Số lượng: ${orderDetail.quantity}</div>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                $('.modal-restore-content').append(orderDetailHtml);
+            }
+
+
             $('#confirmModal').fadeIn();
             $('#confirmYes').on('click', function() {
                 $.ajax({
@@ -179,6 +229,13 @@
             $('#confirmNo').on('click', function() {
                 $('#confirmModal').fadeOut(); // Đóng modal
             });
+        });
+
+        $('.btn-cancel-reason').on('click', function() {
+            var orderId = $(this).data('order-id');
+            console.log(orderId);
+            console.log($('.cancel-reason-' + orderId));
+            $('.cancel-reason-' + orderId).slideToggle();
         });
     });
 
