@@ -21,9 +21,13 @@
                             <i class="fa-regular fa-circle-user mr-1"></i>
                             Hồ sơ của tôi
                         </a>
-                        <a href="{{route('purchase')}}" data-tab="orders">
-                            <i class="fa-solid fa-cart-plus mr-1"></i>
+                        <a href="{{route('order.show')}}" class="profile-tab" data-tab="orders-show">
+                            <i class="fa-solid fa-bag-shopping mr-1"></i>
                             Đơn hàng của tôi
+                        </a>
+                        <a href="{{route('purchase')}}" class="profile-tab" data-tab="orders">
+                            <i class="fa-regular fa-money-bill-1"></i>
+                            Hóa đơn
                         </a>
                         <a href="#" data-tab="chat">
                             <i class="fa-regular fa-comment-dots mr-1"></i>

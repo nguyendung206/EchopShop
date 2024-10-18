@@ -8,6 +8,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Rating;
 use App\Models\WaitProduct;
 use App\Services\ProductService;
 use App\Services\StatusService;
@@ -53,8 +54,13 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::where('slug', $slug)->first();
+        $ratings = Rating::where('product_id', $product->id)->get();
+        $user = auth()->user();
+        $isPurchased = $user ? $user->hasPurchased($product->id) : false;
+        $isShopOwner = $product->shop_id == $user->shop->id;
+        $hasRated = $user ? $user->hasRated($product->id) : false;
 
-        return view('web.product.productdetail', compact('product'));
+        return view('web.product.productdetail', compact('product', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated'));
     }
 
     public function create()
