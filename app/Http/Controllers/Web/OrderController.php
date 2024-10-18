@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Services\OrderService;
 use App\Services\UserService;
+use Exception;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -42,7 +43,6 @@ class OrderController extends Controller
                 'message' => 'Thay đổi địa chỉ thất bại.',
             ]);
         }
-
     }
 
     public function store(Request $request)
@@ -64,6 +64,29 @@ class OrderController extends Controller
             return view('web.order.purchase', compact('orders'));
         } catch (\Throwable $th) {
             return $th;
+        }
+    }
+
+    public function show(Request $request)
+    {
+        try {
+            $datas = $this->orderService->getOrders(10);
+
+            if ($request->ajax()) {
+                $orderHtml = view('web.order.moreOrders', compact('datas'))->render();
+                $hasMorePage = $datas->hasMorePages();
+
+                return response()->json([
+                    'orders' => $orderHtml,
+                    'hasMorePage' => $hasMorePage,
+                ]);
+            }
+
+            return view('web.order.orderlist', compact('datas'));
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi tải danh sách đơn hàng!')->error();
+
+            return redirect()->back();
         }
     }
 }

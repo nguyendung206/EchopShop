@@ -116,7 +116,6 @@ class OrderService
 
             return $e;
         }
-
     }
 
     public function purchase($request)
@@ -182,7 +181,6 @@ class OrderService
         } catch (\Throwable $th) {
             return $th;
         }
-
     }
 
     public function create()
@@ -260,6 +258,21 @@ class OrderService
         } catch (Exception $e) {
 
             return $e;
+        }
+    }
+
+    public function getOrders($perPage)
+    {
+        try {
+            if (! Auth::check()) {
+                return [];
+            }
+
+            return Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate($perPage);
+
+            return [];
+        } catch (\Exception $e) {
+            return [];
         }
     }
 }

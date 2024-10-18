@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Status;
+use App\Enums\StatusOrder;
 use App\Enums\UserGender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -102,5 +103,31 @@ class User extends Authenticatable
     public function countNotification()
     {
         return $this->notifications()->where('is_read', false)->count();
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'user_id', 'id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function hasPurchased($productId)
+    {
+        return $this->orders()
+            ->where('status', StatusOrder::COMPLETED)
+            ->whereHas('orderDetails', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })->exists();
+    }
+
+    public function hasRated($productId)
+    {
+        return $this->ratings()
+            ->where('product_id', $productId)
+            ->exists();
     }
 }

@@ -80,7 +80,6 @@ if (! function_exists('dateRemaining')) {
 
         return $daysRemaining.' ngày '.$hoursRemaining.' giờ '.$minutesRemaining.' phút.';
     }
-
 }
 
 if (! function_exists('getImage')) {
@@ -95,6 +94,17 @@ if (! function_exists('getImage')) {
         }
 
         return asset('img/image/'.$path);
+    }
+}
+if (! function_exists('getVideo')) {
+    function getVideo($path = null)
+    {
+        // Kiểm tra nếu đường dẫn bắt đầu với 'upload/video'
+        if (strpos($path, 'upload/video') !== false) {
+            return Storage::url($path); // Trả về URL của video trong storage
+        }
+
+        return asset('storage/'.$path); // Phòng trường hợp khác nếu cần
     }
 }
 
@@ -130,6 +140,24 @@ if (! function_exists('uploadMultipleImages')) {
             foreach ($files as $file) {
                 $fileName = uploadImage($file, $path);
                 $fileNames[] = $fileName;
+            }
+        }
+
+        return $fileNames;
+    }
+}
+
+if (! function_exists('uploadMultipleVideos')) {
+    function uploadMultipleVideos($files, $path = 'upload/video/')
+    {
+        $fileNames = [];
+
+        if ($files && is_array($files) && count($files) > 0) {
+            foreach ($files as $file) {
+                if ($file->isValid() && in_array($file->getClientOriginalExtension(), ['mp4', 'avi', 'mov', 'wmv'])) {
+                    $fileName = uploadImage($file, $path, null);
+                    $fileNames[] = $fileName;
+                }
             }
         }
 

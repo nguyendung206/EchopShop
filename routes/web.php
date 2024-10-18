@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
+use App\Http\Controllers\web\RatingController;
 use App\Http\Controllers\Web\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -88,6 +89,7 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
 
     Route::prefix('/order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'getCartsAndVouchers'])->name('index');
+        Route::get('/show', [OrderController::class, 'show'])->name('show');
         Route::post('/change-address', [OrderController::class, 'changeAddress'])->name('changeAddress');
         Route::post('/pay-order', [OrderController::class, 'store'])->name('payOrder');
     });
@@ -95,5 +97,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/notification')->name('notification.')->group(function () {
         Route::get('/isreaded/{id}', [NotificationController::class, 'isreaded'])->name('isreaded');
         Route::get('/all', [NotificationController::class, 'index'])->name('index');
+    });
+    Route::prefix('/rating')->name('rating.')->group(function () {
+        Route::post('/store', [RatingController::class, 'store'])->name('store');
     });
 });
