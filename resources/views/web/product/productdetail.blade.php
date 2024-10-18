@@ -5,6 +5,130 @@ HOME
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/product.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/product-detail.css') }}">
+<link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
+<style>
+    .column {
+        float: left;
+        width: 25%;
+    }
+
+    /* The Modal (background) */
+    .custom-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: #000000a3;
+    }
+
+    /* Modal Content */
+    .custom-modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        width: 90%;
+        max-width: 400px;
+    }
+
+    /* The Close Button */
+    .custom-close {
+        color: white;
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+    .custom-close:hover,
+    .custom-close:focus {
+        color: #999;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .custom-mySlides {
+        display: none;
+    }
+
+    .custom-cursor {
+        cursor: pointer;
+    }
+
+    /* Next & previous buttons */
+    .custom-prev,
+    .custom-next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -50px;
+        color: white !important;
+        font-weight: bold;
+        font-size: 20px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    /* Position the "next button" to the right */
+    .custom-next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+    .custom-prev:hover,
+    .custom-next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Number text (1/3 etc) */
+    .custom-numbertext {
+        color: #f2f2f2;
+        font-size: 16px;
+        padding: 8px 12px;
+        position: absolute;
+        top: -26px;
+        left: -12px;
+    }
+
+    img {
+        margin-bottom: -4px;
+    }
+
+    .custom-caption-container {
+        text-align: center;
+        background-color: black;
+        padding: 2px 16px;
+        color: white;
+    }
+
+    .custom-demo {
+        opacity: 0.6;
+    }
+
+    .custom-active,
+    .custom-demo:hover {
+        opacity: 1;
+    }
+
+    img.hover-shadow {
+        transition: 0.3s;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
 @endsection
 @section('content')
 @php
@@ -65,7 +189,7 @@ $totalQuantity = 0;
                 <div class="name-product">
                     {{$product->name}}
                 </div>
-                
+
                 <div class="price-product">{{format_price($product->price)}}</div>
                 <div class="detail-product">
                     <p>{!! $product->description !!}</p>
@@ -74,49 +198,49 @@ $totalQuantity = 0;
                     @if (empty($product->getProductUnitTypeOne()))
                     <table class="table table-unit">
                         <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Màu</th>
-                            <th scope="col">SIZE</th>
-                            <th scope="col">Còn lại</th>
-                          </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Màu</th>
+                                <th scope="col">SIZE</th>
+                                <th scope="col">Còn lại</th>
+                            </tr>
                         </thead>
                         <tbody>
                             @foreach ( $product->productUnits as $unit)
                             @php
-                                $totalQuantity += $unit->quantity
+                            $totalQuantity += $unit->quantity
                             @endphp
                             <tr>
-    
-                                <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'" data-size="'.$unit->size.'" data-color="'.$unit->color.'" >' : '' !!}</td>
+
+                                <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'" data-size="'.$unit->size.'" data-color="'.$unit->color.'">' : '' !!}</td>
                                 <td>{{$unit->color}}</td>
                                 <td>{{$unit->size}}</td>
                                 <td>{!!$unit->quantity > 0 ? $unit->quantity : '<p class="text-danger"> Hết hàng </p>' !!}</td>
                             </tr>
-                            
+
                             @endforeach
                         </tbody>
-                      </table>
+                    </table>
                     @error('productUnitId')
-                        <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
-    
+                    <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
+
                     @enderror
                     @endif
-                    <div style="display: {{ empty($product->getProductUnitTypeOne()) ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span> 
+                    <div style="display: {{ empty($product->getProductUnitTypeOne()) ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span>
                         <div class="number-input">
                             <button class="minus">-</button>
                             <input class="quantity" type="number" value="1" min="1" max="100">
-                            <button class="plus" >+</button>
+                            <button class="plus">+</button>
                         </div>
                         <div class="my-2">
                             <span id="totalProduct">
-                                {{ empty($product->getProductUnitTypeOne()) ? $totalQuantity : $product->getProductUnitTypeOne()->quantity}} Sản phẩm sẵn có 
+                                {{ empty($product->getProductUnitTypeOne()) ? $totalQuantity : $product->getProductUnitTypeOne()->quantity}} Sản phẩm sẵn có
                             </span>
                             <span id="totalCartProduct"></span>
                         </div>
-                            
+
                     </div>
-                    </div>
+                </div>
                 <div class="product-button">
                     @if($product->type->value == 1)
                     <button>Trao đổi</button>
@@ -132,7 +256,7 @@ $totalQuantity = 0;
                         <button class="text-white">Mua hàng</button>
                     </form>
                     @auth
-                    <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
+                    <a id="btn-cart" href="#" class="btn-cart-product" style="padding: 11px 54px;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                         Thêm hàng vào giỏ
                     </a>
                     @else
@@ -144,7 +268,7 @@ $totalQuantity = 0;
                     <button>Nhận quà tặng</button>
                     @endif
                 </div>
-    
+
                 <div class="product-share">
                     <div>Chia sẻ</div>
                     <div class="icon-wrap">
@@ -203,436 +327,126 @@ $totalQuantity = 0;
     </div>
 </div>
 <div class="content-4">
-    <div class="content-4-title">Đánh giá chủ shop</div>
-    <div class="content-4-wrap container">
-        <div class="row main-content-4 slider responsive multiple-items-1">
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
+    <div class="content-4-title mb-4">Đánh giá sản phẩm</div>
+    <div class="container">
+        <div class="rating d-flex align-items-center" style="border: 1px solid #dedede; border-radius: 5px;">
+            <div class="rating-avg" style="width: 20%; position: relative;">
+                <span class="fa fa-star mx-auto text-center" style="font-size: 100px; color: #FCC500; display: block;"></span>
+                <b class="text-white" style="font-size: 20px; position: absolute; top: 50%; left:50%; transform: translateX(-50%) translateY(-50%);">{{round($product->ratings()->avg('star'), 1);}}</b>
             </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
+            <div class="rating-list p-3" style="width: 60%">
+                @php
+                $ratings = $product->ratings;
+                $totalRatings = $ratings->count();
+                $ratingCount = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+
+                foreach ($ratings as $rating) {
+                $ratingCount[$rating->star]++;
+                }
+                @endphp
+
+                @for($i = 1; $i <= 5; $i++)
+                    @php
+                    $percentage=$totalRatings> 0 ? ($ratingCount[$i] / $totalRatings) * 100 : 0;
+                    @endphp
+
+                    <div class="item-rating d-flex align-items-center my-2">
+                        <div style="width: 5%; font-size: 16px;">
+                            {{$i}} <span class="fa fa-star" style="color: #FCC500;"></span>
                         </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
+                        <div class="mx-3" style="width: 75%;">
+                            <span class="w-100" style="height: 8px; display: block; border: 1px solid #dedede;border-radius: 5px; background-color: #dedede;">
+                                <b style="width: {{ $percentage }}%; background-color: #FCC500; height: 100%; display: block; border-radius: 5px;"></b>
+                            </span>
+                        </div>
+                        <div style="width: 20%;">
+                            <span>{{ $ratingCount[$i] }} đánh giá</span>
                         </div>
                     </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
+                    @endfor
             </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
+            @if($isPurchased && !$isShopOwner)
+            @if($hasRated)
+            <div style="width: 20%;">
+                <span style="padding: 8px 20px; background: #fff; color: #000; border-radius: 5px; border: 1px solid #000;">
+                    Bạn đã Đánh giá rồi!
+                </span>
             </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
+            @else
+            <div style="width: 20%;">
+                <a style="padding: 8px 20px; background: #b10000; color: #fff; border-radius: 5px;" href="#" data-toggle="modal" data-target="#reviewModal">
+                    Gửi đánh giá của bạn
+                </a>
             </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 reviewr-content">
-                <div class="row-1">
-                    <div class="row-1-wrap">
-                        <div class="row-1-avatar">
-                            <img src="{{asset('/img/image/avatar-2.png')}}" alt="" />
-                        </div>
-                        <div class="row-1-content">
-                            <span class="name-reviewer my-1">Ngọc huyền</span>
-                            <span class="dob-reviewer my-1">12/10/2023</span>
-                            <span class="product-boght my-1"><img src="{{asset('/img/icon/checked.png')}}" alt="" /> Sản phẩm đã
-                                mua: <b>Son 3ce</b>,<b>Tẩy trang</b>,<b>sửa rửa mặt</b></span>
-                        </div>
-                    </div>
-                    <div class="row-1-wrap-star">
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/icon/solid-star.png')}}" class="star-icon" alt="" />
-                        <img src="{{asset('/img/image/thin-star.png')}}" class="star-icon" alt="" />
-                    </div>
-                </div>
-                <div class="row-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text
-                    ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type specimen book. It has
-                    survived
-                </div>
-                <div class="row-3">
-                    <div class="row-3-wrap">
-                        <img src="{{asset('/img/icon/like.png')}}" alt="" />
-                        <span>Hữu ích</span>
-                    </div>
-                </div>
-            </div>
+            @endif
+            @endif
         </div>
-        <!-- <div class="pagination-1">
-          <img src="{{asset('/img/image/pagination.png')}}" alt="" />
-        </div> -->
+    </div>
+
+    <div class="content-4-wrap container">
+        <div class="row main-content-4 slider multiple-items-1">
+            @foreach($ratings as $rating)
+            <div class="reviewr-content" style="height: 270px;">
+                <div class="row-1">
+                    <div class="row-1-wrap align-items-center">
+                        <div class="row-1-avatar">
+                            <img src="{{getImage($rating->user->avatar)}}" style="border-radius: 50%; width:70px; height: 70px; object-fit: cover;" alt="" />
+                        </div>
+                        <div class="row-1-content ml-2">
+                            <span class="name-reviewer">{{$rating->user->name}}</span>
+                            <span class="product-boght my-2">
+                                Tên sản phẩm: <b>{{$rating->product->name}}</b></span>
+                            <span class="dob-reviewer">{{$rating->created_at}}</span>
+                        </div>
+                    </div>
+                    <div class="row-1-wrap-star">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <=$rating->star)
+                            <img src="{{ asset('/img/icon/solid-star.png') }}" class="star-icon" alt="" />
+                            @else
+                            <img src="{{ asset('/img/image/thin-star.png') }}" class="star-icon" alt="" />
+                            @endif
+                            @endfor
+                    </div>
+                </div>
+                <div class="row-2">
+                    {{$rating->content}}
+                </div>
+                <div class="row align-items-center">
+                    @if(isset($rating->media) && !empty($rating->media))
+                    @php
+                    $mediaItems = json_decode($rating->media, true);
+                    $visibleItems = array_slice($mediaItems, 0, 4);
+                    $hiddenCount = count($mediaItems) - count($visibleItems);
+                    @endphp
+                    @foreach ($visibleItems as $index => $media)
+                    <div class="media-item m-2" data-index="{{ $index }}" style="cursor: pointer; position: relative;"
+                        onclick="openModal({{ json_encode($mediaItems) }}, {{ $index + 1 }})">
+                        @if (strpos($media, '.mp4') !== false || strpos($media, '.avi') !== false || strpos($media, '.mov') !== false || strpos($media, '.wmv') !== false)
+                        <video width="120" height="120" controls>
+                            <source src="{{ getVideo($media) }}" type="video/mp4">
+                        </video>
+                        @else
+                        <img src="{{ getImage($media) }}" class="img-fluid"
+                            style="width: 120px; height: 120px; object-fit: cover;" alt="Rating Photo" />
+                        @endif
+
+                        @if ($index === count($visibleItems) - 1 && $hiddenCount > 0)
+                        <div class="d-flex justify-content-center align-items-center"
+                            style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #3a3a3a80;">
+                            <span class="text-white" style="font-size: 24px;">+ {{ $hiddenCount }}</span>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                    @endif
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 </div>
-<div class="content-5">
+<!-- <div class="content-5">
     <div class="content-5-title">Xem thêm sản phẩm</div>
     <div class="content-5-wrap container">
         <div class="row main-content-5 responsive slider multiple-items-2">
@@ -716,100 +530,370 @@ $totalQuantity = 0;
             </div>
         </div>
     </div>
+</div> -->
+
+<!-- Modal đánh giá -->
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="height: auto; max-width: 700px;">
+        <div class="modal-content">
+            <div class="modal-header" style="border: none;">
+                <h5 class="modal-title mt-4 ml-4" id="reviewModalLabel"
+                    style="font-size: 20px; font-weight: 500; line-height: 28px; color: #222222;">
+                    Đánh giá sản phẩm
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5 pb-4">
+                <form action="{{ route('rating.store') }}" method="post" id="reviewForm" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="user_id" value="{{ auth()->check() ? auth()->user()->id : '' }}">
+
+                    <div class="form-group text-center">
+                        <h1 style="font-size: 28px; font-weight: 400; line-height: 28px; color: #222222;">
+                            Để lại đánh giá của bạn
+                        </h1>
+                        <p class="my-4" style="font-weight: 400; line-height: 28px; color: #222222;">
+                            Nhấp vào các ngôi sao để đánh giá chúng tôi
+                        </p>
+                        <div class="item-rating row align-items-center my-2 justify-content-center">
+                            <span class="mx-2 list-star" style="font-size: 50px;">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="fa fa-star" data-key="{{ $i }}" style="cursor: pointer;"></i>
+                                    @endfor
+                            </span>
+                            <input class="number-rating" type="hidden" name="star" value="{{ old('star') }}">
+                        </div>
+                    </div>
+                    @error('star')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+
+                    <div class="form-group mt-4 d-flex flex-column align-items-center my-2 justify-content-center">
+                        <div class="d-flex">
+                            <div class="mr-4" id="photoImageContainer">
+                                <label for="photoImageInput">
+                                    <img src="{{ asset('/img/image/upload.png') }}" alt="Ảnh sản phẩm"
+                                        class="upload-img" style="cursor: pointer; object-fit: cover; margin: 0;">
+                                </label>
+                                <input type="file" id="photoImageInput" name="photos[]" multiple
+                                    style="display: none;" accept="image/*"
+                                    onchange="previewImages(event, 'photoPreviewList')">
+                                @error('photos.*')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div id="videoContainer">
+                                <label for="videoInput">
+                                    <img src="{{ asset('/img/image/video.png') }}" alt="Video sản phẩm"
+                                        class="upload-img" style="cursor: pointer; object-fit: cover; margin: 0;">
+                                </label>
+                                <input type="file" id="videoInput" name="videos[]" multiple
+                                    style="display: none;" accept="video/*"
+                                    onchange="previewVideos(event, 'videoPreviewList')">
+                                @error('videos.*')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5 class="text-center mb-2" id="photoTitle" style="display: none;">Ảnh đã chọn:</h5>
+                            <div id="photoPreviewList" class="d-flex flex-wrap justify-content-center align-items-center"></div>
+
+                            <h5 class="mt-3 text-center mb-2" id="videoTitle" style="display: none;">Video đã chọn:</h5>
+                            <div id="videoPreviewList" class="d-flex flex-wrap justify-content-center align-items-center"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewContent">Viết đánh giá</label>
+                        <textarea name="content" class="form-control @error('content') is-invalid @enderror"
+                            id="reviewContent" rows="4" style="border-radius: 5px;">{{ old('content') }}</textarea>
+                        @error('content')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="modal-footer form-btn" style="border: none; padding: 0;">
+                        <button type="submit" form="reviewForm" class="form-btn-save">Đánh Giá</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal phóng to ảnh -->
+<div id="myCustomModal" class="custom-modal">
+    <span class="custom-close custom-cursor" onclick="closeModal()">&times;</span>
+    <div class="custom-modal-content" id="modalContent">
+    </div>
 </div>
 
 @section('script')
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="{{asset('/slick/slick.min.js')}}"></script>
+<script>
+    let slideIndex = 1;
+
+    function openModal(mediaItems, startIndex) {
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = '';
+
+        mediaItems.forEach((media, index) => {
+            const slide = document.createElement('div');
+            slide.classList.add('custom-mySlides'); // Cập nhật tên class
+            slide.style.display = 'none';
+
+            const numberText = document.createElement('div');
+            numberText.classList.add('custom-numbertext'); // Cập nhật tên class
+            numberText.innerText = `${index + 1} / ${mediaItems.length}`;
+            slide.appendChild(numberText);
+
+            if (/\.(mp4|avi|mov|wmv)$/i.test(media)) {
+                const video = document.createElement('video');
+                video.width = '400';
+                video.controls = true;
+
+                const source = document.createElement('source');
+                source.src = `/storage/${media}`;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+
+                video.innerHTML += 'Your browser does not support the video tag.';
+                slide.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = `/storage/${media}`;
+                img.style.width = '100%';
+                img.style.height = 'auto';
+                img.style.objectFit = 'cover';
+                slide.appendChild(img);
+            }
+
+            modalContent.appendChild(slide);
+        });
+
+        // Tạo nút prev
+        const prev = document.createElement('a');
+        prev.classList.add('custom-prev'); // Cập nhật tên class
+        prev.innerHTML = '&#10094;';
+        prev.onclick = () => plusSlides(-1);
+        modalContent.appendChild(prev);
+
+        // Tạo nút next
+        const next = document.createElement('a');
+        next.classList.add('custom-next'); // Cập nhật tên class
+        next.innerHTML = '&#10095;';
+        next.onclick = () => plusSlides(1);
+        modalContent.appendChild(next);
+
+        slideIndex = startIndex;
+        showSlides(slideIndex);
+
+        document.getElementById("myCustomModal").style.display = "block"; // Cập nhật ID
+    }
+
+    function closeModal() {
+        document.getElementById("myCustomModal").style.display = "none"; // Cập nhật ID
+    }
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        const slides = document.getElementsByClassName("custom-mySlides");
+        if (n > slides.length) slideIndex = 1;
+        if (n < 1) slideIndex = slides.length;
+
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        slides[slideIndex - 1].style.display = "block";
+    }
+</script>
 
 <script>
+    $(document).ready(function() {
+        $('#reviewForm').on('submit', function(e) {
+            e.preventDefault();
 
-    
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        // Hiện thông báo thành công
+                        toastr.success(response.message, null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        // Hiện thông báo lỗi
+                        toastr.error(response.message, null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    // Nếu có lỗi validation, hiển thị lỗi
+                    let errors = xhr.responseJSON.errors;
+                    $('.invalid-feedback').remove(); // Xóa tất cả thông báo lỗi cũ
+                    $.each(errors, function(key, value) {
+                        // Tìm trường tương ứng và hiển thị lỗi
+                        let inputField = $('[name="' + key + '"]');
+                        if (inputField.length) {
+                            inputField.addClass('is-invalid');
+                            inputField.after('<div class="invalid-feedback d-block">' + value[0] + '</div>');
+                        }
+                    });
+                }
+            });
+        });
+    });
 
-    $(".multiple-items-1").slick({
-        infinite: true,
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        infinite: false,
-        prevArrow: "<button type='button' class='slick-prev pull-left'><i class='fa-solid fa-angle-left'></i></button>",
-        nextArrow: "<button type='button' class='slick-next pull-right'><i class='fa-solid fa-angle-right'></i></button>",
-        responsive: [{
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true,
-                },
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
+    $(function() {
+        let listStar = $(".list-star .fa");
+        listStar.mouseover(function() {
+            let $this = $(this);
+            let number = $this.attr('data-key');
+            $(".number-rating").val(number);
+            listStar.removeClass('rating-active');
+            $.each(listStar, function(key) {
+                if (key + 1 <= number) {
+                    $(this).addClass('rating-active');
+                }
+            });
+        });
     });
-    $(".multiple-items-2").slick({
-        infinite: true,
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        infinite: false,
-        prevArrow: "<button type='button' class='slick-prev pull-left'><i class='fa-solid fa-angle-left'></i></button>",
-        nextArrow: "<button type='button' class='slick-next pull-right'><i class='fa-solid fa-angle-right'></i></button>",
-        responsive: [{
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true,
-                },
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                },
-            },
-        ],
-    });
+
+    function updateFileList(inputElement, updatedFiles) {
+        const dataTransfer = new DataTransfer();
+        updatedFiles.forEach(file => dataTransfer.items.add(file));
+        inputElement.files = dataTransfer.files;
+    }
+
+    function previewImages(event, previewContainerId) {
+        const files = Array.from(event.target.files);
+        const inputElement = event.target;
+        const previewContainer = document.getElementById(previewContainerId);
+        const photoTitle = document.getElementById('photoTitle');
+
+        previewContainer.innerHTML = '';
+        photoTitle.style.display = files.length > 0 ? 'block' : 'none';
+
+        files.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('position-relative', 'm-2');
+                wrapper.style.width = '150px';
+                wrapper.style.height = '150px';
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '5px';
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerText = 'X';
+                deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute');
+                deleteBtn.style.top = '0';
+                deleteBtn.style.right = '0';
+
+                deleteBtn.onclick = () => {
+                    files.splice(index, 1);
+                    updateFileList(inputElement, files);
+                    wrapper.remove();
+                    if (files.length === 0) photoTitle.style.display = 'none';
+                };
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(deleteBtn);
+                previewContainer.appendChild(wrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function previewVideos(event, previewContainerId) {
+        const files = Array.from(event.target.files);
+        const inputElement = event.target;
+        const previewContainer = document.getElementById(previewContainerId);
+        const videoTitle = document.getElementById('videoTitle');
+
+        previewContainer.innerHTML = '';
+        videoTitle.style.display = files.length > 0 ? 'block' : 'none';
+
+        files.forEach((file, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('position-relative', 'm-2');
+            wrapper.style.width = '150px';
+            wrapper.style.height = '150px';
+
+            const video = document.createElement('video');
+            video.src = URL.createObjectURL(file);
+            video.controls = true;
+            video.style.width = '100%';
+            video.style.height = '100%';
+            video.style.objectFit = 'cover';
+            video.style.borderRadius = '5px';
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerText = 'X';
+            deleteBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute');
+            deleteBtn.style.top = '0';
+            deleteBtn.style.right = '0';
+
+            deleteBtn.onclick = () => {
+                files.splice(index, 1);
+                updateFileList(inputElement, files);
+                wrapper.remove();
+                if (files.length === 0) videoTitle.style.display = 'none';
+            };
+
+            wrapper.appendChild(video);
+            wrapper.appendChild(deleteBtn);
+            previewContainer.appendChild(wrapper);
+        });
+    }
 </script>
+
 
 <script>
     var totalProduct = 0;
     var quantityCart = 0;
-    
-    if(@json($product->getProductUnitTypeOne()) != null){
-        let unitOnlyQuantity = @json($product->getProductUnitTypeOne()); 
+
+    if (@json($product -> getProductUnitTypeOne()) != null) {
+        let unitOnlyQuantity = @json($product -> getProductUnitTypeOne());
         totalProduct = unitOnlyQuantity.quantity;
 
         @json($cart).forEach(item => {
-            if(unitOnlyQuantity.id == item.product_unit_id){
+            if (unitOnlyQuantity.id == item.product_unit_id) {
                 quantityCart = item.quantity;
                 $('#totalCartProduct').text(" | " + quantityCart + " sản phẩm đã có trong giỏ.");
             }
         })
-        
-    }
 
+    }
 
     $(document).ready(function() {
         $(".slider-nav").slick({
@@ -833,22 +917,22 @@ $totalQuantity = 0;
         });
 
         $('.quantity').on('change', function() {
-            
+
             let quantity = $(this).val();
-            
-            if(quantity > totalProduct - quantityCart) {
+
+            if (quantity > totalProduct - quantityCart) {
                 $(this).val(totalProduct - quantityCart);
             }
-            if(quantity < 1) {
+            if (quantity < 1) {
                 $(this).val(1);
             }
-            
+
             $('#quantityValue').val(quantity);
-            
+
         });
 
         $(".plus").on("click", function() {
-        
+
             const input = $(this).prev(".quantity")
             let currentValue = parseInt(input.val()) || 0;
             if (currentValue < totalProduct) {
@@ -871,7 +955,7 @@ $totalQuantity = 0;
                 currentValue -= 1;
                 input.val(currentValue);
                 $('#quantityValue').val(currentValue);
-                
+
             }
             $('.quantity').trigger('change');
 
@@ -883,30 +967,30 @@ $totalQuantity = 0;
             totalProduct = $(this).data('total-product');
             let color = $(this).data('color');
             let size = $(this).data('size');
-            
-            if($('.quantity').val() > totalProduct) {
+
+            if ($('.quantity').val() > totalProduct) {
                 $('.quantity').val(totalProduct);
             }
             $('#totalProduct').text("Hiện có " + totalProduct + " sản phẩm loại này");
 
             let carts = @json($cart);
 
-            quantityCart  = null;
+            quantityCart = null;
             carts.forEach(cart => {
                 if (cart.product_unit_id == selectedUnitId) {
-                    quantityCart = cart.quantity;  // Lấy ra số lượng sản phẩm đã có trong giỏ
+                    quantityCart = cart.quantity;
 
-                } 
+                }
             });
-            
-            if(quantityCart) {
+
+            if (quantityCart) {
                 $('#totalCartProduct').text(" | " + quantityCart + " sản phẩm đã có trong giỏ.");
                 $('#totalCartProduct').fadeIn();
             } else {
                 $('#totalCartProduct').fadeOut();
             }
             $('.quantity').trigger('change');
-            
+
             $('#productUnitId').val(selectedUnitId);
             $('#colorValue').val(color);
             $('#sizeValue').val(size);
@@ -918,7 +1002,6 @@ $totalQuantity = 0;
     function changeMainImage(imageSrc) {
         document.getElementById('main-image').src = imageSrc;
     }
-    
 </script>
 <script src="{{ asset('/js/favorite.js') }}"></script>
 <script src="{{ asset('/js/cart.js')}}"></script>

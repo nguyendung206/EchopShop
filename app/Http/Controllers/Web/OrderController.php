@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\CartService;
 use App\Services\OrderService;
 use App\Services\UserService;
+use Exception;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -44,7 +45,6 @@ class OrderController extends Controller
                 'message' => 'Thay đổi địa chỉ thất bại.',
             ]);
         }
-
     }
 
     public function store(Request $request)
@@ -119,5 +119,4 @@ class OrderController extends Controller
             return redirect()->back();
         }
     }
-
 }

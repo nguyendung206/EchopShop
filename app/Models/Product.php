@@ -79,6 +79,11 @@ class Product extends Model
         return $this->hasMany(Notification::class);
     }
 
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'product_id', 'id');
+    }
+
     public function sluggable(): array
     {
         return [
