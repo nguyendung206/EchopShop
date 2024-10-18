@@ -68,6 +68,13 @@
                 </div>
 
                 <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tình trạng sản phẩm:')</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->quality}}/100%</p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Trạng thái:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->status->label() }}</p>
@@ -173,6 +180,13 @@
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Hãng sản phẩm:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $wait->brand->name ?? ""}}</p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tình trạng sản phẩm:')</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $wait->quality}}/100%</p>
                     </div>
                 </div>
 
