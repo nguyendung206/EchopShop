@@ -93,8 +93,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
         Route::post('/cancel-order', [OrderController::class, 'updateStatusOrder'])->name('cancelOrder');
     });
     Route::get('/purchase', [OrderController::class, 'purchase'])->name('purchase');
-    Route::get('/restore-cart/{id}' , [OrderController::class, 'restoreCart'])->name('restoreCart');
-    
+    Route::get('/restore-cart/{id}', [OrderController::class, 'restoreCart'])->name('restoreCart');
+
     Route::prefix('/notification')->name('notification.')->group(function () {
         Route::get('/isreaded/{id}', [NotificationController::class, 'isreaded'])->name('isreaded');
         Route::get('/all', [NotificationController::class, 'index'])->name('index');

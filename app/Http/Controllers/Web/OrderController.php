@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Services\OrderService;
 use App\Services\CartService;
+use App\Services\OrderService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -25,6 +25,7 @@ class OrderController extends Controller
     {
 
         $datas = $this->orderService->getCartsAndVouchers($request->all());
+
         return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
     }
 
@@ -68,7 +69,8 @@ class OrderController extends Controller
         }
     }
 
-    public function updateStatusOrder(Request $request) {
+    public function updateStatusOrder(Request $request)
+    {
         try {
             $id = $request->orderId;
             $updated = $this->orderService->updateStatus($request->all(), $id);
@@ -82,16 +84,17 @@ class OrderController extends Controller
         }
     }
 
-    public function restoreCart(Request $request, $idOrder) {
+    public function restoreCart(Request $request, $idOrder)
+    {
         try {
-            $result = $this->cartService->restoreCart($request,$idOrder);
-            if($result) {
+            $result = $this->cartService->restoreCart($request, $idOrder);
+            if ($result) {
                 return redirect()->route('cart.index')->with('success', 'Đơn hàng đã được khôi phục thành công!');
             } else {
                 return redirect()->back()->with('error', 'Mua lại đơn hàng không thành công!');
             }
         } catch (\Exception $e) {
-            return $e;        
+            return $e;
         }
     }
 }

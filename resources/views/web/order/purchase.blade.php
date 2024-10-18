@@ -65,7 +65,6 @@
                     @if($order->status->value == StatusOrderEnums::CANCELLED->value)
                     <div class="col-6"></div>
                     <div class="col-6 text-right">
-<<<<<<< HEAD
                         <div>
 
                             <a href="{{route('restoreCart', $order->id)}}" data-orderid="{{$order->id}}" class="btn-purchase">Mua lại</a>
@@ -85,10 +84,6 @@
                     <div class="col-6 text-right">
                         <div>
                             <button class=" btn-purchase-light btn-cancel-order" data-id="{{ $order->id }}">Huỷ đơn</button>
-=======
-                        <div class="btn-post" style="color: white">
-                            <a href="#">Mua lại</a>
->>>>>>> main
                         </div>
                     </div>
                     @endif

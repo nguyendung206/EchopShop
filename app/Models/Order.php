@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\StatusOrder;
 use App\Enums\CancelOrderReason;
+use App\Enums\StatusOrder;
 use App\Enums\TypePayment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +22,7 @@ class Order extends Model
         'province_id',
         'district_id',
         'ward_id',
-        'cancel_reason'
+        'cancel_reason',
     ];
 
     protected $casts = [

@@ -62,7 +62,7 @@ class CartService
                         'size' => $productUnit->size,
                         'quantity' => $request->quantity,
                     ]);
-                    
+
                     return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
                 }
             }
@@ -156,7 +156,8 @@ class CartService
         return null;
     }
 
-    public function restoreCart($request, $idOrder) {
+    public function restoreCart($request, $idOrder)
+    {
         try {
             $order = Order::with(['orderDetails.productUnit'])->findOrFail($idOrder);
             foreach ($order->orderDetails as $orderDetail) {
@@ -166,9 +167,10 @@ class CartService
                     'quantity' => $orderDetail->quantity,
                     'product_unit_id' => $orderDetail->product_unit_id,
                 ]);
-        
+
                 $this->store($request);
             }
+
             return true;
         } catch (\Exception $e) {
             return false;

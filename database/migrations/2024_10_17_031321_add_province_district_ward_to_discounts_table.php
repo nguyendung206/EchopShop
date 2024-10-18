@@ -1,9 +1,9 @@
 <?php
 
+use App\Enums\TypeDiscountScope;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\TypeDiscountScope;
 
 return new class extends Migration
 {
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->dropForeign(['ward_id']);
             $table->dropForeign(['district_id']);
             $table->dropForeign(['province_id']);
-            
+
             $table->dropColumn('scope_type');
             $table->dropColumn('ward_id');
             $table->dropColumn('district_id');

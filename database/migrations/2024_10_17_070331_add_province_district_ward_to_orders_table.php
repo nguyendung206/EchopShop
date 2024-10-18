@@ -34,7 +34,7 @@ return new class extends Migration
             $table->dropForeign(['ward_id']);
             $table->dropForeign(['district_id']);
             $table->dropForeign(['province_id']);
-            
+
             $table->dropColumn('ward_id');
             $table->dropColumn('district_id');
             $table->dropColumn('province_id');

@@ -106,7 +106,7 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Thành Phố<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-6">
                             <select class=" form-control font-weight-500"  name="province_id" id="province_select" >
-                                <option class=" " value="0">Tỉnh/Thành phố *</option>
+                                <option class=" " value="">Tỉnh/Thành phố *</option>
                                     @foreach($provinces as $province)
                                         <option class=" " value="{{$province->id}}" >{{ $province->province_name }}</option>
                                     @endforeach

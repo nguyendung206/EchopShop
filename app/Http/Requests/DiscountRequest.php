@@ -41,7 +41,7 @@ class DiscountRequest extends FormRequest
             'limitUses' => 'required|numeric|min:0',
             'status' => ['required', Rule::in(array_column(Status::cases(), 'value'))],
             'scope_type' => 'required|integer',
-            'province_id' => 'nullable|integer|different:0',
+            'province_id' => [Rule::requiredIf($this->input('scope_type') == TypeDiscountScope::REGIONAL->value), 'nullable', 'integer'],
             'district_id' => 'nullable|integer|different:0',
             'ward' => 'nullable|integer|different:0',
         ];
@@ -61,11 +61,6 @@ class DiscountRequest extends FormRequest
             if ($this->type == TypeDiscount::PERCENT->value && $this->value > 100) {
                 $validator->errors()->add('value', 'Số tiền giảm giá phải bé hơn hoặc bằng 100%');
             }
-            if ($this->scope_type == TypeDiscountScope::REGIONAL->value) {
-                if (is_null($this->province_id) || $this->province_id == 0) {
-                    $validator->errors()->add('province_id', 'Tỉnh/Thành phố là bắt buộc khi phạm vi giảm giá là khu vực.');
-                }
-            }
         });
     }
 
@@ -84,6 +79,7 @@ class DiscountRequest extends FormRequest
             'maxUses' => 'Số lượng mã giảm giá',
             'limitUses' => 'Giới hạn số lần sử dụng',
             'status' => 'Trạng thái',
+            'province_id' => 'Tỉnh/Thành phố',
         ];
     }
 }
