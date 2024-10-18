@@ -1,5 +1,5 @@
 @php
-    $oldProduct = request()->has('type') && request()->get('type') == TypeProductEnums::GIVEAWAY->value ? true : false;
+    $oldProduct = request()->has('type') && (request()->get('type') == TypeProductEnums::GIVEAWAY->value || request()->get('type') == TypeProductEnums::SECONDHAND->value) ? true : false;
 @endphp
 <div class="col-lg-3 col-12 category-title-wrap-1">
 <div class="category-title-wrap">
@@ -60,7 +60,7 @@
                 </div>
                 <div class="custom-radio css-radio">
                     <input type="radio" id="option1" name="option" value="1" />
-                    <label for="option1" >Mới&nbsp; <b>80 - 100%</b></label>
+                    <label for="option1" >Mới&nbsp; <b>70 - 100%</b></label>
                 </div>
                 <div class="custom-radio css-radio">
                     <input type="radio" id="option2" name="option" value="2" />
@@ -211,7 +211,6 @@
 
                 var rangeInput = $('#min').val();
                 var rangeInput2 = $('#max').val();
-                console.log(url);
                 
                 $.ajax({
                     url: url,

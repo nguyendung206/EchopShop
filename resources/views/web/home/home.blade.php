@@ -60,8 +60,8 @@ HOME
                 </div>
                 @endforelse
                 @if ($brands->count() > 0)
-                <div class="col-12 text-right my-4">
-                    <a href="" class="btn-all">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                <div class="col-12 text-center my-4">
+                    <a href="#" class="all btn-more" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
                 </div>
                 @endif
             </div>
@@ -130,7 +130,7 @@ HOME
                 @endforelse
             </div>
             @if ($exchangeProducts->isNotEmpty())
-            <div class="text-right py-5 divMoreExchange btn-more-wrap">
+            <div class="text-center py-5 divMoreExchange btn-more-wrap">
                 @if ($exchangeProducts->count() >= 8 && $exchangeProducts->hasMorePages())
                 <a id="btnMoreExchange" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm<i
                         class="fa-solid fa-angles-down"></i></a>
@@ -214,7 +214,7 @@ HOME
                 @endforelse
             </div>
             @if ($secondhandProducts->isNotEmpty())
-            <div class="text-right py-5 divMoreSecondhand btn-more-wrap">
+            <div class="text-center py-5 divMoreSecondhand btn-more-wrap">
                 @if ($secondhandProducts->count() >= 8 && $secondhandProducts->hasMorePages())
                 <a id="btnMoreSecondhand" class="all color-B10000 btn-more" href="#">Xem thêm sản phẩm mới<i
                         class="fa-solid fa-angles-right"></i></a>
@@ -318,7 +318,7 @@ HOME
 
         </div>
         @if ($giveawayProducts->count() > 0)
-        <div class="text-right  my-5">
+        <div class="text-center  my-5">
             <a class="all color-B10000 btn-more" href="{{ route('listProducts', ['type' => TypeProductEnums::GIVEAWAY]) }}">Xem tất cả <i
                     class="fa-solid fa-angles-right"></i></a>
         </div>

@@ -97,6 +97,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/notification')->name('notification.')->group(function () {
         Route::get('/isreaded/{id}', [NotificationController::class, 'isreaded'])->name('isreaded');
         Route::get('/all', [NotificationController::class, 'index'])->name('index');
+        Route::get('/readall', [NotificationController::class, 'readall'])->name('readall');
+        Route::get('/getnotification', [NotificationController::class, 'getNotifications'])->name('getnotification');
     });
     Route::prefix('/rating')->name('rating.')->group(function () {
         Route::post('/store', [RatingController::class, 'store'])->name('store');
