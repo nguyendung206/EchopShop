@@ -97,4 +97,27 @@ class OrderController extends Controller
             return $e;
         }
     }
+    public function show(Request $request)
+    {
+        try {
+            $datas = $this->orderService->getOrders(10);
+
+            if ($request->ajax()) {
+                $orderHtml = view('web.order.moreOrders', compact('datas'))->render();
+                $hasMorePage = $datas->hasMorePages();
+
+                return response()->json([
+                    'orders' => $orderHtml,
+                    'hasMorePage' => $hasMorePage,
+                ]);
+            }
+
+            return view('web.order.orderlist', compact('datas'));
+        } catch (Exception $e) {
+            flash('Đã xảy ra lỗi khi tải danh sách đơn hàng!')->error();
+
+            return redirect()->back();
+        }
+    }
+
 }
