@@ -17,12 +17,12 @@
     <div class=" container content-purchase">
         <div class=" purchase-title button-page-wrap ">
             <a class='col-14 purchase-title-item {{empty($type) ? 'active' : '' }}' href="{{route("purchase")}}">Tất cả</a>
-            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::PENDING->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::PENDING])}}">Chờ thanh toán</a>
-            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::TRANSPORTING->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::TRANSPORTING])}}">Vận chuyển</a>
+            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::PENDING->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::PENDING])}}">Chờ thanh toán </a>
+            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::TRANSPORTING->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::TRANSPORTING])}}">Vận chuyển </a>
             <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::SHIPPING->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::SHIPPING])}}">Chờ giao hàng</a>
-            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::COMPLETED->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::COMPLETED])}}">Hoàn thành</a>
-            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::CANCELLED->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::CANCELLED])}}">Đã huỷ</a>
-            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::RETURN->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::RETURN])}}">Trả hàng</a>
+            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::COMPLETED->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::COMPLETED])}}">Hoàn thành </a>
+            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::CANCELLED->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::CANCELLED])}}">Đã huỷ </a>
+            <a class='col-14 purchase-title-item {{!empty($type) && $type == StatusOrderEnums::RETURN->value ? 'active' : '' }}' href="{{route("purchase", ['type' => StatusOrderEnums::RETURN])}}">Trả hàng </a>
         </div>
 
         <div class=" purchase-wrap ">

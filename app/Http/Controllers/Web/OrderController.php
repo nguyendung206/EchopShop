@@ -23,7 +23,6 @@ class OrderController extends Controller
     {
 
         $datas = $this->orderService->getCartsAndVouchers($request->all());
-
         return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
     }
 

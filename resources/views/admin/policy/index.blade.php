@@ -167,10 +167,6 @@
                                 @endif
 
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
-                                        href="{{ route('admin.policy.show', $policy->id) }}">
-                                        <i class="las la-list"></i>
-                                    </a>
-                                    <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
                                         href="{{ route('admin.policy.edit', $policy->id) }}">
                                         <i class="las la-edit"></i>
                                     </a>

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Status;
 use App\Enums\TypeDiscount;
+use App\Enums\TypeDiscountScope;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -39,6 +40,10 @@ class DiscountRequest extends FormRequest
             'maxUses' => 'required|numeric|min:0',
             'limitUses' => 'required|numeric|min:0',
             'status' => ['required', Rule::in(array_column(Status::cases(), 'value'))],
+            'scope_type' => 'required|integer',
+            'province_id' => 'nullable|integer|different:0',
+            'district_id' => 'nullable|integer|different:0',
+            'ward' => 'nullable|integer|different:0',
         ];
 
         return $rules;
@@ -55,6 +60,11 @@ class DiscountRequest extends FormRequest
             }
             if ($this->type == TypeDiscount::PERCENT->value && $this->value > 100) {
                 $validator->errors()->add('value', 'Số tiền giảm giá phải bé hơn hoặc bằng 100%');
+            }
+            if ($this->scope_type == TypeDiscountScope::REGIONAL->value) {
+                if (is_null($this->province_id) || $this->province_id == 0) {
+                    $validator->errors()->add('province_id', 'Tỉnh/Thành phố là bắt buộc khi phạm vi giảm giá là khu vực.');
+                }
             }
         });
     }

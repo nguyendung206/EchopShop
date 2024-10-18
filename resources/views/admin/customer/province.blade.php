@@ -2,16 +2,25 @@
      var provinceIdUser = 0;
      var districtIdUser = 0;
      var wardIdUser = 0;
-     @if(isset($user -> province_id) && isset($user -> district_id) && isset($user -> ward_id))
-     provinceIdUser = "{{ $user->province_id }}";
-     districtIdUser = "{{ $user->district_id }}";
-     wardIdUser = "{{ $user->ward_id }}";
-     @endif
-     @if(old('province_id') !== null && old('district_id') !== null && old('ward_id') !== null)
-     provinceIdUser = "{{ old('province_id') }}";
-     districtIdUser = "{{ old('district_id') }}";
-     wardIdUser = "{{ old('ward_id') }}";
-     @endif
+     var firstChange = true;
+
+     var user = @json($user ?? null);
+     if(user != null) {
+     provinceIdUser = user.province_id;
+     districtIdUser = user.district_id;
+     wardIdUser = user.ward_id;
+    }
+    // ưu tiên old
+     if(@json(old('province_id')) !== null){ // province != null
+        provinceIdUser = @json(old('province_id'));
+        if(@json(old('district_id')) !== null) {    // district / ward chưa chắc != null
+            districtIdUser = @json(old('district_id'));
+        }
+        if(@json(old('ward_id')) !== null) {
+            
+            wardIdUser = @json(old('ward_id'));
+        }
+    }
      $(document).ready(function() {
          $('#district_select').on('change', function() {
 
@@ -24,17 +33,16 @@
                      districtId: districtId
                  },
                  success: function(response) {
-                     $('#ward_select').empty().append('<option value="0" disabled>Phường/Thị xã *</option>');
-
+                     $('#ward_select').empty().append('<option value="0"  selected>Phường/Thị xã *</option>');  // get ward
                      $.each(response.wards, function(index, ward) {
                          $('#ward_select').append('<option value="' + ward.id + '">' + ward.ward_name + '</option>');
                      });
 
-                     @if(isset($user -> ward_id) || old('ward_id') !== null)
-                     if (districtId == districtIdUser) {
+                    if((wardIdUser !== 0 || @json(old('ward_id')) !== null) && firstChange) {
                          $('#ward_select').val(wardIdUser).trigger('change');
-                     }
-                     @endif
+                         firstChange = false;
+                    }
+                            
                  },
                  error: function(xhr) {
                      console.error(xhr.responseText);
@@ -54,22 +62,27 @@
                  provinceId: provinceId
              },
              success: function(response) {
-                 $('#district_select').empty().append('<option value="0" disabled>Quận/Huyện *</option>');
-
+                 $('#district_select').empty().append('<option value="0"  selected>Quận/Huyện *</option>'); // get lại district
                  $.each(response.districts, function(index, district) {
-
                      $('#district_select').append('<option value="' + district.id + '" >' + district.district_name + '</option>');
                  });
-                 @if(isset($user -> district_id) || old('province_id') !== null)
-                 if (provinceId == provinceIdUser) {
-                     $('#district_select').val(districtIdUser).trigger('change');
-                 }
-                 $('#ward_select').empty().append('<option value="0" disabled>Phường/Thị xã *</option>');
-                 $('#ward_select').append('<option value="0" disabled>Vui lòng chọn quận huyện trước</option>');
-                 @else
-                 $('#ward_select').empty().append('<option value="0" disabled>Phường/Thị xã *</option>');
-                 $('#ward_select').append('<option value="0" disabled>Vui lòng chọn quận huyện trước</option>');
-                 @endif
+ 
+                 $('#ward_select').empty().append('<option value="0"  selected>Phường/Thị xã *</option>'); // set lại ward
+                $('#ward_select').append('<option value="0" >Vui lòng chọn quận huyện trước</option>');
+
+                    
+                    if((districtIdUser != 0 || @json(old('province_id')) !== null) && firstChange){ // nếu có district id
+                        $('#district_select').val(districtIdUser).trigger('change');
+                    }else {
+                        firstChange = false;
+                    }
+                    if((wardIdUser == 0 && @json(old('ward_id')) == null) && firstChange) { // nếu không có ward id
+                        $('#ward_select').empty().append('<option value="0"  selected>Phường/Thị xã *</option>');
+                        $('#ward_select').append('<option value="0" >Vui lòng chọn quận huyện trước</option>');
+                        firstChange = false;
+                    }
+
+                 
              },
              error: function(xhr) {
                  console.error(xhr.responseText);
@@ -77,7 +90,8 @@
          });
      });
 
-     @if(isset($user -> province_id) || old('province_id') !== null)
-        $('#province_select').val(provinceIdUser).trigger('change');
-     @endif
+     if(user != null || @json(old('province_id')) !== null) {
+         $('#province_select').val(provinceIdUser).trigger('change');
+     }
+     
  </script>

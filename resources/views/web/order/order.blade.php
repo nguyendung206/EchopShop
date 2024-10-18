@@ -247,6 +247,9 @@
                                                 <p>Số lần dùng: {{ $numberUsed .' /'. $voucher->limit_uses}}</p>
                                                 <p>Còn lại: {{$voucher->max_uses - $voucher->quantity_used}}</p>
                                                 <p>Hết hạn sau: {{dateRemaining($voucher->end_time)}}</p>
+                                                @if ($voucher->scope_type->value == TypeDiscountScopeEnums::REGIONAL->value)
+                                                    <p class="mt-1 text-left">Chỉ cho khu vực: {{optional($voucher->ward)->ward_name}}, {{optional($voucher->district)->district_name}}, {{optional($voucher->province)->province_name}}.</p>
+                                                @endif
                                             </div>
                                             <div class="voucher-button col-3">
                                                 @if ($voucher->limit_uses == $numberUsed)

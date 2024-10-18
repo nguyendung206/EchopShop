@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\Status;
 use App\Enums\StatusOrder;
 use App\Enums\TypePayment;
+use App\Enums\TypeDiscountScope;
 use App\Jobs\SendChangeStatusOrderMail;
 use App\Jobs\SendOrderSuccessMail;
 use App\Models\Cart;
@@ -23,13 +24,43 @@ class OrderService
     public function getCartsAndVouchers($request)
     {
         try {
+            $userProvinceId = Auth::user()->province_id;
+            $userDistrictId = Auth::user()->district_id;
+            $userWardId = Auth::user()->ward_id;
             $carts = collect();
             $vouchers = collect();
             $datas = [];
             $vouchers = Discount::query()
                 ->where('status', Status::ACTIVE)
                 ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
-                ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
+                ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))
+                ->where(function ($query) use ($userProvinceId, $userDistrictId, $userWardId) {
+                    $query->where('scope_type', '<>', TypeDiscountScope::REGIONAL->value) 
+
+                          ->orWhere(function ($subQuery) use ($userProvinceId , $userDistrictId, $userWardId) { // regional type 
+                              $subQuery->where('scope_type', TypeDiscountScope::REGIONAL->value)
+                                       ->where('province_id', $userProvinceId) //province
+
+                                       ->where(function ($innerSubQuery) use ($userDistrictId, $userWardId) {
+                                        $innerSubQuery->where(function ($districtQuery) use ($userDistrictId) { // district
+                                            $districtQuery->where('district_id', $userDistrictId) 
+                                                          ->orWhereNull('district_id'); 
+                                        })
+                                        ->where(function ($wardQuery) use ($userWardId) {   // ward
+                                            $wardQuery->where('ward_id', $userWardId) 
+                                                      ->orWhereNull('ward_id');
+                                        });
+                                });
+                   });
+         })
+                ->get()
+                ->filter(function ($voucher) {  // lấy hết danh sách rồi lọc
+                    $userUsed = explode(',', $voucher->user_used); 
+                    $countUser = array_count_values($userUsed);   // đưa phần tử thành key và số lần xuất hiện thành value
+                    $userId = Auth::id();
+                    return !isset($countUser[$userId]) || $countUser[$userId] < $voucher->limit_uses;
+                })
+                ->values();    // đánh lại index của collect
             if (! empty($request['cart_ids'])) {
                 $cartIds = $request['cart_ids'];
                 $carts = Cart::whereIn('id', $cartIds)->with('products')->get();
@@ -40,7 +71,8 @@ class OrderService
             ];
 
             return $datas;
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
+            dd($e);
             return $th;
         }
     }
@@ -48,12 +80,16 @@ class OrderService
     public function store($request)
     {
         try {
+            $user = Auth::user();
             $orderData = [
                 'total_amount' => $request['total_amount'],
                 'type_payment' => TypePayment::CARD,
                 'shipping_address' => $request['shipping_address'],
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,
                 'status' => StatusOrder::PENDING,
+                'province_id' => $user->province_id,
+                'district_id' => $user->district_id,
+                'ward_id' => $user->ward_id,
             ];
             if (! empty($request['discount_id'])) {
                 $orderData['discount_id'] = $request['discount_id'];
@@ -154,7 +190,7 @@ class OrderService
             $query->whereBetween('total_amount', [$min, $max]);
         }
 
-        return $query->with(['discount', 'customer'])->paginate(15);
+        return $query->with(['discount', 'customer','province','district','ward'])->paginate(15);
     }
 
     public function getOrderById($id)
@@ -206,6 +242,9 @@ class OrderService
                 'shipping_address' => $request['shipping_address'],
                 'user_id' => $request['customerId'],
                 'status' => StatusOrder::PENDING,
+                'province_id' => $request['province_id'],
+                'district_id' => $request['district_id'],
+                'ward_id' => $request['ward_id']
             ];
             if (! empty($request['discountId'])) {
                 $orderData['discountId'] = $request['discountId'];
@@ -273,7 +312,6 @@ class OrderService
 
             return $order;
         } catch (Exception $e) {
-
             return $e;
         }
     }

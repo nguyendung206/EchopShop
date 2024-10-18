@@ -133,7 +133,7 @@
                                     {{ $key + 1 + ($orders->currentPage() - 1) * $orders->perPage() }}</td>
                                     <td class="font-weight-400 align-middle text-overflow">{{ optional($order)->customer->name }}</td>   
                                 <td class="font-weight-400 align-middle text-overflow">{{ optional($order)->created_at }}</td>
-                                <td class="font-weight-400 align-middle">{{ $order->shipping_address}}</td>
+                                <td class="font-weight-400 align-middle">{{ $order->shipping_address}}, {{optional($order->ward)->ward_name}}, {{optional($order->district)->district_name}}, {{optional($order->province)->province_name}}</td>
                                 <td class="font-weight-400 align-middle">
                                     {{ format_price($order->total_amount)}}
                                 </td>

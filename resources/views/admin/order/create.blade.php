@@ -37,11 +37,15 @@
                         <div class="form-group row select-user-div">
                             <label class="col-sm-12 col-from-label font-weight-500">Chọn khách hàng</label>
                             <select class="text-center font-weight-500 form-control select-user" name="customerId">
-                                <option value="">Chọn khách hàng</option>
+                                <option value="0" selected disabled>Chọn khách hàng</option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{$customer->id}}" data-shipping-address="{{ $customer->address }}, {{ $customer->ward->ward_name }}, {{ $customer->district->district_name }},{{ $customer->province->province_name }}">{{$customer->name}}</option>
+                                    <option value="{{$customer->id}}" data-shipping-address="{{ $customer->address }}" data-provinceid="{{$customer->province->id }}" data-districtid="{{$customer->district->id }}" data-wardid="{{$customer->ward->id}}">{{$customer->name}}</option>
                                 @endforeach
                             </select>
+
+                            <div class="d-none">
+                                
+                            </div>
                         </div>
 
                         <div class="form-group row">
@@ -72,6 +76,9 @@
                         <div style="display: none" class="input-hidden">
                             <input type="hiden" name="shipping_address" value="" class="shipping_address">
                             <input type="hiden" name="total_amount" value="" class="total_amount">
+                            <input type="hide" name="province_id" class="province_id" value="0">
+                            <input type="hide" name="district_id" class="district_id" value="0">
+                            <input type="hide" name="ward_id" class="ward_id" value="0">
                         </div>
                         <div class="form-group button-submit d-flex justify-content-between">
                             <a class="btn btn-dark" style="color: white;" href="{{route('admin.order.index')}}">Trở về</a>
@@ -258,11 +265,16 @@
             updateTotalDiscountedPrice();
         });
         $('.select-user').on('change', function () {
-            console.log("alo");
             
             var selectedOption = $('.select-user').find('option:selected');
             var shippingAddress = selectedOption.data('shipping-address');
+            var provinceId = selectedOption.data('provinceid');
+            var districtId = selectedOption.data('districtid');
+            var wardId = selectedOption.data('wardid');
             $('.shipping_address').val(shippingAddress); // đưa vào địa chỉ giao hàng
+            $('.province_id').val(provinceId);
+            $('.district_id').val(districtId);
+            $('.ward_id').val(wardId);
             if (selectedOption.val() != "") {
 
                 $.ajax({
