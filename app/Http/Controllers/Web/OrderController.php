@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Services\OrderService;
+use App\Services\CartService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -13,10 +14,11 @@ class OrderController extends Controller
 
     protected $orderService;
 
-    public function __construct(UserService $userService, OrderService $orderService)
+    public function __construct(UserService $userService, OrderService $orderService, CartService $cartService)
     {
         $this->userService = $userService;
         $this->orderService = $orderService;
+        $this->cartService = $cartService;
     }
 
     public function getCartsAndVouchers(Request $request)
@@ -63,6 +65,33 @@ class OrderController extends Controller
             return view('web.order.purchase', compact('orders'));
         } catch (\Throwable $th) {
             return $th;
+        }
+    }
+
+    public function updateStatusOrder(Request $request) {
+        try {
+            $id = $request->orderId;
+            $updated = $this->orderService->updateStatus($request->all(), $id);
+            if ($updated) {
+                return redirect()->back()->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
+            } else {
+                return redirect()->back()->with('error', 'Cập nhật trạng thái đơn hàng không thành công!');
+            }
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function restoreCart(Request $request, $idOrder) {
+        try {
+            $result = $this->cartService->restoreCart($request,$idOrder);
+            if($result) {
+                return redirect()->route('cart.index')->with('success', 'Đơn hàng đã được khôi phục thành công!');
+            } else {
+                return redirect()->back()->with('error', 'Mua lại đơn hàng không thành công!');
+            }
+        } catch (\Exception $e) {
+            return $e;        
         }
     }
 }

@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col=lg-6 col-12">
+                            <div class="form-group col-lg-6 col-12">
                                 <label class="address-label">Phường/Thị xã <span
                                         class="text-vali">&#9913;</span></label></label>
                                 <div class="">

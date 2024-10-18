@@ -57,10 +57,29 @@
                         <p  class="my-1">{{$order->shipping_address}}</p>
                     </div>
                     @if ($order->discount)
-                        
                     <div class="text-right total-price-purchase col-6">Thành tiền: <span class="init-money">{{format_price($order->total_amount)}}</span> <span class="discount-money">{{format_price(calculateDiscountedPrice($order->discount->type->value, $order->total_amount, $order->discount->value, $order->discount->max_value))}}</span></div>
                     @else
                     <div class="text-right total-price-purchase col-6">Thành tiền: <span class="discount-money">{{format_price($order->total_amount)}}</span> </div>
+                    @endif
+
+                    @if($order->status->value == StatusOrderEnums::CANCELLED->value)
+                    <div class="col-6"></div>
+                    <div class="col-6 text-right">
+                        <div>
+
+                            <a href="{{route('restoreCart', $order->id)}}" class="btn-purchase">Mua lại</a>
+                            <a href="#" class="btn-purchase-light">Xem chi tiết huỷ đơn</a>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if($order->status->value == StatusOrderEnums::PENDING->value)
+                    <div class="col-6"></div>
+                    <div class="col-6 text-right">
+                        <div>
+                            <button class=" btn-purchase-light btn-cancel-order" data-id="{{ $order->id }}">Huỷ đơn</button>
+                        </div>
+                    </div>
                     @endif
                     <div></div>
                 </div>
@@ -75,6 +94,98 @@
     </div>
 </div>
 
+<div class="cancel-layer" id="cancelLayer">
+    <form action="{{route('order.cancelOrder')}}" method="POST" id="cancelOrder">
+        @csrf
+        <div class="cancel-modal row" id="cancelModal">
+            <h6 class="col-12 mt-3 mb-4">Lý do huỷ đơn hàng</h6>
 
+            @foreach(\App\Enums\CancelOrderReason::cases() as $reason)
+                <div class="form-check  p-2 col-12 d-flex align-items-center">
+                    <input class="mr-2" type="radio" name="cancel_reason" id="reason-{{$reason->value}}" value="{{$reason->value}}">
+                    <label class="form-check-label mt-1" for="reason-{{ $reason->value }}">
+                        {{ $reason->label() }}
+                    </label>
+                </div>
+            @endforeach
+            <label class="text-danger cancel-error col-12 my-2">Vui lòng chọn lý do</label>
+            <input type="hidden" name="orderId" value="0" class="order-id">
+            <input type="hidden" name="status" value="{{StatusOrderEnums::CANCELLED->value}}">
+            <div class="col-12 text-right mt-4">
+                <button class="cancel b-radius" id="cancelButton" type="button">Không phải bây giờ</button>
+                <button class="buy b-radius" id="submitChangeAddress" type="submit">Huỷ đơn hàng</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="confirm-layer" id="confirmModal">
+    <div class="confirm-modal">
+        <h5>Khôi phục đơn hàng</h5>
+        <p class="my-3">Mặt hàng có trong hoá đơn này sẽ được thêm lại vào giỏ</p>
+        <div class="col-12 text-right mt-4">
+            <button id="confirmNo" class="cancel b-radius">Huỷ</button>
+            <button id="confirmYes" class="buy b-radius" >Thêm vào giỏ</button>
+        </div>
+    </div>
+</div>
+
+
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('.btn-cancel-order').on('click', function() {
+            var orderId = $(this).data('id');
+            $('.order-id').val(orderId);            
+            $('#cancelLayer').fadeIn();
+            $('.cancel-error').hide()
+        });
+
+        $('#cancelLayer').on('click', function(e) {
+            if ($(e.target).is('#cancelLayer')) {
+                $('#cancelLayer').fadeOut();
+            }
+        });
+
+        $('#cancelButton').on('click', function() {
+            $('#cancelLayer').fadeOut();
+        });
+
+        $('#submitChangeAddress').on('click', function(e) {
+            if (!$('input[name="cancel_reason"]:checked').length) {
+                e.preventDefault();
+                $('.cancel-error').show();
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('.btn-purchase').on('click', function(e) {
+
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+            $('#confirmModal').fadeIn();
+            $('#confirmYes').on('click', function() {
+                $.ajax({
+                    url: url,
+                    method: 'GET', 
+                    success: function(response) {
+                        window.location.href = @json(route('cart.index'));
+                    },
+                });
+                $('#confirmModal').fadeOut();
+            });
+            $('#confirmNo').on('click', function() {
+                $('#confirmModal').fadeOut(); // Đóng modal
+            });
+        });
+    });
+
+
+</script>
+
+
+@endsection
 
 @endsection

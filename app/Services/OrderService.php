@@ -205,8 +205,10 @@ class OrderService
         try {
             $order = Order::with('customer')->findOrFail($id);
             $statusInit = $order->status->value;
-
             $order->status = $request['status'];
+            if(!empty($request['cancel_reason'])) {
+                $order->cancel_reason = $request['cancel_reason'];
+            }
             $order->save();
 
             if ($statusInit != $request['status']) {
@@ -215,8 +217,8 @@ class OrderService
             }
 
             return $order;
-        } catch (\Throwable $th) {
-            return $th;
+        } catch (\Exception $e) {
+            return $e;
         }
 
     }
