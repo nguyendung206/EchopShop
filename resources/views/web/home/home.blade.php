@@ -61,7 +61,7 @@ HOME
                 @endforelse
                 @if ($brands->count() > 0)
                 <div class="col-12 text-center my-4">
-                    <a href="#" class="all btn-more" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                    <a href="{{route('listProducts')}}" class="all btn-more" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
                 </div>
                 @endif
             </div>
@@ -192,7 +192,7 @@ HOME
                         <div class="buy-wrap">
                             <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
                             @auth
-                            <a id="btn-cart" href="#" class="btn-cart-product" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid="{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
+                            <a id="btn-cart" href="#" class="btn-cart-product btn-cart" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid="{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
                                 <i class="fa-solid fa-cart-shopping"></i>
                             </a>
                             @else

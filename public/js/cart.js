@@ -6,7 +6,7 @@ $(document).ready(function () {
     });
 
     // Kiểm tra và thêm sản phẩm vào giỏ hàng
-    $(document).on('click', '#btn-cart', function (event) {
+    $(document).on('click', '.btn-cart', function (event) {        
         event.preventDefault();
         var productId = $(this).data('id');
         var urlCheck = $(this).data('url-check');

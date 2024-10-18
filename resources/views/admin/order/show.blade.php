@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Thông tin Banner')}}</h5>
+        <h5 class="mb-0 h6">{{translate('Thông tin đơn hàng')}}</h5>
     </div>
     <form action="{{route('admin.order.updateStatus', $order->id)}}" method="POST">
         @csrf
