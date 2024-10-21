@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Status;
 use App\Enums\TypeDiscount;
+use App\Enums\TypeDiscountScope;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -39,6 +40,10 @@ class DiscountRequest extends FormRequest
             'maxUses' => 'required|numeric|min:0',
             'limitUses' => 'required|numeric|min:0',
             'status' => ['required', Rule::in(array_column(Status::cases(), 'value'))],
+            'scope_type' => 'required|integer',
+            'province_id' => [Rule::requiredIf($this->input('scope_type') == TypeDiscountScope::REGIONAL->value), 'nullable', 'integer'],
+            'district_id' => 'nullable|integer|different:0',
+            'ward' => 'nullable|integer|different:0',
         ];
 
         return $rules;
@@ -74,6 +79,7 @@ class DiscountRequest extends FormRequest
             'maxUses' => 'Số lượng mã giảm giá',
             'limitUses' => 'Giới hạn số lần sử dụng',
             'status' => 'Trạng thái',
+            'province_id' => 'Tỉnh/Thành phố',
         ];
     }
 }

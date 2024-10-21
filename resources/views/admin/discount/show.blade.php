@@ -7,7 +7,7 @@
         <h5 class="mb-0 h6">{{translate('Thông tin Giảm giá')}}</h5>
     </div>
     <div class="card-body">
-        <section class="vh-100" style="background-color: #f4f5f7;">
+        <section  style="background-color: #f4f5f7;">
             <div class="container  h-100">
             <div class="row d-flex justify-content-center pt-5 h-100">
                 <div class="col col-lg-6 mb-4 mb-lg-0">
@@ -64,10 +64,21 @@
                                 <h6>Trạng thái</h6>
                                 <p class="text-muted">{{$discount->status->label()}}</p>
                             </div>
+                            <div class="col-12 mb-3">
+                                <h6>Phạm vi</h6>
+                                <p class="text-muted">{{$discount->scope_type->label()}} 
+                                    @if ($discount->scope_type->value == TypeDiscountScopeEnums::REGIONAL->value)
+                                    : {{$discount->ward_id ? $discount->ward->ward_name . ', ' : null}}
+                                        {{$discount->district_id ? $discount->district->district_name . ', ' : null}}
+                                        {{$discount->province_id ? $discount->province->province_name . '.' : null}}
+                                    @endif
+                                </p>
+                               
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-start">
-                            <a class="btn btn-primary" style="color: white" href="{{ route('admin.discount.edit', $discount->id)}}">Sửa</a>
+                        <div class="d-flex justify-content-end">
                             <a class="btn btn-secondary" style="color: white" href="{{route("admin.discount.index")}}">Trở về</a>
+                            <a class="btn btn-primary ml-2" style="color: white" href="{{ route('admin.discount.edit', $discount->id)}}">Sửa</a>
                         </div>
                         </div>
                     </div>

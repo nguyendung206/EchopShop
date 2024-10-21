@@ -87,6 +87,65 @@
                     </div>
 
                     <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Phạm vi giảm giá</label>
+                        <div class="col-sm-9">
+                            @foreach(\App\Enums\TypeDiscountScope::cases() as $scope)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="scope_type" id="scope_{{ $scope->value }}" value="{{ $scope->value }}"
+                                    {{ old('scope_type', \App\Enums\TypeDiscountScope::GLOBAL->value) == $scope->value ? 'checked' : '' }}>
+                                <label style="font-size: 1rem;" class="form-check-label" for="scope{{ $scope->value }}">
+                                    @lang($scope->label())
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-3 col-from-label font-weight-500">Thành Phố<span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-6">
+                            <select class=" form-control font-weight-500"  name="province_id" id="province_select" >
+                                <option class=" " value="">Tỉnh/Thành phố *</option>
+                                    @foreach($provinces as $province)
+                                        <option class=" " value="{{$province->id}}" >{{ $province->province_name }}</option>
+                                    @endforeach
+                            </select>
+                                @error('province_id')
+                                    <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-3 col-from-label font-weight-500">Quận/Huyện <span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-6">
+                            <select class=" form-control font-weight-500" name="district_id" id="district_select" >
+                                <option value="0" class=" ">Quận/Huyện *</option>
+                                <option value="0" class=" " disabled>Vui lòng chọn thành phố trước</option>
+                            </select>
+                                @error('district_id')
+                                <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-3 col-from-label font-weight-500">Phường/Thị xã <span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-6">
+                            <select class=" form-control font-weight-500" name="ward_id" id="ward_select" >
+                                <option value="0" class=" ">Phường/Thị xã *</option>
+                                <option value="0" class=" " disabled>Vui lòng chọn quận huyện trước</option>
+                            </select>
+                            @error('ward_id')
+                            <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Ngày bắt đầu<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="datetime-local" placeholder="Ngày bắt đầu" name="startTime" class="form-control
@@ -178,4 +237,37 @@
         }
     }
 </script>
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('#province_select').closest('.form-group').hide();
+            $('#district_select').closest('.form-group').hide();
+            $('#ward_select').closest('.form-group').hide();
+            toggleLocationFields();
+
+            $('input[name="scope_type"]').on('change', function() {
+                toggleLocationFields();
+            });
+
+            function toggleLocationFields() {
+                var selectedValue = $('input[name="scope_type"]:checked').val();
+                var regionalValue = "{{ \App\Enums\TypeDiscountScope::REGIONAL->value }}";
+
+                if (selectedValue == regionalValue) {
+                    $('#province_select').closest('.form-group').slideDown();
+                    $('#district_select').closest('.form-group').slideDown();
+                    $('#ward_select').closest('.form-group').slideDown();
+                } else {
+                    $('#province_select').closest('.form-group').slideUp();
+                    $('#district_select').closest('.form-group').slideUp();
+                    $('#ward_select').closest('.form-group').slideUp();
+                }
+
+            }
+        });
+
+    </script>
+    @include('admin.customer.province')
+@endsection
 @endsection

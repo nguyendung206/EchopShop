@@ -31,7 +31,7 @@
                         <div class="row pt-1">
                             <div class="col-6 mb-3">
                             <h6>Địa chỉ nhận hàng</h6>
-                            <p class="text-muted">{{strip_tags($order->shipping_address)}}</p>
+                            <p class="text-muted">{{strip_tags($order->shipping_address)}}, {{optional($order->ward)->ward_name}}, {{optional($order->district)->district_name}}, {{optional($order->province)->province_name}}</p>
                             </div>
                             <div class="col-6 mb-3">
                             <h6>Phương thức thanh toán</h6>

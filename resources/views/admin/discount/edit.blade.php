@@ -3,6 +3,16 @@
 @lang('Sửa Giảm giá')
 @endsection
 @section('content')
+@php
+    $user = null;   // tạo collect user để khớp với biến trong province
+    if ($discount->scope_type->value == TypeDiscountScopeEnums::REGIONAL->value){
+        $user = collect([
+            'province_id' => $discount->province_id,
+            'district_id' => $discount->district_id,
+            'ward_id' => $discount->ward_id
+    ]);
+    }
+@endphp
 <div class="backnow">
     <div class="backpage">
         <a href="{{route('admin.discount.index')}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,6 +93,65 @@
                             </select>
                             @error('type')
                                 <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label font-weight-500">Phạm vi giảm giá</label>
+                        <div class="col-sm-9">
+                            @foreach(\App\Enums\TypeDiscountScope::cases() as $scope)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="scope_type" id="scope_{{ $scope->value }}" value="{{ $scope->value }}"
+                                    {{ old('scope_type') == $scope->value || $discount->scope_type->value == $scope->value ? 'checked' : '' }}>
+                                <label style="font-size: 1rem;" class="form-check-label" for="scope{{ $scope->value }}">
+                                    @lang($scope->label())
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-3 col-from-label font-weight-500">Thành Phố<span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-6">
+                            <select class=" form-control font-weight-500"  name="province_id" id="province_select" >
+                                <option class=" " value="0">Tỉnh/Thành phố *</option>
+                                    @foreach($provinces as $province)
+                                        <option class=" " value="{{$province->id}}" >{{ $province->province_name }}</option>
+                                    @endforeach
+                            </select>
+                                @error('province_id')
+                                    <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-3 col-from-label font-weight-500">Quận/Huyện <span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-6">
+                            <select class=" form-control font-weight-500" name="district_id" id="district_select" >
+                                <option value="0" class=" ">Quận/Huyện *</option>
+                                <option value="0" class=" " disabled>Vui lòng chọn thành phố trước</option>
+                            </select>
+                                @error('district_id')
+                                <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
+                                @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3"></div>
+                        <label class="col-sm-3 col-from-label font-weight-500">Phường/Thị xã <span class="text-vali">&#9913;</span></label>
+                        <div class="col-sm-6">
+                            <select class=" form-control font-weight-500" name="ward_id" id="ward_select" >
+                                <option value="0" class=" ">Phường/Thị xã *</option>
+                                <option value="0" class=" " disabled>Vui lòng chọn quận huyện trước</option>
+                            </select>
+                            @error('ward_id')
+                            <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
@@ -181,4 +250,37 @@
         }
     }
 </script>
+
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $('#province_select').closest('.form-group').hide();
+            $('#district_select').closest('.form-group').hide();
+            $('#ward_select').closest('.form-group').hide();
+            toggleLocationFields();
+
+            $('input[name="scope_type"]').on('change', function() {
+                toggleLocationFields();
+            });
+
+            function toggleLocationFields() {
+                var selectedValue = $('input[name="scope_type"]:checked').val();
+                var regionalValue = "{{ \App\Enums\TypeDiscountScope::REGIONAL->value }}";
+
+                if (selectedValue == regionalValue) {
+                    $('#province_select').closest('.form-group').slideDown();
+                    $('#district_select').closest('.form-group').slideDown();
+                    $('#ward_select').closest('.form-group').slideDown();
+                } else {
+                    $('#province_select').closest('.form-group').slideUp();
+                    $('#district_select').closest('.form-group').slideUp();
+                    $('#ward_select').closest('.form-group').slideUp();
+                }
+
+            }
+        });
+
+    </script>
+    @include('admin.customer.province')
+@endsection
 @endsection

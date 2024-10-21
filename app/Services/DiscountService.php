@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\Status;
+use App\Enums\TypeDiscountScope;
 use App\Models\Discount;
 use Carbon\Carbon;
 use Exception;
@@ -45,11 +46,25 @@ class DiscountService
                 'limit_uses' => $request['limitUses'],
                 'photo' => uploadImage($request['photo'], 'upload/discounts/', 'nodiscount.png'),
                 'status' => $request['status'],
+                'scope_type' => $request['scope_type'],
             ];
+
+            if ($request['scope_type'] == TypeDiscountScope::REGIONAL->value) {
+                $discountData['province_id'] = $request['province_id'];
+                if (! empty($request['district_id'])) {
+                    $discountData['district_id'] = $request['district_id'];
+                }
+
+                if (! empty($request['ward_id'])) {
+                    $discountData['ward_id'] = $request['ward_id'];
+                }
+            }
             $discount = Discount::create($discountData);
 
             return $discount;
         } catch (Exception $e) {
+            dd($e);
+
             return $e;
         }
 
@@ -75,7 +90,17 @@ class DiscountService
             'limit_uses' => $request['limitUses'],
             'photo' => uploadImage($request['photo'], 'upload/discounts/', 'nodiscount.png'),
             'status' => $request['status'],
+            'scope_type' => $request['scope_type'],
         ];
+        if ($request['scope_type'] == TypeDiscountScope::REGIONAL->value) {
+            $discountData['province_id'] = $request['province_id'];
+            $discountData['district_id'] = $request['district_id'];
+            $discountData['ward_id'] = $request['ward_id'];
+        } else {
+            $discountData['province_id'] = null;
+            $discountData['district_id'] = null;
+            $discountData['ward_id'] = null;
+        }
         $discount->update($discountData);
         if ($request['photo']) {
             deleteImage($photo, 'nodiscount.png');
@@ -104,9 +129,11 @@ class DiscountService
     {
         try {
             $discounts = Discount::query()
+                ->with(['province', 'district', 'ward'])
                 ->where('status', Status::ACTIVE)
                 ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
                 ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
+            dd($discounts);
 
             return $discounts;
 
