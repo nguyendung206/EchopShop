@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductUnit;
+use App\Models\ShippingAddress;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
-    public function getCartsAndVouchers($request)
+    public function getCartsAndVouchersAndShippingAddresses($request)
     {
         try {
             $userProvinceId = Auth::user()->province_id;
@@ -29,6 +30,7 @@ class OrderService
             $userWardId = Auth::user()->ward_id;
             $carts = collect();
             $vouchers = collect();
+            $shippindAddresses = collect();
             $datas = [];
             $vouchers = Discount::query()
                 ->where('status', Status::ACTIVE)
@@ -64,9 +66,12 @@ class OrderService
                 $cartIds = $request['cart_ids'];
                 $carts = Cart::whereIn('id', $cartIds)->with('products')->get();
             }
+
+            $shippindAddresses = ShippingAddress::where('user_id', Auth::id())->with(['customer', 'province', 'district', 'ward'])->get();
             $datas = [
                 'carts' => $carts,
                 'vouchers' => $vouchers,
+                'shippingAddresses' => $shippindAddresses,
             ];
 
             return $datas;

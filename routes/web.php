@@ -88,7 +88,7 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     });
 
     Route::prefix('/order')->name('order.')->group(function () {
-        Route::get('/', [OrderController::class, 'getCartsAndVouchers'])->name('index');
+        Route::get('/', [OrderController::class, 'getCartsAndVouchersAndShippingAddresses'])->name('index');
         Route::get('/show', [OrderController::class, 'show'])->name('show');
         Route::post('/change-address', [OrderController::class, 'changeAddress'])->name('changeAddress');
         Route::post('/pay-order', [OrderController::class, 'store'])->name('payOrder');

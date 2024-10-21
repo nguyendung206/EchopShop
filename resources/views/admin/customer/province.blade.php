@@ -10,6 +10,7 @@
      districtIdUser = user.district_id;
      wardIdUser = user.ward_id;
     }
+    
     // ưu tiên old
      if(@json(old('province_id')) !== null){ // province != null
         provinceIdUser = @json(old('province_id'));

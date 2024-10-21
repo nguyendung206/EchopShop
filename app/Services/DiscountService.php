@@ -131,6 +131,7 @@ class DiscountService
                 ->where('status', Status::ACTIVE)
                 ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
                 ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
+
             return $discounts;
 
         } catch (\Exception $e) {

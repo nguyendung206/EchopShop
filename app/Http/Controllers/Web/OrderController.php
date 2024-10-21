@@ -22,12 +22,12 @@ class OrderController extends Controller
         $this->cartService = $cartService;
     }
 
-    public function getCartsAndVouchers(Request $request)
+    public function getCartsAndVouchersAndShippingAddresses(Request $request)
     {
 
-        $datas = $this->orderService->getCartsAndVouchers($request->all());
+        $datas = $this->orderService->getCartsAndVouchersAndShippingAddresses($request->all());
 
-        return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
+        return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers'], 'shippingAddresses' => $datas['shippingAddresses']]);
     }
 
     public function changeAddress(Request $request)
@@ -97,6 +97,7 @@ class OrderController extends Controller
             return $e;
         }
     }
+
     public function show(Request $request)
     {
         try {

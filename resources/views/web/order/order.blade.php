@@ -24,84 +24,7 @@
                     {{ $user->province->province_name }}
                     <button class="change-address p-1 b-radius" id="btnChangeAddress">Thay đổi</button>
                 </div>
-                <div class="address-layer" id="addressLayer">
-                    <form action="{{ route('order.changeAddress') }}" method="POST" id="changeAddressForm" >
-                        @csrf
-                        <div class="address-modal row" id="addressModal">
-                            <h6 class="col-12 mt-3 mb-4">Cập nhật địa chỉ</h6>
-                            <div class="form-group col-lg-6 col-12">
-                                <label class="address-label">Địa chỉ<span class="text-vali">&#9913;</span></label>
-                                <div class="">
-                                    <input type="text" placeholder="Nhập địa chỉ" id="addressForm" name="address" class="form-control"
-                                        value="{{ old('address') ? old('address') : $user->address }}">
-                                </div>
-                            </div>
-                            <div class="form-group col-lg-6 col-12">
-                                <label class="address-label">Số điện thoại<span class="text-vali">&#9913;</span></label>
-                                <div class="">
-                                    <input type="text" placeholder="Nhập số điện thoại" id="phoneNumberForm" name="phone_number"
-                                        class="form-control" value="{{ $user->phone_number }}">
-                                </div>
-                            </div>
-                            <div class="form-group col-12">
-                                <label class="address-label">Thành Phố<span class="text-vali">&#9913;</span></label></label>
-                                <div class="">
-                                    <select class="text-center form-control font-weight-500" name="province_id"
-                                        id="province_select">
-                                        <option class=" text-center" value="0" disabled>Tỉnh/Thành phố *</option>
-                                        @foreach ($provinces as $province)
-                                            <option class=" text-center" value="{{ $province->id }}">
-                                                {{ $province->province_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('province_id')
-                                        <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
-                                            {{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group col-lg-6 col-12">
-                                <label class="address-label">Quận/Huyện <span
-                                        class="text-vali">&#9913;</span></label></label>
-                                <div class="">
-                                    <select class="text-center form-control font-weight-500" name="district_id"
-                                        id="district_select">
-                                        <option value="0" class=" text-center" disabled>Quận/Huyện *</option>
-                                        <option value="0" class=" text-center" disabled>Vui lòng chọn thành phố trước
-                                        </option>
-                                    </select>
-                                    @error('district_id')
-                                        <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
-                                            {{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group col-lg-6 col-12">
-                                <label class="address-label">Phường/Thị xã <span
-                                        class="text-vali">&#9913;</span></label></label>
-                                <div class="">
-                                    <select class="text-center form-control font-weight-500" name="ward_id"
-                                        id="ward_select">
-                                        <option value="0" class=" text-center" disabled>Phường/Thị xã *</option>
-                                        <option value="0" class=" text-center" disabled>Vui lòng chọn quận huyện trước
-                                        </option>
-                                    </select>
-                                    @error('ward_id')
-                                        <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
-                                            {{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-12 text-right">
-                                <button class="cancel b-radius" id="addressCancel" type="button">Huỷ</button>
-                                <button class="buy b-radius" id="submitChangeAddress" type="submit">Thay đổi</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -248,7 +171,12 @@
                                                 <p>Còn lại: {{$voucher->max_uses - $voucher->quantity_used}}</p>
                                                 <p>Hết hạn sau: {{dateRemaining($voucher->end_time)}}</p>
                                                 @if ($voucher->scope_type->value == TypeDiscountScopeEnums::REGIONAL->value)
-                                                    <p class="mt-1 text-left">Chỉ cho khu vực: {{optional($voucher->ward)->ward_name}}, {{optional($voucher->district)->district_name}}, {{optional($voucher->province)->province_name}}.</p>
+                                                    <p class="mt-1 text-left">Chỉ cho khu vực: 
+                                                        {{optional($voucher->ward)->ward_name}}
+                                                        @if(optional($voucher->ward)->ward_name) , @endif
+                                                        {{optional($voucher->district)->district_name}}
+                                                        @if(optional($voucher->district)->district_name) , @endif
+                                                        {{optional($voucher->province)->province_name}}.</p>
                                                 @endif
                                             </div>
                                             <div class="voucher-button col-3">
@@ -295,26 +223,236 @@
             </div>
         </div>
     </form>
+
+    {{-- modal show address --}}
+    <div class="address-layer" id="addressShowLayer">
+        <form action="{{ route('order.changeAddress') }}" method="POST" id="changeAddressShowForm" >
+            <div class="address-modal row" id="addressModal">
+                <h6 class="col-12 mt-3 mb-4">Địa chỉ của tôi</h6>
+                @foreach ($shippingAddresses as $address)
+                    <div class="form-group col-12 row align-items-center" style="margin-left: 0px; margin-right: 0px;">
+                        <div class="col-2"><input type="radio" name="radio-address" {{$address->is_default == true ? 'checked' : ''}}></div>
+                        <div class="col-8">
+                            <p class="my-1">{{$address->user_name}}</p> 
+                            <p class="my-1" style="color: rgba(0,0,0,0.54);">(+84) {{$address->phone}}</p>
+                            <p class="my-1" style="color: rgba(0,0,0,0.54);">{{$address->street}}, {{$address->ward->ward_name}}, {{$address->district->district_name}}, {{$address->province->province_name}}</p>
+                            @if ($address->is_default == true)
+                                <p class="my-1" style="font-size: 10px; color: #B10000;">Mặc định</p>
+                            @endif
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-update-address" style="font-size: 10px;background-color: transparent;" data-shipping-address-id="{{$address->id}}" type="button">Cập nhật</button>
+                        </div>
+                    </div>
+                @endforeach
+                <input type="hidden" name="shipping-address-id" value="">
+                <div class="col-12 text-right">
+                    <button class="cancel b-radius" id="addressShowCancel" type="button">Huỷ</button>
+                    <button class="buy b-radius" id="submitChangeAddressShow" type="submit">Thay đổi</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {{-- modal change address --}}
+    <div class="address-layer" id="addressLayer">
+        <form action="{{ route('order.changeAddress') }}" method="POST" id="changeAddressForm" >
+            @csrf
+            <div class="address-modal row" id="addressModal">
+                <h6 class="col-12 mt-3 mb-4">Cập nhật địa chỉ</h6>
+                <div class="form-group col-12">
+                    <label class="address-label">Tên người nhận<span class="text-vali">&#9913;</span></label>
+                    <div class="">
+                        <input type="text" placeholder="Nhập tên người nhận" name="user_name" class="form-control"
+                            value="{{ old('name') ? old('name') : $user->name }}">
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 col-12">
+                    <label class="address-label">Địa chỉ<span class="text-vali">&#9913;</span></label>
+                    <div class="">
+                        <input type="text" placeholder="Nhập địa chỉ" id="addressForm" name="address" class="form-control"
+                            value="{{ old('address') ? old('address') : $user->address }}">
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 col-12">
+                    <label class="address-label">Số điện thoại<span class="text-vali">&#9913;</span></label>
+                    <div class="">
+                        <input type="text" placeholder="Nhập số điện thoại" id="phoneNumberForm" name="phone_number"
+                            class="form-control" value="{{ $user->phone_number }}">
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label class="address-label">Thành Phố<span class="text-vali">&#9913;</span></label></label>
+                    <div class="">
+                        <select class="text-center form-control font-weight-500" name="province_id"
+                            id="province_select">
+                            <option class=" text-center" value="0" disabled>Tỉnh/Thành phố *</option>
+                            @foreach ($provinces as $province)
+                                <option class=" text-center" value="{{ $province->id }}">
+                                    {{ $province->province_name }}</option>
+                            @endforeach
+                        </select>
+                        @error('province_id')
+                            <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
+                                {{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-6 col-12">
+                    <label class="address-label">Quận/Huyện <span
+                            class="text-vali">&#9913;</span></label></label>
+                    <div class="">
+                        <select class="text-center form-control font-weight-500" name="district_id"
+                            id="district_select">
+                            <option value="0" class=" text-center" disabled>Quận/Huyện *</option>
+                            <option value="0" class=" text-center" disabled>Vui lòng chọn thành phố trước
+                            </option>
+                        </select>
+                        @error('district_id')
+                            <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
+                                {{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-6 col-12">
+                    <label class="address-label">Phường/Thị xã <span
+                            class="text-vali">&#9913;</span></label></label>
+                    <div class="">
+                        <select class="text-center form-control font-weight-500" name="ward_id"
+                            id="ward_select">
+                            <option value="0" class=" text-center" disabled>Phường/Thị xã *</option>
+                            <option value="0" class=" text-center" disabled>Vui lòng chọn quận huyện trước
+                            </option>
+                        </select>
+                        @error('ward_id')
+                            <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
+                                {{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group col-12">
+                    <input type="checkbox" name="is_default"> <span class="ml-1" style="color: rgba(0,0,0,0.54);">Đặt làm mặc định</span>
+                </div>
+
+                <div class="col-12 text-right">
+                    <button class="cancel b-radius" id="addressCancel" type="button">Huỷ</button>
+                    <button class="buy b-radius" id="submitChangeAddress" type="submit">Thay đổi</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
     @section('script')
-        @include('admin.customer.province')
         
         <script>
             $(document).ready(function() {
                 //address modal
+
                 $('#btnChangeAddress').on('click', function() {
+                    $('#addressShowLayer').fadeIn();
+                });
+
+                $('#addressShowLayer').on('click', function(e) {
+                    if ($(e.target).is('#addressShowLayer')) {
+                        $('#addressShowLayer').fadeOut();
+                    }
+                });
+                $('#addressShowCancel').on('click', function(e) {
+                    if ($(e.target).is('#addressShowCancel')) {
+                        $('#addressShowLayer').fadeOut();
+                    }
+                });
+
+                $('.btn-update-address').on('click', function (e){
+
+                    var addressId = $(this).data('shipping-address-id');
+                    var addressSelected = @json($shippingAddresses).find(function(address) {
+                        return address.id == addressId;
+                    });
+                    $('#changeAddressForm input[name="user_name"]').val(addressSelected.user_name);
+                    $('#changeAddressForm input[name="phone_number"]').val(addressSelected.phone);
+                    $('#changeAddressForm input[name="address"]').val(addressSelected.street);
+                    $('#changeAddressForm select[name="province_id"]').val(addressSelected.province_id).change();
+                    $('#changeAddressForm select[name="district_id"]').val(addressSelected.district_id);
+                    $('#changeAddressForm select[name="ward_id"]').val(addressSelected.ward_id);
+                    $('#changeAddressForm input[name="is_default"]').prop('checked', addressSelected.is_default);
+                    
+                    $('#addressShowLayer').fadeOut();
                     $('#addressLayer').fadeIn();
                 });
 
-                $('#addressLayer').on('click', function(e) {
-                    if ($(e.target).is('#addressLayer')) {
-                        $('#addressLayer').fadeOut();
+                $('#district_select').on('change', function() {
+
+                var districtId = $(this).val(); // Lấy giá trị được chọn
+                $.ajax({
+                    url: '{{ route("web.ward") }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        districtId: districtId
+                    },
+                    success: function(response) {
+                        $('#ward_select').empty().append('<option value="0"  selected>Phường/Thị xã *</option>');  // get ward
+                        $.each(response.wards, function(index, ward) {
+                            $('#ward_select').append('<option value="' + ward.id + '">' + ward.ward_name + '</option>');
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
                     }
                 });
+                });
+                });
+
+
+                $('#province_select').on('change', function() {
+                var provinceId = $(this).val(); // Lấy giá trị được chọn
+                $.ajax({
+                url: '{{ route("web.district") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    provinceId: provinceId
+                },
+                success: function(response) {
+                    $('#district_select').empty().append('<option value="0"  selected>Quận/Huyện *</option>'); // get lại district
+                    $.each(response.districts, function(index, district) {
+                        $('#district_select').append('<option value="' + district.id + '" >' + district.district_name + '</option>');
+                    });
+
+                    $('#ward_select').empty().append('<option value="0"  selected>Phường/Thị xã *</option>'); // set lại ward
+                $('#ward_select').append('<option value="0" >Vui lòng chọn quận huyện trước</option>');
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+                });
+
+                // $('#btnChangeAddress').on('click', function() {
+                //     $('#addressLayer').fadeIn();
+                // });
+
+                // $('#addressLayer').on('click', function(e) {
+                //     if ($(e.target).is('#addressLayer')) {
+                //         $('#addressLayer').fadeOut();
+                //     }
+                // });
                 $('#addressCancel').on('click', function(e) {
                     if ($(e.target).is('#addressCancel')) {
                         $('#addressLayer').fadeOut();
+                        $('#addressShowLayer').fadeIn();
                     }
                 });
+
+                $('input[name="radio-address"]').change(function() {
+                    var addressId = $(this).closest('.form-group').find('.btn-update-address').data('shipping-address-id');
+                    $('input[name="shipping-address-id"]').val(addressId);
+                });
+
+
 
                 // voucher modal
                 $('#btnVoucher').on('click', function() {
