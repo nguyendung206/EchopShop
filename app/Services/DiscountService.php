@@ -63,8 +63,6 @@ class DiscountService
 
             return $discount;
         } catch (Exception $e) {
-            dd($e);
-
             return $e;
         }
 
@@ -133,8 +131,6 @@ class DiscountService
                 ->where('status', Status::ACTIVE)
                 ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
                 ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
-            dd($discounts);
-
             return $discounts;
 
         } catch (\Exception $e) {

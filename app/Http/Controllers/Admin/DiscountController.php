@@ -121,8 +121,6 @@ class DiscountController extends Controller
                 'message' => 'Lấy thông tin thành công.',
             ], 200);
         } catch (\Exception $e) {
-            dd($e);
-
             return response()->json([
                 'status' => 500,
                 'message' => 'Lấy thông tin thất bại',
