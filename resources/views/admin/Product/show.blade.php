@@ -92,7 +92,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Thư viện ảnh:')</label>
-                    @if($product->list_photo)
+                    @if($product->list_photo && !empty(json_decode($product->list_photo)))
                     <div class="col-sm-9 d-flex flex-wrap">
                         @foreach(json_decode($product->list_photo) as $index => $photo)
                         <img src="{{ getImage($photo) }}" class="img img-bordered m-2" style="width:200px;" />

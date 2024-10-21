@@ -114,19 +114,19 @@
                                 <div class="range">
                                     <input type="range" min="0" max="100" step="10" value="{{old('quality') ? old('quality') : $product->quality}}" name="quality">
                                 </div>
-                              
+
                                 <ul class="range-labels">
-                                  <li class="text-left">0</li>
-                                  <li class="text-left">10</li>
-                                  <li class="text-left">20</li>
-                                  <li class="text-left">30</li>
-                                  <li class="text-left">40</li>
-                                  <li class="text-left">50</li>
-                                  <li class="text-left">60</li>
-                                  <li class="text-left">70</li>
-                                  <li class="text-left">80</li>
-                                  <li class="text-left">90</li>
-                                  <li class="text-left final-text">100% (hàng mới)</li>
+                                    <li class="text-left">0</li>
+                                    <li class="text-left">10</li>
+                                    <li class="text-left">20</li>
+                                    <li class="text-left">30</li>
+                                    <li class="text-left">40</li>
+                                    <li class="text-left">50</li>
+                                    <li class="text-left">60</li>
+                                    <li class="text-left">70</li>
+                                    <li class="text-left">80</li>
+                                    <li class="text-left">90</li>
+                                    <li class="text-left final-text">100% (hàng mới)</li>
                                 </ul>
                             </div>
 
@@ -209,7 +209,7 @@
                         <div class="col-sm-9">
                             <input type="file" class="form-control @error('list_photo') is-invalid @enderror" name="list_photo[]" multiple onchange="previewListPhotos(this)">
                             <div id="list_photo_preview" class="d-flex flex-wrap">
-                                @if($product->list_photo)
+                                @if($product->list_photo && !empty(json_decode($product->list_photo)))
                                 @foreach(json_decode($product->list_photo) as $index => $photo)
                                 <div class="position-relative m-2">
                                     <img src="{{ getImage($photo) }}" class="img img-bordered" style="width:200px;" />
@@ -217,6 +217,10 @@
                                     <input type="hidden" name="photos_to_keep[]" value="{{ $photo }}">
                                 </div>
                                 @endforeach
+                                @else
+                                <div class="col-sm-9">
+                                    <p class="form-control-plaintext pt-0" style="font-size: 1rem;">Chưa có ảnh nào</p>
+                                </div>
                                 @endif
                             </div>
                             @error('list_photo')

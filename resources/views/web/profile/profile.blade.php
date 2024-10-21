@@ -128,7 +128,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div id="identificationImageContainer">
-                            <img id="identificationImagePreview" src="{{ $user->identification_image ? getImage('upload/users/'. $user->identification_image) : asset('/img/image/upload.png') }}" alt="Ảnh CCCD/Hộ chiếu" class="upload-img" style="cursor: pointer; object-fit:cover; height: 100%; width: 100%;">
+                            <img id="identificationImagePreview" src="{{ $user->identification_image ? getImage($user->identification_image) : asset('/img/image/upload.png') }}" alt="Ảnh CCCD/Hộ chiếu" class="upload-img" style="cursor: pointer; object-fit:cover; height: 100%; width: 100%;">
                             <input type="file" id="identificationImageInput" name="identification_image" style="display: none;" accept="image/*" onchange="previewIdentificationImage(event)">
                         </div>
 

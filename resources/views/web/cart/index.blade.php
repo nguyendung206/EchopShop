@@ -102,13 +102,15 @@ $allowSend = true;
                                                 <button class="buy b-radius typeProductSubmit btn-apply" type="button" data-cartId="{{$cart->id}}" data-productunitid="0" data-href="{{route('cart.updateProductUnit', $cart->id)}}">Áp dụng</button>
                                             </div>
                                         </div>
+
                                     </div>
                                     @endif
-
+                                </div>
+                                <div class="mt-2">
+                                    <a href="{{ route('web.productdetail.index', ['slug' => $cart->products->slug]) }}" style="color: #000;"> <i class="fa-solid fa-circle-info mr-1"></i>Chi tiết sản phẩm</a>
                                 </div>
                             </div>
                         </div>
-
                     </td>
                     <td class="align-middle">
                         <span class="original-price">{{ format_price($cart->products->price) }}</span>

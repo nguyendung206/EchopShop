@@ -1,6 +1,6 @@
 <br>
 <footer class="footer">
-    <div class="container">
+    <div class="container mw-1200">
         <div class="row justify-content-between">
             <div class="col-md-3 col-6">
                 <h1 class="footer-heading">Hỗ trợ</h1>

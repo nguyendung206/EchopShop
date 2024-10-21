@@ -27,7 +27,11 @@
                 <a href="{{ route('notification.isreaded', ['id' => $data->id]) }}">
                     <div style="border-radius: 10px;" class="py-notificaition dropdown-item d-flex align-items-center notification {{ !$data->is_read ? 'is_read' : '' }}">
                         <div class="mr-3">
-                            <img style="height: 50px;width: 50px; border-radius: 50%; object-fit: cover;" src="{{ getImage($data->product->photo) }}">
+                            @if($data->product->photo != null)
+                            <img style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover;" src="{{ getImage($data->product->photo) }}">
+                            @else
+                            <div style="height: 50px; width: 50px;"></div>
+                            @endif
                         </div>
                         <div class="d-flex align-items-center justify-content-between w-100">
                             <div style="max-width: 95%;">
