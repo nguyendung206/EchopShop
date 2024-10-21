@@ -57,7 +57,7 @@ $allowSend = true;
                                         <p>Phân loại hàng:</p>
                                         <div class="type-size-{{$cart->id}} ml-2 my-2">Size: {{$cart->products->getProductUnitById($cart->product_unit_id)->size}} </div>
                                         <div class="type-color-{{$cart->id}} ml-2 my-2">Màu: {{$cart->products->getProductUnitById($cart->product_unit_id)->color}} </div>
-                                        <div class="type-quantity-{{$cart->id}} ">
+                                        <div class="type-quantity-{{$cart->id}} mb-2">
                                             @if ($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0)
                                             Còn {{$cart->products->getProductUnitById($cart->product_unit_id)->quantity}} sản phẩm.
                                             @else
@@ -66,7 +66,7 @@ $allowSend = true;
                                         </div>
                                         <button class="btn-type-product" style="border: none" id="btnTypeProduct{{$cart->id}}"><i class="fa-regular fa-pen-to-square"></i></button>
                                         @else
-                                        <div class="type-quantity-{{$cart->id}}">
+                                        <div class="type-quantity-{{$cart->id}} mb-2">
                                             @if ($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0)
                                             còn {{$cart->products->getProductUnitById($cart->product_unit_id)->quantity}} sản phẩm.
                                             @else
@@ -74,6 +74,7 @@ $allowSend = true;
                                             @endif
                                         </div>
                                         @endif
+                                        <a href="{{ route('web.productdetail.index', ['slug' => $cart->products->slug])}}" class="my-1 text-info">Xem chi tiết</a>
 
                                     </div>
                                     <div class="type-product-layer" id="typeProductLayer{{$cart->id}}" data-cart="{{$cart->products->productUnits}}" data-productunitid="{{$cart->products->getProductUnitById($cart->product_unit_id)->id}}">

@@ -65,6 +65,110 @@
     height: 500px;
 }
 
+.btn-purchase {
+    background-color: #B10000;
+    padding: 8px 12px;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    border: 1px solid #b10000;
+}
+.btn-purchase:hover {
+    background-color: #c00202;
+    color: white;
+}
+.btn-purchase-light {
+    border: 1px solid #757575;
+    padding: 8px 12px;
+    color: #757575;
+    background-color: white;
+    font-size: 14px;
+    border-radius: 4px;
+}
+.btn-purchase-light:hover {
+    color: #3e3d3d;
+    border: 1px solid #3e3d3d;
+}
+
+.cancel-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.cancel-modal {
+    background-color: #fff;
+    padding: 20px;
+    width: 50%;
+    margin: 250px auto;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1000;
+}
+
+.confirm-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.confirm-modal {
+    background-color: #fff;
+    padding: 20px;
+    width: 500px;
+    margin: 250px auto;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1000;
+}
+
+.change-cancel {
+    cursor: pointer;
+}
+
+.text-vali {
+    color: #b10000;
+    position: absolute;
+    top: -7px;
+}
+.cancel-label {
+    position: absolute;
+    color: rgba(0, 0, 0, .4);;
+    background-color: #fff;
+    z-index: 1;
+    left: 30px;
+    font-weight: 400;
+    font-size: 10px;
+    top: -5px;
+}
+.form-group {
+    position: relative;
+}
+
+.cancel {
+    border: none;
+    background-color: rgba(0, 0, 0, .4);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16.41px;
+    padding: 8px 24px;
+    color: white;
+}
+.cancel:hover {
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+}
+
 
 @media (min-width: 320px) and (max-width: 768px) {
     .col-14 {

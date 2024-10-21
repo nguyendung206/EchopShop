@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\ProductUnit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -40,7 +41,6 @@ class CartService
 
                 return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
             }
-
             if ($request->has('type') && is_numeric($request->type)) {
                 if ($request->type == 1) {
 
@@ -54,7 +54,7 @@ class CartService
                     return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
                 } else {
                     $productUnit = ProductUnit::find($request->product_unit_id);
-                    Cart::create([
+                    $cart = Cart::create([
                         'user_id' => $userId,
                         'product_id' => $request->productId,
                         'product_unit_id' => $request->product_unit_id,
@@ -154,5 +154,26 @@ class CartService
         }
 
         return null;
+    }
+
+    public function restoreCart($request, $idOrder)
+    {
+        try {
+            $order = Order::with(['orderDetails.productUnit'])->findOrFail($idOrder);
+            foreach ($order->orderDetails as $orderDetail) {
+                $request->merge([
+                    'productId' => $orderDetail->product_id,
+                    'type' => $orderDetail->productUnit->type,
+                    'quantity' => $orderDetail->quantity,
+                    'product_unit_id' => $orderDetail->product_unit_id,
+                ]);
+
+                $this->store($request);
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

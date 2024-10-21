@@ -182,12 +182,12 @@ if (request()->query('type') == 1) {
                             @endif
                         </div>
                         <div class="product-actions" style="display: block; margin-top: 16px;">
-                            @if ($product->type->value == 1)
+                            @if ($product->type->value == TypeProductEnums::EXCHANGE->value)
                             <a href="#" class="buy chat"><i class="fa-regular fa-comment-dots pr-2"></i>Chat</a>
                             <a href="#" class="buy">Trao đổi</a>
-                            @elseif($product->type->value == 2)
+                            @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
                             <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Mua ngay</a>
-                            @elseif($product->type->value == 3)
+                            @elseif($product->type->value == TypeProductEnums::GIVEAWAY->value)
                             <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Nhận quà tặng</a>
                             @endif
                         </div>

@@ -58,7 +58,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                                 <ul class="custom-dropdown-submenu" style="display: none;">
                                     @foreach($category->activeBrands as $brand)
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('listProducts', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                        <a class="dropdown-item" href="{{ route('listProducts', ['category-slug' => $category->slug, 'brandslug' => $brand->slug]) }}">
                                             <p class="dropdown-title">{{ $brand->name }}</p>
                                         </a>
                                     </li>
@@ -358,7 +358,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                             <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" style="width: 250px;">
                                 @foreach($categories as $category)
                                 <li class="dropdown-submenu" style="position: relative;">
-                                    <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['categorySlug' => $category->slug]) }}">
+                                    <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['category-slug' => $category->slug]) }}">
                                         <img src="{{ getImage($category->photo) }}" alt="" class="dropdown-img">
                                         <p class="dropdown-title">{{ $category->name }}</p>
                                         <i class="fa-solid fa-caret-right"></i>
@@ -367,7 +367,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                                     <ul class="dropdown-menu" style="width: 250px;">
                                         @foreach($category->activeBrands as $brand)
                                         <li>
-                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['categorySlug' => $category->slug, 'brandSlug' => $brand->slug]) }}">
+                                            <a class="dropdown-item dropdown-item-custom" href="{{ route('listProducts', ['category-slug' => $category->slug, 'brand-slug' => $brand->slug]) }}">
                                                 <p class="dropdown-title">{{ $brand->name }}</p>
                                                 <i class="fa-solid fa-caret-right"></i>
                                             </a>

@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col=lg-6 col-12">
+                            <div class="form-group col-lg-6 col-12">
                                 <label class="address-label">Phường/Thị xã <span
                                         class="text-vali">&#9913;</span></label></label>
                                 <div class="">
@@ -247,6 +247,9 @@
                                                 <p>Số lần dùng: {{ $numberUsed .' /'. $voucher->limit_uses}}</p>
                                                 <p>Còn lại: {{$voucher->max_uses - $voucher->quantity_used}}</p>
                                                 <p>Hết hạn sau: {{dateRemaining($voucher->end_time)}}</p>
+                                                @if ($voucher->scope_type->value == TypeDiscountScopeEnums::REGIONAL->value)
+                                                    <p class="mt-1 text-left">Chỉ cho khu vực: {{optional($voucher->ward)->ward_name}}, {{optional($voucher->district)->district_name}}, {{optional($voucher->province)->province_name}}.</p>
+                                                @endif
                                             </div>
                                             <div class="voucher-button col-3">
                                                 @if ($voucher->limit_uses == $numberUsed)

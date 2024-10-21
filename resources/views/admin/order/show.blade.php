@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0 h6">{{translate('Thông tin Banner')}}</h5>
+        <h5 class="mb-0 h6">{{translate('Thông tin đơn hàng')}}</h5>
     </div>
     <form action="{{route('admin.order.updateStatus', $order->id)}}" method="POST">
         @csrf
@@ -31,7 +31,7 @@
                         <div class="row pt-1">
                             <div class="col-6 mb-3">
                             <h6>Địa chỉ nhận hàng</h6>
-                            <p class="text-muted">{{strip_tags($order->shipping_address)}}</p>
+                            <p class="text-muted">{{strip_tags($order->shipping_address)}}, {{optional($order->ward)->ward_name}}, {{optional($order->district)->district_name}}, {{optional($order->province)->province_name}}</p>
                             </div>
                             <div class="col-6 mb-3">
                             <h6>Phương thức thanh toán</h6>
