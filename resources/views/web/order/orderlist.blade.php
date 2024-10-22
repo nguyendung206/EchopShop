@@ -51,6 +51,13 @@ ORDER
                         </td>
                         <td class="align-middle">
                             @if($data->status->value === \App\Enums\StatusOrder::COMPLETED->value)
+                            @if(auth()->user()->hasRated($orderDetail->product->id))
+                            <a class="disable-buy"
+                                style="padding: 8px 20px; background: #ddd; color: #666; border-radius: 5px; cursor: not-allowed;"
+                                href="javascript:void(0);">
+                                Đã đánh giá
+                            </a>
+                            @else
                             <a style="padding: 8px 20px; background: #b10000; color: #fff; border-radius: 5px;"
                                 href="#"
                                 data-toggle="modal"
@@ -58,6 +65,7 @@ ORDER
                                 data-rating-product-id="{{ $orderDetail->product->id }}">
                                 Đánh giá
                             </a>
+                            @endif
                             @else
                             <a class="disable-buy"
                                 style="padding: 8px 20px; background: #ddd; color: #666; border-radius: 5px; cursor: not-allowed;"
@@ -129,10 +137,10 @@ ORDER
                             </span>
                             <input class="number-rating" type="hidden" name="star" value="{{ old('star') }}">
                         </div>
+                        @error('star')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('star')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
 
                     <div class="form-group mt-4 d-flex flex-column align-items-center my-2 justify-content-center">
                         <div class="d-flex">
@@ -144,9 +152,6 @@ ORDER
                                 <input type="file" id="photoImageInput" name="photos[]" multiple
                                     style="display: none;" accept="image/*"
                                     onchange="previewImages(event, 'photoPreviewList')">
-                                @error('photos.*')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
                             </div>
 
                             <div id="videoContainer">
@@ -157,11 +162,14 @@ ORDER
                                 <input type="file" id="videoInput" name="videos[]" multiple
                                     style="display: none;" accept="video/*"
                                     onchange="previewVideos(event, 'videoPreviewList')">
-                                @error('videos.*')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
                             </div>
                         </div>
+                        @error('photos.*')
+                        <div class="invalid-feedback d-block text-center">{{ $message }}</div>
+                        @enderror
+                        @error('videos.*')
+                        <div class="invalid-feedback d-block text-center">{{ $message }}</div>
+                        @enderror
 
                         <div class="mt-4">
                             <h5 class="text-center mb-2" id="photoTitle" style="display: none;">Ảnh đã chọn:</h5>
@@ -173,7 +181,7 @@ ORDER
                     </div>
 
                     <div class="form-group">
-                        <label for="reviewContent">Viết đánh giá</label>
+                        <label for="reviewContent">Viết đánh giá:</label>
                         <textarea name="content" class="form-control @error('content') is-invalid @enderror"
                             id="reviewContent" rows="4" style="border-radius: 5px;">{{ old('content') }}</textarea>
                         @error('content')
@@ -229,46 +237,9 @@ ORDER
     });
 
     $(document).ready(function() {
-        $('#reviewForm').on('submit', function(e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if (response.success) {
-                        // Hiện thông báo thành công
-                        toastr.success(response.message, null, {
-                            positionClass: 'toast-bottom-left'
-                        });
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
-                    } else {
-                        // Hiện thông báo lỗi
-                        toastr.error(response.message, null, {
-                            positionClass: 'toast-bottom-left'
-                        });
-                    }
-                },
-                error: function(xhr) {
-                    // Nếu có lỗi validation, hiển thị lỗi
-                    let errors = xhr.responseJSON.errors;
-                    $('.invalid-feedback').remove(); // Xóa tất cả thông báo lỗi cũ
-                    $.each(errors, function(key, value) {
-                        // Tìm trường tương ứng và hiển thị lỗi
-                        let inputField = $('[name="' + key + '"]');
-                        if (inputField.length) {
-                            inputField.addClass('is-invalid');
-                            inputField.after('<div class="invalid-feedback d-block">' + value[0] + '</div>');
-                        }
-                    });
-                }
-            });
-        });
+        @if($errors -> any())
+        $('#reviewModal').modal('show');
+        @endif
     });
 
     $(function() {

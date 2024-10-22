@@ -147,7 +147,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
-                        <a href="{{route('favoriteProduct')}}" class="d-n display-none profile-tab" data-tab="favoriteProduct" style="position: relative;">
+                        <a href="{{route('favoriteProduct')}}" class="d-n display-none profile-tab" data-tab="favoriteProduct" style="position: relative; background-color: #FFDD15; border: none;">
                             <i class="fa-regular fa-heart"></i>
                             @if (Auth::check())
                             @if (Auth::user()->countFavorite() > 0)

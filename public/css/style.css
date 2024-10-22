@@ -326,7 +326,9 @@ a:hover {
     padding: 0;
 }
 
-
+.province-select {
+    border-radius: 0 !important;
+}
 
 .slideshow-content {
     position: absolute;
@@ -377,11 +379,13 @@ a:hover {
 }
 
 .product-wrap {
+    position: relative;
     background-color: white;
     border: 0.5px solid #e5e5e5;
     box-sizing: border-box;
     padding: 8px;
     padding-bottom: 27px;
+    border-radius: 10px;
 }
 
 
@@ -576,7 +580,6 @@ a:hover {
 .line-clamp-1 {
     display: -webkit-box;
     -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -589,8 +592,6 @@ a:hover {
     line-height: 11.72px;
     font-size: 10px;
     color: #949494;
-    display: inline-block;
-    width: 88%;
     position: relative;
 }
 
@@ -735,13 +736,15 @@ a:hover {
     height: 45.5px;
 }
 
-.fa-heart-home {
+.product-heart {
     position: absolute;
-    bottom: 110px;
-    right: 26px;
+    bottom: 5%;
+    right: 5%;
+}
+
+.fa-heart-home {
     color: #EA0000;
     font-size: 18px;
-    top: 38%;
 }
 
 .btn-more {
@@ -928,7 +931,6 @@ a:hover {
 
 .gift-img {
     width: 100%;
-    height: 224px;
     border-radius: 15px;
     object-fit: cover;
 }

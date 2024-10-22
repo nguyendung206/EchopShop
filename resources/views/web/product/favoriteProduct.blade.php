@@ -2,6 +2,9 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
 @endsection
+@section('title')
+FAVORITES
+@endsection
 @section('content')
     <div class="profile-slider">
         <h1 class="profile-heading text-center">Sản phẩm đã thích</h1>

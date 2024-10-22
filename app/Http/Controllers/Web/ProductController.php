@@ -54,13 +54,17 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::where('slug', $slug)->first();
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('type', $product->type)
+            ->get();
         $ratings = Rating::where('product_id', $product->id)->get();
         $user = auth()->user();
         $isPurchased = $user ? $user->hasPurchased($product->id) : false;
-        $isShopOwner = $product->shop_id == $user->shop->id;
+        $isShopOwner = $user->shop?->id === $product->shop_id;
         $hasRated = $user ? $user->hasRated($product->id) : false;
 
-        return view('web.product.productdetail', compact('product', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated'));
+        return view('web.product.productdetail', compact('product', 'relatedProducts', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated'));
     }
 
     public function create()

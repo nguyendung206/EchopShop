@@ -202,7 +202,7 @@
                                 @if($product->list_photo && !empty(json_decode($product->list_photo)))
                                 @foreach(json_decode($product->list_photo) as $index => $photo)
                                 <div class="position-relative m-2">
-                                    <img src="{{ getImage($photo) }}" class="img img-bordered" style="width:200px;" />
+                                    <img src="{{ getImage($photo) }}" class="img img-bordered" style="max-width:200px; max-height: 230px;" />
                                     <button type="button" class="btn btn-danger btn-sm position-absolute" style="top:0; right:0;" onclick="removePhoto(this, '{{ $photo }}')">X</button>
                                     <input type="hidden" name="photos_to_keep[]" value="{{ $photo }}">
                                 </div>
@@ -357,7 +357,8 @@
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'img img-bordered';
-                    img.style.width = '200px';
+                    img.style.maxWidth = '200px';
+                    img.style.maxHeight = '230px';
 
                     const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'btn btn-danger btn-sm position-absolute';

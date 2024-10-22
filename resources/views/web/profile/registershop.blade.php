@@ -2,6 +2,9 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
 @endsection
+@section('title')
+SALES REGISTRATION
+@endsection
 @section('content')
 <div class="profile-slider">
     <h1 class="profile-heading text-center">đăng ký bán hàng</h1>

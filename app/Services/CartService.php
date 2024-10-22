@@ -60,7 +60,7 @@ class CartService
                         'product_unit_id' => $request->product_unit_id,
                         'color' => $productUnit->color,
                         'size' => $productUnit->size,
-                        'quantity' => $request->quantity,
+                        'quantity' => $request->quantity <= 0 ? 1 : $request->quantity,
                     ]);
 
                     return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];

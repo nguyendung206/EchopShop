@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Tạo loại hàng')
+@lang('Thêm mới thương hiệu')
 @endsection
 @section('content')
 <div class="backnow">
@@ -14,15 +14,15 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">@lang('Thêm mới loại hàng')</h5>
+                <h5 class="mb-0 h6">@lang('Thêm mới thương hiệu')</h5>
             </div>
             <div class="card-body">
                 <form action="{{route('admin.brand.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên hãng hàng')<span class="text-vali">&#9913;</span></label>
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên thương hiệu')<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Tên hãng hàng')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                            <input type="text" placeholder="@lang('Tên thương hiệu')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
                             @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

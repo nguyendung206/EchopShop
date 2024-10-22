@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ asset('/css/cart.css') }}" />
 @endsection
 @section('title')
-HOME
+CART
 @endsection
 @section('content')
 @php
@@ -64,7 +64,9 @@ $allowSend = true;
                                             <p class='text-danger'>&nbsp; Hết hàng.</p>
                                             @endif
                                         </div>
-                                        <button class="btn-type-product" style="border: none" id="btnTypeProduct{{$cart->id}}"><i class="fa-regular fa-pen-to-square"></i></button>
+                                        <button class="btn-type-product" style="border: none; padding: 0;" id="btnTypeProduct{{$cart->id}}">
+                                            <i class="fa-regular fa-pen-to-square"></i> Thay đổi 
+                                        </button>
                                         @else
                                         <div class="type-quantity-{{$cart->id}} mb-2">
                                             @if ($cart->products->getProductUnitById($cart->product_unit_id)->quantity > 0)
@@ -74,8 +76,6 @@ $allowSend = true;
                                             @endif
                                         </div>
                                         @endif
-                                        <a href="{{ route('web.productdetail.index', ['slug' => $cart->products->slug])}}" class="my-1 text-info">Xem chi tiết</a>
-
                                     </div>
                                     <div class="type-product-layer" id="typeProductLayer{{$cart->id}}" data-cart="{{$cart->products->productUnits}}" data-productunitid="{{$cart->products->getProductUnitById($cart->product_unit_id)->id}}">
                                         <div class="type-product-modal" id="typeProductModal{{$cart->id}}">

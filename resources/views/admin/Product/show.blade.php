@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Hãng sản phẩm:')</label>
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tên thương hiệu:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->brand->name ?? ""}}</p>
                     </div>

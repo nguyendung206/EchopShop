@@ -4,7 +4,9 @@
 <link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/product.css') }}">
 @endsection
-
+@section('title')
+NOTIFICATION
+@endsection
 @section('content')
 <div class="title-line">
     <div class="title-text">Thông báo của tôi</div>
@@ -15,8 +17,8 @@
 <div class="container">
     <div class="row">
         @include('web.profile.sidebar')
-
         <div class="col-lg-9 col-sm-12 col-12 mt-4">
+            @if($datas->count() > 0)
             <div class="text-right">
                 <a class="text-center" href="#" id="markAllAsRead" data-href="{{ route('notification.readall') }}" style="font-size: 14px;">
                     Đánh dấu đã đọc tất cả
@@ -51,6 +53,9 @@
                     Xem thêm <i class="fa-solid fa-angles-down"></i>
                 </a>
             </div>
+            @endif
+            @else
+            <h1 class="text-center" style="font-size: 20px;">Chưa có thông báo mới!</h1>
             @endif
         </div>
     </div>

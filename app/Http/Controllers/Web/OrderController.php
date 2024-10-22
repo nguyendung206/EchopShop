@@ -15,6 +15,8 @@ class OrderController extends Controller
 
     protected $orderService;
 
+    protected $cartService;
+
     public function __construct(UserService $userService, OrderService $orderService, CartService $cartService)
     {
         $this->userService = $userService;
