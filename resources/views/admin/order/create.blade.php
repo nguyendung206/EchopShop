@@ -39,7 +39,7 @@
                             <select class="text-center font-weight-500 form-control select-user" name="customerId">
                                 <option value="0" selected disabled>Chọn khách hàng</option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{$customer->id}}" data-shipping-address="{{ $customer->address }}" data-provinceid="{{$customer->province->id }}" data-districtid="{{$customer->district->id }}" data-wardid="{{$customer->ward->id}}">{{$customer->name}}</option>
+                                    <option value="{{$customer->id}}" data-shipping-address="{{ $customer->defaultAddress->street }}" data-provinceid="{{$customer->defaultAddress->province->id }}" data-districtid="{{$customer->defaultAddress->district->id }}" data-wardid="{{$customer->defaultAddress->ward->id}}">{{$customer->name}}</option>
                                 @endforeach
                             </select>
 
@@ -48,11 +48,23 @@
                             </div>
                         </div>
 
+                        <div class="form-group row select-address-user-div">
+                            <label class="col-sm-12 col-from-label font-weight-500">Chọn địa chỉ</label>
+                            <select class="text-center font-weight-500 form-control select-address" name="shippingAddress">
+                                <option value="0" selected disabled>Chọn địa chỉ</option>
+                                <option value="" disabled>Vui lòng chọn khách hàng trước</option>
+                                {{-- @foreach ($shippingAddresses as $address)
+                                    <option value="{{$address->id}}" data-shipping-address="{{ $address->street }}" data-provinceid="{{$address->province->id }}" data-districtid="{{$address->district->id }}" data-wardid="{{$customer->defaultAddress->ward->id}}">{{$address->user_name}}, (+84) {{$address->phone}}, {{$address->street}}, {{$address->ward->ward_name}}, {{$address->district->district_name}}, {{$address->province->province_name}}</option>
+                                @endforeach --}}
+                            </select>
+
+                        </div>
+
                         <div class="form-group row">
                             <label class="col-sm-12 col-from-label font-weight-500">Chọn mã giảm giá</label>
                             <select class="text-center font-weight-500 form-control @error('type') is-invalid  @enderror" name="discountId" id="discount-select">
                                 <option value="">Chọn mã giảm giá</option>
-                                <option value="" disabled>Vui lòng chọn khách hàng trước</option>
+                                <option value="" disabled>Vui lòng chọn địa chỉ của khách hàng trước</option>
                             </select>
                         </div>
 
@@ -264,9 +276,31 @@
             updateDiscount();
             updateTotalDiscountedPrice();
         });
+        
         $('.select-user').on('change', function () {
-            
             var selectedOption = $('.select-user').find('option:selected');
+            if (selectedOption.val() != "") {
+                var customerSelected = @json($customers).find(function(customer) {
+                    return customer.id == selectedOption.val();
+                });   
+                console.log(customerSelected);
+                
+                $('.select-address').empty();
+                var addressHtml = `<option value="" disabled selected>Chọn địa chỉ</option>`;
+                customerSelected.addresses.forEach(address => {
+                    addressHtml += `
+                    <option value="${address.id}" data-shipping-address="${ address.street }" data-provinceid="${address.province.id }" data-districtid="${address.district.id }" data-wardid="${address.ward.id}" >${address.user_name}, (+84) ${address.phone}, ${address.street}, ${address.ward?.ward_name}, ${address.district?.district_name}, ${address.province?.province_name} ${address.is_default ? '   | mặc định' : ''}</option>
+                    `
+                })
+                $('.select-address').html(addressHtml);
+            }
+        });
+
+        $('.select-address').on('change', function () {
+            var selectedOption = $('.select-address').find('option:selected');
+            var userId = $('.select-user').find('option:selected').val();
+            console.log(userId);
+            
             var shippingAddress = selectedOption.data('shipping-address');
             var provinceId = selectedOption.data('provinceid');
             var districtId = selectedOption.data('districtid');
@@ -280,7 +314,14 @@
                 $.ajax({
                     url:  '{{route('admin.discount.getDiscountJson')}}' ,
                     type: 'GET',
+                    data: {
+                        province_id: provinceId,
+                        district_id: districtId,
+                        ward_id: wardId,
+                        user_id: userId
+                    },
                     success: function (response) {
+                        console.log(response);
                         
                         let discounts = response.discounts;
                         let discountHtml = `
@@ -289,7 +330,6 @@
 
                         // Lặp qua mảng discounts
                         $.each(discounts, function (index, discount) {
-                            console.log(discount);
                             
                             let userIdArray = discount.user_used ? discount.user_used.split(',') : []; // lấy ra mảng người dùng
                             let countUserId = userIdArray.filter(userId => userId == selectedOption.val()).length; // đếm số lượt dùng
@@ -310,15 +350,16 @@
 
                         $('#discount-select').html(discountHtml);
                     }
-                });
+                }); 
+
+               
             }else {
                 $('#discount-select').html(`
                                 <option value="">Chọn mã giảm giá</option>
                                 <option value="" disabled>Vui lòng chọn khách hàng trước</option>
                 `);
             }
-        });
-
+        })
         function updateDiscount() {
             totalDiscountAmount = 0;
             var selectedOption = $('#discount-select').find('option:selected');
@@ -363,6 +404,9 @@
         var totalDiscountedPrice = 0;
         function updateTotalDiscountedPrice() {
             totalDiscountedPrice = totalPriceOrigin - totalDiscountAmount;
+            if(totalDiscountedPrice < 0) {
+                totalDiscountedPrice = 0;
+            }
             $('.discounted-price').text('Thành tiền: ' + format_price(totalDiscountedPrice) || '0 VNĐ');
         }
 
@@ -375,10 +419,17 @@
             
             $('.text-error').remove();
             let userId = $('.select-user').val();
+            let addressId = $('.select-address').val();
             if(!userId) {
                 isValid = false;
                 $('.select-user-div').append(`
                 <p class="text-danger text-error">Vui lòng chọn người dùng</p
+                `)
+            }
+            if(!addressId && userId) {
+                isValid = false;
+                $('.select-address-user-div').append(`
+                <p class="text-danger text-error">Vui lòng địa chỉ nhận hàng</p
                 `)
             }
             if ($('.input-quantity').length === 0) {

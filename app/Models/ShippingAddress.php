@@ -45,4 +45,9 @@ class ShippingAddress extends Model
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

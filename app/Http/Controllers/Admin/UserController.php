@@ -42,20 +42,14 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::with('defaultAddress')->findOrFail($id);
         if (! $user) {
             flash('Không có người dùng tương ứng')->error();
 
             return back();
         }
-        $province = Province::find($user->province_id);
-        $province_name = $province ? $province->province_name : 'Không xác định';
-        $district = District::find($user->district_id);
-        $district_name = $district ? $district->district_name : 'Không xác định';
-        $ward = Ward::find($user->ward_id);
-        $ward_name = $ward ? $ward->ward_name : 'Không xác định';
 
-        return view('admin.customer.show', compact('user', 'province_name', 'district_name', 'ward_name'));
+        return view('admin.customer.show', compact('user'));
     }
 
     public function create()
@@ -82,7 +76,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $provinces = Province::all();
-        $user = User::find($id);
+        $user = User::with('defaultAddress')->find($id);
+        $user['province_id'] = $user->defaultAddress->province->id;
+        $user['district_id'] = $user->defaultAddress->district->id;
+        $user['ward_id'] = $user->defaultAddress->ward->id;
         if (! $user) {
             flash('Không có người dùng tương ứng')->error();
 

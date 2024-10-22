@@ -88,7 +88,7 @@ class HomeService
             })
             ->with('category')
             ->with('brand')
-            ->with(['shop', 'shop.user', 'shop.user.province'])
+            ->with(['shop', 'shop.user', 'shop.user.defaultAddress'])
             ->paginate(9);
 
         return $products;

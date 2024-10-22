@@ -218,6 +218,7 @@ return [
         'TypeDiscountScopeEnums' => \App\Enums\TypeDiscountScope::class,
         'StatusOrderEnums' => \App\Enums\StatusOrder::class,
         'TypeProductUnitEnums' => \App\Enums\TypeProductUnit::class,
+        'TypeAddressEnums' => \App\Enums\TypeAddress::class,
     ])->toArray(),
 
 ];

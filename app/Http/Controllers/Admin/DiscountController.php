@@ -110,10 +110,10 @@ class DiscountController extends Controller
         }
     }
 
-    public function getDiscountJson()
+    public function getDiscountJson(Request $request)
     {
         try {
-            $discounts = $this->discountService->getDiscountJson();
+            $discounts = $this->discountService->getDiscountJson($request->all());
 
             return response()->json([
                 'status' => 200,
