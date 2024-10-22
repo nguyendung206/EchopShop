@@ -55,7 +55,7 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)->first();
         $relatedProducts = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
+            ->whereNot('id', $product->id)
             ->where('type', $product->type)
             ->get();
         $ratings = Rating::where('product_id', $product->id)->get();
