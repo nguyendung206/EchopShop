@@ -13,7 +13,6 @@
         </a>
         <a href="{{route('profile.address')}}" class="profile-tab" data-tab="address">
             <i class="fa-solid fa-location-arrow mr-1"></i>
-
             Địa chỉ
         </a>
         <a href="{{route('order.show')}}" class="profile-tab" data-tab="orders-show">
