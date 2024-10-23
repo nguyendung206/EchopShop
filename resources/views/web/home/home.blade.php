@@ -108,7 +108,7 @@ HOME
                                 @if (isset($product->shop))
                                 <img class="mini-avatar mr-2" src="{{getImage($product->shop->logo)}}" alt="">
                                 <div class="user-product ">
-                                    <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p>
+                                    <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->defaultAddress?->province->province_name}}</p>
                                 </div>
                                 @else
                                 <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin mr-2">
@@ -182,7 +182,7 @@ HOME
                                 @if (isset($product->shop))
                                 <img class="mini-avatar mr-2" src="{{getImage($product->shop->logo)}}" alt="">
                                 <div class="user-product ">
-                                    <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p>
+                                    <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->defaultAddress?->province->province_name}}</p>
                                 </div>
                                 @else
                                 <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin mr-2">

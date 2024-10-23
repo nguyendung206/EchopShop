@@ -105,7 +105,7 @@
                         <td class="font-weight-800 align-middle">#{{ ($key + 1) + ($users->currentPage() - 1) * $users->perPage() }}</td>
                         <td class="font-weight-400 align-middle text-overflow">{{optional($user)->name}}</td>
                         <td class="font-weight-400 align-middle">{{$user->email}}</td>
-                        <td class="font-weight-400 align-middle">{{$user->address}}</td>
+                        <td class="font-weight-400 align-middle">{{optional($user->defaultAddress)->street}}, {{optional($user->defaultAddress)->ward->ward_name}}, {{optional($user->defaultAddress)->district->district_name}}, {{optional($user->defaultAddress)->province->province_name}}</td>
                         <td class="font-weight-400 align-middle">{!! $user->status == StatusEnums::ACTIVE ? 'Đang hoạt động' : 'Đã bị khoá' !!}</td>
                         <td class="font-weight-400 align-middle">{{ $user->gender->label() }}</td>
                         <td class="font-weight-400 align-middle">{{date('d/m/Y', strtotime(optional($user)->date_of_birth))}}</td>

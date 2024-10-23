@@ -54,7 +54,7 @@
                     <div class="text-left col-6">
                         <p>Ngày tạo: {{date('d/m/Y', strtotime($order->created_at))}}</p>
                         <p style="color: #b10000" class="my-1">{{StatusOrderEnums::from($order->status->value)->label()}}</p>
-                        <p  class="my-1">{{$order->shipping_address}}</p>
+                        <p  class="my-1">{{$order->shipping_address}}, {{optional($order->ward)->ward_name}}, {{optional($order->district)->district_name}}, {{optional($order->province)->province_name}}</p>
                     </div>
                     @if ($order->discount)
                     <div class="text-right total-price-purchase col-6">Thành tiền: <span class="init-money">{{format_price($order->total_amount)}}</span> <span class="discount-money">{{format_price(calculateDiscountedPrice($order->discount->type->value, $order->total_amount, $order->discount->value, $order->discount->max_value))}}</span></div>

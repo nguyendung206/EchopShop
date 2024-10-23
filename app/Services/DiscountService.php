@@ -63,8 +63,6 @@ class DiscountService
 
             return $discount;
         } catch (Exception $e) {
-            dd($e);
-
             return $e;
         }
 
@@ -125,20 +123,48 @@ class DiscountService
         }
     }
 
-    public function getDiscountJson()
+    public function getDiscountJson($request)
     {
         try {
-            $discounts = Discount::query()
-                ->with(['province', 'district', 'ward'])
+            $userProvinceId = $request['province_id'];
+            $userDistrictId = $request['district_id'];
+            $userWardId = $request['ward_id'];
+            $userId = $request['user_id'];
+            $vouchers = Discount::query()
                 ->where('status', Status::ACTIVE)
                 ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
-                ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))->get();
-            dd($discounts);
+                ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))
+                ->where(function ($query) use ($userProvinceId, $userDistrictId, $userWardId) {
+                    $query->where('scope_type', '<>', TypeDiscountScope::REGIONAL->value)
+                        ->orWhere(function ($subQuery) use ($userProvinceId, $userDistrictId, $userWardId) { // regional type
+                            $subQuery->where('scope_type', TypeDiscountScope::REGIONAL->value)
+                                ->where('province_id', $userProvinceId) //province
+                                ->where(function ($innerSubQuery) use ($userDistrictId, $userWardId) {
+                                    $innerSubQuery->where(function ($districtQuery) use ($userDistrictId) { // district
+                                        $districtQuery->where('district_id', $userDistrictId)
+                                            ->orWhereNull('district_id');
+                                    })
+                                        ->where(function ($wardQuery) use ($userWardId) {   // ward
+                                            $wardQuery->where('ward_id', $userWardId)
+                                                ->orWhereNull('ward_id');
+                                        });
+                                });
+                        });
+                })
+                ->get()
+                ->filter(function ($voucher) use ($userId) {  // lấy hết danh sách rồi lọc
+                    $userUsed = explode(',', $voucher->user_used);
+                    $countUser = array_count_values($userUsed);   // đưa phần tử thành key và số lần xuất hiện thành value
 
-            return $discounts;
+                    return ! isset($countUser[$userId]) || $countUser[$userId] < $voucher->limit_uses;
+                })
+                ->values();
 
+            return $vouchers;
         } catch (\Exception $e) {
-            return $e;
+            dd($e);
+
+            return false;
         }
     }
 }

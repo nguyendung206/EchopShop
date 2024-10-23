@@ -5,36 +5,71 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Services\CartService;
 use App\Services\OrderService;
-use App\Services\UserService;
+use App\Services\ShippingAddressService;
 use Exception;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    protected $userService;
-
-    protected $orderService;
+    protected $shippingAddressService;
 
     protected $cartService;
 
-    public function __construct(UserService $userService, OrderService $orderService, CartService $cartService)
+    protected $orderService;
+
+    public function __construct(ShippingAddressService $shippingAddressService, OrderService $orderService, CartService $cartService)
     {
-        $this->userService = $userService;
+        $this->shippingAddressService = $shippingAddressService;
         $this->orderService = $orderService;
         $this->cartService = $cartService;
     }
 
-    public function getCartsAndVouchers(Request $request)
+    public function getCartsAndVouchersAndShippingAddresses(Request $request)
     {
 
-        $datas = $this->orderService->getCartsAndVouchers($request->all());
+        $datas = $this->orderService->getCartsAndVouchersAndShippingAddresses($request->all());
 
-        return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers']]);
+        return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers'], 'shippingAddresses' => $datas['shippingAddresses']]);
+    }
+
+    public function getVouchersJson(Request $request)
+    {
+        $vouchers = $this->orderService->getVouchersJson($request->all());
+        if ($vouchers) {
+
+            return response()->json([
+                'status' => 200,
+                'vouchers' => $vouchers,
+                'message' => 'Danh sách mã giảm giá theo địa chỉ.',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Đã có lỗi xảy ra.',
+            ]);
+        }
+    }
+
+    public function addAddress(Request $request)
+    {
+        $result = $this->shippingAddressService->addAddress($request->all());
+        if ($result) {
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Thêm địa chỉ thành công.',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Thêm địa chỉ thất bại.',
+            ]);
+        }
     }
 
     public function changeAddress(Request $request)
     {
-        $result = $this->userService->changeAddress($request->all());
+        $result = $this->shippingAddressService->changeAddress($request->all());
         if ($result) {
 
             return response()->json([

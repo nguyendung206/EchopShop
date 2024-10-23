@@ -183,6 +183,11 @@
     border-radius: 8px;
     position: relative;
     z-index: 1000;
+    
+}
+.address-content-wrap {
+    height: 300px;
+    overflow-y: scroll;
 }
 
 .change-address {

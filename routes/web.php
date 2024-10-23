@@ -88,9 +88,11 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     });
 
     Route::prefix('/order')->name('order.')->group(function () {
-        Route::get('/', [OrderController::class, 'getCartsAndVouchers'])->name('index');
+        Route::get('/', [OrderController::class, 'getCartsAndVouchersAndShippingAddresses'])->name('index');
+        Route::get('/get-vouchers', [OrderController::class, 'getVouchersJson'])->name('getVouchers');
         Route::get('/show', [OrderController::class, 'show'])->name('show');
         Route::post('/change-address', [OrderController::class, 'changeAddress'])->name('changeAddress');
+        Route::post('/add-address', [OrderController::class, 'addAddress'])->name('addAddress');
         Route::post('/pay-order', [OrderController::class, 'store'])->name('payOrder');
         Route::post('/cancel-order', [OrderController::class, 'updateStatusOrder'])->name('cancelOrder');
     });

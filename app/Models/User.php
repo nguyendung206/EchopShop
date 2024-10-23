@@ -26,10 +26,6 @@ class User extends Authenticatable
         'date_of_birth',
         'gender',
         'rank_id',
-        'address',
-        'province_id',
-        'district_id',
-        'ward_id',
         'status',
         'shop_id',
         'role',
@@ -68,21 +64,6 @@ class User extends Authenticatable
     public function shop()
     {
         return $this->hasOne(Shop::class, 'user_id', 'id');
-    }
-
-    public function ward()
-    {
-        return $this->belongsTo(Ward::class, 'ward_id', 'id');
-    }
-
-    public function district()
-    {
-        return $this->belongsTo(District::class, 'district_id', 'id');
-    }
-
-    public function province()
-    {
-        return $this->belongsTo(Province::class, 'province_id', 'id');
     }
 
     public function carts()
@@ -129,5 +110,15 @@ class User extends Authenticatable
         return $this->ratings()
             ->where('product_id', $productId)
             ->exists();
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(ShippingAddress::class, 'user_id');
+    }
+
+    public function defaultAddress()
+    {
+        return $this->hasOne(ShippingAddress::class)->where('is_default', true);
     }
 }
