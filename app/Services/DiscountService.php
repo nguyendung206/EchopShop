@@ -151,7 +151,6 @@ class DiscountService
                                 });
                         });
                 })
-                ->with(['ward', 'district', 'province'])
                 ->get()
                 ->filter(function ($voucher) use ($userId) {  // lấy hết danh sách rồi lọc
                     $userUsed = explode(',', $voucher->user_used);

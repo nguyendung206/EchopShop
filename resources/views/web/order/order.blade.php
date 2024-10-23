@@ -345,6 +345,7 @@
                 <div class="form-group col-12">
                     <input type="radio" name="type_address" value="{{TypeAddressEnums::HOME->value}}" checked> <span class="ml-1" style="color: rgba(0,0,0,0.54);">Nhà riêng</span>
                     <input class="ml-3" type="radio" name="type_address" value="{{TypeAddressEnums::OFFICE->value}}"> <span class="ml-1" style="color: rgba(0,0,0,0.54);">Văn phòng</span>
+                    <input class="ml-3" type="radio" name="type_address" value="{{TypeAddressEnums::OTHER->value}}"> <span class="ml-1" style="color: rgba(0,0,0,0.54);">Khác</span>
                 </div>
 
                 <div class="form-group col-12">

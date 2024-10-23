@@ -23,7 +23,7 @@ class ProfileUserController extends Controller
 
     public function index(Request $request, $id)
     {
-        $user = User::with('defaultAddress')->where('id', $id)->first();
+        $user = User::where('id', $id)->first();
         $user['province_id'] = $user->defaultAddress ? $user->defaultAddress->province->id : null;
         $user['district_id'] = $user->defaultAddress ? $user->defaultAddress->district->id : null;
         $user['ward_id'] = $user->defaultAddress ? $user->defaultAddress->ward->id : null;

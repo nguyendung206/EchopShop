@@ -121,6 +121,6 @@ class User extends Authenticatable
 
     public function defaultAddress()
     {
-        return $this->hasOne(ShippingAddress::class)->with(['province', 'district', 'ward'])->where('is_default', true);
+        return $this->hasOne(ShippingAddress::class)->where('is_default', true);
     }
 }

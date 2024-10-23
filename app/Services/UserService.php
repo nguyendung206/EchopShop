@@ -71,7 +71,7 @@ class UserService
     public function update($request, $id)
     {
 
-        $user = User::with('defaultAddress')->findOrFail($id);
+        $user = User::findOrFail($id);
         $avatar = $user->avatar;
         if (! isset($request['uploadFile'])) {
             $request['uploadFile'] = null;

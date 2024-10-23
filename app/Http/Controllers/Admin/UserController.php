@@ -42,7 +42,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::with('defaultAddress')->findOrFail($id);
+        $user = User::findOrFail($id);
         if (! $user) {
             flash('Không có người dùng tương ứng')->error();
 
@@ -76,7 +76,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $provinces = Province::all();
-        $user = User::with('defaultAddress')->find($id);
+        $user = User::find($id);
         $user['province_id'] = $user->defaultAddress->province->id;
         $user['district_id'] = $user->defaultAddress->district->id;
         $user['ward_id'] = $user->defaultAddress->ward->id;

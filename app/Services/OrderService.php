@@ -64,10 +64,10 @@ class OrderService
                 ->values();    // đánh lại index của collect
             if (! empty($request['cart_ids'])) {
                 $cartIds = $request['cart_ids'];
-                $carts = Cart::whereIn('id', $cartIds)->with('products')->get();
+                $carts = Cart::whereIn('id', $cartIds)->get();
             }
 
-            $shippindAddresses = ShippingAddress::where('user_id', Auth::id())->with(['customer', 'province', 'district', 'ward'])->get();
+            $shippindAddresses = ShippingAddress::where('user_id', Auth::id())->get();
             $datas = [
                 'carts' => $carts,
                 'vouchers' => $vouchers,
