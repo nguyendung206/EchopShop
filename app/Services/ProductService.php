@@ -375,7 +375,8 @@ class ProductService
             if ($product->photo && $product->photo != 'noproduct.png') {
                 deleteImage($product->photo);
             }
-
+            $product->slug = 'delete-'.$product->slug;
+            $product->save();
             $product->delete();
 
             return true;
