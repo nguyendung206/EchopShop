@@ -49,35 +49,50 @@ class OrderController extends Controller
     }
 
     public function addAddress (Request $request) {
-        $result = $this->shippingAddressService->addAddress($request->all());
-        if ($result) {
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'Thêm địa chỉ thành công.',
-            ]);
-        } else {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Thêm địa chỉ thất bại.',
-            ]);
+        try {
+            $result = $this->shippingAddressService->addAddress($request->all());
+            if ($request->ajax() || $request->wantsJson()) {
+                if($result){
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'Thêm địa chỉ thành công.',
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => 500,
+                        'message' => 'Thêm địa chỉ thất bại.',
+                    ]);
+                }
+            }
+            return redirect()->back()->with('success', 'Thêm địa chỉ thành công');
+            
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Thêm địa chỉ thất bại');
         }
     }
 
     public function changeAddress(Request $request)
     {
+        try {
         $result = $this->shippingAddressService->changeAddress($request->all());
-        if ($result) {
+        if ($request->ajax() || $request->wantsJson()) {
+            if ($result) {
 
-            return response()->json([
-                'status' => 200,
-                'message' => 'Thay đổi địa chỉ thành công.',
-            ]);
-        } else {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Thay đổi địa chỉ thất bại.',
-            ]);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Thay đổi địa chỉ thành công.',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Thay đổi địa chỉ thất bại.',
+                ]);
+            }
+        }
+        return redirect()->back()->with('success', 'Thay đổi địa chỉ thành công');
+            
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Thay đổi địa chỉ thất bại');
         }
     }
 

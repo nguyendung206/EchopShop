@@ -56,6 +56,8 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 
     Route::prefix('/profile')->group(function () {
+        Route::get('/address', [ProfileUserController::class, 'getAddress'])->name('profile.address');
+        Route::get('/address-update-default/{id}', [ProfileUserController::class, 'updateDefault'])->name('profile.address.updateDefault');
         Route::get('/{id}', [ProfileUserController::class, 'index'])->name('profile.index');
         Route::put('/saveprofile', [ProfileUserController::class, 'updateProfile'])->name('profile.save');
         Route::put('/saveidentification', [ProfileUserController::class, 'updateIdentification'])->name('identification.save');

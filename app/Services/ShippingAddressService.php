@@ -67,4 +67,19 @@ class ShippingAddressService
             return false;
         }
     }
+
+    public function updateDefault($id) {
+        try {
+            $shippingAddress = ShippingAddress::findOrFail($id);
+            ShippingAddress::where('user_id', Auth::id())
+                    ->where('is_default', true)
+                    ->update(['is_default' => false]);
+            $shippingAddress->is_default = true;
+            $shippingAddress->save();
+
+            return $shippingAddress;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
 }

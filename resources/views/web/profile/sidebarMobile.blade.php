@@ -21,6 +21,10 @@
                             <i class="fa-regular fa-circle-user mr-1"></i>
                             Hồ sơ của tôi
                         </a>
+                        <a href="{{route('profile.address')}}" class="profile-tab" data-tab="address">
+                            <i class="fa-solid fa-location-arrow mr-1"></i>
+                            Địa chỉ
+                        </a>
                         <a href="{{route('order.show')}}" class="profile-tab" data-tab="orders-show">
                             <i class="fa-solid fa-bag-shopping mr-1"></i>
                             Đơn hàng của tôi

@@ -10,15 +10,20 @@ use App\Models\User;
 use App\Models\ShippingAddress;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FavoriteService;
+use App\Services\ShippingAddressService;
 use Illuminate\Http\Request;
 
 class ProfileUserController extends Controller
 {
     protected $favoriteService;
 
-    public function __construct(FavoriteService $favoriteService)
+    protected $shippingAddressService;
+
+    public function __construct(FavoriteService $favoriteService, ShippingAddressService $shippingAddressService)
     {
         $this->favoriteService = $favoriteService;
+
+        $this->shippingAddressService = $shippingAddressService;
     }
 
     public function index(Request $request, $id)
@@ -99,6 +104,25 @@ class ProfileUserController extends Controller
                 ->with('success', 'Cập nhật thông tin thành công!');
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy hồ sơ.');
+        }
+    }
+
+    public function getAddress(Request $request) {
+       try {
+            $addresses = ShippingAddress::where('user_id', Auth::id())->get();
+           return view('web.profile.address', compact('addresses'));
+       } catch (\Throwable $th) {
+            return false;
+       }
+
+    }
+
+    public function updateDefault($id) {
+        try {
+            $this->shippingAddressService->updateDefault($id);
+            return redirect()->back()->with('success', 'Cập nhật địa chỉ thành công');
+        } catch (\Throwable $th) {
+            return false;
         }
     }
 }
