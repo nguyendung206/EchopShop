@@ -38,7 +38,7 @@
                         <div class="row pt-1">
                             <div class="col-6 mb-3">
                             <h6>Địa chỉ</h6>
-                            <p class="text-muted">{{$user->address}}</p>
+                            <p class="text-muted">{{optional($user->defaultAddress)->street}}</p>
                             </div>
                             <div class="col-6 mb-3">
                             <h6>Ngày sinh</h6>
@@ -50,15 +50,15 @@
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Thành Phố</h6>
-                                <p class="text-muted">{{ $province_name }}</p>
+                                <p class="text-muted">{{ optional($user->defaultAddress)->province->province_name }}</p>
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Quận/Huyện</h6>
-                                <p class="text-muted">{{ $district_name }}</p>
+                                <p class="text-muted">{{ optional($user->defaultAddress)->district->district_name }}</p>
                             </div>
                             <div class="col-6 mb-3">
                                 <h6>Phường/Thị xã</h6>
-                                <p class="text-muted">{{ $ward_name }}</p>
+                                <p class="text-muted">{{ optional($user->defaultAddress)->ward->ward_name }}</p>
                             </div>
                         </div>
                         <hr class="mt-0 mb-4">

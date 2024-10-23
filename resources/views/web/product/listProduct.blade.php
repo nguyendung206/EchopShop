@@ -55,7 +55,7 @@ if (request()->query('type') == 1) {
                                         <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
                                                 src="{{ asset('/img/icon/doc-top.png') }}"
                                                 alt="">&nbsp;
-                                            {{ $product->shop->user->province->province_name }}
+                                            {{ $product->shop->user->defaultAddress?->province->province_name }}
                                         </p>
                                     </div>
                                     @else
@@ -170,7 +170,7 @@ if (request()->query('type') == 1) {
                                 <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
                                         src="{{ asset('/img/icon/doc-top.png') }}"
                                         alt="">&nbsp;
-                                    {{ $product->shop->user->province->province_name }}
+                                    {{ $product->shop->user->defaultAddress?->province->province_name }}
                                 </p>
                             </div>
                             @else

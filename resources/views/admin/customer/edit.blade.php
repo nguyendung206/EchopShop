@@ -161,7 +161,7 @@
                         <label class="col-sm-3 col-from-label font-weight-500">Địa chỉ<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
                             <input type="text" placeholder="Nhập địa chỉ" name="address" class="form-control
-                            @error('address') is-invalid  @enderror" value="{{ old('address') ? old('address') : $user->address }}">
+                            @error('address') is-invalid  @enderror" value="{{ old('address') ? old('address') : $user->defaultAddress->street }}">
                             @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
