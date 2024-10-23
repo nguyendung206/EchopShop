@@ -155,12 +155,15 @@ class DiscountService
                 ->filter(function ($voucher) use ($userId) {  // lấy hết danh sách rồi lọc
                     $userUsed = explode(',', $voucher->user_used);
                     $countUser = array_count_values($userUsed);   // đưa phần tử thành key và số lần xuất hiện thành value
+
                     return ! isset($countUser[$userId]) || $countUser[$userId] < $voucher->limit_uses;
                 })
                 ->values();
+
             return $vouchers;
         } catch (\Exception $e) {
             dd($e);
+
             return false;
         }
     }

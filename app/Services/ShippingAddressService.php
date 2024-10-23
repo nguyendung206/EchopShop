@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\ShippingAddress;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class ShippingAddressService
@@ -12,9 +11,9 @@ class ShippingAddressService
     {
         try {
             $address = ShippingAddress::findorfail($request['shipping_address_id']);
-            if(empty($request['is_default'])) {
+            if (empty($request['is_default'])) {
                 $request['is_default'] = false;
-            }else {
+            } else {
                 ShippingAddress::where('user_id', Auth::id())
                     ->where('is_default', true)
                     ->update(['is_default' => false]);
@@ -26,9 +25,9 @@ class ShippingAddressService
                 'district_id' => $request['district_id'],
                 'ward_id' => $request['ward_id'],
                 'street' => $request['street'],
-                "user_name" => $request['user_name'],
-                "type_address" => $request['type_address'],
-                "is_default" => $request['is_default'],
+                'user_name' => $request['user_name'],
+                'type_address' => $request['type_address'],
+                'is_default' => $request['is_default'],
             ];
             $result = $address->update($updateData);
 
@@ -41,9 +40,9 @@ class ShippingAddressService
     public function addAddress($request)
     {
         try {
-            if(empty($request['is_default'])) {
+            if (empty($request['is_default'])) {
                 $request['is_default'] = false;
-            }else {
+            } else {
                 ShippingAddress::where('user_id', Auth::id())
                     ->where('is_default', true)
                     ->update(['is_default' => false]);
@@ -55,10 +54,10 @@ class ShippingAddressService
                 'district_id' => $request['district_id'],
                 'ward_id' => $request['ward_id'],
                 'street' => $request['street'],
-                "user_name" => $request['user_name'],
-                "type_address" => $request['type_address'],
-                "is_default" => $request['is_default'],
-                "user_id" => Auth::id(),
+                'user_name' => $request['user_name'],
+                'type_address' => $request['type_address'],
+                'is_default' => $request['is_default'],
+                'user_id' => Auth::id(),
             ];
             $address = ShippingAddress::create($addressData);
 

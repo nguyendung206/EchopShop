@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Tạo loại hàng')
+@lang('Thêm mới loại hàng')
 @endsection
 @section('content')
 <div class="backnow">

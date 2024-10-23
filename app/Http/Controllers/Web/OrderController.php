@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Services\CartService;
 use App\Services\OrderService;
-use App\Services\UserService;
 use App\Services\ShippingAddressService;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,10 +12,12 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     protected $shippingAddressService;
+
     protected $cartService;
+
     protected $orderService;
 
-    public function __construct(ShippingAddressService $shippingAddressService,OrderService $orderService, CartService $cartService)
+    public function __construct(ShippingAddressService $shippingAddressService, OrderService $orderService, CartService $cartService)
     {
         $this->shippingAddressService = $shippingAddressService;
         $this->orderService = $orderService;
@@ -31,7 +32,8 @@ class OrderController extends Controller
         return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers'], 'shippingAddresses' => $datas['shippingAddresses']]);
     }
 
-    public function getVouchersJson(Request $request) {
+    public function getVouchersJson(Request $request)
+    {
         $vouchers = $this->orderService->getVouchersJson($request->all());
         if ($vouchers) {
 
@@ -48,7 +50,8 @@ class OrderController extends Controller
         }
     }
 
-    public function addAddress (Request $request) {
+    public function addAddress(Request $request)
+    {
         $result = $this->shippingAddressService->addAddress($request->all());
         if ($result) {
 

@@ -20,12 +20,11 @@ class RatingController extends Controller
         try {
             $rating = $this->productService->storeRating($request);
             if ($rating) {
-                return response()->json(['success' => true, 'message' => 'Cảm ơn bạn đã Đánh giá sản phẩm!']);
-            } else {
-                return response()->json(['success' => false, 'message' => 'Đánh giá sản phẩm thất bại.']);
+                return redirect()->back()->with('success', 'Đánh giá của bạn đã được ghi nhận.');
             }
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Đã xảy ra lỗi: '.$e->getMessage()]);
+            return redirect()->back()
+                ->withErrors(['modal_error' => 'Có lỗi xảy ra! Vui lòng thử lại.']);
         }
     }
 }

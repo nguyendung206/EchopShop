@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\IdentificationRequest;
 use App\Http\Requests\ProfileUserRequest;
 use App\Models\Province;
-use App\Models\User;
 use App\Models\ShippingAddress;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Services\FavoriteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileUserController extends Controller
 {
@@ -51,7 +51,6 @@ class ProfileUserController extends Controller
             $profile->email = $request->email;
             $profile->name = $request->name;
             $profile->phone_number = $request->phone_number;
-            
 
             if ($request->hasFile('avatar')) {
                 if ($profile->avatar && $profile->avatar !== 'nophoto.png') {

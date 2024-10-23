@@ -46,6 +46,7 @@
     font-weight: 500;
     background-color: #B10000;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .profile-update-btn:hover {
@@ -136,7 +137,7 @@ label {
 }
 
 .form-control {
-    border-radius: 0;
+    border-radius: 10px;
     border-color: #7C7C7C;
     color: #1C1C1C;
 }
@@ -158,11 +159,13 @@ label {
     border-color: #7C7C7C;
     border-right: none;
 }
+
 .search-post {
     border-right: 1px solid #7C7C7C;
     border-radius: 10px;
     cursor: pointer;
 }
+
 .hr {
     border-color: #8E8E8E;
 }
@@ -218,12 +221,14 @@ label {
     padding: 8px 40px;
     border: 1px solid #B10000;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .form-btn a {
     padding: 6px 40px;
     border: 1px solid #B10000;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .form-btn button:hover {
@@ -272,15 +277,18 @@ button.form-btn-save {
 
 .change-profile-btn {
     width: 250px;
-    display:flex;
+    display: flex;
     align-items: center;
     margin: 30px auto;
     justify-content: center;
     font-size: 16px;
+    border-radius: 10px;
 }
+
 .change-profile-btn img {
     margin-right: 8px;
 }
+
 .res-none {
     display: block;
 }
@@ -289,9 +297,11 @@ button.form-btn-save {
     .res-none {
         display: none;
     }
+
     .buy-favorite {
         min-width: 50px;
     }
+
     .profile-update-btn-2 {
         margin-left: 0;
     }

@@ -144,7 +144,7 @@ $(document).ready(function () {
 
     // Xử lý sự kiện khi bấm nút "Lưu vào giỏ hàng"
     $('#saveSelectedUnit').on('click', function () {
-        const selectedUnitId = $('input[name="selectedUnit"]:checked').val();
+        const selectedUnitId = $('input[name="selectedUnit"]:checked').val() ?? $('#productUnitId').val();
         const quantity = $('#quantityInput').val();
         const addToCartUrl = $(this).data('add-to-cart');
         const dataToSend = {

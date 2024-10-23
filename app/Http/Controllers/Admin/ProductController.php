@@ -159,6 +159,12 @@ class ProductController extends Controller
                 return redirect()->back()->withInput();
             }
         } catch (\Exception $e) {
+            Log::error('Lỗi khi cập nhật sản phẩm:', [
+                'error' => $e->getMessage(),
+                'product_id' => $id,
+                'user_id' => auth()->id(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             flash('Đã xảy ra lỗi, vui lòng thử lại.')->error();
 
             return redirect()->back()->withInput();

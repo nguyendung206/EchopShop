@@ -61,7 +61,7 @@ HOME
                 @endforelse
                 @if ($brands->count() > 0)
                 <div class="col-12 text-center my-4">
-                    <a href="{{route('listProducts')}}" class="all btn-more" >Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                    <a href="{{route('listProducts')}}" class="all btn-more">Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
                 </div>
                 @endif
             </div>
@@ -89,27 +89,29 @@ HOME
                 <div class="col-custom text-center  product-item">
                     <div class="product-wrap">
                         <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
-                            <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-                            @auth
-                            <a href="#"
-                                class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
-                                data-url-destroy="{{ route('favorite.destroy', $product->id) }} heart-exchange"
-                                data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
-                                    class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
-                            @else
-                            <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home heart-exchange"></i></a>
-                            @endauth
+                            <div style="position: relative;">
+                                <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
+                                @auth
+                                <a href="#"
+                                    class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
+                                    data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
+                                    data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
+                                        class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
+                                @else
+                                <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                                @endauth
+                            </div>
                             <p class="product-name pt-2 line-clamp-2">{{ $product->name }}</p>
-                            <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
+                            <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>{{ $product->brand->name ?? ""}}</span></p>
                             <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($product->price) }}</p>
-                            <div class="user-product-wrap">
+                            <div class="user-product-wrap d-flex align-items-center">
                                 @if (isset($product->shop))
-                                <img class="mini-avatar" src="{{getImage($product->shop->logo)}}" alt="">
+                                <img class="mini-avatar mr-2" src="{{getImage($product->shop->logo)}}" alt="">
                                 <div class="user-product ">
                                     <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->defaultAddress?->province->province_name}}</p>
                                 </div>
                                 @else
-                                <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin">
+                                <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin mr-2">
                                 <div class="user-product " style="width: 77%">
                                     <p class="line-clamp-1">Sản phẩm của echop</p>
                                 </div>
@@ -158,30 +160,32 @@ HOME
         <div class="container">
             <div class="row secondhand-list">
                 @forelse($secondhandProducts as $product)
-                <div class="col-custom text-center  product-item">
+                <div class="col-custom text-center product-item">
                     <div class="product-wrap">
                         <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
-                            <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-                            @auth
-                            <a href="#"
-                                class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
-                                data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
-                                data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
-                                    class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
-                            @else
-                            <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
-                            @endauth
+                            <div style="position: relative;">
+                                <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
+                                @auth
+                                <a href="#"
+                                    class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
+                                    data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
+                                    data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
+                                        class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
+                                @else
+                                <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                                @endauth
+                            </div>
                             <p class="product-name pt-2 line-clamp-2">{{ $product->name }}</p>
-                            <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>brand</span></p>
+                            <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>{{ $product->brand->name ?? ""}}</span></p>
                             <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($product->price) }}</p>
-                            <div class="user-product-wrap">
+                            <div class="user-product-wrap d-flex align-items-center">
                                 @if (isset($product->shop))
-                                <img class="mini-avatar" src="{{getImage($product->shop->logo)}}" alt="">
+                                <img class="mini-avatar mr-2" src="{{getImage($product->shop->logo)}}" alt="">
                                 <div class="user-product ">
                                     <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->defaultAddress?->province->province_name}}</p>
                                 </div>
                                 @else
-                                <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin">
+                                <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin mr-2">
                                 <div class="user-product " style="width: 77%">
                                     <p class="line-clamp-1">Sản phẩm của echop</p>
                                 </div>
@@ -284,30 +288,45 @@ HOME
     <div class="container">
         <div class="gift-list slider">
             @forelse($giveawayProducts as $product)
-            <div class="gift-item m-2">
-                <img src="{{ getImage($product->photo) }}" alt="" class="gift-img">
-                <div class="layer">
-                    <img src="{{ asset('/img/image/layer.png') }}" alt="" class="layer">
-                    <p>Free</p>
-                </div>
-                @auth
-                <a href="#"
-                    class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
-                    data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
-                    data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
-                        class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home icon-change-2"></i></a>
-                @else
-                <a href="{{ route('web.login') }}"><i
-                        class="fa-regular fa-heart fa-heart-home icon-change-2"></i></a>
-                @endauth
-                <div class="gift-name line-clamp-2">
-                    {{$product->name}}
-                </div>
-                <div class="gift-btn-wrap">
-                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"
-                        class="gift-btn">
-                        <i class="fa-solid fa-gift"></i> Nhận quà tặng
+            <div class="col-custom text-center  product-item">
+                <div class="product-wrap">
+                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
+                        <div style="position: relative;">
+                            <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
+                            @auth
+                            <a href="#"
+                                class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
+                                data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
+                                data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
+                                    class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
+                            @else
+                            <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                            @endauth
+                        </div>
+                        <p class="product-name pt-2 line-clamp-2">{{ $product->name }}</p>
+                        <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>{{ $product->brand->name ?? ""}}</span></p>
+                        <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($product->price) }}</p>
+                        <div class="user-product-wrap d-flex align-items-center">
+                            @if (isset($product->shop))
+                            <img class="mini-avatar mr-2" src="{{getImage($product->shop->logo)}}" alt="">
+                            <div class="user-product ">
+                                <p class="line-clamp-1">{{$product->shop->name}} &nbsp;<img src="{{asset('/img/icon/doc-top.png')}}" alt="">&nbsp; {{$product->shop->user->province->province_name}}</p>
+                            </div>
+                            @else
+                            <img src="{{asset("/img/image/logo.png")}}" alt="" class="mini-avatar-admin mr-2">
+                            <div class="user-product " style="width: 77%">
+                                <p class="line-clamp-1">Sản phẩm của echop</p>
+                            </div>
+                            @endif
+                        </div>
                     </a>
+                    <br>
+                    <div class="gift-btn-wrap">
+                        <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"
+                            class="gift-btn">
+                            <i class="fa-solid fa-gift"></i> Nhận quà tặng
+                        </a>
+                    </div>
                 </div>
             </div>
             @empty
@@ -315,7 +334,6 @@ HOME
                 <span class="" style="color:rgb(177,0,0);">Không có sản phẩm nào để hiển thị.</span>
             </div>
             @endforelse
-
         </div>
         @if ($giveawayProducts->count() > 0)
         <div class="text-center  my-5">

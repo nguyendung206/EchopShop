@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\User;
-use App\Models\ShippingAddress;
 use App\Enums\TypeAddress;
+use App\Models\ShippingAddress;
+use App\Models\User;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -23,6 +22,7 @@ class UserService
         if (isset($filters['gender'])) {
             $query->where('gender', $filters['gender']);
         }
+
         return $query->paginate(5);
     }
 
@@ -45,7 +45,7 @@ class UserService
                 'status' => $request['status'],
                 'avatar' => uploadImage($request['uploadFile'], 'upload/users/', 'nophoto.png'),
             ];
-            
+
             $user = User::create($userData);
             $shippingAddressData = [
                 'province_id' => $request['province_id'],
@@ -56,9 +56,10 @@ class UserService
                 'user_name' => $request['name'],
                 'is_default' => true,
                 'type_address' => TypeAddress::HOME->value,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ];
             $shippingAddress = ShippingAddress::create($shippingAddressData);
+
             return $user;
         } catch (\Exception $e) {
             dd($e);
@@ -84,7 +85,7 @@ class UserService
             'date_of_issue' => $request['date_of_issue'],
             'place_of_issue' => $request['place_of_issue'],
             'date_of_birth' => $request['date_of_birth'],
-            
+
             'gender' => $request['gender'],
             'status' => $request['status'],
             'avatar' => uploadImage($request['uploadFile'], 'upload/users/', $avatar),
@@ -109,7 +110,7 @@ class UserService
             'user_name' => $request['name'],
             'is_default' => true,
             'type_address' => TypeAddress::HOME->value,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ];
         $shippingAddress->update($shippingAddressData);
 
@@ -154,14 +155,13 @@ class UserService
                 'user_name' => $request['name'],
                 'is_default' => true,
                 'type_address' => TypeAddress::HOME->value,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ];
             $shippingAddress = ShippingAddress::create($shippingAddressData);
+
             return $user;
         } catch (Exception $th) {
             return false;
         }
     }
-
-    
 }
