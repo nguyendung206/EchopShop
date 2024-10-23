@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\IdentificationRequest;
 use App\Http\Requests\ProfileUserRequest;
 use App\Models\Province;
-use App\Models\User;
 use App\Models\ShippingAddress;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Services\FavoriteService;
 use App\Services\ShippingAddressService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileUserController extends Controller
 {
@@ -56,7 +56,6 @@ class ProfileUserController extends Controller
             $profile->email = $request->email;
             $profile->name = $request->name;
             $profile->phone_number = $request->phone_number;
-            
 
             if ($request->hasFile('avatar')) {
                 if ($profile->avatar && $profile->avatar !== 'nophoto.png') {
@@ -107,19 +106,23 @@ class ProfileUserController extends Controller
         }
     }
 
-    public function getAddress(Request $request) {
-       try {
+    public function getAddress(Request $request)
+    {
+        try {
             $addresses = ShippingAddress::where('user_id', Auth::id())->get();
-           return view('web.profile.address', compact('addresses'));
-       } catch (\Throwable $th) {
+
+            return view('web.profile.address', compact('addresses'));
+        } catch (\Throwable $th) {
             return false;
-       }
+        }
 
     }
 
-    public function updateDefault($id) {
+    public function updateDefault($id)
+    {
         try {
             $this->shippingAddressService->updateDefault($id);
+
             return redirect()->back()->with('success', 'Cập nhật địa chỉ thành công');
         } catch (\Throwable $th) {
             return false;

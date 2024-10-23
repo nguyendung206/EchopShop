@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Services\CartService;
 use App\Services\OrderService;
-use App\Services\UserService;
 use App\Services\ShippingAddressService;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,10 +12,12 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     protected $shippingAddressService;
+
     protected $cartService;
+
     protected $orderService;
 
-    public function __construct(ShippingAddressService $shippingAddressService,OrderService $orderService, CartService $cartService)
+    public function __construct(ShippingAddressService $shippingAddressService, OrderService $orderService, CartService $cartService)
     {
         $this->shippingAddressService = $shippingAddressService;
         $this->orderService = $orderService;
@@ -31,7 +32,8 @@ class OrderController extends Controller
         return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers'], 'shippingAddresses' => $datas['shippingAddresses']]);
     }
 
-    public function getVouchersJson(Request $request) {
+    public function getVouchersJson(Request $request)
+    {
         $vouchers = $this->orderService->getVouchersJson($request->all());
         if ($vouchers) {
 
@@ -48,11 +50,12 @@ class OrderController extends Controller
         }
     }
 
-    public function addAddress (Request $request) {
+    public function addAddress(Request $request)
+    {
         try {
             $result = $this->shippingAddressService->addAddress($request->all());
             if ($request->ajax() || $request->wantsJson()) {
-                if($result){
+                if ($result) {
                     return response()->json([
                         'status' => 200,
                         'message' => 'Thêm địa chỉ thành công.',
@@ -64,8 +67,9 @@ class OrderController extends Controller
                     ]);
                 }
             }
+
             return redirect()->back()->with('success', 'Thêm địa chỉ thành công');
-            
+
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Thêm địa chỉ thất bại');
         }
@@ -74,23 +78,24 @@ class OrderController extends Controller
     public function changeAddress(Request $request)
     {
         try {
-        $result = $this->shippingAddressService->changeAddress($request->all());
-        if ($request->ajax() || $request->wantsJson()) {
-            if ($result) {
+            $result = $this->shippingAddressService->changeAddress($request->all());
+            if ($request->ajax() || $request->wantsJson()) {
+                if ($result) {
 
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Thay đổi địa chỉ thành công.',
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'Thay đổi địa chỉ thất bại.',
-                ]);
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'Thay đổi địa chỉ thành công.',
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => 500,
+                        'message' => 'Thay đổi địa chỉ thất bại.',
+                    ]);
+                }
             }
-        }
-        return redirect()->back()->with('success', 'Thay đổi địa chỉ thành công');
-            
+
+            return redirect()->back()->with('success', 'Thay đổi địa chỉ thành công');
+
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Thay đổi địa chỉ thất bại');
         }

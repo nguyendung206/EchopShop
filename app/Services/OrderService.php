@@ -81,7 +81,8 @@ class OrderService
         }
     }
 
-    public function getVouchersJson($request) {
+    public function getVouchersJson($request)
+    {
         try {
             $userProvinceId = $request['province_id'];
             $userDistrictId = $request['district_id'];
@@ -117,6 +118,7 @@ class OrderService
                     return ! isset($countUser[$userId]) || $countUser[$userId] < $voucher->limit_uses;
                 })
                 ->values();
+
             return $vouchers;
         } catch (\Throwable $th) {
             return false;
@@ -206,8 +208,8 @@ class OrderService
             $orders = Order::query()->when(isset($request['type']) && ! empty($request['type']), function ($query) use ($request) {
                 return $query->where('status', $request['type']);
             })->where('user_id', Auth::id())->with(['discount', 'orderDetails.product', 'orderDetails.productUnit'])
-            ->orderBy('created_at', 'DESC')
-            ->get();
+                ->orderBy('created_at', 'DESC')
+                ->get();
 
             return $orders;
         } catch (Exception $e) {
