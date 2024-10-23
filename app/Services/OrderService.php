@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductUnit;
+use App\Models\ShippingAddress;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -21,14 +22,15 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
-    public function getCartsAndVouchers($request)
+    public function getCartsAndVouchersAndShippingAddresses($request)
     {
         try {
-            $userProvinceId = Auth::user()->province_id;
-            $userDistrictId = Auth::user()->district_id;
-            $userWardId = Auth::user()->ward_id;
+            $userProvinceId = Auth::user()->defaultAddress->province_id;
+            $userDistrictId = Auth::user()->defaultAddress->district_id;
+            $userWardId = Auth::user()->defaultAddress->ward_id;
             $carts = collect();
             $vouchers = collect();
+            $shippindAddresses = collect();
             $datas = [];
             $vouchers = Discount::query()
                 ->where('status', Status::ACTIVE)
@@ -62,18 +64,64 @@ class OrderService
                 ->values();    // đánh lại index của collect
             if (! empty($request['cart_ids'])) {
                 $cartIds = $request['cart_ids'];
-                $carts = Cart::whereIn('id', $cartIds)->with('products')->get();
+                $carts = Cart::whereIn('id', $cartIds)->get();
             }
+
+            $shippindAddresses = ShippingAddress::where('user_id', Auth::id())->get();
             $datas = [
                 'carts' => $carts,
                 'vouchers' => $vouchers,
+                'shippingAddresses' => $shippindAddresses,
             ];
 
             return $datas;
         } catch (\Exception $e) {
-            dd($e);
 
             return $th;
+        }
+    }
+
+    public function getVouchersJson($request)
+    {
+        try {
+            $userProvinceId = $request['province_id'];
+            $userDistrictId = $request['district_id'];
+            $userWardId = $request['ward_id'];
+            $vouchers = Discount::query()
+                ->where('status', Status::ACTIVE)
+                ->where('end_time', '>=', Carbon::now('Asia/Bangkok'))
+                ->where('start_time', '<=', Carbon::now('Asia/Bangkok'))
+                ->where(function ($query) use ($userProvinceId, $userDistrictId, $userWardId) {
+                    $query->where('scope_type', '<>', TypeDiscountScope::REGIONAL->value)
+                        ->orWhere(function ($subQuery) use ($userProvinceId, $userDistrictId, $userWardId) { // regional type
+                            $subQuery->where('scope_type', TypeDiscountScope::REGIONAL->value)
+                                ->where('province_id', $userProvinceId) //province
+                                ->where(function ($innerSubQuery) use ($userDistrictId, $userWardId) {
+                                    $innerSubQuery->where(function ($districtQuery) use ($userDistrictId) { // district
+                                        $districtQuery->where('district_id', $userDistrictId)
+                                            ->orWhereNull('district_id');
+                                    })
+                                        ->where(function ($wardQuery) use ($userWardId) {   // ward
+                                            $wardQuery->where('ward_id', $userWardId)
+                                                ->orWhereNull('ward_id');
+                                        });
+                                });
+                        });
+                })
+                ->with(['ward', 'district', 'province'])
+                ->get()
+                ->filter(function ($voucher) {  // lấy hết danh sách rồi lọc
+                    $userUsed = explode(',', $voucher->user_used);
+                    $countUser = array_count_values($userUsed);   // đưa phần tử thành key và số lần xuất hiện thành value
+                    $userId = Auth::id();
+
+                    return ! isset($countUser[$userId]) || $countUser[$userId] < $voucher->limit_uses;
+                })
+                ->values();
+
+            return $vouchers;
+        } catch (\Throwable $th) {
+            return false;
         }
     }
 
@@ -84,12 +132,12 @@ class OrderService
             $orderData = [
                 'total_amount' => $request['total_amount'],
                 'type_payment' => TypePayment::CARD,
-                'shipping_address' => $request['shipping_address'],
                 'user_id' => $user->id,
                 'status' => StatusOrder::PENDING,
-                'province_id' => $user->province_id,
-                'district_id' => $user->district_id,
-                'ward_id' => $user->ward_id,
+                'shipping_address' => $request['shipping_address'],
+                'province_id' => $request['province_id_order'],
+                'district_id' => $request['district_id_order'],
+                'ward_id' => $request['ward_id_order'],
             ];
             if (! empty($request['discount_id'])) {
                 $orderData['discount_id'] = $request['discount_id'];
@@ -159,7 +207,9 @@ class OrderService
         try {
             $orders = Order::query()->when(isset($request['type']) && ! empty($request['type']), function ($query) use ($request) {
                 return $query->where('status', $request['type']);
-            })->where('user_id', Auth::id())->with(['discount', 'orderDetails.product', 'orderDetails.productUnit'])->get();
+            })->where('user_id', Auth::id())->with(['discount', 'orderDetails.product', 'orderDetails.productUnit'])
+                ->orderBy('created_at', 'DESC')
+                ->get();
 
             return $orders;
         } catch (Exception $e) {
@@ -232,7 +282,7 @@ class OrderService
     {
         try {
             $products = Product::with('productUnits')->where('status', 1)->get();
-            $customers = User::where('status', 1)->get();
+            $customers = User::where('status', 1)->with(['addresses.province', 'addresses.district', 'addresses.ward'])->get();
 
             return ['products' => $products, 'customers' => $customers];
         } catch (\Throwable $th) {

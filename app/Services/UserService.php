@@ -2,16 +2,17 @@
 
 namespace App\Services;
 
+use App\Enums\TypeAddress;
+use App\Models\ShippingAddress;
 use App\Models\User;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
     public function filter($filters)
     {
 
-        $query = User::query();
+        $query = User::with('defaultAddress');
         if (! empty($filters['search'])) {
             $query->where('name', 'like', '%'.$filters['search'].'%');
         }
@@ -40,19 +41,28 @@ class UserService
                 'date_of_issue' => $request['date_of_issue'],
                 'place_of_issue' => $request['place_of_issue'],
                 'date_of_birth' => $request['date_of_birth'],
-                'province_id' => $request['province_id'],
-                'district_id' => $request['district_id'],
-                'ward_id' => $request['ward_id'],
-                'address' => $request['address'],
                 'gender' => $request['gender'],
                 'status' => $request['status'],
                 'avatar' => uploadImage($request['uploadFile'], 'upload/users/', 'nophoto.png'),
             ];
 
             $user = User::create($userData);
+            $shippingAddressData = [
+                'province_id' => $request['province_id'],
+                'district_id' => $request['district_id'],
+                'ward_id' => $request['ward_id'],
+                'street' => $request['address'],
+                'phone' => $request['phone_number'],
+                'user_name' => $request['name'],
+                'is_default' => true,
+                'type_address' => TypeAddress::HOME->value,
+                'user_id' => $user->id,
+            ];
+            $shippingAddress = ShippingAddress::create($shippingAddressData);
 
             return $user;
         } catch (\Exception $e) {
+            dd($e);
             flash('Thêm người dùng thất bại')->error();
 
             return redirect()->back();
@@ -75,10 +85,7 @@ class UserService
             'date_of_issue' => $request['date_of_issue'],
             'place_of_issue' => $request['place_of_issue'],
             'date_of_birth' => $request['date_of_birth'],
-            'province_id' => $request['province_id'],
-            'district_id' => $request['district_id'],
-            'ward_id' => $request['ward_id'],
-            'address' => $request['address'],
+
             'gender' => $request['gender'],
             'status' => $request['status'],
             'avatar' => uploadImage($request['uploadFile'], 'upload/users/', $avatar),
@@ -92,6 +99,20 @@ class UserService
         if ($request['uploadFile']) {
             deleteImage($avatar);
         }
+
+        $shippingAddress = ShippingAddress::findOrFail($user->defaultAddress->id);
+        $shippingAddressData = [
+            'province_id' => $request['province_id'],
+            'district_id' => $request['district_id'],
+            'ward_id' => $request['ward_id'],
+            'street' => $request['address'],
+            'phone' => $request['phone_number'],
+            'user_name' => $request['name'],
+            'is_default' => true,
+            'type_address' => TypeAddress::HOME->value,
+            'user_id' => $user->id,
+        ];
+        $shippingAddress->update($shippingAddressData);
 
         return $user;
     }
@@ -122,34 +143,24 @@ class UserService
                 'email' => $request['email'],
                 'password' => bcrypt($request['password']),
                 'phone_number' => $request['phone_number'],
-                'address' => $request['address'],
-                'province_id' => $request['province_id'],
-                'district_id' => $request['district_id'],
-                'ward_id' => $request['ward_id'],
                 'avatar' => uploadImage($request['uploadFile'], 'upload/users/', 'nophoto.png'),
             ];
-
-            return User::create($userData);
-        } catch (Exception $th) {
-            return false;
-        }
-    }
-
-    public function changeAddress($request)
-    {
-        try {
-            $user = Auth::user();
-            $updateData = [
-                'phone_number' => $request['phone_number'],
+            $user = User::create($userData);
+            $shippingAddressData = [
                 'province_id' => $request['province_id'],
                 'district_id' => $request['district_id'],
                 'ward_id' => $request['ward_id'],
-                'address' => $request['address'],
+                'street' => $request['address'],
+                'phone' => $request['phone_number'],
+                'user_name' => $request['name'],
+                'is_default' => true,
+                'type_address' => TypeAddress::HOME->value,
+                'user_id' => $user->id,
             ];
-            $result = $user->update($updateData);
+            $shippingAddress = ShippingAddress::create($shippingAddressData);
 
-            return $result;
-        } catch (\Throwable $th) {
+            return $user;
+        } catch (Exception $th) {
             return false;
         }
     }
