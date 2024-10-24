@@ -11,7 +11,7 @@
                     data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
                         class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
                 @else
-                <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                <a href="{{ route('web.login') }}" class="product-heart"><i class="fa-regular fa-heart fa-heart-home"></i></a>
                 @endauth
             </div>
             <p class="product-name pt-2 line-clamp-2">{{ $product->name }}</p>

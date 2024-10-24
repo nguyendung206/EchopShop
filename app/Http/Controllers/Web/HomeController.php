@@ -26,6 +26,7 @@ class HomeController extends Controller
         $banners = Banner::query()->where('status', 1)->orderBy('display_order', 'asc')->limit(4)->get();
         $secondhandProducts = $this->homeService->getProduct(TypeProduct::SECONDHAND->value, 10, 'secondhandPage');
         $exchangeProducts = $this->homeService->getProduct(TypeProduct::EXCHANGE->value, 10, 'exchangePage');
+        $saleProducts = $this->homeService->getProduct(TypeProduct::SALE->value, 10, 'salePage');
         $giveawayProducts = Product::query()->where('status', 1)->where('type', TypeProduct::GIVEAWAY)->get();
 
         if ($request->ajax() || $request->wantsJson()) {
@@ -40,13 +41,18 @@ class HomeController extends Controller
                 $hasMorePage = ! $exchangeProducts->hasMorePages();
             }
 
+            if ($request->query('salePage')) {
+                $productHtml = view('web.product.listSecondhandProduct', ['secondhandProducts' => $saleProducts])->render();
+                $hasMorePage = ! $saleProducts->hasMorePages();
+            }
+
             return response()->json([
                 'products' => $productHtml,
                 'hasMorePage' => $hasMorePage,
             ]);
         }
 
-        return view('web.home.home', compact('brands', 'banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts'));
+        return view('web.home.home', compact('brands', 'banners', 'secondhandProducts', 'exchangeProducts', 'giveawayProducts', 'saleProducts'));
     }
 
     public function filterProducts(Request $request)

@@ -92,8 +92,8 @@ class DiscountService
         ];
         if ($request['scope_type'] == TypeDiscountScope::REGIONAL->value) {
             $discountData['province_id'] = $request['province_id'];
-            $discountData['district_id'] = $request['district_id'];
-            $discountData['ward_id'] = $request['ward_id'];
+            $discountData['district_id'] = $request['district_id'] == 0 ? null : $request['district_id'];
+            $discountData['ward_id'] = $request['ward_id'] == 0 ? null : $request['ward_id'];
         } else {
             $discountData['province_id'] = null;
             $discountData['district_id'] = null;

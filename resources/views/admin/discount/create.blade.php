@@ -93,7 +93,7 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="scope_type" id="scope_{{ $scope->value }}" value="{{ $scope->value }}"
                                     {{ old('scope_type', \App\Enums\TypeDiscountScope::GLOBAL->value) == $scope->value ? 'checked' : '' }}>
-                                <label style="font-size: 1rem;" class="form-check-label" for="scope{{ $scope->value }}">
+                                <label style="font-size: 12px;" class="form-check-label" for="scope{{ $scope->value }}">
                                     @lang($scope->label())
                                 </label>
                             </div>
