@@ -187,7 +187,13 @@
 .product-item {
     margin-bottom: 10px;
     cursor: pointer;
-
+    
+}
+.product-item-category {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 464px;
 }
 .product-content {
     padding-bottom: 10px;

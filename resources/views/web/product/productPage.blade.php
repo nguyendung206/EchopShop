@@ -76,7 +76,7 @@ Danh sách sản phẩm theo danh mục
     <div class="row product-title-line">
         <div class="col-lg-3"></div>
         <div class="col-lg-9 button-page-wrap">
-            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::SECONDHAND])}}" class="{{ $case == TypeProductEnums::SECONDHAND->value ? 'active' : '' }}">Mua bán</a>
+            <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::SECONDHAND])}}" class="{{ $case == TypeProductEnums::SECONDHAND->value ? 'active' : '' }}">Secondhand</a>
             <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::EXCHANGE]) }}" class="{{ $case == TypeProductEnums::EXCHANGE->value ? 'active' : '' }}">Trao đổi</a>
             <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::GIVEAWAY]) }}" class="{{ $case == TypeProductEnums::GIVEAWAY->value ? 'active' : '' }}">Hàng tặng</a>
             <a href="{{ route('listProducts', ['search'=> $search, 'province' => $provinceQuery, 'type' => TypeProductEnums::SALE]) }}" class="{{ $case == TypeProductEnums::SALE->value ? 'active' : '' }}">Hàng bán</a>
@@ -96,7 +96,7 @@ Danh sách sản phẩm theo danh mục
             <div class="row list-product">
                 @if ($case != TypeProductEnums::GIVEAWAY->value && $case != 0)
                 @forelse($products as $product)
-                <div class="col-lg-4 col-6 text-center  product-item">
+                <div class="col-lg-4 col-6 text-center  product-item ">
                     <div class="product-wrap">
                         <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
                             <div style="position: relative;">
@@ -149,7 +149,7 @@ Danh sách sản phẩm theo danh mục
                         </div>
                         @break
 
-                        @case(TypeProductEnums::SECONDHAND->value)
+                        @case(TypeProductEnums::SECONDHAND->value || TypeProductEnums::SALE->value)
                         <div class="buy-wrap">
                             <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
                             @auth
@@ -167,16 +167,7 @@ Danh sách sản phẩm theo danh mục
                             </a>
                         </div>
                         @break
-                        @case(TypeProductEnums::SALE->value)
-                        <div class="buy-wrap-exchange">
-                            <a id="btn-cart " href="#" class="btn-cart btn-cart-product btn-cart-sale" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid="{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
-                                <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
-                            </a>
-                            <a class="btn-buy-exchange"
-                                href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi
-                                hàng</a>
-                        </div>
-                        @break
+                        
                         @default
                         @endswitch
                     </div>
@@ -222,66 +213,73 @@ Danh sách sản phẩm theo danh mục
 
                 @if ($case == 0)
                 @forelse($products as $product)
-                <div class="col-lg-4 product-item col-6 text-center py-3">
-                    <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
-                        <div style="position: relative;">
-                            <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
-                            @auth
-                            <a href="#"
-                                class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
-                                data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
-                                data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
-                                    class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
+                <div class="col-lg-4 product-item col-6 text-center py-3  ">
+                    <div class="product-wrap product-item-category" style="padding-bottom: 10px;">
+                        <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}" >
+                            <div style="position: relative;" >
+                                <img class="product-img" src="{{ getImage($product->photo) }} " alt="">
+                                @auth
+                                <a href="#"
+                                    class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'favorite-active': '' }} '
+                                    data-url-destroy="{{ route('favorite.destroy', $product->id) }}"
+                                    data-url-store="{{ route('favorite.store') }}" data-productId="{{ $product->id }}"><i
+                                        class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $product->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
+                                @else
+                                <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                                @endauth
+                            </div>
+                            <p class="product-name pt-2">{{ $product->name }}</p>
+                            <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
+                        </a>
+                        <div class="user-product-wrap my-1 d-flex align-items-center">
+                            @if (isset($product->shop))
+                            <img class="mini-avatar mr-2" src="{{ getImage($product->shop->logo) }}"
+                                alt="">
+                            <div class="user-product ">
+                                <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
+                                        src="{{ asset('/img/icon/doc-top.png') }}"
+                                        alt="">&nbsp;
+                                    {{ $product->shop->user->defaultAddress?->province->province_name }}
+                                </p>
+                            </div>
                             @else
-                            <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
-                            @endauth
+                            <img src="{{ asset('/img/image/logo.png') }}" alt=""
+                                class="mini-avatar-admin mr-2">
+                            <div class="user-product " style="width: 77%">
+                                <p class="line-clamp-1">Sản phẩm của echop</p>
+                            </div>
+                            @endif
                         </div>
-                        <p class="product-name pt-2">{{ $product->name }}</p>
-                        <p class="price color-B10000 pt-2">{{format_price($product->price)}}</p>
-                    </a>
-                    <div class="user-product-wrap my-1 d-flex align-items-center">
-                        @if (isset($product->shop))
-                        <img class="mini-avatar mr-2" src="{{ getImage($product->shop->logo) }}"
-                            alt="">
-                        <div class="user-product ">
-                            <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
-                                    src="{{ asset('/img/icon/doc-top.png') }}"
-                                    alt="">&nbsp;
-                                {{ $product->shop->user->defaultAddress?->province->province_name }}
-                            </p>
-                        </div>
-                        @else
-                        <img src="{{ asset('/img/image/logo.png') }}" alt=""
-                            class="mini-avatar-admin mr-2">
-                        <div class="user-product " style="width: 77%">
-                            <p class="line-clamp-1">Sản phẩm của echop</p>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="product-actions" style="display: block; margin-top: 16px;">
-                        @if ($product->type->value == TypeProductEnums::EXCHANGE->value)
-                        <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
-                        <a class="btn-buy-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi hàng</a>
-                        @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
-                        <div class="buy-wrap">
-                            <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
-                            @auth
-                            <a id="btn-cart" href="#" class="btn-cart-product btn-cart" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid="{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                            </a>
-                            @else
-                            <a href="{{ route('web.login') }}" class="btn-cart-product">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                            </a>
-                            @endauth
+                        <div class="product-actions" >
+                            @if ($product->type->value == TypeProductEnums::EXCHANGE->value)
+                            <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+                            <a class="btn-buy-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi hàng</a>
+                            @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
+                            <div class="buy-wrap">
+                                <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
+                                @auth
+                                <a id="btn-cart" href="#" class="btn-cart-product btn-cart" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-productunitid="{{!empty($product->getProductUnitTypeOne()) ? $product->getProductUnitTypeOne()->id : 0}}" data-url-check="{{ route('cart.check') }}">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </a>
+                                @else
+                                <a href="{{ route('web.login') }}" class="btn-cart-product">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </a>
+                                @endauth
 
-                            <a class="btn-buy-product" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
-                                Mua ngay
-                            </a>
+                                <a class="btn-buy-product" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
+                                    Mua ngay
+                                </a>
+                            </div>
+                            @elseif($product->type->value == TypeProductEnums::GIVEAWAY->value)
+                            <div class="gift-btn-wrap">
+                                <a href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"
+                                    class="gift-btn">
+                                    <i class="fa-solid fa-gift"></i> Nhận quà tặng
+                                </a>
+                            </div>
+                            @endif
                         </div>
-                        @elseif($product->type->value == TypeProductEnums::GIVEAWAY->value)
-                        <a class="buy" href="{{route('web.productdetail.index', ['slug' => $product->slug])}}">Nhận quà tặng</a>
-                        @endif
                     </div>
                 </div>
                 @empty

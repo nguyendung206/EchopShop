@@ -8,8 +8,8 @@
     if ($discount->scope_type->value == TypeDiscountScopeEnums::REGIONAL->value){
         $user = collect([
             'province_id' => $discount->province_id,
-            'district_id' => $discount->district_id,
-            'ward_id' => $discount->ward_id
+            'district_id' => $discount->district_id ? $discount->district_id : 0,
+            'ward_id' => $discount->ward_id ? $discount->ward_id : 0 
     ]);
     }
 @endphp
@@ -104,7 +104,7 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="scope_type" id="scope_{{ $scope->value }}" value="{{ $scope->value }}"
                                     {{ old('scope_type') == $scope->value || $discount->scope_type->value == $scope->value ? 'checked' : '' }}>
-                                <label style="font-size: 1rem;" class="form-check-label" for="scope{{ $scope->value }}">
+                                <label style="font-size: 12px;" class=" form-check-label" for="scope{{ $scope->value }}">
                                     @lang($scope->label())
                                 </label>
                             </div>

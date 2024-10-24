@@ -39,7 +39,7 @@ class HomeService
         }
         if (! empty($request['province'])) {  // province ở thanh search
             $provinceId = $request['province'];
-            $query = $query->whereHas('shop.user.province', function ($query) use ($provinceId) {
+            $query = $query->whereHas('shop.user.defaultAddress.province', function ($query) use ($provinceId) {
                 $query->where('id', $provinceId);
             });
         }
@@ -65,7 +65,8 @@ class HomeService
         }
         if (! empty($request['provinceIds'])) {  // province ở thanh lọc product
             $provinceIds = $request['provinceIds'];
-            $query = $query->whereHas('shop.user.province', function ($query) use ($provinceIds) {
+            // dd($request['provinceIds']);
+            $query = $query->whereHas('shop.user.defaultAddress.province', function ($query) use ($provinceIds) {
                 $query->whereIn('id', $provinceIds);
             });
         }

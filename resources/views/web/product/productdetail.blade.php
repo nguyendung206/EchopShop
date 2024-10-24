@@ -240,7 +240,7 @@ $totalQuantity = 0;
                 <div class="product-button">
                     @if($product->type->value == 1)
                     <button>Trao đổi</button>
-                    @elseif($product->type->value == 2)
+                    @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
                     @auth
                     <form action="{{ route('cart.store') }}" method="POST" class="d-inline" id="cartForm">
                         @csrf
