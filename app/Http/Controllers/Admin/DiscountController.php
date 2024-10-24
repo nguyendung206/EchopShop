@@ -73,6 +73,7 @@ class DiscountController extends Controller
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi cập nhật giảm giá!')->error();
             dd($e);
+
             return redirect()->back()->withInput();
         }
     }
