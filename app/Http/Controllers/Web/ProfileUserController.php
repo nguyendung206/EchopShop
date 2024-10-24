@@ -66,14 +66,6 @@ class ProfileUserController extends Controller
             }
 
             $profile->save();
-
-            $shippingAddress = ShippingAddress::where('user_id', Auth::id())->where('is_default', true)->first();
-            $shippingAddress->street = $request->address;
-            $shippingAddress->province_id = $request->province_id;
-            $shippingAddress->district_id = $request->district_id;
-            $shippingAddress->ward_id = $request->ward_id;
-            $shippingAddress->save();
-
             return redirect()->route('profile.index', ['id' => $request->id])
                 ->with('success', 'Cập nhật thông tin thành công!');
         } else {

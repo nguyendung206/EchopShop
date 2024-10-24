@@ -24,14 +24,14 @@
                 @foreach ($addresses as $address)
                 <hr>
                 <div class="my-4 d-flex align-items-center">
-                    <div style="flex-grow: 1">
+                    <div class="col-lg-9 col-6">
                         <p class="mt-1">{{$address->user_name}}</p>
                         <p class="mt-1" style="color: rgba(0,0,0,0.54)">(+84) {{$address->phone}}</p>
                         <p class="mt-1" style="color: rgba(0,0,0,0.54)">{{$address->street}}</p>
                         <p class="mt-1" style="color: rgba(0,0,0,0.54)">{{$address->ward->ward_name}}, {{$address->district->district_name}}, {{$address->province->province_name}}.</p>
                         
                     </div>
-                    <div class="text-right">
+                    <div class="text-right col-lg-3 col-6">
                         <p class="my-2 btn-update-address" data-shipping-address-id="{{$address->id}}" style="font-size: 12px; color: #B10000; cursor: pointer;">Cập nhật</p>
                         @if ($address->is_default)
                             <span class="d-inline-block my-2" style="color: #B10000; padding: 4px 6px; font-size: 12px; border: 1px solid #B10000; border-radius: 2px;">Mặc định</span>

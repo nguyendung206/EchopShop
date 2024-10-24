@@ -69,47 +69,6 @@ Profile
                             @enderror
                         </div>
 
-                        <label>Địa chỉ *</label>
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <select class="form-control @error('province_id') is-invalid @enderror" name="province_id" id="province_select">
-                                    <option value="0">Tỉnh/Thành phố *</option>
-                                    @foreach($provinces as $province)
-                                    <option value="{{$province->id}}">{{ $province->province_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('province_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <select class="form-control @error('district_id') is-invalid @enderror" name="district_id" id="district_select">
-                                    <option value="0">Quận/Huyện *</option>
-                                    <option value="0" disabled>Vui lòng chọn thành phố trước</option>
-                                </select>
-                                @error('district_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <select class="form-control @error('ward_id') is-invalid @enderror" name="ward_id" id="ward_select">
-                                    <option value="0">Phường/Thị xã *</option>
-                                    <option value="0" disabled>Vui lòng chọn quận huyện trước</option>
-                                </select>
-                                @error('ward_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <input name="address" type="text" class="form-control @error('address') is-invalid @enderror" value="{{ old('address', $user->address) }}" placeholder="Địa chỉ chi tiết">
-                            @error('address')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
                         <div class="float-right form-btn">
                             <a href="{{ route('home') }}" class="form-btn-cancel">Hủy</a>
                             <button type="submit" class="form-btn-save">Lưu</button>
