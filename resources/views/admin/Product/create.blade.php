@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Tạo loại hàng')
+@lang('Thêm mới sản phẩm')
 @endsection
 @section('css')
 <link rel="stylesheet" href="{{ static_asset('css/inputRangerQuality.css') }}">
@@ -20,15 +20,15 @@
     <div class="col-lg-12 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">@lang('Thêm mới loại hàng')</h5>
+                <h5 class="mb-0 h6">@lang('Thêm mới sản phẩm')</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.product.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Tên loại hàng')<span class="text-vali">&#9913;</span></label>
+                        <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Tên sản phẩm')<span class="text-vali">&#9913;</span></label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Tên loại hàng')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                            <input type="text" placeholder="@lang('Tên sản phẩm')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
                             @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -181,7 +181,7 @@
                         <div class="col-sm-9">
                             <input type="hidden" name="old_photo" value="{{ old('old_photo') }}" />
                             <input type="file" class="form-control @error('photo') is-invalid @enderror" name="photo" onchange="previewPhoto(this)" />
-                            <img id="photo_preview" src="{{ old('old_photo') ? getImage('upload/product/', old('old_photo')) : '' }}" class="img img-bordered" style="width:200px" />
+                            <img id="photo_preview" src="{{ old('old_photo') ? getImage('upload/product/', old('old_photo')) : '' }}" class="img img-bordered" style="max-width:200px; max-height: 230px;" />
 
                             @error('photo')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -332,7 +332,8 @@
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'img img-bordered';
-                    img.style.width = '200px';
+                    img.style.maxWidth = '200px';
+                    img.style.maxHeight = '230px';
 
                     const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'btn btn-danger btn-sm position-absolute';

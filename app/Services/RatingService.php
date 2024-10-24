@@ -30,6 +30,6 @@ class RatingService
 
         $rating->save();
 
-        return response()->json($rating, 201);
+        return $rating;
     }
 }

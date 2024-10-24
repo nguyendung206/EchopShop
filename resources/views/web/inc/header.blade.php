@@ -147,7 +147,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                         <a href="{{ route('home') }}" style="width: 75%;">
                             <img class="logo w-100" src="{{ asset('/img/image/logo.png') }}" alt="">
                         </a>
-                        <a href="{{route('favoriteProduct')}}" class="d-n display-none profile-tab" data-tab="favoriteProduct" style="position: relative;">
+                        <a href="{{route('favoriteProduct')}}" class="d-n display-none profile-tab" data-tab="favoriteProduct" style="position: relative; background-color: #FFDD15; border: none;">
                             <i class="fa-regular fa-heart"></i>
                             @if (Auth::check())
                             @if (Auth::user()->countFavorite() > 0)
@@ -175,7 +175,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                                         @if (request()->has('type'))
                                         <input type="hidden" name="type" value="{{request()->get('type')}}">
                                         @endif
-                                        <select class="form-control w-120px forcus-none province-select"  name="province">
+                                        <select class="form-control w-120px forcus-none province-select" name="province">
                                             <option value="0" disabled selected>Địa điểm</option>
                                             <option value="" {{request()->has('province') && empty($provinceQuery) ? 'selected' : ''}}>Tất cả</option>
                                             @foreach ($provinces as $province)
@@ -186,7 +186,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                                 </div>
                                 <div class="input-group-append">
                                     <button class="btn btn-search" type="submit">
-                                    Tìm kiếm 
+                                        Tìm kiếm
                                     </button>
                                 </div>
 
@@ -235,40 +235,40 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                                             @endif
                                     </a>
                                     <div id="notificationList" class="dropdown-menu dropdown-menu-right px-2"
-                                        aria-labelledby="notificationDropdown"
-                                        style="max-height: 450px; overflow-y: auto; width: 450px; white-space: nowrap; overflow-x: hidden;">
+                                        aria-labelledby="notificationDropdown">
                                         <div class="notification-header mx-3 py-3 mb-2 row justify-content-between align-items-center">
                                             <strong style="font-size: 24px;">Thông báo</strong>
                                             <a href="#" id="markAllAsRead" data-href="{{ route('notification.readall') }}"
                                                 style="font-size: 14px;">Đánh dấu đã đọc tất cả</a>
                                         </div>
-
-                                        @if(isset($notifications) && count($notifications) > 0)
-                                        @foreach($notifications as $notification)
-                                        <a href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
-                                            <div style="border-radius: 10px;"
-                                                class="py-notification dropdown-item d-flex align-items-center notification {{ !$notification->is_read ? 'is_read' : '' }}">
-                                                <div class="mr-3">
-                                                    <img style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover;"
-                                                        src="{{ $notification->product ? getImage($notification->product->photo) : asset('/img/image/change-status-order.png') }}">
-                                                </div>
-
-                                                <div class="d-flex align-items-center justify-content-between w-100">
-                                                    <div style="max-width: 95%;">
-                                                        <strong>{{ $notification->title }}</strong>
-                                                        <div class="text-muted my-2 text-body">{{ $notification->body }}</div>
-                                                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                        <div style="max-height: 450px; overflow-y: auto; width: 450px; white-space: nowrap; overflow-x: hidden;">
+                                            @if(isset($notifications) && count($notifications) > 0)
+                                            @foreach($notifications as $notification)
+                                            <a href="{{ route('notification.isreaded', ['id' => $notification->id]) }}">
+                                                <div style="border-radius: 10px;"
+                                                    class="py-notification dropdown-item d-flex align-items-center notification {{ !$notification->is_read ? 'is_read' : '' }}">
+                                                    <div class="mr-3">
+                                                        <img style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover;"
+                                                            src="{{ $notification->product ? getImage($notification->product->photo) : asset('/img/image/change-status-order.png') }}">
                                                     </div>
-                                                    <div id="dot" class="ml-auto {{ !$notification->is_read ? 'dot' : '' }}"></div>
+
+                                                    <div class="d-flex align-items-center justify-content-between w-100">
+                                                        <div style="max-width: 95%;">
+                                                            <strong>{{ $notification->title }}</strong>
+                                                            <div class="text-muted my-2 text-body">{{ $notification->body }}</div>
+                                                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                        </div>
+                                                        <div id="dot" class="ml-auto {{ !$notification->is_read ? 'dot' : '' }}"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                        @endforeach
-                                        <a class="notification-all profile-tab" href="{{ route('notification.index') }}"
+                                            </a>
+                                            @endforeach
+                                            @else
+                                            <div class="dropdown-item text-center">@lang('Không có thông báo mới')</div>
+                                            @endif
+                                        </div>
+                                        <a class="notification-all profile-tab mt-2" href="{{ route('notification.index') }}"
                                             data-tab="notifications">Xem tất cả</a>
-                                        @else
-                                        <div class="dropdown-item text-center">@lang('Không có thông báo mới')</div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -524,19 +524,20 @@ $route = route('listProducts', ['type' => request()->get('type')]);
         }
 
         var selectedValue = $('.province-select').val();
+
         function checkProvinceValue() {
             if (selectedValue !== 0 && selectedValue !== null) {
-                
-                    $('.btn-search').prop('disabled', false);
-                } else {
-                    $('.btn-search').prop('disabled', true);
-                }
+
+                $('.btn-search').prop('disabled', false);
+            } else {
+                $('.btn-search').prop('disabled', true);
+            }
         }
         checkProvinceValue();
         $('.province-select').on('change', function() {
-                 selectedValue = $(this).val();
-                 checkProvinceValue();
-            });
+            selectedValue = $(this).val();
+            checkProvinceValue();
+        });
 
     });
 </script>

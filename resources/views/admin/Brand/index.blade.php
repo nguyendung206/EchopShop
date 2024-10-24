@@ -87,7 +87,7 @@
                 <tr class="text-center">
                     <th class="w-60 font-weight-800">STT</th>
                     <th class="w-60">@lang('Ảnh')</th>
-                    <th class="w-25">@lang('Tên hãng')</th>
+                    <th class="w-25">@lang('Tên thương hiệu')</th>
                     <th class="">@lang('Mô tả')</th>
                     <th class="w-140">@lang('Trạng thái')</th>
                     <th class="w-140">@lang('Loại hàng')</th>

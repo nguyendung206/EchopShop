@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 @section('title')
-@lang('Cập nhật Loại hàng')
+@lang('Cập nhật thương hiệu')
 @endsection
 @section('content')
 <div class="backnow">
@@ -16,16 +16,16 @@
     <div class="col-lg-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0 h6">@lang('Cập nhật Loại hàng')</h5>
+                <h5 class="mb-0 h6">@lang('Cập nhật thương hiệu')</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.brand.update', $brand->id) }}" method="POST" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên loại hàng')</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Tên thương hiệu')</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="@lang('Tên loại hàng')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ $brand->name }}" required>
+                            <input type="text" placeholder="@lang('Tên thương hiệu')" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ $brand->name }}" required>
                             @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Loại hàng')</label>
+                        <label class="col-sm-3 col-from-label font-weight-500">@lang('Thương hiệu')</label>
                         <div class="col-sm-9">
                             <select class=" form-control font-weight-500" name="category_id">
                                 @foreach($categories as $category)

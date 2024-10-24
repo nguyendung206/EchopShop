@@ -101,10 +101,6 @@ HOME
         left: -12px;
     }
 
-    img {
-        margin-bottom: -4px;
-    }
-
     .custom-caption-container {
         text-align: center;
         background-color: black;
@@ -177,9 +173,9 @@ $totalQuantity = 0;
 
         <div class="information-product col-lg-5 col-md-12">
             <div class="responsive-width">
-                <div class="wrap-heart">
+                <div class="wrap-heart mb-4">
                     @auth
-                    <a href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}">
+                    <a style="top: 4px;" href="#" class='product-heart {{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'favorite-active' : ''}} ' data-url-destroy="{{ route("favorite.destroy", $product->id) }}" data-url-store="{{ route("favorite.store") }}" data-productId="{{$product->id}}">
                         <i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home " style="position: relative; bottom:0; right:0; font-size:24px;"></i>
                     </a>
                     @else
@@ -245,25 +241,27 @@ $totalQuantity = 0;
                     @if($product->type->value == 1)
                     <button>Trao đổi</button>
                     @elseif($product->type->value == 2)
-                    <form action="{{route("cart.store")}}" method="POST" class="d-inline">
-                        <input type="hidden" name="productId" value="{{$product->id}}">
-                        <input type="hidden" name="type" value="{{$product->type}}">
-                        <input type="hidden" name="productUnitId" id="productUnitId" value="{{ empty($product->getProductUnitTypeOne()) ? '' : $product->getProductUnitTypeOne()->id}}">
-                        <input type="hidden" name="quantity" id="quantityValue" value="1">
-                        <input type="hidden" name="color" id="colorValue" value="">
-                        <input type="hidden" name="size" id="sizeValue" value="">
-                        @csrf
-                        <button class="text-white">Mua hàng</button>
-                    </form>
                     @auth
-                    <a id="btn-cart" href="#" class="btn-cart-product" style="padding: 11px 54px;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
-                        Thêm hàng vào giỏ
-                    </a>
+                    <form action="{{ route('cart.store') }}" method="POST" class="d-inline" id="cartForm">
+                        @csrf
+                        <input type="hidden" name="productId" id="modalProductId" value="{{ $product->id }}">
+                        <input type="hidden" name="type" value="{{ $product->type }}">
+                        <input type="hidden" name="productUnitId" id="productUnitId"
+                            value="{{ optional($product->getProductUnitTypeOne())->id }}">
+                        <input type="hidden" name="quantity" id="quantityInput" value="1">
+
+                        <button type="button" id="saveSelectedUnit"
+                            data-add-to-cart="{{ route('cart.store') }}"
+                            class="text-white">Thêm hàng vào giỏ hàng</button>
+                    </form>
                     @else
                     <a href="{{ route('web.login') }}" class="btn-cart-product">
                         Thêm hàng vào giỏ
                     </a>
                     @endauth
+                    <a id="btn-cart" href="#" class="btn-cart-product" style="padding: 11px 54px;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
+                        Mua hàng
+                    </a>
                     @elseif($product->type->value == 3)
                     <button>Nhận quà tặng</button>
                     @endif
@@ -446,91 +444,75 @@ $totalQuantity = 0;
         </div>
     </div>
 </div>
-<!-- <div class="content-5">
+<div class="content-5">
     <div class="content-5-title">Xem thêm sản phẩm</div>
     <div class="content-5-wrap container">
-        <div class="row main-content-5 responsive slider multiple-items-2">
-            <div class="col-lg-3 product-item">
-                <div class="product-content">
-                    <div class="img-product">
-                        <img src="{{asset('/img/image/p-more-1.png')}}" alt="p4" />
-                        <img src="{{asset('/img/icon/heart-solid.png')}}" alt="h" />
+        <div class="main-content-5 responsive slider multiple-items-2">
+            @foreach ($relatedProducts as $relatedProduct)
+            <div class="product-wrap mx-2">
+                <a href="{{ route('web.productdetail.index', ['slug' => $relatedProduct->slug]) }}">
+                    <div style="position: relative;">
+                        <img class="product-img" src="{{ getImage($relatedProduct->photo) }} " alt="">
+                        @auth
+                        <a href="#"
+                            class='product-heart {{ auth()->user()->load('favorites')->favorites->contains('product_id', $relatedProduct->id)? 'favorite-active': '' }} '
+                            data-url-destroy="{{ route('favorite.destroy', $relatedProduct->id) }}"
+                            data-url-store="{{ route('favorite.store') }}" data-productId="{{ $relatedProduct->id }}"><i
+                                class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $relatedProduct->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
+                        @else
+                        <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                        @endauth
                     </div>
-                    <span class="name-item">Giày sneaker AF1 âm dương phat...</span>
-                    <span class="price-item">250.000 đ</span>
-                    <div>
-                        <button>Mua ngay</button>
+                    <p class="product-name pt-2 line-clamp-2 text-center">{{ $relatedProduct->name }}</p>
+                    <p class="product-brand pt-2 line-clamp-1">Phân loại: <span>{{ $relatedProduct->brand->name ?? '' }}</span></p>
+                    <p class="price product-price color-B10000 pt-2 line-clamp-1">{{ format_price($relatedProduct->price) }}</p>
+
+                    <div class="user-product-wrap d-flex align-items-center">
+                        @if (isset($relatedProduct->shop))
+                        <img class="mini-avatar mr-2" src="{{ getImage($relatedProduct->shop->logo) }}" alt="">
+                        <div class="user-product">
+                            <p class="line-clamp-1">{{ $relatedProduct->shop->name }} &nbsp;
+                                <img src="{{ asset('/img/icon/doc-top.png') }}" alt="" style="position: relative;">
+                                &nbsp; {{ $relatedProduct->shop->user->province->province_name }}
+                            </p>
+                        </div>
+                        @else
+                        <img src="{{ asset('/img/image/logo.png') }}" alt="" class="mini-avatar-admin mr-2">
+                        <div class="user-product" style="width: 77%">
+                            <p class="line-clamp-1">Sản phẩm của echop</p>
+                        </div>
+                        @endif
                     </div>
+                </a>
+
+                <br>
+
+                <div class="buy-wrap">
+                    <a href="#" class="btn-chat-product text-center"><i class="fa-regular fa-comment-dots"></i></a>
+                    @auth
+                    <a id="btn-cart" href="#" class="btn-cart-product btn-cart text-center"
+                        data-url-add-to-cart="{{ route('cart.store') }}"
+                        data-id="{{ $relatedProduct->id }}"
+                        data-productunitid="{{ !empty($relatedProduct->getProductUnitTypeOne()) ? $relatedProduct->getProductUnitTypeOne()->id : 0 }}"
+                        data-url-check="{{ route('cart.check') }}">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                    @else
+                    <a href="{{ route('web.login') }}" class="btn-cart-product text-center">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                    @endauth
+
+                    <a class="btn-buy-product" href="{{ route('web.productdetail.index', ['slug' => $relatedProduct->slug]) }}">
+                        Mua ngay
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-3 product-item">
-                <div class="product-content">
-                    <div class="img-product">
-                        <img src="{{asset('/img/image/p-more-2.png')}}" alt="p4" />
-                        <img src="{{asset('/img/icon/heart-icon.png')}}" alt="h" />
-                    </div>
-                    <span class="name-item">Áo khoác hoodie croptop dài tay c...</span>
-                    <span class="price-item">450.000 đ</span>
-                    <div>
-                        <button>Mua ngay</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 product-item">
-                <div class="product-content">
-                    <div class="img-product">
-                        <img src="{{asset('/img/image/p-more-3.png')}}" alt="p4" />
-                        <img src="{{asset('/img/icon/heart-icon.png')}}" alt="h" />
-                    </div>
-                    <span class="name-item">Giày cao gót nữ LCC62 gót vuông...</span>
-                    <span class="price-item">650.000 đ</span>
-                    <div>
-                        <button>Mua ngay</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 product-item">
-                <div class="product-content">
-                    <div class="img-product">
-                        <img src="{{asset('/img/image/p-more-4.png')}}" alt="p4" />
-                        <img src="{{asset('/img/icon/heart-icon.png')}}" alt="h" />
-                    </div>
-                    <span class="name-item">Điện thoại IP14 Pro Max màu tím...</span>
-                    <span class="price-item">5.450.000 đ</span>
-                    <div>
-                        <button>Mua ngay</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 product-item">
-                <div class="product-content">
-                    <div class="img-product">
-                        <img src="{{asset('/img/image/p-more-4.png')}}" alt="p4" />
-                        <img src="{{asset('/img/icon/heart-icon.png')}}" alt="h" />
-                    </div>
-                    <span class="name-item">Điện thoại IP14 Pro Max màu tím...</span>
-                    <span class="price-item">5.450.000 đ</span>
-                    <div>
-                        <button>Mua ngay</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 product-item">
-                <div class="product-content">
-                    <div class="img-product">
-                        <img src="{{asset('/img/image/p-more-4.png')}}" alt="p4" />
-                        <img src="{{asset('/img/icon/heart-icon.png')}}" alt="h" />
-                    </div>
-                    <span class="name-item">Điện thoại IP14 Pro Max màu tím...</span>
-                    <span class="price-item">5.450.000 đ</span>
-                    <div>
-                        <button>Mua ngay</button>
-                    </div>
-                </div>
-            </div>
+            @endforeach
+
         </div>
     </div>
-</div> -->
+</div>
 
 <!-- Modal đánh giá -->
 <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
@@ -566,10 +548,10 @@ $totalQuantity = 0;
                             </span>
                             <input class="number-rating" type="hidden" name="star" value="{{ old('star') }}">
                         </div>
+                        @error('star')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('star')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
 
                     <div class="form-group mt-4 d-flex flex-column align-items-center my-2 justify-content-center">
                         <div class="d-flex">
@@ -581,9 +563,6 @@ $totalQuantity = 0;
                                 <input type="file" id="photoImageInput" name="photos[]" multiple
                                     style="display: none;" accept="image/*"
                                     onchange="previewImages(event, 'photoPreviewList')">
-                                @error('photos.*')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
                             </div>
 
                             <div id="videoContainer">
@@ -594,11 +573,14 @@ $totalQuantity = 0;
                                 <input type="file" id="videoInput" name="videos[]" multiple
                                     style="display: none;" accept="video/*"
                                     onchange="previewVideos(event, 'videoPreviewList')">
-                                @error('videos.*')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
                             </div>
                         </div>
+                        @error('photos.*')
+                        <div class="invalid-feedback d-block text-center">{{ $message }}</div>
+                        @enderror
+                        @error('videos.*')
+                        <div class="invalid-feedback d-block text-center">{{ $message }}</div>
+                        @enderror
 
                         <div class="mt-4">
                             <h5 class="text-center mb-2" id="photoTitle" style="display: none;">Ảnh đã chọn:</h5>
@@ -635,9 +617,10 @@ $totalQuantity = 0;
 </div>
 
 @section('script')
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="{{asset('/slick/slick.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('/slick/slick.min.js')}}"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 <script>
     let slideIndex = 1;
 
@@ -671,8 +654,9 @@ $totalQuantity = 0;
                 const img = document.createElement('img');
                 img.src = `/storage/${media}`;
                 img.style.width = '100%';
-                img.style.height = 'auto';
+                img.style.maxHeight = '534px';
                 img.style.objectFit = 'cover';
+                img.style.marginBottom = '-4px';
                 slide.appendChild(img);
             }
 
@@ -726,47 +710,11 @@ $totalQuantity = 0;
 
 <script>
     $(document).ready(function() {
-        $('#reviewForm').on('submit', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if (response.success) {
-                        // Hiện thông báo thành công
-                        toastr.success(response.message, null, {
-                            positionClass: 'toast-bottom-left'
-                        });
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
-                    } else {
-                        // Hiện thông báo lỗi
-                        toastr.error(response.message, null, {
-                            positionClass: 'toast-bottom-left'
-                        });
-                    }
-                },
-                error: function(xhr) {
-                    // Nếu có lỗi validation, hiển thị lỗi
-                    let errors = xhr.responseJSON.errors;
-                    $('.invalid-feedback').remove(); // Xóa tất cả thông báo lỗi cũ
-                    $.each(errors, function(key, value) {
-                        // Tìm trường tương ứng và hiển thị lỗi
-                        let inputField = $('[name="' + key + '"]');
-                        if (inputField.length) {
-                            inputField.addClass('is-invalid');
-                            inputField.after('<div class="invalid-feedback d-block">' + value[0] + '</div>');
-                        }
-                    });
-                }
-            });
-        });
+        if ($('.invalid-feedback.d-block').length > 0 || @json($errors -> has('modal_error'))) {
+            $('#reviewModal').modal('show');
+        }
     });
+
 
     $(function() {
         let listStar = $(".list-star .fa");
@@ -927,7 +875,7 @@ $totalQuantity = 0;
                 $(this).val(1);
             }
 
-            $('#quantityValue').val(quantity);
+            $('#quantityInput').val(quantity);
 
         });
 
@@ -942,7 +890,7 @@ $totalQuantity = 0;
                 }
                 input.val(currentValue);
             }
-            $('#quantityValue').val(currentValue);
+            $('#quantityInput').val(currentValue);
             $('.quantity').trigger('change');
 
         });
@@ -954,7 +902,7 @@ $totalQuantity = 0;
             if (currentValue > 1) {
                 currentValue -= 1;
                 input.val(currentValue);
-                $('#quantityValue').val(currentValue);
+                $('#quantityInput').val(currentValue);
 
             }
             $('.quantity').trigger('change');
