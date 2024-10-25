@@ -469,4 +469,8 @@
     .total-last.col-lg-12 b {
         display: block;
     }
+    .address-modal {
+        height: 400px;
+        overflow-y: scroll;
+    }
 }

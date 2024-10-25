@@ -28,10 +28,6 @@ class ProfileUserRequest extends FormRequest
             'phone_number' => ['required', 'numeric', 'digits:10'],
             'email' => ['required', 'email', 'unique:users,email,'.$this->id],
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'address' => ['required', 'min:3', 'max:255'],
-            'province_id' => ['not_in:0'],
-            'district_id' => ['not_in:0'],
-            'ward_id' => ['not_in:0'],
         ];
 
         return $rule;
@@ -43,10 +39,6 @@ class ProfileUserRequest extends FormRequest
             'name' => 'Tên người dùng',
             'email' => 'Địa chỉ email',
             'phone_number' => 'Số điện thoại',
-            'province_id' => 'Thành phố',
-            'district_id' => 'Quận/huyện',
-            'ward_id' => 'Phường/thị xã',
-            'address' => 'Địa chỉ chi tiết',
         ];
     }
 }

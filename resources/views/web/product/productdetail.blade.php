@@ -179,7 +179,7 @@ $totalQuantity = 0;
                         <i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home " style="position: relative; bottom:0; right:0; font-size:24px;"></i>
                     </a>
                     @else
-                    <a href="{{route('web.login')}}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                    <a href="{{route('web.login')}}" class="product-heart"><i class="fa-regular fa-heart fa-heart-home"></i></a>
                     @endauth
                 </div>
                 <div class="name-product">
@@ -240,7 +240,7 @@ $totalQuantity = 0;
                 <div class="product-button">
                     @if($product->type->value == 1)
                     <button>Trao đổi</button>
-                    @elseif($product->type->value == 2)
+                    @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
                     @auth
                     <form action="{{ route('cart.store') }}" method="POST" class="d-inline" id="cartForm">
                         @csrf
@@ -460,7 +460,7 @@ $totalQuantity = 0;
                             data-url-store="{{ route('favorite.store') }}" data-productId="{{ $relatedProduct->id }}"><i
                                 class="fa-{{ auth()->user()->load('favorites')->favorites->contains('product_id', $relatedProduct->id)? 'solid': 'regular' }} fa-heart fa-heart-home"></i></a>
                         @else
-                        <a href="{{ route('web.login') }}"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                        <a href="{{ route('web.login') }}" class="product-heart"><i class="fa-regular fa-heart fa-heart-home"></i></a>
                         @endauth
                     </div>
                     <p class="product-name pt-2 line-clamp-2 text-center">{{ $relatedProduct->name }}</p>
@@ -473,7 +473,7 @@ $totalQuantity = 0;
                         <div class="user-product">
                             <p class="line-clamp-1">{{ $relatedProduct->shop->name }} &nbsp;
                                 <img src="{{ asset('/img/icon/doc-top.png') }}" alt="" style="position: relative;">
-                                &nbsp; {{ $relatedProduct->shop->user->province->province_name }}
+                                &nbsp; {{ $relatedProduct->shop->user->defaultAddress->province->province_name }}
                             </p>
                         </div>
                         @else

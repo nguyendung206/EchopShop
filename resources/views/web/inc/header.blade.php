@@ -197,7 +197,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                         </form>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6 col-9">
-                        <div class="row justify-content-around align-items-center">
+                        <div class="d-flex justify-content-around align-items-center">
                             <div class="header-icon">
                                 <div class="search">
                                     <a href="{{ route('cart.index') }}" style="position: relative;">
@@ -281,18 +281,18 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                             </div>
                             @else
                             @if(isset(optional(Auth::user()->shop)->status->value) && optional(Auth::user()->shop)->status->value === 1)
-                            <div class="btn-post px-2 display-none">
+                            <div class="btn-post  display-none">
                                 <a href="{{ route('post.create') }}">
                                     <i class="fa-regular fa-file-lines mr-2"></i>
                                     <span>Đăng bài</span>
                                 </a>
                             </div>
                             @endif
-                            <div class="dropdown ml-3">
-                                <a href="#" class="row align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="dropdown ">
+                                <a href="#" class="row align-items-center" style="max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img class="avt" src="{{ getImage(Auth::user()->avatar) }}" alt="">
-                                    <span class="d-n display-none ml-2 color-232323 header-name">{{ Auth::user()->name }} </span>
-                                    <i class="d-n display-none fa-solid fa-sort-down ml-2 mb-2 color-232323 header-name"></i>
+                                    <span class="d-n display-none color-232323 header-name" style="max-width: 70px;white-space: nowrap;overflow: hidden; text-overflow: ellipsis;">{{ Auth::user()->name }} </span>
+                                    <i class="d-n display-none fa-solid fa-sort-down  mb-2 color-232323 header-name"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                     <a class="drop-user-item profile-tab" href="{{route('profile.index', Session::get('user')->id)}}" data-tab="profile">

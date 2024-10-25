@@ -399,6 +399,7 @@
                     $('#changeAddressForm input[name="is_default"]').prop('checked', addressSelected.is_default);
                     $('#changeAddressForm input[name="type_address"][value="' + addressSelected.type_address + '"]').prop('checked', true);
                     $('#addressShowLayer').fadeOut();
+                    $('#submitChangeAddress').text('Thay đổi')
                     $('#addressLayer').fadeIn();
                 });
 
@@ -414,6 +415,7 @@
                     $('#changeAddressForm').attr('action', '{{ route("order.addAddress") }}');
                     
                     $('#addressShowLayer').fadeOut();
+                    $('#submitChangeAddress').text('Thêm địa chỉ')
                     $('#addressLayer').fadeIn();
                 })
 

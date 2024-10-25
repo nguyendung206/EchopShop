@@ -40,11 +40,11 @@ class ProductRequest extends FormRequest
             'unittype' => ['required', 'integer', Rule::in(array_column(TypeProductUnit::cases(), 'value'))],
             'quantity' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::ONLYQUANTITY), 'nullable', 'integer', 'min:1'],
             'quantities' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL)],
-            'quantities.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'integer', 'distinct'],
-            'colors' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'array'],
-            'colors.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'string', 'distinct'],
-            'sizes' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'array'],
-            'sizes.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'string', 'distinct'],
+            'quantities.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'integer'],
+            'colors' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'nullable', 'array'],
+            'colors.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'nullable', 'string'],
+            'sizes' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'nullable', 'array'],
+            'sizes.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'nullable', 'string'],
         ];
     }
 
