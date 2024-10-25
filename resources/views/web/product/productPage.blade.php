@@ -124,7 +124,7 @@ Danh sách sản phẩm theo danh mục
                                     <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
                                             src="{{ asset('/img/icon/doc-top.png') }}"
                                             alt="">&nbsp;
-                                        {{ $product->shop->user->defaultAddress?->province->province_name }}
+                                        {{ $product->shop->province?->province_name ?? 'Chưa có địa chỉ'}}
                                     </p>
                                 </div>
                                 @else
@@ -239,7 +239,7 @@ Danh sách sản phẩm theo danh mục
                                 <p class="line-clamp-1">{{ $product->shop->name }} &nbsp;<img
                                         src="{{ asset('/img/icon/doc-top.png') }}"
                                         alt="">&nbsp;
-                                    {{ $product->shop->user->defaultAddress?->province->province_name }}
+                                    {{ $product->shop->province?->province_name ?? 'Chưa có địa chỉ'}}
                                 </p>
                             </div>
                             @else

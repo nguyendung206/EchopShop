@@ -106,7 +106,7 @@
         <div class="cancel-modal row" id="cancelModal">
             <h6 class="col-12 mt-3 mb-4">Lý do huỷ đơn hàng</h6>
 
-            @foreach(\App\Enums\CancelOrderReason::cases() as $reason)
+            @foreach(CancelOrderReasonEnums::cases() as $reason)
                 <div class="form-check  p-2 col-12 d-flex align-items-center">
                     <input class="mr-2" type="radio" name="cancel_reason" id="reason-{{$reason->value}}" value="{{$reason->value}}">
                     <label class="form-check-label mt-1" for="reason-{{ $reason->value }}">
