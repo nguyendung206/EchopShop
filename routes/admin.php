@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\admin\FeeshipController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\PolicyController;
@@ -100,7 +101,13 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::post('/store', [OrderController::class, 'store'])->name('store');
         Route::get('/{order}', [OrderController::class, 'show'])->name('show');
         Route::post('/updateStatus/{id}', [OrderController::class, 'updateStatus'])->name('updateStatus');
-
     });
 
+    //Feeship
+    Route::resource('/feeship', FeeshipController::class);
+
+    //select address
+    Route::post('/select-feeship', [FeeshipController::class, 'selectAddress'])->name('selectAddress');
+    Route::get('/get-wards', [FeeshipController::class, 'getWards']);
+    Route::post('/update-feeship', [FeeshipController::class, 'update']);
 });
