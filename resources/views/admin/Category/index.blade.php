@@ -74,22 +74,27 @@
                     </svg>
                     <span class="custom-FontSize">@lang('Làm mới')</span>
                 </a>
-                <a href="{{ request()->fullUrlWithQuery(['export' => 1]) }}"
+                {{-- request()->fullUrlWithQuery(['export' => 1]) --}}
+                <a href="{{ route('admin.category.export') }}" 
                     class="font-size btn btn-info w-25 ml-2 d-flex  btn-responsive justify-content-center">
                     <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                     <span class="custom-FontSize ml-1">@lang('Xuất file')</span>
                 </a>
-                <button type="button"
-                    class="btn btn-info w-25 btn_import ml-2 d-flex btn-responsive justify-content-center">
+                
+            </div>
+        </div>
+    </form>
+    <form action="{{route('admin.category.import')}}" method="POST" enctype="multipart/form-data" id="importForm">
+                    @csrf
+                    <input type="file" name="fileImport" accept=".xls,.xlsx,.csv" id="fileImport">
+                    <button class="btn btn-info w-25 btn_import ml-2 d-flex btn-responsive justify-content-center" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                     <span class="custom-FontSize ml-1">@lang('Tải lên')</span>
-                </button>
-            </div>
-        </div>
+                    </button>
     </form>
 </div>
 <form action="" id="form-import" method="POST" enctype="multipart/form-data">
@@ -241,6 +246,16 @@
                 });
             }
         });
+
+        
     });
+
+    $(document).ready(function() {
+        $('#fileImport').on('change', function() {
+            console.log("alo"); 
+            $('#importForm').submit(); 
+        });
+    });
+       
 </script>
 @endsection

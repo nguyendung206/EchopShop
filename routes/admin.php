@@ -54,6 +54,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::put('policy/changeStatus/{id}', [PolicyController::class, 'changeStatus'])->name('policy.changeStatus');
 
     //category
+    Route::get('/category/export', [CategoryController::class, 'export'])->name('category.export');
+    Route::post('/category/import', [CategoryController::class, 'import'])->name('category.import');
     Route::resource('/category', CategoryController::class);
     Route::post('category/changestatus/{id}', [CategoryController::class, 'status'])->name('category.changestatus');
 

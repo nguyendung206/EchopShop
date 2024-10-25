@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\CategoryExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Imports\CategoryImport;
 use App\Models\Category;
 use App\Services\CategoryService;
 use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CategoryController extends Controller
 {
@@ -110,5 +113,28 @@ class CategoryController extends Controller
 
             return redirect()->route('admin.category.index');
         }
+    }
+
+    public function export()
+    {
+        try {
+            return Excel::download(new CategoryExport, 'category.xlsx');
+            flash('Xuất file thành công!')->success();
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+
+            flash('Đã xảy ra lỗi khi xuất file!')->error();
+
+            return redirect()->back();
+        }
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('fileImport');
+        Excel::import(new CategoryImport, $file);
+
+        return redirect()->back();
     }
 }

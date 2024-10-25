@@ -195,7 +195,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -219,6 +219,7 @@ return [
         'StatusOrderEnums' => \App\Enums\StatusOrder::class,
         'TypeProductUnitEnums' => \App\Enums\TypeProductUnit::class,
         'TypeAddressEnums' => \App\Enums\TypeAddress::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
 
 ];

@@ -16,6 +16,16 @@ class Category extends Model
         'status' => Status::class,
     ];
 
+    protected $fillable = [
+        'slug',
+        'name',
+        'description',
+        'photo',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
+
     public function brands()
     {
         return $this->hasMany(Brand::class, 'category_id', 'id');

@@ -66,6 +66,7 @@ class ProfileUserController extends Controller
             }
 
             $profile->save();
+
             return redirect()->route('profile.index', ['id' => $request->id])
                 ->with('success', 'Cập nhật thông tin thành công!');
         } else {
