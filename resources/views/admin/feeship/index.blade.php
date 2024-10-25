@@ -34,24 +34,14 @@
             </div>
         </div>
         <div class="row gutters-5 mb-3 custom-change">
-            <div class="col-md-2">
-                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="province" name="province">
+            <div class="col-md-6">
+                <select class="form-control form-control-sm  mb-2 mb-md-0 font-weight-500 choose province" id="province" name="province_id">
                     <option value="">@lang('--Chọn Tỉnh/Thành phố--')</option>
-                    @foreach (\App\Enums\Status::cases() as $status)
-                    <option value="{{ $status->value }}" @if(request('status')==$status->value) selected @endif>
-                        {{ $status->label() }}
+                    @foreach ($provinces as $key => $province)
+                    <option value="{{ $province->id }}" @if(request('province_id')==$province->id) selected @endif>
+                        {{ $province->province_name }}
                     </option>
                     @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="district" name="district">
-                    <option value="">@lang('--Chọn Quận/Huyện--')</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="ward" name="ward">
-                    <option value="">@lang('--Chọn Phường/Thị xã--')</option>
                 </select>
             </div>
             <div class="col-md-6 d-flex">
@@ -85,19 +75,14 @@
     @csrf
     <input type="file" accept=".csv,.xls,.xlsx" hidden name="file" class="form-control" id="file">
 </form>
-<div class="card">
+<div class="card mx-auto" style="max-width: 700px;">
     <div class="custom-overflow repon">
         <table class="table aiz-table mb-0 table_repon">
             <thead>
                 <tr class="text-center">
                     <th class="w-60 font-weight-800">STT</th>
-                    <th class="w-140">@lang('Tên phí')</th>
-                    <th class="w-140">@lang('Chi phí')</th>
-                    <th class="w-25">@lang('Mô tả')</th>
-                    <th class="w-140">@lang('Tỉnh/Thành phố')</th>
-                    <th class="w-140">@lang('Quận/Huyện')</th>
-                    <th class="w-140">@lang('Phường/Thị xã')</th>
-                    <th>Điều chỉnh</th>
+                    <th class="">@lang('Tỉnh/Thành phố')</th>
+                    <th class="w-150">Chi tiết</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,18 +90,10 @@
                 @foreach ($datas as $key => $data)
                 <tr class="text-center">
                     <td class="font-weight-800 align-middle">{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
-                    <td class="font-weight-400 align-middle text-overflow">{{optional($data)->feename}}</td>
-                    <td class="align-middle">{{format_price($data->feeship)}}</td>
-                    <td class="font-weight-400 align-middle">{{strip_tags($data->description)}}</td>
-                    <td class="align-middle">{{ $data->province ? $data->province->province_name : '' }}</td>
-                    <td class="align-middle">{{ $data->district ? $data->district->district_name : '' }}</td>
-                    <td class="align-middle">{{ $data->ward ? $data->ward->ward_name : '' }}</td>
+                    <td class="font-weight-400 align-middle text-overflow">{{$data->province_name}}</td>
                     <td class="text-center">
-                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.feeship.edit',  $data->id ) }}" title="@lang('Update')">
-                            <i class="las la-edit"></i>
-                        </a>
-                        <a href="javascript:void(0)" data-href="{{ route('admin.feeship.destroy', $data->id) }}" data-id="{{$data->id}}" class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" title="@lang('user.delete')">
-                            <i class="las la-trash"></i>
+                        <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.feeship.show', $data->id) }}" title="@lang('Show')">
+                            <i class="las la-bars"></i>
                         </a>
                     </td>
                 </tr>
@@ -160,8 +137,8 @@
         let delete_href = $(this).attr('data-href');
 
         Swal.fire({
-            title: '@lang("Xóa Thương hiệu")',
-            text: '@lang("Bạn có muốn xóa Thương hiệu này không ?")',
+            title: '@lang("Xóa Chi phí")',
+            text: '@lang("Bạn có muốn xóa Chi phí này không ?")',
             icon: 'warning',
             confirmButtonText: '@lang("Có")',
             cancelButtonText: '@lang("Không")',
@@ -179,7 +156,7 @@
                     success: function(response) {
                         Swal.fire({
                             title: 'Xóa thành công!',
-                            text: 'Thương hiệu đã được xóa.',
+                            text: 'Chi phí đã được xóa.',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -187,7 +164,7 @@
                         });
                     },
                     error: function(err) {
-                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Thương hiệu.', 'error');
+                        Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Chi phí.', 'error');
                     }
                 });
             }

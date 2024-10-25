@@ -2,73 +2,64 @@
 
 namespace App\Services;
 
+use App\Http\Requests\FeeshipRequest;
 use App\Models\Feeship;
+use App\Models\Province;
 
 class FeeshipService
 {
     public function getFeeships($request)
     {
-        $query = Feeship::query();
+        $query = Province::query();
 
         if ($request->has('search') && $request->search != '') {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('feename', 'like', '%'.$searchTerm.'%');
+                $q->where('province_name', 'like', '%'.$searchTerm.'%');
             });
+        }
+        if ($request->has('province_id') && $request->province_id != '') {
+            $query->where('id', $request->province_id);
         }
 
         return $query->paginate(10);
     }
 
-    // public function createBrand(BrandRequest $request)
+    public function createFeeship(FeeshipRequest $request)
+    {
+        $feeship = new Feeship;
+        $feeship->feename = $request->feename;
+        $feeship->feeship = $request->feeship;
+        $feeship->description = $request->description;
+        $feeship->province_id = $request->province_id;
+        $feeship->district_id = $request->district_id;
+        $feeship->ward_id = $request->ward_id;
+        $feeship->save();
+
+        return $feeship;
+    }
+
+    // public function updateBrand(FeeshipRequest $request)
     // {
-    //     $brand = new Brand;
-    //     $brand->name = $request->name;
-    //     $brand->description = $request->description;
-    //     $brand->status = $request->status;
-    //     $brand->category_id = $request->category_id;
+    //     $feeship = Feeship::findOrFail($request->id);
+    //     $feeship->feename = $request->feename;
+    //     $feeship->feeship = $request->feeship;
+    //     $feeship->description = $request->description;
 
-    //     if ($request->hasFile('photo')) {
-    //         $brand->photo = uploadImage($request->file('photo'), 'upload/brand/');
-    //     } else {
-    //         $brand->photo = 'noproduct.png';
-    //     }
+    //     $feeship->save();
 
-    //     $brand->save();
-
-    //     return $brand;
+    //     return $feeship;
     // }
 
-    // public function updateBrand(BrandRequest $request, $id)
-    // {
-    //     $brand = Brand::findOrFail($id);
-    //     $brand->name = $request->name;
-    //     $brand->description = $request->description;
-    //     $brand->status = $request->status;
-    //     $brand->category_id = $request->category_id;
+    public function deleteFeeShip($id)
+    {
+        try {
+            $feeship = Feeship::findOrFail($id);
+            $feeship->delete();
 
-    //     if ($request->hasFile('photo')) {
-    //         $brand->photo = uploadImage($request->file('photo'), 'upload/brand/', $brand->photo);
-    //     }
-
-    //     $brand->save();
-
-    //     return $brand;
-    // }
-
-    // public function deleteBrand($id)
-    // {
-    //     try {
-    //         $brand = Brand::findOrFail($id);
-    //         if ($brand->photo && $brand->photo != 'noproduct.png') {
-    //             deleteImage($brand->photo);
-    //         }
-
-    //         $brand->delete();
-
-    //         return true;
-    //     } catch (\Exception $e) {
-    //         return false;
-    //     }
-    // }
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }
