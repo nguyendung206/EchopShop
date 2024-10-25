@@ -219,6 +219,7 @@ return [
         'StatusOrderEnums' => \App\Enums\StatusOrder::class,
         'TypeProductUnitEnums' => \App\Enums\TypeProductUnit::class,
         'TypeAddressEnums' => \App\Enums\TypeAddress::class,
+        'CancelOrderReasonEnums' => \App\Enums\CancelOrderReason::class,
     ])->toArray(),
 
 ];

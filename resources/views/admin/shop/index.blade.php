@@ -50,7 +50,7 @@
                     <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500"
                         id="status" name="status">
                         <option value="">@lang('Trạng thái')</option>
-                        @foreach (\App\Enums\Status::cases() as $status)
+                        @foreach (StatusEnums::cases() as $status)
                             <option value="{{ $status->value }}" @if (request('status') == $status->value) selected @endif>
                                 {{ $status->label() }}
                             </option>
@@ -113,8 +113,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (!empty($datas) && count($datas))
-                        @foreach ($datas as $key => $data)
+                    
+                        @forelse ($datas as $key => $data)
                             <tr class="text-center">
                                 <td class="font-weight-800 align-middle">
                                     {{ $key + 1 + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
@@ -124,16 +124,7 @@
                                 </td>
                                 <td class="font-weight-400 align-middle text-overflow">{{ optional($data)->name }}</td>
                                 <td class="font-weight-400 align-middle">
-                                    {{ $data->address }}
-                                    @if ($data->ward != null)
-                                        , {{ $data->ward->ward_name }}
-                                    @endif
-                                    @if ($data->district)
-                                        , {{ $data->district->district_name }}
-                                    @endif
-                                    @if ($data->province)
-                                        , {{ $data->province->province_name }}.</p>
-                                    @endif
+                                    {{ getAddressShop($data) }}
                                 </td>
                                 <td class="font-weight-400 align-middle">{{ $data->hotline }}</td>
                                 <td class="font-weight-400 align-middle">{{ $data->email }}</td>
@@ -162,8 +153,11 @@
                                     @endif
                                 </td>
                             </tr>
-                        @endforeach
-                    @endif
+                            @empty
+                            <tr>
+                                <td  colspan="6">Không có nhà bán hàng nào.</td>
+                            </tr>
+                        @endforelse
                 </tbody>
             </table>
         </div>
