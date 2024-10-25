@@ -48,6 +48,22 @@
                 </div>
 
                 <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Địa chỉ:')</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $shop->address }}
+                            @if ($shop->ward != null)
+                                , {{$shop->ward->ward_name}}
+                            @endif
+                            @if ($shop->district)
+                            , {{$shop->district->district_name}}
+                            @endif
+                            @if ($shop->province)
+                            , {{$shop->province->province_name}}.</p>
+                            @endif
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Giờ mở cửa:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $shop->open }}</p>

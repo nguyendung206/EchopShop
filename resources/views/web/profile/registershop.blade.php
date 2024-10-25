@@ -82,9 +82,43 @@ SALES REGISTRATION
                             </div>
                         </div>
 
+                        <label>Địa chỉ *</label>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <select class="form-control @error('province_id') is-invalid @enderror" name="province_id" id="province_select">
+                                    <option value="0">Tỉnh/Thành phố *</option>
+                                    @foreach($provinces as $province)
+                                    <option value="{{$province->id}}">{{ $province->province_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('province_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <select class="form-control @error('district_id') is-invalid @enderror" name="district_id" id="district_select">
+                                    <option value="0">Quận/Huyện *</option>
+                                    <option value="0" disabled>Vui lòng chọn thành phố trước</option>
+                                </select>
+                                @error('district_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <select class="form-control @error('ward_id') is-invalid @enderror" name="ward_id" id="ward_select">
+                                    <option value="0">Phường/Thị xã *</option>
+                                    <option value="0" disabled>Vui lòng chọn quận huyện trước</option>
+                                </select>
+                                @error('ward_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="inputAddress">Địa chỉ <span class="text-danger">*</span></label>
-                            <input value="{{old('address')}}" name="address" type="text" id="inputAddress" class="form-control @error('address') is-invalid @enderror" placeholder="Địa chỉ chi tiết">
+                            <input name="address" type="text" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') ?  old('address') : '' }}" placeholder="Địa chỉ chi tiết">
                             @error('address')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -119,4 +153,8 @@ SALES REGISTRATION
         document.getElementById('logoImageInput').click();
     });
 </script>
+
+@section('script')
+    @include('admin.customer.province')
+@endsection
 @endsection

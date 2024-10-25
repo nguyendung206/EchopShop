@@ -21,6 +21,9 @@ class ShopRequest extends FormRequest
             'close' => 'required|date_format:H:i|after_or_equal:open',
             'address' => 'required|string|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'province_id' => 'required|not_in:0',
+            'district_id' => 'required|not_in:0',
+            'ward_id' => 'required|not_in:0',
         ];
     }
 
@@ -34,6 +37,9 @@ class ShopRequest extends FormRequest
             'close' => 'Giờ đóng cửa',
             'address' => 'Địa chỉ',
             'logo' => 'Logo',
+            'province_id' => 'Tỉnh/Thành phố',
+            'district_id' => 'Quận/Huyện',
+            'ward_id' => 'Phường/Thị xã',
         ];
     }
 }

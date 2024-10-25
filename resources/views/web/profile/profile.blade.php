@@ -193,5 +193,4 @@ Profile
         document.getElementById('identificationImageInput').click();
     });
 </script>
-@include('admin.customer.province')
 @endsection
