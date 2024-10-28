@@ -30,11 +30,12 @@ class CategoryController extends Controller
     {
         try {
             $datas = $this->categoryService->getCategories($request);
-            if(isset($request->is_export)) {
+            if (isset($request->is_export)) {
                 flash('Xuất file thành công!')->success();
+
                 return Excel::download(new CategoryExport($datas), 'category.xlsx');
             }
-    
+
             return view('admin.category.index', compact('datas'));
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi tải danh sách loại hàng!')->error();
@@ -167,13 +168,13 @@ class CategoryController extends Controller
     {
         try {
             $fileName = 'import_template.xlsx';
-            $path = public_path('assets/theme/' . $fileName);
+            $path = public_path('assets/theme/'.$fileName);
             flash('Tải file thành công!')->success();
-    
+
             return response()->download($path);
         } catch (\Exception $e) {
             flash('Xảy ra lỗi, tải file về thất bại!')->error();
-    
+
             return redirect()->back();
         }
     }

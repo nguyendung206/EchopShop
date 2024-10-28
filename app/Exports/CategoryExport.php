@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\Category;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class CategoryExport implements FromCollection
@@ -13,7 +12,6 @@ class CategoryExport implements FromCollection
     {
         $this->categories = $categories;
     }
-
 
     public function collection()
     {
