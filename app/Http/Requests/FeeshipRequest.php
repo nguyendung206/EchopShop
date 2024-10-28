@@ -27,9 +27,9 @@ class FeeshipRequest extends FormRequest
             'feename' => 'required|string|max:255',
             'feeship' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
-            'province_id' => 'required|exists:provinces,id',
-            'district_id' => 'required|exists:districts,id',
-            'ward_id' => 'required|exists:wards,id',
+            'province_id' => 'nullable|exists:provinces,id',
+            'district_id' => 'nullable|exists:districts,id',
+            'ward_id' => 'nullable|exists:wards,id',
         ];
     }
 

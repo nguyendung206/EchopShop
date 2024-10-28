@@ -34,8 +34,8 @@
             </div>
         </div>
         <div class="row gutters-5 mb-3 custom-change">
-            <div class="col-md-6">
-                <select class="form-control form-control-sm  mb-2 mb-md-0 font-weight-500 choose province" id="province" name="province_id">
+            <div class="col-md-6 res-status">
+                <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500" id="province" name="province_id">
                     <option value="">@lang('--Chọn Tỉnh/Thành phố--')</option>
                     @foreach ($provinces as $key => $province)
                     <option value="{{ $province->id }}" @if(request('province_id')==$province->id) selected @endif>
@@ -86,10 +86,11 @@
                 </tr>
             </thead>
             <tbody>
-                @if (!empty($datas) && count($datas))
-                @foreach ($datas as $key => $data)
+                @forelse ($datas as $key => $data)
                 <tr class="text-center">
-                    <td class="font-weight-800 align-middle">{{ ($key + 1) + ($datas->currentPage() - 1) * $datas->perPage() }}</td>
+                    <td class="font-weight-bold align-middle">
+                        {{ $key + 1 }}
+                    </td>
                     <td class="font-weight-400 align-middle text-overflow">{{$data->province_name}}</td>
                     <td class="text-center">
                         <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('admin.feeship.show', $data->id) }}" title="@lang('Show')">
@@ -97,15 +98,13 @@
                         </a>
                     </td>
                 </tr>
-                @endforeach
-                @endif
+                @empty
+                <tr>
+                    <td colspan="100%" class="text-center">@lang('Không có dữ liệu')</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
-    </div>
-</div>
-<div class="pagination-us">
-    <div class="aiz-pagination">
-        {{ $datas->appends(request()->input())->links("pagination::bootstrap-4") }}
     </div>
 </div>
 @endsection

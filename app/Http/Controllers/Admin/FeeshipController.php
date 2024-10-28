@@ -12,15 +12,11 @@ use App\Services\FeeshipService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FeeshipController extends Controller
 {
-    protected $feeshipService;
-
-    public function __construct(FeeshipService $feeshipService)
-    {
-        $this->feeshipService = $feeshipService;
-    }
+    public function __construct(public readonly FeeshipService $feeshipService) {}
 
     public function selectAddress(Request $request)
     {
@@ -75,24 +71,34 @@ class FeeshipController extends Controller
                 ->where('district_id', $request->district_id)
                 ->where('ward_id', $request->ward_id)
                 ->first();
+
             if ($feeship) {
-                flash('Chi phí vận chuyển đã tồn tại!')->error();
-            } else {
-                $this->feeshipService->createFeeship($request);
-                flash('Thêm mới chi phí vận chuyển thành công!')->success();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chi phí vận chuyển đã tồn tại!',
+                    'errors' => [
+                        'district_id' => 'Chi phí đã tồn tại cho khu vực này.',
+                    ],
+                ], 400);
             }
 
-            return redirect()->route('admin.feeship.show', $request->province_id);
-        } catch (Exception $e) {
-            flash('Đã xảy ra lỗi khi thêm mới chi phí vận chuyển!')->error();
+            $this->feeshipService->createFeeship($request);
 
-            return redirect()->back()->withInput();
+            return response()->json(['success' => true, 'message' => 'Thêm mới chi phí vận chuyển thành công!']);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi khi thêm mới chi phí vận chuyển!',
+                'errors' => [
+                    'district_id' => 'Có lỗi xảy ra. Vui lòng thử lại.',
+                ],
+            ], 500);
         }
     }
 
     public function show($id)
     {
-        $districts = District::where('province_id', $id)->paginate(10);
+        $districts = District::where('province_id', $id)->get();
 
         return view('admin.feeship.show', compact('districts'));
     }
@@ -109,33 +115,47 @@ class FeeshipController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(FeeshipRequest $request, $id)
     {
-        $feeship = Feeship::findOrFail($request->id);
-        if ($request->has('value')) {
-            $feeship->feeship = $request->value;
+        try {
+            $feeship = $this->feeshipService->updateFeeship($request, $id);
+            $districtName = $feeship->district->district_name;
+
+            return response()->json([
+                'message' => 'Cập nhật thành công!',
+                'feeship' => $feeship,
+                'districtName' => $districtName,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Cập nhật phí vận chuyển thất bại: '.$e->getMessage());
+
+            return response()->json([
+                'message' => 'Đã có lỗi xảy ra!',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $feeship->save();
-
-        return response()->json(['message' => 'Cập nhật thành công!']);
     }
 
     public function destroy($id)
     {
         try {
-            $result = $this->feeshipService->deleteFeeShip($id);
+            $feeship = Feeship::findOrFail($id);
+            $districtName = $feeship->district->district_name;
+            $districtId = $feeship->district_id;
+            $result = $this->feeshipService->deleteFeeship($id);
             if ($result) {
-                flash('Xóa chi phí thành công!')->success();
+                return response()->json([
+                    'message' => 'Xóa chi phí thành công!',
+                    'districtId' => $districtId,
+                    'districtName' => $districtName,
+                ]);
             } else {
-                flash('Đã xảy ra lỗi khi xóa chi phí!')->error();
+                return response()->json(['message' => 'Đã xảy ra lỗi khi xóa chi phí!'], 500);
             }
         } catch (ModelNotFoundException $e) {
-            flash('Chi phí không tồn tại!')->error();
+            return response()->json(['message' => 'Chi phí không tồn tại!'], 404);
         } catch (Exception $e) {
-            flash('Đã xảy ra lỗi khi xóa chi phí!')->error();
+            return response()->json(['message' => 'Đã xảy ra lỗi khi xóa chi phí!'], 500);
         }
-
-        return redirect()->route('admin.feeship.index');
     }
 }

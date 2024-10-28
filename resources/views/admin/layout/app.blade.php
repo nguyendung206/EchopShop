@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ static_asset('assets/css/aiz-core.css') }}">
     <link rel="stylesheet" href="{{ static_asset('assets/css/custom-style.css?v=' . time()) }}">
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
     @yield('css')
     @yield('header')
     <style>
@@ -99,6 +100,55 @@
 
         .ck p {
             margin: 0;
+        }
+        .toast {
+        border-radius: 8px;
+        background-color: #333;
+        color: #fff;
+        position: relative;
+        padding: 15px 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .toast-success {
+            background-color: #28a745;
+        }
+
+        .toast-error {
+            background-color: #dc3545;
+        }
+
+        .toast-info {
+            background-color: #17a2b8;
+        }
+
+        .toast-warning {
+            background-color: #ffc107;
+        }
+
+        .toast-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .toast-message {
+            line-height: 1.5;
+        }
+
+        .toast-close-button {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .toast-close-button:hover {
+            color: #ddd;
         }
         @keyframes loadingC {
             0 {
@@ -190,10 +240,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.3.2/js/lightgallery.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
     @yield('script')
 
-
+    <script>
+        // Toastr configuration with close button
+        @if(session('success'))
+        toastr.success("{{ session('success') }}", null, {
+            positionClass: 'toast-bottom-left',
+            timeOut: 5000
+        });
+        @elseif(session('error'))
+        toastr.error("{{ session('error') }}", null, {
+            positionClass: 'toast-bottom-left',
+            timeOut: 5000
+        });
+        @elseif(session('info'))
+        toastr.info("{{ session('info') }}", null, {
+            positionClass: 'toast-bottom-left',
+            timeOut: 5000
+        });
+        @elseif(session('warning'))
+        toastr.warning("{{ session('warning') }}", null, {
+            positionClass: 'toast-bottom-left',
+            timeOut: 5000
+        });
+        @endif
+    </script>
     <script type="text/javascript">
         @foreach (session('flash_notification', collect())->toArray() as $message)
             AIZ.plugins.notify('{{ $message['level'] }}', '{{ $message['message'] }}');

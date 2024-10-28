@@ -22,7 +22,7 @@ class FeeshipService
             $query->where('id', $request->province_id);
         }
 
-        return $query->paginate(10);
+        return $query->get();
     }
 
     public function createFeeship(FeeshipRequest $request)
@@ -39,27 +39,23 @@ class FeeshipService
         return $feeship;
     }
 
-    // public function updateBrand(FeeshipRequest $request)
-    // {
-    //     $feeship = Feeship::findOrFail($request->id);
-    //     $feeship->feename = $request->feename;
-    //     $feeship->feeship = $request->feeship;
-    //     $feeship->description = $request->description;
-
-    //     $feeship->save();
-
-    //     return $feeship;
-    // }
-
-    public function deleteFeeShip($id)
+    public function updateFeeship(FeeshipRequest $request, $id)
     {
-        try {
-            $feeship = Feeship::findOrFail($id);
-            $feeship->delete();
+        $feeship = Feeship::findOrFail($id);
+        $feeship->feename = $request->feename;
+        $feeship->description = $request->description;
+        $feeship->feeship = $request->feeship;
 
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        $feeship->save();
+
+        return $feeship;
+    }
+
+    public function deleteFeeship($id)
+    {
+        $feeship = Feeship::findOrFail($id);
+        $feeship->delete();
+
+        return true;
     }
 }
