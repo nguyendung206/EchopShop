@@ -21,12 +21,17 @@
             <div class="content-address-main">
                 <div class="location-address"><i class="fa-solid fa-location-dot"></i> Địa chỉ nhận hàng</div>
                 <div class="information-receive">
-                    <span class="infor-address">
-                    <b class="mr-3">
-                    {{ $defaultAddress->user_name }} (+84) {{ $defaultAddress->phone }}</b>
-                    {{ $defaultAddress->street }}, {{ $defaultAddress->ward->ward_name }}, {{ $defaultAddress->district->district_name }},
-                    {{ $defaultAddress->province->province_name }}</span>
-                    <button class="change-address p-1 b-radius" id="btnChangeAddress">Thay đổi</button>
+                    @if ($user->defaultAddress == null)
+                        <span class="infor-address">Vui lòng thêm địa chỉ của bạn <a href="{{route("profile.address")}}">Tại đây</a></span>
+                    @else
+                        <span class="infor-address">
+                        <b class="mr-3">
+                        {{ $defaultAddress->user_name }} (+84) {{ $defaultAddress->phone }}</b>
+                        {{ $defaultAddress->street }}, {{ $defaultAddress->ward->ward_name }}, {{ $defaultAddress->district->district_name }},
+                        {{ $defaultAddress->province->province_name }}</span>
+                        <button class="change-address p-1 b-radius" id="btnChangeAddress">Thay đổi</button>
+                    @endif
+
                 </div>
                 
             </div>
@@ -218,11 +223,16 @@
                         <div class="total-pay pb-2">
                             <div>Tổng thanh toán</div> <b>29.850.100 VNĐ</b>
                         </div> --}}
-                        <input type="hidden" name="shipping_address" value="{{ $defaultAddress->street }}">
-                        <input type="hidden" name="province_id_order" value="{{ $defaultAddress->province_id }}">
-                        <input type="hidden" name="district_id_order" value="{{ $defaultAddress->district_id }}">
-                        <input type="hidden" name="ward_id_order" value="{{ $defaultAddress->ward_id }}">
-                        <div class="button-pay text-right"><button class="b-radius" type="submit">Đặt hàng</button></div>
+                        @if ($user->defaultAddress)
+                            
+                            <input type="hidden" name="shipping_address" value="{{ $defaultAddress->street }}">
+                            <input type="hidden" name="province_id_order" value="{{ $defaultAddress->province_id }}">
+                            <input type="hidden" name="district_id_order" value="{{ $defaultAddress->district_id }}">
+                            <input type="hidden" name="ward_id_order" value="{{ $defaultAddress->ward_id }}">
+                            <div class="button-pay text-right"><button class="b-radius" type="submit">Đặt hàng</button></div>
+                        @else
+                            <div class="button-pay text-right"><a href="{{route("profile.address")}}" class="b-radius" >Thêm địa chỉ để đặt hàng</a></div>
+                        @endif
                     </div>
                 </div>
 
