@@ -12,6 +12,7 @@ use App\Services\StatusService;
 use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class CategoryController extends Controller
 {
@@ -132,9 +133,44 @@ class CategoryController extends Controller
 
     public function import(Request $request)
     {
-        $file = $request->file('fileImport');
-        Excel::import(new CategoryImport, $file);
+        try {
 
-        return redirect()->back();
+            $file = $request->file('fileImport');
+            $data = Excel::toArray(new CategoryImport, $file);
+            if (empty($data) || count($data[0]) == 0) {
+                flash('Tải file lên thất bại!')->error();
+
+                return redirect()->back()->withErrors([
+                    'data' => 'File rỗng không thể import dữ liệu',
+                ]);
+            }
+            $rows = $data[0];
+            $previewData = array_slice($rows, 0, 1); // Lấy 10 hàng đầu tiên
+            if (! isset($previewData[0]['slug']) && ! isset($previewData[0]['name']) && ! isset($previewData[0]['description']) && ! isset($previewData[0]['photo']) && ! isset($previewData[0]['status'])) {
+                flash('Tải file lên thất bại!')->error();
+
+                return redirect()->back()->withErrors([
+                    'header' => 'Dòng đầu tiên trong file phải là tên của các cột: slug, name, description, photo, status',
+                ]);
+            }
+
+            $file = $request->file('fileImport');
+            Excel::import(new CategoryImport, $file);
+            flash('Tải file lên thành công!')->success();
+
+            return redirect()->back();
+        } catch (ValidationException $e) {
+            flash('Tải file lên thất bại!')->error();
+            $failures = $e->failures();
+            $messages = [];
+            foreach ($failures as $failure) {
+                $row = $failure->row();
+                foreach ($failure->errors() as $error) {
+                    $messages[] = "Có lỗi ở dòng {$row}. {$error}";
+                }
+            }
+
+            return redirect()->back()->withErrors($messages);
+        }
     }
 }
