@@ -220,6 +220,7 @@ return [
         'TypeProductUnitEnums' => \App\Enums\TypeProductUnit::class,
         'TypeAddressEnums' => \App\Enums\TypeAddress::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'CancelOrderReasonEnums' => \App\Enums\CancelOrderReason::class,
     ])->toArray(),
 
 ];
