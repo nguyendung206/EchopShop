@@ -50,7 +50,7 @@ ORDER
                             {{ $data->status->label() }}
                         </td>
                         <td class="align-middle">
-                            @if($data->status->value === \App\Enums\StatusOrder::COMPLETED->value)
+                            @if($data->status->value === StatusOrderEnums::COMPLETED->value)
                             @if(auth()->user()->hasRated($orderDetail->product->id))
                             <a class="disable-buy"
                                 style="padding: 8px 20px; background: #ddd; color: #666; border-radius: 5px; cursor: not-allowed;"

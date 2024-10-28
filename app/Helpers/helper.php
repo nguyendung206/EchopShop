@@ -22,6 +22,24 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
+if (! function_exists('getAddressShop')) {
+    function getAddressShop($shop)
+    {
+        $address = $shop->address;
+        if ($shop->ward != null) {
+            $address .= ', '.$shop->ward->ward_name;
+        }
+        if ($shop->district != null) {
+            $address .= ', '.$shop->district->district_name;
+        }
+        if ($shop->province != null) {
+            $address .= ', '.$shop->province->province_name.'.';
+        }
+
+        return $address;
+    }
+}
+
 if (! function_exists('calculateDiscountAmount')) {
     function calculateDiscountAmount($type, $originalPrice, $value, $maxValue)
     {

@@ -473,7 +473,7 @@ $totalQuantity = 0;
                         <div class="user-product">
                             <p class="line-clamp-1">{{ $relatedProduct->shop->name }} &nbsp;
                                 <img src="{{ asset('/img/icon/doc-top.png') }}" alt="" style="position: relative;">
-                                &nbsp; {{ $relatedProduct->shop->user->defaultAddress->province->province_name }}
+                                &nbsp; {{ $relatedProduct->shop->province?->province_name }}
                             </p>
                         </div>
                         @else
