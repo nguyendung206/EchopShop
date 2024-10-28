@@ -24,6 +24,21 @@ class Shop extends Model
         return $this->hasMany(Product::class, 'shop_id', 'id');
     }
 
+    public function ward()
+    {
+        return $this->belongsTo(Ward::class, 'ward_id', 'id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id', 'id');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'id');
+    }
+
     public function waitproducts()
     {
         return $this->hasMany(WaitProduct::class, 'shop_id', 'id');

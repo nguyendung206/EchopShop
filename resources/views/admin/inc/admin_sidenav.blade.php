@@ -127,13 +127,31 @@
                         </li>
                     </ul>
                 </li>
+
                 <li class="aiz-side-nav-item">
-                    <a href="{{ route('admin.discount.index') }}"
-                        class="aiz-side-nav-link {{ areActiveRoutes(['admin.discount.index']) }}">
-                        <i class="las la-percentage aiz-side-nav-icon"></i>
-                        <span class="aiz-side-nav-text">Giảm giá</span>
+                    <a href="#" class="aiz-side-nav-link ">
+                        <i class="las la-newspaper aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">Quản lý chi phí</span>
+                        <span class="aiz-side-nav-arrow"></span>
                     </a>
+                    <ul class="aiz-side-nav-list level-2">
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.discount.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['admin.discount.index']) }}">
+                                <i class="las la-percentage aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">Giảm giá</span>
+                            </a>
+                        </li>
+                        <li class="aiz-side-nav-item">
+                            <a href="{{ route('admin.feeship.index') }}"
+                                class="aiz-side-nav-link {{ areActiveRoutes(['admin.feeship.index']) }}">
+                                <i class="las la-shipping-fast aiz-side-nav-icon"></i>
+                                <span class="aiz-side-nav-text">Vận chuyển</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
                 <li class="aiz-side-nav-item">
                     <a href="{{ route('admin.order.index') }}"
                         class="aiz-side-nav-link {{ areActiveRoutes(['admin.order.index']) }}">

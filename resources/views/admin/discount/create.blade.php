@@ -89,10 +89,10 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label font-weight-500">Phạm vi giảm giá</label>
                         <div class="col-sm-9">
-                            @foreach(\App\Enums\TypeDiscountScope::cases() as $scope)
+                            @foreach(TypeDiscountScopeEnums::cases() as $scope)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="scope_type" id="scope_{{ $scope->value }}" value="{{ $scope->value }}"
-                                    {{ old('scope_type', \App\Enums\TypeDiscountScope::GLOBAL->value) == $scope->value ? 'checked' : '' }}>
+                                    {{ old('scope_type', TypeDiscountScopeEnums::GLOBAL->value) == $scope->value ? 'checked' : '' }}>
                                 <label style="font-size: 12px;" class="form-check-label" for="scope{{ $scope->value }}">
                                     @lang($scope->label())
                                 </label>
@@ -252,7 +252,7 @@
 
             function toggleLocationFields() {
                 var selectedValue = $('input[name="scope_type"]:checked').val();
-                var regionalValue = "{{ \App\Enums\TypeDiscountScope::REGIONAL->value }}";
+                var regionalValue = "{{ TypeDiscountScopeEnums::REGIONAL->value }}";
 
                 if (selectedValue == regionalValue) {
                     $('#province_select').closest('.form-group').slideDown();

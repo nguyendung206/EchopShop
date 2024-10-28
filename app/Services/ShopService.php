@@ -36,6 +36,9 @@ class ShopService
         $shop->close = $request->close;
         $shop->address = $request->address;
         $shop->user_id = $request->user_id;
+        $shop->province_id = $request->province_id;
+        $shop->district_id = $request->district_id;
+        $shop->ward_id = $request->ward_id;
         if ($request->hasFile('logo')) {
             $shop->logo = uploadImage($request->file('logo'), 'upload/shop/');
         } else {

@@ -52,7 +52,7 @@
                     <div class="form-group row">
                         <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Kiểu chính sách')</label>
                         <div class="col-sm-9 mt-2">
-                            @foreach(\App\Enums\TypePolicy::cases() as $type)
+                            @foreach(TypePolicyEnums::cases() as $type)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input @error('type') is-invalid @enderror" type="radio" name="type" id="type_{{ $type->value }}" value="{{ $type->value }}"
                                     {{ (old('type') == $type->value ||  $policy->type->value ==  $type->value) ? 'checked' : '' }}>
