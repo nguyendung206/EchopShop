@@ -13,6 +13,8 @@ class OrderController extends Controller
 {
     protected $orderService;
 
+    protected $notificationService;
+
     public function __construct(OrderService $orderService, NotificationService $notificationService)
     {
         $this->orderService = $orderService;
