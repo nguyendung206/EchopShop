@@ -78,7 +78,7 @@
                         </svg>
                         <span class="custom-FontSize">@lang('Làm mới')</span>
                     </a>
-                    <a href="{{ route('admin.category.export') }}"
+                    <a href="{{ request()->fullUrlWithQuery(['is_export' => 1]) }}"
                         class="font-size btn btn-info w-25 ml-2 d-flex  btn-responsive justify-content-center">
                         <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                         <span class="custom-FontSize ml-1">@lang('Xuất file')</span>
