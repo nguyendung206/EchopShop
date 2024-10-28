@@ -30,7 +30,12 @@ class CategoryController extends Controller
     {
         try {
             $datas = $this->categoryService->getCategories($request);
-
+            dd($request);
+            if(isset($request->is_export)) {
+                flash('Xuất file thành công!')->success();
+                return Excel::download(new CategoryExport($datas), 'category.xlsx');
+            }
+    
             return view('admin.category.index', compact('datas'));
         } catch (Exception $e) {
             flash('Đã xảy ra lỗi khi tải danh sách loại hàng!')->error();
@@ -116,21 +121,6 @@ class CategoryController extends Controller
         }
     }
 
-    public function export()
-    {
-        try {
-            return Excel::download(new CategoryExport, 'category.xlsx');
-            flash('Xuất file thành công!')->success();
-
-            return redirect()->back();
-        } catch (\Exception $e) {
-
-            flash('Đã xảy ra lỗi khi xuất file!')->error();
-
-            return redirect()->back();
-        }
-    }
-
     public function import(Request $request)
     {
         try {
@@ -178,13 +168,13 @@ class CategoryController extends Controller
     {
         try {
             $fileName = 'import_template.xlsx';
-            $path = storage_path('app/excel-templates/'.$fileName);
-            flash('Tải file thành công!')->error();
-
+            $path = public_path('assets/theme/' . $fileName);
+            flash('Tải file thành công!')->success();
+    
             return response()->download($path);
         } catch (\Exception $e) {
             flash('Xảy ra lỗi, tải file về thất bại!')->error();
-
+    
             return redirect()->back();
         }
     }

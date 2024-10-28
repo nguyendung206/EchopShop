@@ -7,11 +7,16 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class CategoryExport implements FromCollection
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
+    protected $categories;
+
+    public function __construct($categories = null)
+    {
+        $this->categories = $categories;
+    }
+
+
     public function collection()
     {
-        return Category::all();
+        return $this->categories;
     }
 }
