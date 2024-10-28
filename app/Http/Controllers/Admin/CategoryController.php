@@ -173,4 +173,19 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors($messages);
         }
     }
+
+    public function downloadExcel()
+    {
+        try {
+            $fileName = 'import_template.xlsx';
+            $path = storage_path('app/excel-templates/'.$fileName);
+            flash('Tải file thành công!')->error();
+
+            return response()->download($path);
+        } catch (\Exception $e) {
+            flash('Xảy ra lỗi, tải file về thất bại!')->error();
+
+            return redirect()->back();
+        }
+    }
 }

@@ -37,7 +37,7 @@
                     </a>
                 </div>
                 <div class="col-md-3 text-md-right download" style="padding-left: 3px">
-                    <a href="" type="button"
+                    <a href="{{route('admin.category.download')}}" type="button"
                         class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
                         <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                         <span class="custom-FontSize ml-1">{{ __('Tải về') }}</span>
