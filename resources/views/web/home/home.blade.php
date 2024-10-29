@@ -133,9 +133,16 @@ HOME
                             </a>
                             @endauth
 
+                            @auth
                             <a class="btn-buy-product" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
                                 Mua ngay
                             </a>
+                            @else
+                            <a class="btn-buy-product" href="{{ route('web.login') }}">
+                                Mua ngay
+                            </a>
+                            @endauth
+
                         </div>
                     </div>
                 </div>
@@ -291,9 +298,15 @@ HOME
                             </a>
                             @endauth
 
+                            @auth
                             <a class="btn-buy-product" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">
                                 Mua ngay
                             </a>
+                            @else
+                            <a class="btn-buy-product" href="{{ route('web.login') }}">
+                                Mua ngay
+                            </a>
+                            @endauth
                         </div>
                     </div>
                 </div>

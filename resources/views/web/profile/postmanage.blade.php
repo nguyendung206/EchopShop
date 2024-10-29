@@ -18,7 +18,7 @@
             <div class="float-right mb-4">
                 <form action="{{ route('post.index') }}" method="GET" id="searchForm">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="searchpost" placeholder="Nhập tên sản phẩm..." aria-label="Tìm kiếm bài viết" aria-describedby="basic-addon2" style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
+                        <input type="text" class="form-control" name="searchpost" placeholder="Nhập tên sản phẩm..." aria-label="Tìm kiếm bài viết" aria-describedby="basic-addon2" style="border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important;">
                         <div class="input-group-append">
                             <button class="input-group-text search-post" id="basic-addon2">
                                 <i class="fa-solid fa-magnifying-glass"></i>
