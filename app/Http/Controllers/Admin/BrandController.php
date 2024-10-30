@@ -12,6 +12,8 @@ use App\Services\StatusService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\BrandExport;
 
 class BrandController extends Controller
 {
@@ -29,6 +31,12 @@ class BrandController extends Controller
     {
         try {
             $datas = $this->brandService->getBrands($request);
+
+            if (isset($request->is_export)) {
+                flash('Xuất file thành công!')->success();
+
+                return Excel::download(new BrandExport($datas), 'category.xlsx');
+            }
 
             return view('admin.brand.index', compact('datas'));
         } catch (Exception $e) {
