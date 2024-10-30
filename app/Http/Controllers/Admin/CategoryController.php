@@ -31,8 +31,6 @@ class CategoryController extends Controller
         try {
             $datas = $this->categoryService->getCategories($request);
             if (isset($request->is_export)) {
-                flash('Xuất file thành công!')->success();
-
                 return Excel::download(new CategoryExport($datas), 'category.xlsx');
             }
 
@@ -146,6 +144,7 @@ class CategoryController extends Controller
 
             $file = $request->file('fileImport');
             Excel::import(new CategoryImport, $file);
+
             flash('Tải file lên thành công!')->success();
 
             return redirect()->back();
