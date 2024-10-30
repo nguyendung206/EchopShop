@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Status;
+use App\Exports\BrandExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandRequest;
+use App\Imports\BrandImport;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Services\BrandService;
@@ -12,6 +14,8 @@ use App\Services\StatusService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class BrandController extends Controller
 {
@@ -29,6 +33,12 @@ class BrandController extends Controller
     {
         try {
             $datas = $this->brandService->getBrands($request);
+
+            if (isset($request->is_export)) {
+                flash('Xuất file thành công!')->success();
+
+                return Excel::download(new BrandExport($datas), 'brand.xlsx');
+            }
 
             return view('admin.brand.index', compact('datas'));
         } catch (Exception $e) {
@@ -132,5 +142,48 @@ class BrandController extends Controller
         }
 
         return redirect()->route('admin.brand.index');
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $file = $request->file('fileImport');
+            $data = Excel::toArray(new BrandImport, $file);
+            if (empty($data) || count($data[0]) == 0) {
+                flash('Tải file lên thất bại!')->error();
+
+                return redirect()->back()->withErrors([
+                    'data' => 'File rỗng không thể import dữ liệu',
+                ]);
+            }
+            $rows = $data[0];
+            $previewData = array_slice($rows, 0, 1);
+            if (! isset($previewData[0]['slug']) && ! isset($previewData[0]['name']) && ! isset($previewData[0]['description']) && ! isset($previewData[0]['photo']) && ! isset($previewData[0]['status']) && ! isset($previewData[0]['category_name'])) {
+                flash('Tải file lên thất bại!')->error();
+
+                return redirect()->back()->withErrors([
+                    'header' => 'Dòng đầu tiên trong file phải là tên của các cột: slug, name, description, photo, status, category_name',
+                ]);
+            }
+
+            $file = $request->file('fileImport');
+            Excel::import(new BrandImport, $file);
+
+            flash('Tải file lên thành công!')->success();
+
+            return redirect()->back();
+        } catch (ValidationException $e) {
+            flash('Tải file lên thất bại!')->error();
+            $failures = $e->failures();
+            $messages = [];
+            foreach ($failures as $failure) {
+                $row = $failure->row();
+                foreach ($failure->errors() as $error) {
+                    $messages[] = "Có lỗi ở dòng {$row}. {$error}";
+                }
+            }
+
+            return redirect()->back()->withErrors($messages);
+        }
     }
 }

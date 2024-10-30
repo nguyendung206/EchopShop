@@ -76,6 +76,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::put('banner/changeStatus/{id}', [BannerController::class, 'changeStatus'])->name('banner.changeStatus');
 
     //brand
+    Route::post('/brand/import', [BrandController::class, 'import'])->name('brand.import');
     Route::resource('/brand', BrandController::class);
     Route::post('brand/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
 
