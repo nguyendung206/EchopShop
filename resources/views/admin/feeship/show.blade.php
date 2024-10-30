@@ -3,17 +3,6 @@
 @lang('Phí vận chuyển')
 @endsection
 @section('content')
-<style>
-    .text-truncate-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: normal;
-        height: 54px;
-    }
-</style>
 <div class="aiz-titlebar text-left mt-2 mb-3">
     <div class="align-items-center">
         <h1 class="h3">
@@ -34,10 +23,11 @@
                 </tr>
             </thead>
             <tbody>
-                @if (!empty($districts) && count($districts))
-                @foreach ($districts as $key => $district)
+                @forelse ($districts as $key => $district)
                 <tr class="text-center">
-                    <td class="font-weight-800 align-middle">{{ ($key + 1) + ($districts->currentPage() - 1) * $districts->perPage() }}</td>
+                    <td class="font-weight-bold align-middle">
+                        {{ $key + 1 }}
+                    </td>
                     <td class="font-weight-400 align-middle text-overflow">{{$district->district_name ?? ""}}</td>
                     <td class="text-center">
                         <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm open-modal-feeship" href="#"
@@ -50,102 +40,29 @@
                         </a>
                     </td>
                 </tr>
-                @endforeach
-                @endif
+                @empty
+                <tr>
+                    <td colspan="100%" class="text-center">@lang('Không có dữ liệu')</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 </div>
-<div class="pagination-us">
-    <div class="aiz-pagination">
-        {{ $districts->appends(request()->input())->links("pagination::bootstrap-4") }}
-    </div>
-</div>
-<!-- Modal thêm-->
-<div class="modal fade" id="wardModal" tabindex="-1" role="dialog" aria-labelledby="wardModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="wardModalLabel">@lang('Cập nhật thông tin ') {{$districts->first()->province_id}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="wardForm" action="{{route('admin.feeship.store')}}" method="post">
-                    @csrf
-                    <input type="hidden" name="province_id" value="{{$districts->first()->province_id}}">
-                    <input type="hidden" name="district_id" id="district_id">
-                    <div class="form-group">
-                        <label for="ward-select">@lang('Chọn Phường/Xã')</label>
-                        <select class="form-control" id="ward-select" name="ward_id">
-                            <option value="">@lang('--Chọn Phường/Xã--')</option>
-                            <!-- Danh sách từ ajax -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">@lang('Tên')</label>
-                        <input type="text" class="form-control" id="name" name="feename" placeholder="@lang('Nhập tên')">
-                    </div>
-                    <div class="form-group">
-                        <label for="price">@lang('Giá')</label>
-                        <input type="number" class="form-control" id="price" name="feeship" placeholder="@lang('Nhập giá')">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">@lang('Mô tả')</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="@lang('Nhập mô tả')"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary float-right">@lang('Lưu')</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Feeship -->
-<div class="modal fade" id="feeshipModal" tabindex="-1" role="dialog" aria-labelledby="feeshipModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document" style="max-width: 700px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="feeshipModalLabel">@lang('Thông tin phí vận chuyển')</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr class="text-center">
-                            <th>@lang('Phường/Xã')</th>
-                            <th>@lang('Tên')</th>
-                            <th>@lang('Giá')</th>
-                            <th style="width: 200px;">@lang('Mô tả')</th>
-                        </tr>
-                    </thead>
-                    <tbody id="feeship-data">
-                        <!-- Dữ liệu sẽ được thêm vào đây -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
+@include('admin.feeship.modalfeeship')
 @endsection
-
 @section('script')
 <script>
     function showModal(districtId, districtName) {
         $.ajax({
-            url: '/admin/get-wards',
+            url: '{{ route("admin.getWards") }}',
             method: 'GET',
             data: {
                 district_id: districtId
             },
             success: function(response) {
                 const {
-                    wards,
-                    feeships
+                    wards
                 } = response;
 
                 $('#district_id').val(districtId);
@@ -160,11 +77,45 @@
                 $('#wardModal').modal('show');
             },
             error: function(xhr) {
-                console.error('Lỗi khi tải dữ liệu:', xhr.responseText);
-                alert('Có lỗi xảy ra, vui lòng thử lại!');
+                toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, {
+                    positionClass: 'toast-bottom-left'
+                });
             }
         });
     }
+
+    $('#wardForm').on('submit', function(event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message, null, {
+                        positionClass: 'toast-bottom-left'
+                    });
+                    $('#wardModal').modal('hide');
+                }
+            },
+            error: function(xhr) {
+                let errors = xhr.responseJSON.errors;
+
+                $('.invalid-feedback').remove();
+
+                $.each(errors, function(key, message) {
+                    $(`[name=${key}]`).addClass('is-invalid');
+                    $(`[name=${key}]`).after(`<div class="invalid-feedback">${message}</div>`);
+                });
+
+                toastr.error('Có lỗi xảy ra khi thêm chi phí!', null, {
+                    positionClass: 'toast-bottom-left'
+                });
+            }
+        });
+    });
+
 
     $(document).on('click', '.open-modal', function() {
         var districtId = $(this).data('id');
@@ -174,7 +125,7 @@
 
     function showModalFeeship(districtId, districtName) {
         $.ajax({
-            url: '/admin/get-wards',
+            url: '{{ route("admin.getWards") }}',
             method: 'GET',
             data: {
                 district_id: districtId
@@ -193,27 +144,36 @@
 
                     $('#feeship-data').append(`
                     <tr class="text-center">
-                        <td>${ward.ward_name}</td>
-                        <td>${feeship.feename || ''}</td>
-                        <td ${feeship.id ? 'contenteditable="true"' : ''} 
-                            data-id="${feeship.id || ''}" 
-                            data-district_id="${districtId}" 
-                            data-name="${districtName}" 
-                            class="feeship-edit">
-                            ${feeship.feeship || ''}
-                        </td>
-                        <td class="text-truncate-2">
-                            ${feeship.description || ''}
+                        <td class="align-middle">${ward.ward_name}</td>
+                        <td class="align-middle">${feeship.feename || ''}</td>
+                        <td class="align-middle">${feeship.feeship || ''}</td>
+                        <td class="align-middle">${feeship.description || ''}</td>
+                        <td class="align-middle">
+                            ${feeship.id ? `
+                                <button class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm edit-feeship" 
+                                        data-id="${feeship.id}"
+                                        data-ward-id="${ward.id}"
+                                        data-ward-name="${ward.ward_name}"
+                                        data-feename="${feeship.feename || ''}"
+                                        data-feeship="${feeship.feeship || ''}"
+                                        data-description="${feeship.description || ''}">
+                                    <i class="las la-edit"></i>
+                                </button>
+                                <button class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete delete-feeship" 
+                                        data-id="${feeship.id}">
+                                    <i class="las la-trash"></i>
+                                </button>
+                            ` : ''}
                         </td>
                     </tr>
                 `);
                 });
-
                 $('#feeshipModal').modal('show');
             },
             error: function(xhr) {
-                console.error('Lỗi khi tải dữ liệu:', xhr.responseText);
-                alert('Có lỗi xảy ra, vui lòng thử lại!');
+                toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, {
+                    positionClass: 'toast-bottom-left'
+                });
             }
         });
     }
@@ -224,31 +184,93 @@
         showModalFeeship(districtId, districtName);
     });
 
-    $(document).on('blur', '.feeship-edit', function() {
+
+    $(document).on('click', '.edit-feeship', function() {
         const id = $(this).data('id');
-        const value = $(this).text().trim();
-        const districtId = $(this).data('district_id');
-        const districtName = $(this).data('name');
+        const wardId = $(this).data('ward-id');
+        const wardName = $(this).data('ward-name');
+        const feename = $(this).data('feename');
+        const feeship = $(this).data('feeship');
+        const description = $(this).data('description');
 
-        if (!id) {
-            console.warn('Không tìm thấy ID phí ship để cập nhật!');
-            return;
-        }
+        $('#id').val(id);
+        $('#wardId').val(wardId);
+        $('#wardName').val(wardName);
+        $('#feename').val(feename);
+        $('#feeship').val(feeship);
+        $('#feeshipDescription').val(description);
+    });
 
+    // Xử lý sự kiện submit form
+    $('#feeshipForm').on('submit', function(e) {
+        e.preventDefault();
+        const id = $('#id').val();
+        const data = {
+            feename: $('#feename').val(),
+            feeship: $('#feeship').val(),
+            description: $('#feeshipDescription').val()
+        };
         $.ajax({
-            url: '/admin/update-feeship',
-            method: 'POST',
-            data: {
-                id: id,
-                value: value,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
+            url: `{{ route('admin.feeship.update', ':id') }}`.replace(':id', id),
+            method: 'PUT',
+            data: data,
             success: function(response) {
-                showModalFeeship(districtId, districtName);
+                toastr.success(response.message, null, {
+                    positionClass: 'toast-bottom-left'
+                });
+                showModalFeeship(response.feeship.district_id, response.districtName);
             },
             error: function(xhr) {
-                console.error('Lỗi khi cập nhật:', xhr.responseText);
-                alert('Có lỗi xảy ra, vui lòng thử lại!');
+                let errors = xhr.responseJSON.errors;
+
+                $('.invalid-feedback').remove();
+
+                $.each(errors, function(key, message) {
+                    $(`[name=${key}]`).addClass('is-invalid');
+                    $(`[name=${key}]`).after(`<div class="invalid-feedback">${message}</div>`);
+                });
+
+                toastr.error('Có lỗi xảy ra khi thêm chi phí!', null, {
+                    positionClass: 'toast-bottom-left'
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-feeship', function() {
+        let delete_id = $(this).attr('data-id');
+
+        Swal.fire({
+            title: '@lang("Xóa Chi phí")',
+            text: '@lang("Bạn có muốn xóa Chi phí này không ?")',
+            icon: 'warning',
+            confirmButtonText: '@lang("Có")',
+            cancelButtonText: '@lang("Không")',
+            showCancelButton: true,
+            showCloseButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: `{{ route('admin.feeship.destroy', ':id') }}`.replace(':id', delete_id),
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Xóa thành công!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            showModalFeeship(response.districtId, response.districtName);
+                        });
+                    },
+                    error: function(err) {
+                        let errorMessage = err.responseJSON?.message || 'Đã xảy ra lỗi!';
+                        Swal.fire('Đã xảy ra lỗi!', errorMessage, 'error');
+                    }
+                });
             }
         });
     });

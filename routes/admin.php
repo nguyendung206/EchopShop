@@ -109,6 +109,5 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //select address
     Route::post('/select-feeship', [FeeshipController::class, 'selectAddress'])->name('selectAddress');
-    Route::get('/get-wards', [FeeshipController::class, 'getWards']);
-    Route::post('/update-feeship', [FeeshipController::class, 'update']);
+    Route::get('/get-wards', [FeeshipController::class, 'getWards'])->name('getWards');
 });
