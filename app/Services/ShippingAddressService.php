@@ -61,6 +61,12 @@ class ShippingAddressService
             ];
             $address = ShippingAddress::create($addressData);
 
+            $existingAddressesCount = ShippingAddress::where('user_id', Auth::id())->count();
+            if ($existingAddressesCount == 1) {
+                $address->is_default = true;
+                $address->save();
+            }
+
             return $address;
         } catch (\Exception $e) {
             return false;

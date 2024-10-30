@@ -25,9 +25,9 @@ class OrderService
     public function getCartsAndVouchersAndShippingAddresses($request)
     {
         try {
-            $userProvinceId = Auth::user()->defaultAddress->province_id;
-            $userDistrictId = Auth::user()->defaultAddress->district_id;
-            $userWardId = Auth::user()->defaultAddress->ward_id;
+            $userProvinceId = Auth::user()->defaultAddress?->province_id ?? null;
+            $userDistrictId = Auth::user()->defaultAddress?->district_id ?? null;
+            $userWardId = Auth::user()->defaultAddress?->ward_id ?? null;
             $carts = collect();
             $vouchers = collect();
             $shippindAddresses = collect();
@@ -66,7 +66,6 @@ class OrderService
                 $cartIds = $request['cart_ids'];
                 $carts = Cart::whereIn('id', $cartIds)->get();
             }
-
             $shippindAddresses = ShippingAddress::where('user_id', Auth::id())->get();
             $datas = [
                 'carts' => $carts,
@@ -76,6 +75,7 @@ class OrderService
 
             return $datas;
         } catch (\Exception $e) {
+            dd($e);
 
             return $e;
         }
