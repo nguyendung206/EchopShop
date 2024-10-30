@@ -53,7 +53,10 @@ Profile
                                             <img src="{{ asset('/img/image/vietnam.png') }}" alt="Vietnam Flag" class="img-vietnam"> +84
                                         </div>
                                     </div>
-                                    <input name="phone_number" type="text" id="inputPhoneNumber" class="form-control @error('phone_number') is-invalid @enderror" value="{{ old('phone_number', $user->phone_number) }}" placeholder="Số điện thoại">
+                                    <input name="phone_number" type="text" id="inputPhoneNumber" value="{{ old('phone_number', $user->phone_number) }}"
+                                        class="form-control @error('phone_number') is-invalid @enderror"
+                                        placeholder="Số điện thoại"
+                                        style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important;">
                                 </div>
                                 @error('phone_number')
                                 <div class="invalid-feedback">{{ $message }}</div>

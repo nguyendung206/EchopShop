@@ -61,7 +61,7 @@ class ProductController extends Controller
         $ratings = Rating::where('product_id', $product->id)->get();
         $user = auth()->user();
         $isPurchased = $user ? $user->hasPurchased($product->id) : false;
-        $isShopOwner = $user->shop?->id === $product->shop_id;
+        $isShopOwner = $user && $user->shop?->id === $product->shop_id;
         $hasRated = $user ? $user->hasRated($product->id) : false;
 
         return view('web.product.productdetail', compact('product', 'relatedProducts', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated'));

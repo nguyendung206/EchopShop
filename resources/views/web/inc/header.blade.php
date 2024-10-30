@@ -167,15 +167,17 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                                 </div>
-                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" class="form-control border-l-r-none forcus-none search-input" placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1">
-
+                                <input type="text" id="search" name="search" value="{{$search ? $search : ''}}" 
+                                class="form-control border-l-r-none forcus-none search-input" 
+                                placeholder="Nhập từ khoá tìm kiếm như váy, mỹ phẩm, áo, điện thoại,..." aria-label="Username" aria-describedby="basic-addon1"
+                                style="border-radius: 0 !important;">
                                 <div class="input-group-append">
                                     <div style="position: relative;">
                                         <div style="border-left: 2px solid #000; height: 50%; position: absolute; left: 1px; top: 25%;"></div>
                                         @if (request()->has('type'))
                                         <input type="hidden" name="type" value="{{request()->get('type')}}">
                                         @endif
-                                        <select class="form-control w-120px forcus-none province-select" name="province">
+                                        <select class="form-control w-120px forcus-none province-select" name="province" style="border-radius: 0 !important;">
                                             <option value="0" disabled selected>Địa điểm</option>
                                             <option value="" {{request()->has('province') && empty($provinceQuery) ? 'selected' : ''}}>Tất cả</option>
                                             @foreach ($provinces as $province)
@@ -290,7 +292,7 @@ $route = route('listProducts', ['type' => request()->get('type')]);
                             @endif
                             <div class="dropdown ">
                                 <a href="#" class="row align-items-center" style="max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img class="avt" src="{{ getImage(Auth::user()->avatar) }}" alt="">
+                                    <img class="avt mr-1" src="{{ getImage(Auth::user()->avatar) }}" alt="">
                                     <span class="d-n display-none color-232323 header-name" style="max-width: 70px;white-space: nowrap;overflow: hidden; text-overflow: ellipsis;">{{ Auth::user()->name }} </span>
                                     <i class="d-n display-none fa-solid fa-sort-down  mb-2 color-232323 header-name"></i>
                                 </a>

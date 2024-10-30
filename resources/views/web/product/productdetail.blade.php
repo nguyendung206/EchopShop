@@ -5,7 +5,6 @@ HOME
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/product.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/product-detail.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
 <style>
     .column {
         float: left;
@@ -179,7 +178,7 @@ $totalQuantity = 0;
                         <i class="fa-{{auth()->user()->load('favorites')->favorites->contains('product_id', $product->id) ? 'solid' : 'regular'}} fa-heart fa-heart-home " style="position: relative; bottom:0; right:0; font-size:24px;"></i>
                     </a>
                     @else
-                    <a href="{{route('web.login')}}" class="product-heart"><i class="fa-regular fa-heart fa-heart-home"></i></a>
+                    <a style="top: 4px;" href="{{route('web.login')}}" class="product-heart"><i class="fa-regular fa-heart fa-heart-home" style="position: relative; bottom:0; right:0; font-size:24px;"></i></a>
                     @endauth
                 </div>
                 <div class="name-product">
@@ -207,7 +206,6 @@ $totalQuantity = 0;
                             $totalQuantity += $unit->quantity
                             @endphp
                             <tr>
-
                                 <td>{!! $unit->quantity > 0 ? '<input type="radio" name="radio-unit" value="'.$unit->id.'" data-total-product="'.$unit->quantity.'" data-size="'.$unit->size.'" data-color="'.$unit->color.'">' : '' !!}</td>
                                 <td>{{$unit->color}}</td>
                                 <td>{{$unit->size}}</td>
@@ -255,11 +253,11 @@ $totalQuantity = 0;
                             class="text-white">Thêm hàng vào giỏ hàng</button>
                     </form>
                     @else
-                    <a href="{{ route('web.login') }}" class="btn-cart-product">
+                    <a href="{{ route('web.login') }}" class="btn-cart-product mr-2" style="padding: 11px 54px;">
                         Thêm hàng vào giỏ
                     </a>
                     @endauth
-                    <a id="btn-cart" href="#" class="btn-cart-product" style="padding: 11px 54px;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
+                    <a href="#" class="btn-cart-product" style="padding: 11px 54px;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                         Mua hàng
                     </a>
                     @elseif($product->type->value == 3)
