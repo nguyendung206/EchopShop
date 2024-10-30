@@ -56,7 +56,6 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 
     //category
     Route::post('/category/import', [CategoryController::class, 'import'])->name('category.import');
-    Route::get('/category/download', [CategoryController::class, 'downloadExcel'])->name('category.download');
     Route::resource('/category', CategoryController::class);
     Route::post('category/changestatus/{id}', [CategoryController::class, 'status'])->name('category.changestatus');
 
