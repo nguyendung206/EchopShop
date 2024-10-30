@@ -3,8 +3,10 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class BrandExport implements FromCollection
+class BrandExport implements FromCollection, WithHeadings, WithMapping
 {
     protected $brand;
 
@@ -16,5 +18,29 @@ class BrandExport implements FromCollection
     public function collection()
     {
         return $this->brand;
+    }
+
+    public function map($brand): array
+    {
+        return [
+            $brand->slug,
+            $brand->name,
+            $brand->description,
+            $brand->photo,
+            $brand->status->label(),
+            $brand->category->name,
+        ];
+    }
+
+    public function headings(): array
+    {
+        return [
+            'slug',
+            'name',
+            'description',
+            'photo',
+            'status',
+            'category_name',
+        ];
     }
 }
