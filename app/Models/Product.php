@@ -20,6 +20,21 @@ class Product extends Model
         'list_photo' => 'array',
     ];
 
+    protected $fillable = [
+        'slug',
+        'name',
+        'price',
+        'type',
+        'photo',
+        'list_photo',
+        'status',
+        'description',
+        'quality',
+        'shop_id',
+        'brand_id',
+        'category_id',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Status;
+use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Imports\ProductImport;
 use App\Jobs\CreateNotificationJob;
 use App\Jobs\DeleteProductJob;
 use App\Mail\ProductStatusMail;
@@ -20,6 +22,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class ProductController extends Controller
 {
@@ -39,6 +43,11 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $datas = $this->productService->getProducts($request->all());
+        if (isset($request->is_export)) {
+            flash('Xuất file thành công!')->success();
+
+            return Excel::download(new ProductExport($datas), 'product.xlsx');
+        }
 
         return view('admin.product.index', compact('datas'));
     }
@@ -348,5 +357,55 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.wait.index');
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $file = $request->file('fileImport');
+            $data = Excel::toArray(new ProductImport, $file);
+            if (empty($data) || count($data[0]) == 0) {
+                flash('Tải file lên thất bại!')->error();
+
+                return redirect()->back()->withErrors([
+                    'data' => 'File rỗng không thể import dữ liệu',
+                ]);
+            }
+            $rows = $data[0];
+            $previewData = array_slice($rows, 0, 1);
+            if (
+                ! isset($previewData[0]['ten']) && ! isset($previewData[0]['gia']) &&
+                ! isset($previewData[0]['hinh_thuc']) && ! isset($previewData[0]['anh_dai_dien']) &&
+                ! isset($previewData[0]['danh_sach_anh']) && ! isset($previewData[0]['trang_thai']) &&
+                ! isset($previewData[0]['mo_ta']) && ! isset($previewData[0]['chat_luong']) &&
+                ! isset($previewData[0]['ten_shop']) && ! isset($previewData[0]['ten_thuong_hieu']) && ! isset($previewData[0]['ten_danh_muc']) &&
+                ! isset($previewData[0]['kieu_chi_tiet']) && ! isset($previewData[0]['mau']) && ! isset($previewData[0]['size']) && ! isset($previewData[0]['so_luong'])
+            ) {
+                flash('Tải file lên thất bại!')->error();
+
+                return redirect()->back()->withErrors([
+                    'header' => 'Dòng đầu tiên trong file phải là tên của các cột: ten, gia, hinh_thuc, anh_dai_dien, danh_sach_anh, trang_thai, mo_ta, chat_luong, ten_shop, ten_thuong_hieu, ten_danh_muc, kieu_chi_tiet, mau, size, so_luong',
+                ]);
+            }
+
+            $file = $request->file('fileImport');
+            Excel::import(new ProductImport, $file);
+
+            flash('Tải file lên thành công!')->success();
+
+            return redirect()->back();
+        } catch (ValidationException $e) {
+            flash('Tải file lên thất bại!')->error();
+            $failures = $e->failures();
+            $messages = [];
+            foreach ($failures as $failure) {
+                $row = $failure->row();
+                foreach ($failure->errors() as $error) {
+                    $messages[] = "Có lỗi ở dòng {$row}. {$error}";
+                }
+            }
+
+            return redirect()->back()->withErrors($messages);
+        }
     }
 }

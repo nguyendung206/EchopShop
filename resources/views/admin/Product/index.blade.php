@@ -27,7 +27,7 @@
                 </a>
             </div>
             <div class="col-md-3 text-md-right download" style="padding-left: 3px">
-                <a href="" type="button" class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
+                <a href="/assets/theme/import_product.xlsx" type="button" class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
                     <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                     <span class="custom-FontSize ml-1">{{__('Tải về')}}</span>
                 </a>
@@ -67,24 +67,28 @@
                     </svg>
                     <span class="custom-FontSize">@lang('Làm mới')</span>
                 </a>
-                <a href="{{ request()->fullUrlWithQuery(['export' => 1]) }}" class="font-size btn btn-info w-25 ml-2 d-flex  btn-responsive justify-content-center">
+                <a href="{{ request()->fullUrlWithQuery(['is_export' => 1]) }}" class="font-size btn btn-info w-25 ml-2 d-flex  btn-responsive justify-content-center">
                     <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                     <span class="custom-FontSize ml-1">@lang('Xuất file')</span>
                 </a>
-                <button type="button" class="btn btn-info w-25 btn_import ml-2 d-flex btn-responsive justify-content-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                <button class="btn btn-info w-25 btn_import ml-2 d-flex btn-responsive justify-content-center"
+                    type="button" id="uploadButtonProduct">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                     <span class="custom-FontSize ml-1">@lang('Tải lên')</span>
                 </button>
             </div>
         </div>
     </form>
+    <form action="{{ route('admin.product.import') }}" method="POST" enctype="multipart/form-data" id="importFormProduct">
+        @csrf
+        <input type="file" name="fileImport" accept=".xls,.xlsx,.csv" id="fileImportProduct" class="d-none">
+
+    </form>
 </div>
-<form action="" id="form-import" method="POST" enctype="multipart/form-data">
-    @csrf
-    <input type="file" accept=".csv,.xls,.xlsx" hidden name="file" class="form-control" id="file">
-</form>
 <div class="card">
     <div class="custom-overflow repon">
         <table class="table aiz-table mb-0 table_repon">
@@ -153,9 +157,53 @@
         {{ $datas->appends(request()->input())->links("pagination::bootstrap-4") }}
     </div>
 </div>
+
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Lỗi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="errorList"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
+<script>
+    $(document).ready(function() {
+        $('#uploadButtonProduct').on('click', function(event) {
+            console.log("alo");
+
+            $('#fileImportProduct').click();
+        });
+
+        $('#fileImportProduct').on('change', function() {
+            $('#importFormProduct').submit();
+        });
+
+        @if($errors -> any())
+        let errors = @json($errors -> all());
+        $('#errorList').empty();
+        $.each(errors, function(index, error) {
+            $('#errorList').append('<div>' + error + '</div>');
+        });
+        $('#errorModal').modal('show');
+        @endif
+    });
+</script>
+
 <script type="text/javascript">
     function sort_customers(el) {
         $('#sort_customers').submit();

@@ -81,6 +81,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('brand/changestatus/{id}', [BrandController::class, 'status'])->name('brand.changestatus');
 
     //product
+    Route::post('/product/import', [ProductController::class, 'import'])->name('product.import');
     Route::resource('/product', ProductController::class);
     Route::post('product/changestatus/{id}', [ProductController::class, 'status'])->name('product.changestatus');
 
