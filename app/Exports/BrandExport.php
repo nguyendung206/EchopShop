@@ -36,11 +36,11 @@ class BrandExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'slug',
-            'name',
-            'description',
-            'photo',
-            'status',
-            'category_name',
+            'Tên thương hiệu',
+            'Mô tả',
+            'Ảnh',
+            'Trạng thái',
+            'Tên danh mục',
         ];
     }
 }

@@ -134,7 +134,7 @@ class CategoryController extends Controller
             }
             $rows = $data[0];
             $previewData = array_slice($rows, 0, 1);
-            if (! isset($previewData[0]['slug']) && ! isset($previewData[0]['name']) && ! isset($previewData[0]['description']) && ! isset($previewData[0]['photo']) && ! isset($previewData[0]['status'])) {
+            if (! isset($previewData[0]['slug']) || ! isset($previewData[0]['ten_danh_muc']) || ! isset($previewData[0]['mo_ta']) || ! isset($previewData[0]['anh']) || ! isset($previewData[0]['trang_thai'])) {
                 flash('Tải file lên thất bại!')->error();
 
                 return redirect()->back()->withErrors([

@@ -35,10 +35,10 @@ class CategoryExport implements FromCollection, WithHeadings, WithMapping
     {
         return [
             'slug',
-            'name',
-            'description',
-            'photo',
-            'status',
+            'Tên danh mục',
+            'Mô tả',
+            'Ảnh',
+            'Trạng thái',
         ];
     }
 }

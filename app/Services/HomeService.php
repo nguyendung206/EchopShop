@@ -65,7 +65,6 @@ class HomeService
         }
         if (! empty($request['provinceIds'])) {  // province ở thanh lọc product
             $provinceIds = $request['provinceIds'];
-            // dd($request['provinceIds']);
             $query = $query->whereHas('shop.user.defaultAddress.province', function ($query) use ($provinceIds) {
                 $query->whereIn('id', $provinceIds);
             });

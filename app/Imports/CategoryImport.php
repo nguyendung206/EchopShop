@@ -22,9 +22,9 @@ class CategoryImport implements ToModel, WithHeadingRow, WithValidation
         });
 
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:1000',
-            'status' => ['required', 'status_valid'],
+            'ten_danh_muc' => 'required|string|max:255',
+            'mo_ta' => 'required|string|max:1000',
+            'trang_thai' => ['required', 'status_valid'],
             'slug' => [
                 'required',
                 'string',
@@ -36,13 +36,13 @@ class CategoryImport implements ToModel, WithHeadingRow, WithValidation
 
     public function model(array $row)
     {
-        $statusValue = collect(Status::cases())->first(fn ($status) => mb_strtolower($status->label(), 'UTF-8') === mb_strtolower($row['status'], 'UTF-8'));
+        $statusValue = collect(Status::cases())->first(fn ($status) => mb_strtolower($status->label(), 'UTF-8') === mb_strtolower($row['trang_thai'], 'UTF-8'));
 
         return new Category([
             'slug' => $row['slug'],
-            'name' => $row['name'],
-            'description' => $row['description'],
-            'photo' => $row['photo'],
+            'name' => $row['ten_danh_muc'],
+            'description' => $row['mo_ta'],
+            'photo' => $row['anh'],
             'status' => $statusValue,
         ]);
     }
@@ -50,14 +50,14 @@ class CategoryImport implements ToModel, WithHeadingRow, WithValidation
     public function customValidationMessages()
     {
         return [
-            'name.required' => 'Cột tên là bắt buộc.',
-            'name.string' => 'Cột tên phải là chuỗi ký tự.',
-            'name.max' => 'Cột tên không được vượt quá 255 ký tự.',
-            'description.required' => 'Cột mô tả là bắt buộc.',
-            'description.string' => 'Cột mô tả phải là chuỗi ký tự.',
-            'description.max' => 'Cột mô tả không được vượt quá 1000 ký tự.',
-            'status.required' => 'Cột trạng thái là bắt buộc.',
-            'status.status_valid' => ':input Cột trạng thái không hợp lệ, giá trị bắt buộc phải 1 trong các trường hợp "Không hoạt động", "Hoạt động", "Tạm dừng".',
+            'ten_danh_muc.required' => 'Cột tên là bắt buộc.',
+            'ten_danh_muc.string' => 'Cột tên phải là chuỗi ký tự.',
+            'ten_danh_muc.max' => 'Cột tên không được vượt quá 255 ký tự.',
+            'mo_ta.required' => 'Cột mô tả là bắt buộc.',
+            'mo_ta.string' => 'Cột mô tả phải là chuỗi ký tự.',
+            'mo_ta.max' => 'Cột mô tả không được vượt quá 1000 ký tự.',
+            'trang_thai.required' => 'Cột trạng thái là bắt buộc.',
+            'trang_thai.status_valid' => ':input Cột trạng thái không hợp lệ, giá trị bắt buộc phải 1 trong các trường hợp "Không hoạt động", "Hoạt động", "Tạm dừng".',
             'slug.unique' => 'Giá trị của cột slug ":input" đã tồn tại.',
             'slug.required' => 'Cột slug là bắt buộc.',
             'slug.string' => 'Cột slug phải là chuỗi ký tự.',
