@@ -5,7 +5,6 @@ namespace App\Imports;
 use App\Enums\Status;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -25,12 +24,6 @@ class CategoryImport implements ToModel, WithHeadingRow, WithValidation
             'ten_danh_muc' => 'required|string|max:255',
             'mo_ta' => 'required|string|max:1000',
             'trang_thai' => ['required', 'status_valid'],
-            'slug' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('categories'),
-            ],
         ];
     }
 
@@ -39,7 +32,6 @@ class CategoryImport implements ToModel, WithHeadingRow, WithValidation
         $statusValue = collect(Status::cases())->first(fn ($status) => mb_strtolower($status->label(), 'UTF-8') === mb_strtolower($row['trang_thai'], 'UTF-8'));
 
         return new Category([
-            'slug' => $row['slug'],
             'name' => $row['ten_danh_muc'],
             'description' => $row['mo_ta'],
             'photo' => $row['anh'],
@@ -58,9 +50,6 @@ class CategoryImport implements ToModel, WithHeadingRow, WithValidation
             'mo_ta.max' => 'Cột mô tả không được vượt quá 1000 ký tự.',
             'trang_thai.required' => 'Cột trạng thái là bắt buộc.',
             'trang_thai.status_valid' => ':input Cột trạng thái không hợp lệ, giá trị bắt buộc phải 1 trong các trường hợp "Không hoạt động", "Hoạt động", "Tạm dừng".',
-            'slug.unique' => 'Giá trị của cột slug ":input" đã tồn tại.',
-            'slug.required' => 'Cột slug là bắt buộc.',
-            'slug.string' => 'Cột slug phải là chuỗi ký tự.',
         ];
     }
 }

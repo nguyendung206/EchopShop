@@ -158,11 +158,11 @@ class BrandController extends Controller
             }
             $rows = $data[0];
             $previewData = array_slice($rows, 0, 1);
-            if (! isset($previewData[0]['slug']) || ! isset($previewData[0]['ten_thuong_hieu']) || ! isset($previewData[0]['mo_ta']) || ! isset($previewData[0]['anh']) || ! isset($previewData[0]['trang_thai']) || ! isset($previewData[0]['ten_danh_muc'])) {
+            if (! isset($previewData[0]['ten_thuong_hieu']) || ! isset($previewData[0]['mo_ta']) || ! isset($previewData[0]['anh']) || ! isset($previewData[0]['trang_thai']) || ! isset($previewData[0]['ten_danh_muc'])) {
                 flash('Tải file lên thất bại!')->error();
 
                 return redirect()->back()->withErrors([
-                    'header' => 'Dòng đầu tiên trong file phải là tên của các cột: slug, Tên thương hiệu, Mô tả, Ảnh, Trạng thái, Tên danh mục.',
+                    'header' => 'Dòng đầu tiên trong file phải là tên của các cột: Tên thương hiệu, Mô tả, Ảnh, Trạng thái, Tên danh mục.',
                 ]);
             }
 

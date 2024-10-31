@@ -134,11 +134,11 @@ class CategoryController extends Controller
             }
             $rows = $data[0];
             $previewData = array_slice($rows, 0, 1);
-            if (! isset($previewData[0]['slug']) || ! isset($previewData[0]['ten_danh_muc']) || ! isset($previewData[0]['mo_ta']) || ! isset($previewData[0]['anh']) || ! isset($previewData[0]['trang_thai'])) {
+            if (! isset($previewData[0]['ten_danh_muc']) || ! isset($previewData[0]['mo_ta']) || ! isset($previewData[0]['anh']) || ! isset($previewData[0]['trang_thai'])) {
                 flash('Tải file lên thất bại!')->error();
 
                 return redirect()->back()->withErrors([
-                    'header' => 'Dòng đầu tiên trong file phải là tên của các cột: slug, name, description, photo, status',
+                    'header' => 'Dòng đầu tiên trong file phải là tên của các cột: Tên danh mục, Mô tả, Ảnh, Trạng thái',
                 ]);
             }
 

@@ -6,7 +6,6 @@ use App\Enums\Status;
 use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -34,12 +33,6 @@ class BrandImport implements ToModel, WithHeadingRow, WithValidation
             'ten_thuong_hieu' => 'required|string|max:255',
             'mo_ta' => 'required|string|max:1000',
             'trang_thai' => ['required', 'status_valid'],
-            'slug' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('brands'),
-            ],
             'ten_danh_muc' => ['required', 'category_valid'],
         ];
     }
@@ -51,7 +44,6 @@ class BrandImport implements ToModel, WithHeadingRow, WithValidation
         $categoryId = $category ? $category->id : null;
 
         return new Brand([
-            'slug' => $row['slug'],
             'name' => $row['ten_thuong_hieu'],
             'description' => $row['mo_ta'],
             'photo' => $row['anh'],
@@ -72,9 +64,6 @@ class BrandImport implements ToModel, WithHeadingRow, WithValidation
             'trang_thai.required' => 'Cột trạng thái là bắt buộc.',
             'trang_thai.status_valid' => ':input Cột trạng thái không hợp lệ, giá trị bắt buộc phải 1 trong các trường hợp "Không hoạt động", "Hoạt động", "Tạm dừng".',
             'ten_danh_muc.category_valid' => ':input Tên danh mục không khớp với bất cứ danh mục nào hiện có.',
-            'slug.unique' => 'Giá trị của cột slug ":input" đã tồn tại.',
-            'slug.required' => 'Cột slug là bắt buộc.',
-            'slug.string' => 'Cột slug phải là chuỗi ký tự.',
         ];
     }
 }
