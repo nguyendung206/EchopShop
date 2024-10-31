@@ -62,7 +62,6 @@ class UserService
 
             return $user;
         } catch (\Exception $e) {
-            dd($e);
             flash('Thêm người dùng thất bại')->error();
 
             return redirect()->back();

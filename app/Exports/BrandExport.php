@@ -23,7 +23,6 @@ class BrandExport implements FromCollection, WithHeadings, WithMapping
     public function map($brand): array
     {
         return [
-            $brand->slug,
             $brand->name,
             $brand->description,
             $brand->photo,
@@ -35,12 +34,11 @@ class BrandExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'slug',
-            'name',
-            'description',
-            'photo',
-            'status',
-            'category_name',
+            'Tên thương hiệu',
+            'Mô tả',
+            'Ảnh',
+            'Trạng thái',
+            'Tên danh mục',
         ];
     }
 }

@@ -23,7 +23,6 @@ class CategoryExport implements FromCollection, WithHeadings, WithMapping
     public function map($category): array
     {
         return [
-            $category->slug,
             $category->name,
             $category->description,
             $category->photo,
@@ -34,11 +33,10 @@ class CategoryExport implements FromCollection, WithHeadings, WithMapping
     public function headings(): array
     {
         return [
-            'slug',
-            'name',
-            'description',
-            'photo',
-            'status',
+            'Tên danh mục',
+            'Mô tả',
+            'Ảnh',
+            'Trạng thái',
         ];
     }
 }
