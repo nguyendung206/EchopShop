@@ -51,7 +51,7 @@
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Địa chỉ:')</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">
-                            {{ getAddressShop($shop) }}
+                            {{ getAddress($shop) }}
                         </p>
                     </div>
                 </div>

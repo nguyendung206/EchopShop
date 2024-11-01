@@ -124,7 +124,7 @@
                                 </td>
                                 <td class="font-weight-400 align-middle text-overflow">{{ optional($data)->name }}</td>
                                 <td class="font-weight-400 align-middle">
-                                    {{ getAddressShop($data) }}
+                                    {{ getAddress($data) }}
                                 </td>
                                 <td class="font-weight-400 align-middle">{{ $data->hotline }}</td>
                                 <td class="font-weight-400 align-middle">{{ $data->email }}</td>
