@@ -27,7 +27,7 @@
                 </a>
             </div>
             <div class="col-md-3 text-md-right download" style="padding-left: 3px">
-                <a href="/assets/theme/import_product.xlsx" type="button" class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
+                <a href="/assets/theme/import_product_template.xlsx" type="button" class=" pl-0 pr-0 btn btn-info w-100 mr-2 d-flex btn-responsive justify-content-center">
                     <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                     <span class="custom-FontSize ml-1">{{__('Tải về')}}</span>
                 </a>
@@ -169,7 +169,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <ul id="errorList"></ul>
+                <ul id="errorList" style="font-size: 16px;"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -197,7 +197,7 @@
         let errors = @json($errors -> all());
         $('#errorList').empty();
         $.each(errors, function(index, error) {
-            $('#errorList').append('<div>' + error + '</div>');
+            $('#errorList').append('<div class="mb-2"><span class="text-danger">&#9913;</span> ' + error + '</div>');
         });
         $('#errorModal').modal('show');
         @endif

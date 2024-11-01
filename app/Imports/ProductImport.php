@@ -10,7 +10,6 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductUnit;
 use App\Models\Shop;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -19,55 +18,49 @@ class ProductImport implements ToModel, WithHeadingRow, WithValidation
 {
     public function rules(): array
     {
-        Validator::extend('type_valid', function ($attribute, $value, $parameters, $validator) {
-            $input = mb_strtolower($value, 'UTF-8');
-            $validTypes = array_map(fn ($type) => mb_strtolower($type->label(), 'UTF-8'), TypeProduct::cases());
-
-            return in_array($input, $validTypes);
-        });
-
-        Validator::extend('status_valid', function ($attribute, $value, $parameters, $validator) {
-            $input = mb_strtolower($value, 'UTF-8');
-            $validStatuses = array_map(fn ($status) => mb_strtolower($status->label(), 'UTF-8'), Status::cases());
-
-            return in_array($input, $validStatuses);
-        });
-
-        Validator::extend('shop_valid', function ($attribute, $value, $parameters, $validator) {
-            $input = mb_strtolower($value, 'UTF-8');
-            $shops = Shop::all();
-            $validShops = $shops->pluck('name')->map(fn ($name) => mb_strtolower($name, 'UTF-8'))->toArray();
-
-            return in_array($input, $validShops);
-        });
-
-        Validator::extend('brand_valid', function ($attribute, $value, $parameters, $validator) {
-            $input = mb_strtolower($value, 'UTF-8');
-            $brands = Brand::all();
-            $validBrands = $brands->pluck('name')->map(fn ($name) => mb_strtolower($name, 'UTF-8'))->toArray();
-
-            return in_array($input, $validBrands);
-        });
-
-        Validator::extend('category_valid', function ($attribute, $value, $parameters, $validator) {
-            $input = mb_strtolower($value, 'UTF-8');
-            $categories = Category::all();
-            $validCategories = $categories->pluck('name')->map(fn ($name) => mb_strtolower($name, 'UTF-8'))->toArray();
-
-            return in_array($input, $validCategories);
-        });
-
         return [
             'ten' => 'nullable|string|max:255',
             'gia' => 'nullable|numeric|min:0',
-            'hinh_thuc' => ['nullable', 'type_valid'],
-            'trang_thai' => ['nullable', 'status_valid'],
+            'hinh_thuc' => ['nullable', function ($attribute, $value, $fail) {
+                if (! $this->isValidEnumLabel(TypeProduct::class, $value)) {
+                    $fail("Cột Hình thức không hợp lệ, giá trị bắt buộc phải 1 trong các trường hợp 'Hàng bán', 'Hàng secondhand', 'Hàng trao đổi', 'Hàng trao tặng'.");
+                }
+            }],
+            'trang_thai' => ['nullable', function ($attribute, $value, $fail) {
+                if (! $this->isValidEnumLabel(Status::class, $value)) {
+                    $fail("Cột Trạng thái không hợp lệ, giá trị bắt buộc phải 1 trong các trường hợp 'Không hoạt động', 'Hoạt động', 'Tạm dừng'.");
+                }
+            }],
             'mo_ta' => 'nullable|string|max:1000',
             'chat_luong' => 'nullable|numeric|min:0|max:100',
-            'ten_shop' => ['nullable', 'shop_valid'],
-            'ten_thuong_hieu' => ['nullable', 'brand_valid'],
-            'ten_danh_muc' => ['nullable', 'category_valid'],
+            'ten_shop' => ['nullable', function ($attribute, $value, $fail) {
+                if (! $this->isValidModelName(Shop::class, $value)) {
+                    $fail('Tên shop "'.$value.'"  không tồn tại.');
+                }
+            }],
+            'ten_thuong_hieu' => ['nullable', function ($attribute, $value, $fail) {
+                if (! $this->isValidModelName(Brand::class, $value)) {
+                    $fail('Tên thương hiệu "'.$value.'" không tồn tại.');
+                }
+            }],
+            'ten_danh_muc' => ['nullable', function ($attribute, $value, $fail) {
+                if (! $this->isValidModelName(Category::class, $value)) {
+                    $fail('Tên danh mục "'.$value.'" không tồn tại.');
+                }
+            }],
         ];
+    }
+
+    private function isValidEnumLabel($enumClass, $label): bool
+    {
+        $validLabels = array_map(fn ($enum) => mb_strtolower($enum->label(), 'UTF-8'), $enumClass::cases());
+
+        return in_array(mb_strtolower($label, 'UTF-8'), $validLabels);
+    }
+
+    private function isValidModelName($modelClass, $name): bool
+    {
+        return $modelClass::where('name', 'LIKE', $name)->exists();
     }
 
     public function model(array $row)
@@ -85,7 +78,7 @@ class ProductImport implements ToModel, WithHeadingRow, WithValidation
         $shop = Shop::where('name', 'LIKE', $row['ten_shop'])->first();
         $shopId = $shop ? $shop->id : null;
 
-        $productId = null; // Khởi tạo biến productId
+        $productId = null;
 
         if (! empty($row['ten'])) {
             $newProduct = new Product([
@@ -103,16 +96,14 @@ class ProductImport implements ToModel, WithHeadingRow, WithValidation
             ]);
 
             $newProduct->save();
-            $productId = $newProduct->id; // Lưu ID của sản phẩm mới
+            $productId = $newProduct->id;
         } else {
-            // Nếu trường name là null, kiểm tra sản phẩm trước đó
-            $product = Product::latest()->orderBy('id', 'desc')->first(); // Lấy sản phẩm mới nhất nếu tên là null
-            $productId = $product ? $product->id : null; // Lưu ID của sản phẩm nếu có
+            $product = Product::latest()->orderBy('id', 'desc')->first();
+            $productId = $product ? $product->id : null;
         }
 
-        // Tạo đơn vị sản phẩm nếu có thông tin về màu, size, hoặc số lượng
         if (isset($row['mau']) || isset($row['size']) || isset($row['so_luong'])) {
-            if ($productId) { // Kiểm tra xem $productId có hợp lệ không
+            if ($productId) {
                 $productUnit = new ProductUnit([
                     'product_id' => $productId,
                     'type' => $typeUnitValue,
@@ -124,30 +115,31 @@ class ProductImport implements ToModel, WithHeadingRow, WithValidation
             }
         }
 
-        return $newProduct ?? $product; // Trả về sản phẩm mới hoặc sản phẩm đã tồn tại
+        return $newProduct ?? $product;
+    }
+
+    private function getEnumValue($enumClass, $label)
+    {
+        return collect($enumClass::cases())->first(fn ($enum) => mb_strtolower($enum->label(), 'UTF-8') === mb_strtolower($label, 'UTF-8'));
+    }
+
+    private function getModelId($modelClass, $name)
+    {
+        return optional($modelClass::where('name', 'LIKE', $name)->first())->id;
     }
 
     public function customValidationMessages()
     {
         return [
-            'ten.required' => 'Cột tên là bắt buộc.',
             'ten.string' => 'Cột tên phải là chuỗi ký tự.',
             'ten.max' => 'Cột tên không được vượt quá 255 ký tự.',
-            'gia.required' => 'Cột giá là bắt buộc.',
             'gia.numeric' => 'Cột giá phải là một số.',
             'gia.min' => 'Cột giá phải lớn hơn 0.',
-            'chat_luong.required' => 'Cột chất lượng là bắt buộc.',
             'chat_luong.numeric' => 'Cột chất lượng phải là một số.',
             'chat_luong.min' => 'Cột chất lượng phải lớn hơn 0.',
             'chat_luong.max' => 'Cột chất lượng phải bé hơn hoặc bằng 100.',
-            'mo_ta.required' => 'Cột mô tả là bắt buộc.',
             'mo_ta.string' => 'Cột mô tả phải là chuỗi ký tự.',
             'mo_ta.max' => 'Cột mô tả không được vượt quá 1000 ký tự.',
-            'trang_thai.required' => 'Cột trạng thái là bắt buộc.',
-            'trang_thai.status_valid' => ':input Cột trạng thái không hợp lệ, giá trị bắt buộc phải 1 trong các trường hợp "Không hoạt động", "Hoạt động", "Tạm dừng".',
-            'ten_danh_muc.category_valid' => ':input Tên danh mục không khớp với bất cứ danh mục nào hiện có.',
-            'ten_thuong_hieu.brand_valid' => ':input Tên thương hiệu không khớp với bất cứ thương hiệu nào hiện có.',
-            'ten_shop.shop_valid' => ':input Tên shop không khớp với bất cứ shop nào hiện có.',
         ];
     }
 }
