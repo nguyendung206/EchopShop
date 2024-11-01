@@ -29,7 +29,7 @@ class OrderController extends Controller
 
         $datas = $this->orderService->getCartsAndVouchersAndShippingAddresses($request->all());
 
-        return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers'], 'shippingAddresses' => $datas['shippingAddresses']]);
+        return view('web.order.order', ['orderCarts' => $datas['carts'], 'vouchers' => $datas['vouchers'], 'shippingAddresses' => $datas['shippingAddresses'], 'feeship' => $datas['feeship']]);
     }
 
     public function getVouchersJson(Request $request)
@@ -69,7 +69,6 @@ class OrderController extends Controller
             }
 
             return redirect()->back()->with('success', 'Thêm địa chỉ thành công');
-
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Thêm địa chỉ thất bại');
         }
@@ -95,7 +94,6 @@ class OrderController extends Controller
             }
 
             return redirect()->back()->with('success', 'Thay đổi địa chỉ thành công');
-
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Thay đổi địa chỉ thất bại');
         }

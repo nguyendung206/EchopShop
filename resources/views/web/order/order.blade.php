@@ -57,6 +57,7 @@
                         @foreach ($orderCarts as $cart)
                             @php
                                 $sum += $cart->products->price * $cart->quantity;
+                                $totalPay = $sum + ($feeship->feeship ?? 0);
                             @endphp
                             <tr class="text-center">
                                 <td class="align-middle">
@@ -205,7 +206,7 @@
                                 @foreach ($orderCarts as $cart)
                                     <input type="hidden" name="cartIds[]" value="{{ $cart->id }}">
                                 @endforeach
-                                <input type="hidden" name="total_amount" value="{{$sum}}">
+                                <input type="hidden" name="total_amount" value="{{$totalPay}}">
                                 <div class="voucher-wrap-button col-12 text-right pt-2">
                                     <button class="cancel b-radius" id="voucherCancel" type="button">Huỷ</button>
                                     <button class="buy b-radius submitVoucher" type="button" data-voucher="radio">Áp dụng</button>
@@ -214,15 +215,16 @@
                         </div>
                     </div>
                     <div class="total-price-pay-method col-lg-7 col-12">
-                        <div class="sum-price pb-2">
-                            <div>Tổng tiền hàng</div> <b class="sum-pay">{{ format_price($sum) }}</b>
+                    <div class="sum-price pb-2">
+                            <div>Tổng tiền hàng :</div> <b class="sum-pay">{{ format_price($sum) }}</b>
                         </div>
-                        {{-- <div class="shipper-price pb-2">
-                            <div>Phí vận chuyển</div> <b>50.100 VNĐ</b>
+                        <div class="shipper-price pb-2">
+                            <div>Phí vận chuyển : </div> <b>{{ $feeship ? format_price($feeship->feeship) : 'Chưa rõ' }}</b>
                         </div>
                         <div class="total-pay pb-2">
-                            <div>Tổng thanh toán</div> <b>29.850.100 VNĐ</b>
-                        </div> --}}
+                            <div>Tổng thanh toán :</div> 
+                            <b>{{ format_price($totalPay) }}</b>
+                        </div>
                         @if ($user->defaultAddress)
                             
                             <input type="hidden" name="shipping_address" value="{{ $defaultAddress->street }}">
