@@ -75,7 +75,6 @@ class OrderService
 
             return $datas;
         } catch (\Exception $e) {
-            dd($e);
 
             return $e;
         }

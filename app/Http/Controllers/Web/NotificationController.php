@@ -26,7 +26,6 @@ class NotificationController extends Controller
     public function isreaded($id)
     {
         $notification = $this->notificationService->isreaded($id);
-        // dd($notification);
         if ($notification->type->value == TypeNotification::CHANGESTATUSORDER->value) {
             $orders = $this->orderService->purchase(['type' => null]);
 
