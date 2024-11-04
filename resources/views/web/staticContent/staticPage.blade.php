@@ -11,7 +11,7 @@
             {{ TypeStaticContentEnums::from($type)->label() }}
         </div>
     </div>
-    <div class="container content">
+    <div class="container content mw-1200">
         @if (TypeStaticContentEnums::FAQ->value != $type)
             <div class="row">
                 @forelse ($contents as $content)
