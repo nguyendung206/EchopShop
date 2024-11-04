@@ -10,6 +10,7 @@ use App\Jobs\SendChangeStatusOrderMail;
 use App\Jobs\SendOrderSuccessMail;
 use App\Models\Cart;
 use App\Models\Discount;
+use App\Models\Feeship;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
@@ -67,10 +68,12 @@ class OrderService
                 $carts = Cart::whereIn('id', $cartIds)->get();
             }
             $shippindAddresses = ShippingAddress::where('user_id', Auth::id())->get();
+            $feeship = Feeship::where('province_id', $userProvinceId)->where('district_id', $userDistrictId)->where('ward_id', $userWardId)->first();
             $datas = [
                 'carts' => $carts,
                 'vouchers' => $vouchers,
                 'shippingAddresses' => $shippindAddresses,
+                'feeship' => $feeship,
             ];
 
             return $datas;
