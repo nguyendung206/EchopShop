@@ -78,21 +78,17 @@
                         </svg>
                         <span class="custom-FontSize">@lang('Tìm kiếm')</span>
                     </button>
-                    <a href="{{ url()->current() }}"
+                    <a href="/assets/theme/import_order.xlsx"
                         class="pl-0 pr-0 w-25 btn btn-info ml-2 d-flex btn-responsive justify-content-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        <span class="custom-FontSize">@lang('Làm mới')</span>
+                        <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
+                    <span class="custom-FontSize ml-1">{{__('Tải về')}}</span>
                     </a>
-                    <a href="{{ request()->fullUrlWithQuery(['export' => 1]) }}"
+                    <a href="{{ request()->fullUrlWithQuery(['is_export' => 1]) }}"
                         class="font-size btn btn-info w-25 ml-2 d-flex  btn-responsive justify-content-center">
                         <i class="las la-cloud-download-alt m-auto-5 w-6 h-6"></i>
                         <span class="custom-FontSize ml-1">@lang('Xuất file')</span>
                     </a>
-                    <button type="button"
+                    <button type="button" id="uploadButtonOrder"
                         class="btn btn-info w-25 btn_import ml-2 d-flex btn-responsive justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -103,6 +99,11 @@
                     </button>
                 </div>
             </div>
+        </form>
+        <form action="{{ route('admin.order.import') }}" method="POST" enctype="multipart/form-data" id="importFormOrder">
+            @csrf
+            <input type="file" name="fileImport" accept=".xls,.xlsx,.csv" id="fileImportOrder" class="d-none">
+    
         </form>
     </div>
     <form action="" id="form-import" method="POST" enctype="multipart/form-data">
@@ -133,7 +134,7 @@
                                     {{ $key + 1 + ($orders->currentPage() - 1) * $orders->perPage() }}</td>
                                     <td class="font-weight-400 align-middle text-overflow">{{ optional($order)->customer->name }}</td>   
                                 <td class="font-weight-400 align-middle text-overflow">{{ optional($order)->created_at }}</td>
-                                <td class="font-weight-400 align-middle">{{ $order->shipping_address}}, {{optional($order->ward)->ward_name}}, {{optional($order->district)->district_name}}, {{optional($order->province)->province_name}}</td>
+                                <td class="font-weight-400 align-middle">{{getAddress($order)}}</td>
                                 <td class="font-weight-400 align-middle">
                                     {{ format_price($order->total_amount)}}
                                 </td>
@@ -170,10 +171,51 @@
             {{ $orders->appends(request()->input())->links('pagination::bootstrap-4') }}
         </div>
     </div>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Lỗi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="errorList"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
    
+<script>
+    $(document).ready(function() {
+        $('#uploadButtonOrder').on('click', function(event) {
+            
+            $('#fileImportOrder').click();
+        });
+
+        $('#fileImportOrder').on('change', function() {
+            $('#importFormOrder').submit();
+        });
+
+            @if ($errors->any())
+                let errors = @json($errors->all());
+                $('#errorList').empty();
+                $.each(errors, function(index, error) {
+                    $('#errorList').append('<div>' + error + '</div>');
+                });
+                $('#errorModal').modal('show');
+            @endif
+    });
+</script>
 
 
         <script>

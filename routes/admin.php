@@ -104,6 +104,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::post('/store', [OrderController::class, 'store'])->name('store');
         Route::get('/{order}', [OrderController::class, 'show'])->name('show');
         Route::post('/updateStatus/{id}', [OrderController::class, 'updateStatus'])->name('updateStatus');
+        Route::post('/order/import', [OrderController::class, 'import'])->name('import');
+
     });
 
     //Feeship

@@ -22,18 +22,18 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
-if (! function_exists('getAddressShop')) {
-    function getAddressShop($shop)
+if (! function_exists('getAddress')) {
+    function getAddress($object)
     {
-        $address = $shop->address;
-        if ($shop->ward != null) {
-            $address .= ', '.$shop->ward->ward_name;
+        $address = $object->address ?? $object->shipping_address;
+        if ($object->ward != null) {
+            $address .= ', '.$object->ward->ward_name;
         }
-        if ($shop->district != null) {
-            $address .= ', '.$shop->district->district_name;
+        if ($object->district != null) {
+            $address .= ', '.$object->district->district_name;
         }
-        if ($shop->province != null) {
-            $address .= ', '.$shop->province->province_name.'.';
+        if ($object->province != null) {
+            $address .= ', '.$object->province->province_name.'.';
         }
 
         return $address;

@@ -174,7 +174,6 @@
 <script>
     $(document).ready(function() {
         $('#uploadButtonBrand').on('click', function(event) {
-            console.log("alo");
             
             $('#fileImportBrand').click();
         });
