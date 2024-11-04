@@ -1,16 +1,17 @@
 @extends('admin.layout.app')
 @section('title')
-   Chính sách
+    {{ TypeStaticContentEnums::from(request()->query('type'))->label() }}
 @endsection
 @section('content')
 
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3"><strong>Chính sách</strong></h1>
+            <h1 class="h3"><strong>{{ TypeStaticContentEnums::from(request()->query('type'))->label() }}</strong></h1>
         </div>
     </div>
     <div class="filter">
-        <form class="" id="food" action="{{ route('admin.policy.index') }}" method="GET">
+        <form class="" id="food" action="{{ route('admin.static-content.index') }}" method="GET">
+            <input type="hidden" name="type" value="{{request()->query('type')}}">
             <div class="row gutters-5 mb-2">
                 <div class="col-md-6 d-flex search">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none"
@@ -22,7 +23,7 @@
                         value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
                 </div>
                 <div class="col-md-3 text-md-right add-new ">
-                    <a href="{{ route('admin.policy.create') }}"
+                    <a href="{{ route('admin.static-content.create', ['type' => request()->query('type')]) }}"
                         class="btn btn-info btn-add-food d-flex justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -107,8 +108,10 @@
                 <thead>
                     <tr class="text-center">
                         <th class="w-60 font-weight-800">STT</th>
+                        @if (request()->query('type') == TypeStaticContentEnums::FAQ->value)
+                            <th>@lang('Tiêu đề')</th>
+                        @endif
                         <th class="">@lang('Mô tả')</th>
-                        <th>@lang('Kiểu chính sách')</th>
                         <th class="w-140">@lang('Trạng thái')</th>
                         <th class="w-150">@lang('Điều chỉnh')</th>
                     </tr>
@@ -119,59 +122,36 @@
                             <tr class="text-center">
                                 <td class="font-weight-800 align-middle">
                                     {{ $key + 1 + ($policies->currentPage() - 1) * $policies->perPage() }}</td>
+                                @if (request()->query('type') == TypeStaticContentEnums::FAQ->value)
+                                    <td> {{ $policy->title }} </td>
+                                @endif
                                 <td class="font-weight-400 align-middle">{{ strip_tags($policy->description) }}</td>
-                                <td>
-                                    @switch($policy->type)
-                                        @case(TypePolicyEnums::SECURITY)
-                                            {{TypePolicyEnums::SECURITY->label()}}
-                                            @break
-
-                                        @case(TypePolicyEnums::TERM)
-                                            {{TypePolicyEnums::TERM->label()}}
-                                            @break
-
-                                        @case(TypePolicyEnums::PROHIBITED)
-                                            {{TypePolicyEnums::PROHIBITED->label()}}
-                                            @break
-
-                                        @case(TypePolicyEnums::COMMUNICATE)
-                                            {{TypePolicyEnums::COMMUNICATE->label()}}
-                                            @break
-
-                                        @case(TypePolicyEnums::SAFETOUSE)
-                                            {{TypePolicyEnums::SAFETOUSE->label()}}
-                                            @break
-
-                                        @default
-                                            Không xác định
-                                    @endswitch
-                                </td>
                                 <td class="font-weight-400 align-middle">
-                                    {{StatusEnums::ACTIVE == $policy->status ? 'Đang hoạt động' : 'Đã bị khoá'}}
+                                    {{ StatusEnums::ACTIVE == $policy->status ? 'Đang hoạt động' : 'Đã bị khoá' }}
                                 </td>
                                 <td class="text-left">
                                     @if ($policy->status == StatusEnums::ACTIVE)
-                                    <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
-                                        data-id="{{ $policy->id }}"
-                                        data-href="{{ route('admin.policy.changeStatus', ['id' => $policy->id]) }}"
-                                        id="active-popup" >
-                                        <i class="las la-ban"></i>
-                                    </a>
-                                @else
-                                    <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
-                                        data-id="{{ $policy->id }}"
-                                        data-href="{{ route('admin.policy.changeStatus', ['id' => $policy->id]) }}"
-                                        id="inactive-popup" >
-                                        <i class="las la-check-circle"></i>
-                                    </a>
-                                @endif
+                                        <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
+                                            data-id="{{ $policy->id }}"
+                                            data-href="{{ route('admin.static-content.changeStatus', ['id' => $policy->id]) }}"
+                                            id="active-popup">
+                                            <i class="las la-ban"></i>
+                                        </a>
+                                    @else
+                                        <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
+                                            data-id="{{ $policy->id }}"
+                                            data-href="{{ route('admin.static-content.changeStatus', ['id' => $policy->id]) }}"
+                                            id="inactive-popup">
+                                            <i class="las la-check-circle"></i>
+                                        </a>
+                                    @endif
 
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
-                                        href="{{ route('admin.policy.edit', $policy->id) }}">
+                                        href="{{ route('admin.static-content.edit', ['static_content' => $policy->id, 'type' => request()->query('type')]) }}">
                                         <i class="las la-edit"></i>
                                     </a>
                                     <a href="javascript:void(0)"
-                                        data-href="{{ route('admin.policy.destroy', $policy->id) }}"
+                                        data-href="{{ route('admin.static-content.destroy', ['static_content' => $policy->id, 'type' => request()->query('type')]) }}"
                                         data-id="{{ $policy->id }}"
                                         class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                         title="@lang('policy.delete')">
@@ -200,8 +180,8 @@
             let delete_href = $(this).attr('data-href');
 
             Swal.fire({
-                title: '@lang('Xóa chính sách')',
-                text: '@lang('Bạn có muốn xóa chính sách này không ?')',
+                title: '@lang('Xóa Mục này')',
+                text: '@lang('Bạn có muốn xóa mục này không ?')',
                 icon: 'warning',
                 confirmButtonText: '@lang('Có')',
                 cancelButtonText: '@lang('Không')',
@@ -219,7 +199,7 @@
                         success: function(response) {
                             Swal.fire({
                                 title: 'Xóa thành công!',
-                                text: 'Chính sách đã được xóa.',
+                                text: 'Đã xoá mục được chọn.',
                                 icon: 'success',
                                 confirmButtonText: 'OK'
                             }).then(() => {
@@ -228,7 +208,7 @@
                         },
                         error: function(err) {
 
-                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Chính sách.', 'error');
+                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa mục được chọn.', 'error');
                         }
                     });
                 }
@@ -288,7 +268,7 @@
             let id = $(this).attr('data-id');
             let href = $(this).attr('data-href');
             console.log(href);
-            
+
             Swal.fire({
                 title: '@lang('Trạng thái')',
                 text: '@lang('Bạn muốn thay đổi trạng thái này?')',
@@ -319,6 +299,5 @@
                 }
             });
         });
-
     </script>
 @endsection

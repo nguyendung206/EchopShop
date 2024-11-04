@@ -5,19 +5,19 @@
             <div class="col-md-3 col-6">
                 <h1 class="footer-heading">Hỗ trợ</h1>
                 <ul>
-                    <li><a href="#" class="footer-link">Hướng dẫn bán hàng</a></li>
-                    <li><a href="#" class="footer-link">Trở thành người bán hàng</a></li>
-                    <li><a href="#" class="footer-link">Câu hỏi thường gặp</a></li>
-                    <li><a href="#" class="footer-link">Chính sách bảo vệ người mua</a></li>
-                    <li><a href="#" class="footer-link">Phản hồi</a></li>
-                    <li><a href="#" class="footer-link">Quy chế hoạt động</a></li>
-                    <li><a href="#" class="footer-link">Chính sách giải quyết tranh chấp</a></li>
+                    <li><a href="{{route('staticContent.sellerGuide')}}" class="footer-link">Hướng dẫn bán hàng</a></li>
+                    <li><a href="{{route('staticContent.becomeSeller')}}" class="footer-link">Trở thành người bán hàng</a></li>
+                    <li><a href="{{route('staticContent.faq')}}" class="footer-link">Câu hỏi thường gặp</a></li>
+                    <li><a href="{{route('staticContent.buyerProtectionPolicy')}}" class="footer-link">Chính sách bảo vệ người mua</a></li>
+                    <li><a href="{{route('staticContent.feedback')}}" class="footer-link">Phản hồi</a></li>
+                    <li><a href="{{route('staticContent.operationRules')}}" class="footer-link">Quy chế hoạt động</a></li>
+                    <li><a href="{{route('staticContent.disputeResolutionPolicy')}}" class="footer-link">Chính sách giải quyết tranh chấp</a></li>
                 </ul>
             </div>
             <div class="col-md-2 col-6">
                 <h1 class="footer-heading">Về Echop</h1>
                 <ul>
-                    <li><a href="#" class="footer-link">Giới thiệu</a></li>
+                    <li><a href="{{route('staticContent.aboutUs')}}" class="footer-link">Giới thiệu</a></li>
                     <li><a href="{{route('about.contactUs.create')}}" class="footer-link">Liên hệ với chúng tôi</a></li>
                     <li><a href="#" class="footer-link">Blog</a></li>
                 </ul>
@@ -25,20 +25,20 @@
             <div class="col-md-2 col-6">
                 <h1 class="footer-heading">Tài khoản</h1>
                 <ul>
-                    <li><a href="#" class="footer-link">Đăng ký</a></li>
-                    <li><a href="#" class="footer-link">Đăng nhập</a></li>
-                    <li><a href="#" class="footer-link">Yêu thích</a></li>
-                    <li><a href="#" class="footer-link">Tin nhắn</a></li>
+                    <li><a href="{{route('staticContent.register')}}" class="footer-link">Đăng ký</a></li>
+                    <li><a href="{{route('staticContent.login')}}" class="footer-link">Đăng nhập</a></li>
+                    <li><a href="{{route('staticContent.favourite')}}" class="footer-link">Yêu thích</a></li>
+                    <li><a href="{{route('staticContent.message')}}" class="footer-link">Tin nhắn</a></li>
                 </ul>
             </div>
             <div class="col-md-2 col-6">
                 <h1 class="footer-heading">Chính sách</h1>
                 <ul>
-                    <li><a href="{{route('policy.security')}}" class="footer-link">Chính sách bảo mật</a></li>
-                    <li><a href="{{route('policy.term')}}" class="footer-link">Điều khoản dịch vụ</a></li>
-                    <li><a href="{{route('policy.prohibited')}}" class="footer-link">Hành vi bị cấm</a></li>
-                    <li><a href="{{route('policy.communicate')}}" class="footer-link">Chính sách giao tiếp</a></li>
-                    <li><a href="{{route('policy.safeToUse')}}" class="footer-link">Hướng dẫn an toàn sử dụng</a></li>
+                    <li><a href="{{route('staticContent.security')}}" class="footer-link">Chính sách bảo mật</a></li>
+                    <li><a href="{{route('staticContent.term')}}" class="footer-link">Điều khoản dịch vụ</a></li>
+                    <li><a href="{{route('staticContent.prohibited')}}" class="footer-link">Hành vi bị cấm</a></li>
+                    <li><a href="{{route('staticContent.communicate')}}" class="footer-link">Chính sách giao tiếp</a></li>
+                    <li><a href="{{route('staticContent.safeToUse')}}" class="footer-link">Hướng dẫn an toàn sử dụng</a></li>
                 </ul>
             </div>
 

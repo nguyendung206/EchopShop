@@ -9,10 +9,10 @@ use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\admin\FeeshipController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PartnerController;
-use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ShopController;
+use App\Http\Controllers\Admin\StaticContentController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,9 +50,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         Route::delete('/{id}', [ContactController::class, 'destroy'])->name('destroy');
         Route::post('/sendMail', [ContactController::class, 'sendMail'])->name('sendMail');
     });
-    //policy
-    Route::resource('/policy', PolicyController::class);
-    Route::put('policy/changeStatus/{id}', [PolicyController::class, 'changeStatus'])->name('policy.changeStatus');
+    //static content
+    Route::resource('/static-content', StaticContentController::class);
+    Route::put('static-content/changeStatus/{id}', [StaticContentController::class, 'changeStatus'])->name('static-content.changeStatus');
 
     //category
     Route::post('/category/import', [CategoryController::class, 'import'])->name('category.import');

@@ -3,24 +3,25 @@
 namespace App\Models;
 
 use App\Enums\Status;
-use App\Enums\TypePolicy;
+use App\Enums\TypeStaticContent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Policy extends Model
+class StaticContent extends Model
 {
     use HasFactory;
 
-    protected $table = 'policies';
+    protected $table = 'static_content';
 
     protected $casts = [
         'status' => Status::class,
-        'type' => TypePolicy::class,
+        'type' => TypeStaticContent::class,
     ];
 
     protected $fillable = [
         'description',
         'status',
         'type',
+        'title',
     ];
 }

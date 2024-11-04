@@ -134,8 +134,8 @@
             let delete_href = $(this).attr('data-href');
 
             Swal.fire({
-                title: '@lang('Xóa chính sách')',
-                text: '@lang('Bạn có muốn xóa Liên hệ này không ?')',
+                title: '@lang('Xóa Mục này')',
+                text: '@lang('Bạn có muốn xóa mục này không ?')',
                 icon: 'warning',
                 confirmButtonText: '@lang('Có')',
                 cancelButtonText: '@lang('Không')',
@@ -153,7 +153,7 @@
                         success: function(response) {
                             Swal.fire({
                                 title: 'Xóa thành công!',
-                                text: 'Chính sách đã được xóa.',
+                                text: 'Mục được chọn đã được xóa.',
                                 icon: 'success',
                                 confirmButtonText: 'OK'
                             }).then(() => {
@@ -162,7 +162,7 @@
                         },
                         error: function(err) {
 
-                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa Chính sách.', 'error');
+                            Swal.fire('Đã xảy ra lỗi!', 'Không thể xóa mục này.', 'error');
                         }
                     });
                 }
