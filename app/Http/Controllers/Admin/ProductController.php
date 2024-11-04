@@ -378,8 +378,9 @@ class ProductController extends Controller
                 ! isset($previewData[0]['hinh_thuc']) && ! isset($previewData[0]['anh_dai_dien']) &&
                 ! isset($previewData[0]['danh_sach_anh']) && ! isset($previewData[0]['trang_thai']) &&
                 ! isset($previewData[0]['mo_ta']) && ! isset($previewData[0]['chat_luong']) &&
-                ! isset($previewData[0]['ten_shop']) && ! isset($previewData[0]['ten_thuong_hieu']) && ! isset($previewData[0]['ten_danh_muc']) &&
-                ! isset($previewData[0]['kieu_chi_tiet']) && ! isset($previewData[0]['mau']) && ! isset($previewData[0]['size']) && ! isset($previewData[0]['so_luong'])
+                ! isset($previewData[0]['ten_shop']) && ! isset($previewData[0]['ten_thuong_hieu']) &&
+                ! isset($previewData[0]['ten_danh_muc']) && ! isset($previewData[0]['kieu_chi_tiet']) &&
+                ! isset($previewData[0]['mau']) && ! isset($previewData[0]['size']) && ! isset($previewData[0]['so_luong'])
             ) {
                 flash('Tải file lên thất bại!')->error();
 
