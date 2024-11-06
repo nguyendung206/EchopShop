@@ -71,7 +71,7 @@
                         </svg>
                         <span class="custom-FontSize">@lang('Tìm kiếm')</span>
                     </button>
-                    <a href="{{ url()->current() }}"
+                    <a href="{{ url()->full() }}"
                         class="pl-0 pr-0 w-25 btn btn-info ml-2 d-flex btn-responsive justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -117,57 +117,57 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (!empty($policies) && count($policies))
-                        @foreach ($policies as $key => $policy)
+                        @forelse ($contents as $key => $content)
                             <tr class="text-center">
                                 <td class="font-weight-800 align-middle">
-                                    {{ $key + 1 + ($policies->currentPage() - 1) * $policies->perPage() }}</td>
+                                    {{ $key + 1 + ($contents->currentPage() - 1) * $contents->perPage() }}</td>
                                 @if (request()->query('type') == TypeStaticContentEnums::FAQ->value)
-                                    <td> {{ $policy->title }} </td>
+                                    <td> {{ $content->title }} </td>
                                 @endif
-                                <td class="font-weight-400 align-middle">{{ strip_tags($policy->description) }}</td>
+                                <td class="font-weight-400 align-middle">{{ strip_tags($content->description) }}</td>
                                 <td class="font-weight-400 align-middle">
-                                    {{ StatusEnums::ACTIVE == $policy->status ? 'Đang hoạt động' : 'Đã bị khoá' }}
+                                    {{ StatusEnums::ACTIVE == $content->status ? 'Đang hoạt động' : 'Đã bị khoá' }}
                                 </td>
                                 <td class="text-left">
-                                    @if ($policy->status == StatusEnums::ACTIVE)
+                                    @if ($content->status == StatusEnums::ACTIVE)
                                         <a class="btn mb-1 btn-soft-danger btn-icon btn-circle btn-sm btn_status changeStatus"
-                                            data-id="{{ $policy->id }}"
-                                            data-href="{{ route('admin.static-content.changeStatus', ['id' => $policy->id]) }}"
+                                            data-id="{{ $content->id }}"
+                                            data-href="{{ route('admin.static-content.changeStatus', ['id' => $content->id]) }}"
                                             id="active-popup">
                                             <i class="las la-ban"></i>
                                         </a>
                                     @else
                                         <a class="btn btn-soft-success btn-icon btn-circle btn-sm btn_status changeStatus"
-                                            data-id="{{ $policy->id }}"
-                                            data-href="{{ route('admin.static-content.changeStatus', ['id' => $policy->id]) }}"
+                                            data-id="{{ $content->id }}"
+                                            data-href="{{ route('admin.static-content.changeStatus', ['id' => $content->id]) }}"
                                             id="inactive-popup">
                                             <i class="las la-check-circle"></i>
                                         </a>
                                     @endif
 
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
-                                        href="{{ route('admin.static-content.edit', ['static_content' => $policy->id, 'type' => request()->query('type')]) }}">
+                                        href="{{ route('admin.static-content.edit', ['static_content' => $content->id, 'type' => request()->query('type')]) }}">
                                         <i class="las la-edit"></i>
                                     </a>
                                     <a href="javascript:void(0)"
-                                        data-href="{{ route('admin.static-content.destroy', ['static_content' => $policy->id, 'type' => request()->query('type')]) }}"
-                                        data-id="{{ $policy->id }}"
+                                        data-href="{{ route('admin.static-content.destroy', ['static_content' => $content->id, 'type' => request()->query('type')]) }}"
+                                        data-id="{{ $content->id }}"
                                         class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
-                                        title="@lang('policy.delete')">
+                                        title="@lang('content.delete')">
                                         <i class="las la-trash"></i>
                                     </a>
                                 </td>
                             </tr>
-                        @endforeach
-                    @endif
+                        @empty
+                            
+                        @endforelse
                 </tbody>
             </table>
         </div>
     </div>
     <div class="pagination-us">
         <div class="aiz-pagination">
-            {{ $policies->appends(request()->input())->links('pagination::bootstrap-4') }}
+            {{ $contents->appends(request()->input())->links('pagination::bootstrap-4') }}
         </div>
     </div>
 @endsection

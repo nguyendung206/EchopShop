@@ -5,7 +5,7 @@
 @section('content')
 <div class="backnow">
     <div class="backpage">
-        <a href="{{route('admin.static-content.index')}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href="{{route('admin.static-content.index', ['type' => $type])}}" class="back btn"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg></a>
     </div>
@@ -62,7 +62,7 @@
 
                     <input type="hidden" name="type" value="{{$type}}">
                     <div class="form-group mb-0 text-right">
-                        <a href="{{ route('admin.static-content.index') }}" type="button" class="btn btn-light mr-2">Hủy</a>
+                        <a href="{{ route('admin.static-content.index', ['type' => $type]) }}" type="button" class="btn btn-light mr-2">Hủy</a>
                         <button type="submit" class="btn btn-primary">Sửa</button>
                     </div>
                 </form>

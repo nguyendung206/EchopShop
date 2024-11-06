@@ -44,7 +44,7 @@ Route::prefix('/about')->name('about.')->group(function () {
     Route::post('/contactUs', [ContactController::class, 'store'])->name('contactUs.store');
 });
 
-Route::prefix('/content')->name('staticContent.')->group(function () {
+Route::name('staticContent.')->group(function () {
     Route::get('/seller-guide', [StaticContentController::class, 'getStaticContentHome'])->name('sellerGuide');
     Route::get('/faq', [StaticContentController::class, 'getStaticContentHome'])->name('faq');
     Route::get('/become-seller', [StaticContentController::class, 'getStaticContentHome'])->name('becomeSeller');
@@ -53,8 +53,8 @@ Route::prefix('/content')->name('staticContent.')->group(function () {
     Route::get('/operation-rules', [StaticContentController::class, 'getStaticContentHome'])->name('operationRules');
     Route::get('/dispute-resolution-policy', [StaticContentController::class, 'getStaticContentHome'])->name('disputeResolutionPolicy');
     Route::get('/about-us', [StaticContentController::class, 'getStaticContentHome'])->name('aboutUs');
-    Route::get('/register', [StaticContentController::class, 'getStaticContentHome'])->name('register');
-    Route::get('/login', [StaticContentController::class, 'getStaticContentHome'])->name('login');
+    Route::get('/register-content', [StaticContentController::class, 'getStaticContentHome'])->name('registerContent');
+    Route::get('/login-content', [StaticContentController::class, 'getStaticContentHome'])->name('loginContent');
     Route::get('/favourite', [StaticContentController::class, 'getStaticContentHome'])->name('favourite');
     Route::get('/message', [StaticContentController::class, 'getStaticContentHome'])->name('message');
     Route::get('/security', [StaticContentController::class, 'getStaticContentHome'])->name('security');

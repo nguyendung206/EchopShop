@@ -27,13 +27,11 @@ class StaticContentController extends Controller
     {
         $type = $request->query('type');
         if (! TypeStaticContent::isValid($type) || empty($type)) {
-            dd($type);
-
             return redirect()->route('admin.static-content.index', ['type' => $type]);
         }
-        $policies = $this->staticCotentService->index($request->all());
+        $contents = $this->staticCotentService->index($request->all());
 
-        return view('admin.staticContent.index', ['policies' => $policies, 'type' => $type]);
+        return view('admin.staticContent.index', ['contents' => $contents, 'type' => $type]);
     }
 
     public function create(Request $request)
@@ -50,13 +48,13 @@ class StaticContentController extends Controller
     {
         try {
             $this->staticCotentService->store($request->all());
-            flash('Thêm '.TypeStaticContent::from($request->query('type'))->label().' thành công')->success();
+            flash('Thêm '.TypeStaticContent::from($request->type)->label().' thành công')->success();
 
-            return redirect()->route('admin.static-content.index', ['type' => $request->query('type')]);
+            return redirect()->route('admin.static-content.index', ['type' => $request->type]);
         } catch (Exception $e) {
-            flash('Thêm '.TypeStaticContent::from($request->query('type'))->label().' thất bại')->error();
+            flash('Thêm '.TypeStaticContent::from($request->type)->label().' thất bại')->error();
 
-            return redirect()->route('admin.static-content.create');
+            return redirect()->route('admin.static-content.create', ['type' => $request->type]);
         }
     }
 
@@ -102,8 +100,8 @@ class StaticContentController extends Controller
     public function changeStatus($id)
     {
         try {
-            $policy = StaticContent::findOrFail($id);
-            $this->statusService->changeStatus($policy);
+            $content = StaticContent::findOrFail($id);
+            $this->statusService->changeStatus($content);
             flash('Thay đổi trạng thái thành công!')->success();
 
             return response()->json([

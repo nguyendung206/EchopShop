@@ -25,8 +25,8 @@
             <div class="col-md-2 col-6">
                 <h1 class="footer-heading">Tài khoản</h1>
                 <ul>
-                    <li><a href="{{route('staticContent.register')}}" class="footer-link">Đăng ký</a></li>
-                    <li><a href="{{route('staticContent.login')}}" class="footer-link">Đăng nhập</a></li>
+                    <li><a href="{{route('staticContent.registerContent')}}" class="footer-link">Đăng ký</a></li>
+                    <li><a href="{{route('staticContent.loginContent')}}" class="footer-link">Đăng nhập</a></li>
                     <li><a href="{{route('staticContent.favourite')}}" class="footer-link">Yêu thích</a></li>
                     <li><a href="{{route('staticContent.message')}}" class="footer-link">Tin nhắn</a></li>
                 </ul>

@@ -2,27 +2,27 @@
 
 namespace App\Enums;
 
-enum TypeStaticContent: int
+enum TypeStaticContent: string
 {
-    case SELLER_GUIDE = 1;
-    case BECOME_SELLER = 2;
-    case FAQ = 3;
-    case BUYER_PROTECTION_POLICY = 4;
-    case FEEDBACK = 5;
-    case OPERATION_RULES = 6;
-    case DISPUTE_RESOLUTION_POLICY = 7;
-    case ABOUT_US = 8;
-    case CONTACT_US = 9;
-    case BLOG = 10;
-    case REGISTER = 11;
-    case LOGIN = 12;
-    case FAVOURITE = 13;
-    case MESSAGE = 14;
-    case SECURITY = 15;
-    case TERM = 16;
-    case PROHIBITED = 17;
-    case COMMUNICATE = 18;
-    case SAFETOUSE = 19;
+    case SELLER_GUIDE = 'seller-guide';
+    case BECOME_SELLER = 'become-seller';
+    case FAQ = 'faq';
+    case BUYER_PROTECTION_POLICY = 'buyer-protection-policy';
+    case FEEDBACK = 'feedback';
+    case OPERATION_RULES = 'operation-rules';
+    case DISPUTE_RESOLUTION_POLICY = 'dispute-resolution-policy';
+    case ABOUT_US = 'about-us';
+    case CONTACT_US = 'contact-us';
+    case BLOG = 'blog';
+    case REGISTER_CONTENT = 'register-content';
+    case LOGIN_CONTENT = 'login-content';
+    case FAVOURITE = 'favourite';
+    case MESSAGE = 'message';
+    case SECURITY = 'security';
+    case TERM = 'term';
+    case PROHIBITED = 'prohibited';
+    case COMMUNICATE = 'communicate';
+    case SAFETOUSE = 'safe-to-use';
 
     public function label(): string
     {
@@ -37,8 +37,8 @@ enum TypeStaticContent: int
             self::ABOUT_US => 'Giới thiệu',
             self::CONTACT_US => 'Liên hệ với chúng tôi',
             self::BLOG => 'Blog',
-            self::REGISTER => 'Đăng ký',
-            self::LOGIN => 'Đăng nhập',
+            self::REGISTER_CONTENT => 'Đăng ký',
+            self::LOGIN_CONTENT => 'Đăng nhập',
             self::FAVOURITE => 'Yêu thích',
             self::MESSAGE => 'Tin nhắn',
             self::SECURITY => 'Chính sách bảo mật',

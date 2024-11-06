@@ -27,7 +27,7 @@ class StaticContentRequest extends FormRequest
     {
         $rules = [
             'description' => ['required', 'max: 1000'],
-            'type' => ['required', 'integer', Rule::in(array_column(TypeStaticContent::cases(), 'value'))],
+            'type' => ['required', Rule::in(array_column(TypeStaticContent::cases(), 'value'))],
         ];
         if ($this->input('type') == TypeStaticContent::FAQ->value) {
             $rules['title'] = ['required', 'string', 'max: 200'];
