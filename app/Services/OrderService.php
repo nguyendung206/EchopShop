@@ -254,7 +254,7 @@ class OrderService
     public function updateStatus($request, $id)
     {
         try {
-            $order = Order::with(['customer', 'orderDetails.productUnit'])->findOrFail($id);
+            $order = Order::with(['customer', 'orderDetails.productUnit','ward','district','province'])->findOrFail($id);
             $statusInit = $order->status->value;
             $order->status = $request['status'];
             if (! empty($request['cancel_reason'])) {
