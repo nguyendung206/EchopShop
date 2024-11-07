@@ -499,7 +499,7 @@
                 var districtId = 0;
                 var wardId = 0;
                 $('.btn-update-address').on('click', function (e){
-
+                    $('.error-message').remove();
                     var addressId = $(this).data('shipping-address-id');
                     var addressSelected = @json($shippingAddresses).find(function(address) {
                         return address.id == addressId;
@@ -519,6 +519,7 @@
                 });
 
                 $('#btn-add-address').on('click', function (e) {
+                    $('.error-message').remove();
                     $('#changeAddressForm input[name="user_name"]').val('');
                     $('#changeAddressForm input[name="phone"]').val('');
                     $('#changeAddressForm input[name="street"]').val('');
@@ -608,6 +609,7 @@
                 });
 
                 $('#submitChangeAddressShow').on('click', function () {
+                    
                     var addressIdSelected = $('input[name="radio-address"]:checked').data('shipping-address-id');
                     
                     var addressSelected = @json($shippingAddresses).find(function(address) {
@@ -788,12 +790,27 @@
                         $('#addressForm').after('<span class="error-message text-danger my-1" style="font-size: 10px">Vui lòng nhập địa chỉ.</span>');
                         hasError = true;
                     }
+
+                    if ($('select[name="province_id"]').val() == '0' || $('select[name="province_id"]').val() == null) {
+                        hasError = true;
+                        $('select[name="province_id"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Vui lòng chọn thành phố.</div>');
+                    }
+
+                    if ($('select[name="district_id"]').val() == '0') {
+                        hasError = true;
+                        $('select[name="district_id"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Vui lòng chọn quận huyện.</div>');
+                    }
+
+                    if ($('select[name="ward_id"]').val() == '0') {
+                        hasError = true;
+                        $('select[name="ward_id"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Vui lòng chọn phường/thị xã.</div>');
+                    }
+
                     var phoneRegex = /^[0-9]{10,11}$/;
                     if (!phoneNumberValue) {
                         $('#phoneNumberForm').after('<span class="error-message text-danger my-1" style="font-size: 10px">Vui lòng nhập số điện thoại.</span>');
                         hasError = true;
                     }else if (!phoneRegex.test(phoneNumberValue)) {
-                        console.log("alo");
                         
                         $('#phoneNumberForm').after('<span class="error-message text-danger my-1" style="font-size: 10px">Số điện thoại không hợp lệ. Vui lòng nhập lại.</span>');
                         hasError = true;

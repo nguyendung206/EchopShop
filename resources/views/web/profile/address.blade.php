@@ -85,10 +85,6 @@
                                 {{ $province->province_name }}</option>
                         @endforeach
                     </select>
-                    @error('province_id')
-                        <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
-                            {{ $message }}</div>
-                    @enderror
                 </div>
             </div>
 
@@ -102,10 +98,6 @@
                         <option value="0" class=" text-center" disabled>Vui lòng chọn thành phố trước
                         </option>
                     </select>
-                    @error('district_id')
-                        <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
-                            {{ $message }}</div>
-                    @enderror
                 </div>
             </div>
 
@@ -119,10 +111,6 @@
                         <option value="0" class=" text-center" disabled>Vui lòng chọn quận huyện trước
                         </option>
                     </select>
-                    @error('ward_id')
-                        <div style="width: 100%;margin-top: .25rem;font-size: 80%;color: #dc3545;">
-                            {{ $message }}</div>
-                    @enderror
                 </div>
             </div>
 
@@ -178,7 +166,7 @@
             var districtId = 0;
             var wardId = 0;
             $('.btn-update-address').on('click', function (e){
-                
+                $('.error-message').remove();
                 var addressId = $(this).data('shipping-address-id');
                 var addressSelected = @json($addresses).find(function(address) {
                     return address.id == addressId;
@@ -192,11 +180,13 @@
                 $('#province_select').val(addressSelected.province_id).change();
                 $('#changeAddressForm input[name="is_default"]').prop('checked', addressSelected.is_default);
                 $('#changeAddressForm input[name="type_address"][value="' + addressSelected.type_address + '"]').prop('checked', true);
+                $('#changeAddressForm').attr('action', '{{ route("order.changeAddress") }}');
                 $('#submitChangeAddress').text('Thay đổi')
                 $('#addressLayer').fadeIn();
             });
 
             $('#btn-add-address').on('click', function (e) {
+                $('.error-message').remove();
                 $('#changeAddressForm input[name="user_name"]').val('');
                 $('#changeAddressForm input[name="phone"]').val('');
                 $('#changeAddressForm input[name="street"]').val('');
@@ -286,6 +276,45 @@
 
             $('#cancelDelete, .modal-delete-close').on('click', function () {
                 $('#deleteModal').hide();
+            });
+
+            $('#changeAddressForm').submit(function(e) {
+                e.preventDefault();  // Ngừng việc gửi form theo cách thông thường
+
+                $('.error-message').remove();
+
+                var isValid = true;
+                if ($('input[name="user_name"]').val() == '') {
+                    isValid = false;
+                    $('input[name="user_name"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Tên người nhận không được để trống.</div>');
+                }
+
+                if ($('input[name="street"]').val() == '') {
+                    isValid = false;
+                    $('input[name="street"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Địa chỉ không được để trống.</div>');
+                }
+                if ($('input[name="phone"]').val() == '') {
+                    isValid = false;
+                    $('input[name="phone"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Số điện thoại không được để trống.</div>');
+                }
+                if ($('select[name="province_id"]').val() == '0' || $('select[name="province_id"]').val() == null) {
+                    
+                    isValid = false;
+                    $('select[name="province_id"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Vui lòng chọn thành phố.</div>');
+                }
+
+                if ($('select[name="district_id"]').val() == '0') {
+                    isValid = false;
+                    $('select[name="district_id"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Vui lòng chọn quận huyện.</div>');
+                }
+
+                if ($('select[name="ward_id"]').val() == '0') {
+                    isValid = false;
+                    $('select[name="ward_id"]').after('<div class="error-message" style="color: red;font-size: 12px;margin-top: 8px;">Vui lòng chọn phường/thị xã.</div>');
+                }
+                if (isValid) {
+                    this.submit(); 
+                }
             });
 
         });
