@@ -1,17 +1,16 @@
 @extends('admin.layout.app')
 @section('title')
-    {{ TypeStaticContentEnums::from(request()->query('type'))->label() }}
+    Nội dung hiển thị
 @endsection
 @section('content')
 
     <div class="aiz-titlebar text-left mt-2 mb-3">
         <div class="align-items-center">
-            <h1 class="h3"><strong>{{ TypeStaticContentEnums::from(request()->query('type'))->label() }}</strong></h1>
+            <h1 class="h3"><strong>Nội dung hiển thị</strong></h1>
         </div>
     </div>
     <div class="filter">
         <form class="" id="food" action="{{ route('admin.static-content.index') }}" method="GET">
-            <input type="hidden" name="type" value="{{request()->query('type')}}">
             <div class="row gutters-5 mb-2">
                 <div class="col-md-6 d-flex search">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 search_icon" fill="none"
@@ -23,7 +22,7 @@
                         value="{{ request('search') }}" placeholder="@lang('Tìm kiếm theo tên và mô tả')">
                 </div>
                 <div class="col-md-3 text-md-right add-new ">
-                    <a href="{{ route('admin.static-content.create', ['type' => request()->query('type')]) }}"
+                    <a href="{{ route('admin.static-content.create') }}"
                         class="btn btn-info btn-add-food d-flex justify-content-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -43,10 +42,15 @@
             </div>
             <div class="row gutters-5 mb-3 custom-change">
                 <div class="col-md-3 ">
-                    <input type="text" onkeypress='return event.charCode >=48 && event.charCode<=57' autocomplete="off"
-                        class="form-control custom-placeholder" name="joined_date" id="joined_date"
-                        placeholder="{{ __('Ngày tạo') }}" value="{{ request('joined_date') }}">
-                    <div class="custom-down"><i class="fas fa-chevron-down"></i></div>
+                    <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500"
+                        id="status" name="type">
+                        @foreach (TypeStaticContentEnums::cases() as $type )
+                            <option value="">Loại nội dung</option>
+                            <option value="{{ $type->value }}" @if (request('type') == $type->value) selected @endif>
+                                {{ $type->label() }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-3 res-status">
                     <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0 font-weight-500"
@@ -108,10 +112,8 @@
                 <thead>
                     <tr class="text-center">
                         <th class="w-60 font-weight-800">STT</th>
-                        @if (request()->query('type') == TypeStaticContentEnums::FAQ->value)
-                            <th>@lang('Tiêu đề')</th>
-                        @endif
                         <th class="">@lang('Mô tả')</th>
+                        <th class="w-150">@lang('Loại nội dung')</th>
                         <th class="w-140">@lang('Trạng thái')</th>
                         <th class="w-150">@lang('Điều chỉnh')</th>
                     </tr>
@@ -121,10 +123,8 @@
                             <tr class="text-center">
                                 <td class="font-weight-800 align-middle">
                                     {{ $key + 1 + ($contents->currentPage() - 1) * $contents->perPage() }}</td>
-                                @if (request()->query('type') == TypeStaticContentEnums::FAQ->value)
-                                    <td> {{ $content->title }} </td>
-                                @endif
                                 <td class="font-weight-400 align-middle">{{ strip_tags($content->description) }}</td>
+                                <td>{{$content->type->label()}}</td>
                                 <td class="font-weight-400 align-middle">
                                     {{ StatusEnums::ACTIVE == $content->status ? 'Đang hoạt động' : 'Đã bị khoá' }}
                                 </td>
@@ -146,11 +146,11 @@
                                     @endif
 
                                     <a class="btn mb-1 btn-soft-primary btn-icon btn-circle btn-sm"
-                                        href="{{ route('admin.static-content.edit', ['static_content' => $content->id, 'type' => request()->query('type')]) }}">
+                                        href="{{ route('admin.static-content.edit', $content->id) }}">
                                         <i class="las la-edit"></i>
                                     </a>
                                     <a href="javascript:void(0)"
-                                        data-href="{{ route('admin.static-content.destroy', ['static_content' => $content->id, 'type' => request()->query('type')]) }}"
+                                        data-href="{{ route('admin.static-content.destroy', $content->id) }}"
                                         data-id="{{ $content->id }}"
                                         class="btn btn-delete btn-soft-danger btn-icon btn-circle btn-sm confirm-delete"
                                         title="@lang('content.delete')">
