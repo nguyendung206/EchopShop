@@ -61,6 +61,13 @@ FAVORITES
                                             </a>
                                         @break
 
+                                        @case(TypeProductEnums::SALE)
+                                            <a class="buy buy-favorite {{$product->productUnits->count() > 0 && $product->hasQuantityProduct() ? '' : 'disable-buy' }}"
+                                                href="{{ $product->productUnits->count() > 0 && $product->hasQuantityProduct() ? route('web.productdetail.index', ['slug' => $product->slug]) : 'javascript:void(0)' }}">
+                                                Mua ngay
+                                            </a>
+                                        @break
+
                                         @case(TypeProductEnums::GIVEAWAY)
                                             <a class="buy buy-favorite {{$product->productUnits->count() > 0 && $product->hasQuantityProduct() ? '' : 'disable-buy' }}"
                                                 href="{{ $product->productUnits->count() > 0 && $product->hasQuantityProduct() ? route('web.productdetail.index', ['slug' => $product->slug]) : 'javascript:void(0)' }}">

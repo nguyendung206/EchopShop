@@ -38,6 +38,7 @@
                         @else
                         <a href="{{route("profile.address.updateDefault", $address->id)}}" style="border: 1px solid rgba(0,0,0,0.54); background-color: transparent; font-size: 12px; padding: 4px 6px; cursor: pointer; border-radius: 2px;color: rgba(0,0,0,0.54);">Thiết lập mặc định</a>
                         @endif
+                        <p class="my-2 btn-delete-address" data-shipping-address-id="{{$address->id}}" style="font-size: 12px; color: #B10000; cursor: pointer;">Xoá</p>
                     </div>
                 </div>
                 @endforeach
@@ -143,6 +144,22 @@
     </form>
 </div>
 
+<div id="deleteModal" class="modal-delete" style="display: none;">
+    <div class="modal-delete-content">
+        <div class="modal-delete-header">
+            <h4>Xóa địa chỉ này</h4>
+            <span class="modal-delete-close">&times;</span>
+        </div>
+        <div class="modal-delete-body">
+            <p>Bạn có muốn xóa địa chỉ này không?</p>
+        </div>
+        <div class="modal-delete-footer text-right">
+            <button id="cancelDelete" class="btn btn-secondary">Không</button>
+            <button id="confirmDelete" class="btn btn-danger">Có</button>
+        </div>
+    </div>
+</div>
+
 @section('script')
     <script>
         $(document).ready(function() {
@@ -150,6 +167,7 @@
             $('#btnChangeAddress').on('click', function() {
                 
                 $('#addressLayer').fadeIn();
+                
             });
 
             $('#addressLayer').on('click', function(e) {
@@ -160,7 +178,6 @@
             var districtId = 0;
             var wardId = 0;
             $('.btn-update-address').on('click', function (e){
-                console.log("alo");
                 
                 var addressId = $(this).data('shipping-address-id');
                 var addressSelected = @json($addresses).find(function(address) {
@@ -242,6 +259,33 @@
                     $('#addressLayer').fadeOut();
                     $('#addressShowLayer').fadeIn();
                 }
+            });
+            
+            let delete_id;
+            $('.btn-delete-address').on('click', function () {
+                delete_id = $(this).data('shipping-address-id');
+                $('#deleteModal').show();
+                
+            })
+
+            $('#confirmDelete').on('click', function () {
+                $.ajax({
+                    type: "DELETE",
+                    url: `${@json(route('profile.deleteAddress', ['id' => '__id__']))}`.replace('__id__', delete_id),
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content') // Truyền token CSRF vào dữ liệu
+                    },
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(err) {
+                    }
+                });
+                $('#deleteModal').hide();  
+            });
+
+            $('#cancelDelete, .modal-delete-close').on('click', function () {
+                $('#deleteModal').hide();
             });
 
         });

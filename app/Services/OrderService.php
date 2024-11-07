@@ -241,7 +241,7 @@ class OrderService
             $query->whereBetween('total_amount', [$min, $max]);
         }
 
-        return $query->with(['discount', 'customer', 'province', 'district', 'ward'])->paginate(15);
+        return $query->orderBy('created_at', 'desc')->with(['discount', 'customer', 'province', 'district', 'ward'])->paginate(15);
     }
 
     public function getOrderById($id)
@@ -254,7 +254,7 @@ class OrderService
     public function updateStatus($request, $id)
     {
         try {
-            $order = Order::with(['customer', 'orderDetails.productUnit','ward','district','province'])->findOrFail($id);
+            $order = Order::with(['customer', 'orderDetails.productUnit', 'ward', 'district', 'province'])->findOrFail($id);
             $statusInit = $order->status->value;
             $order->status = $request['status'];
             if (! empty($request['cancel_reason'])) {

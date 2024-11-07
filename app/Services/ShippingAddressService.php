@@ -88,4 +88,12 @@ class ShippingAddressService
             return false;
         }
     }
+
+    public function destroy($id)
+    {
+        $content = ShippingAddress::findOrFail($id);
+        $check = $content->delete();
+
+        return $check;
+    }
 }
