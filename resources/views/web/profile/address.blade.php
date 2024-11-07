@@ -238,7 +238,7 @@
 
 
             $('#province_select').on('change', function() {
-                var provinceId = $(this).val(); // Lấy giá trị được chọn
+                var provinceId = $(this).val();
                 $.ajax({
                     url: '{{ route('web.district') }}',
                     method: 'POST',
@@ -286,7 +286,7 @@
                     url: `${@json(route('profile.deleteAddress', ['id' => '__id__']))}`.replace('__id__', delete_id),
                     data: {
                         _token: $('meta[name="csrf-token"]').attr(
-                            'content') // Truyền token CSRF vào dữ liệu
+                            'content') 
                     },
                     success: function(response) {
                         location.reload();
@@ -301,7 +301,7 @@
             });
 
             $('#changeAddressForm').submit(function(e) {
-                e.preventDefault(); // Ngừng việc gửi form theo cách thông thường
+                e.preventDefault(); 
 
                 $('.error-message').remove();
 
