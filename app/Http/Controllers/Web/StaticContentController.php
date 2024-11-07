@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\web;
 
-use App\Enums\TypeStaticContent;
 use App\Http\Controllers\Controller;
 use App\Services\StaticContentService;
 use Illuminate\Http\Request;

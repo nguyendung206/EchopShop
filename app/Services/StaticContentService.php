@@ -10,7 +10,6 @@ class StaticContentService
 {
     public function index($request)
     {
-        $type = $request['type'];
         $query = StaticContent::query();
         if (! empty($request['search'])) {
             $query->where('description', 'like', '%'.$request['search'].'%');
@@ -18,8 +17,11 @@ class StaticContentService
         if (isset($request['status'])) {
             $query->where('status', $request['status']);
         }
+        if (isset($request['type'])) {
+            $query->where('type', $request['type']);
+        }
 
-        return $query->where('type', $type)->paginate(10);
+        return $query->orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function store($request)
@@ -42,6 +44,7 @@ class StaticContentService
             'description' => $request['description'],
             'status' => $request['status'],
             'title' => $request['title'] ?? null,
+            'type' => $request['type'],
         ];
         $content->update($data);
 

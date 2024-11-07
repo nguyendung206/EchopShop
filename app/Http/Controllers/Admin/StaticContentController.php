@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\TypeStaticContent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StaticContentRequest;
 use App\Models\StaticContent;
@@ -25,59 +24,46 @@ class StaticContentController extends Controller
 
     public function index(Request $request)
     {
-        $type = $request->query('type');
-        if (! TypeStaticContent::isValid($type) || empty($type)) {
-            return redirect()->route('admin.static-content.index', ['type' => $type]);
-        }
         $contents = $this->staticCotentService->index($request->all());
 
-        return view('admin.staticContent.index', ['contents' => $contents, 'type' => $type]);
+        return view('admin.staticContent.index', ['contents' => $contents]);
     }
 
     public function create(Request $request)
     {
-        $type = $request->query('type');
-        if (! TypeStaticContent::isValid($type) || empty($type)) {
-            abort(404);
-        }
-
-        return view('admin.staticContent.create', ['type' => $type]);
+        return view('admin.staticContent.create');
     }
 
     public function store(StaticContentRequest $request)
     {
         try {
             $this->staticCotentService->store($request->all());
-            flash('Thêm '.TypeStaticContent::from($request->type)->label().' thành công')->success();
+            flash('Thêm nội dung thành công')->success();
 
-            return redirect()->route('admin.static-content.index', ['type' => $request->type]);
+            return redirect()->route('admin.static-content.index');
         } catch (Exception $e) {
-            flash('Thêm '.TypeStaticContent::from($request->type)->label().' thất bại')->error();
+            flash('Thêm nội dung thất bại')->error();
 
-            return redirect()->route('admin.static-content.create', ['type' => $request->type]);
+            return redirect()->route('admin.static-content.create');
         }
     }
 
     public function edit(Request $request, $id)
     {
-        $type = $request->query('type');
-        if (! TypeStaticContent::isValid($type) || empty($type)) {
-            abort(404);
-        }
         $content = StaticContent::findOrFail($id);
 
-        return view('admin.staticContent.edit', ['content' => $content, 'type' => $type]);
+        return view('admin.staticContent.edit', ['content' => $content]);
     }
 
     public function update(StaticContentRequest $request, $id)
     {
         try {
             $this->staticCotentService->update($request->all(), $id);
-            flash('Cập nhật '.TypeStaticContent::from($request->query('type'))->label().' thành công!')->success();
+            flash('Cập nhật nội dung thành công!')->success();
 
-            return redirect()->route('admin.static-content.index', ['type' => $request->query('type')]);
+            return redirect()->route('admin.static-content.index');
         } catch (Exception $e) {
-            flash('Đã xảy ra lỗi khi cập nhật '.TypeStaticContent::from($request->query('type'))->label().'!')->error();
+            flash('Đã xảy ra lỗi khi cập nhật nội dung!')->error();
 
             return redirect()->back()->withInput();
         }
@@ -88,12 +74,12 @@ class StaticContentController extends Controller
         try {
             $check = $this->staticCotentService->destroy($id);
             if ($check) {
-                flash('Xóa '.TypeStaticContent::from($request->query('type'))->label().' thành công!')->success();
+                flash('Xóa nội dung thành công!')->success();
             } else {
-                flash('Đã xảy ra lỗi khi xóa '.TypeStaticContent::from($request->query('type'))->label().'!')->error();
+                flash('Đã xảy ra lỗi khi xóa nội dung!')->error();
             }
         } catch (Exception $e) {
-            flash('Đã xảy ra lỗi khi xóa '.TypeStaticContent::from($request->query('type'))->label().'!')->error();
+            flash('Đã xảy ra lỗi khi xóa nội dung!')->error();
         }
     }
 
