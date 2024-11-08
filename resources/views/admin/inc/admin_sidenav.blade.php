@@ -113,23 +113,11 @@
                     </a>
                 </li>
                 <li class="aiz-side-nav-item">
-                    <a href="#" class="aiz-side-nav-link">
-                        <i class="las la-newspaper aiz-side-nav-icon"></i>
+                    <a href="{{ route('admin.static-content.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['admin.static-content.index']) }}">
+                        <i class="las la-money-bill aiz-side-nav-icon"></i>
                         <span class="aiz-side-nav-text">Nội dung hiển thị</span>
-                        <span class="aiz-side-nav-arrow"></span>
                     </a>
-                    <ul class="aiz-side-nav-list level-2">
-                        @foreach (TypeStaticContentEnums::cases() as $type)
-                            @if (TypeStaticContentEnums::CONTACT_US->value != $type->value)
-                                <li class="aiz-side-nav-item">
-                                    <a href="{{ route('admin.static-content.index', ['type' => $type->value]) }}" class="aiz-side-nav-link ">
-                                        <i class="las la-home aiz-side-nav-icon"></i>
-                                        <span class="aiz-side-nav-text">{{$type->label()}}</span>
-                                    </a>
-                                </li>
-                            @endif
-                        @endforeach
-                    </ul>
                 </li>
 
                 <li class="aiz-side-nav-item">
