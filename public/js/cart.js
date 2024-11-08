@@ -144,6 +144,7 @@ $(document).ready(function () {
 
     // Xử lý sự kiện khi bấm nút "Lưu vào giỏ hàng"
     $('#saveSelectedUnit').on('click', function () {
+        $('#productUnitIdError').empty();
         const selectedUnitId = $('input[name="selectedUnit"]:checked').val() ?? $('#productUnitId').val();
         const quantity = $('#quantityInput').val();
         const addToCartUrl = $(this).data('add-to-cart');
@@ -155,24 +156,33 @@ $(document).ready(function () {
             _token: $('meta[name="csrf-token"]').attr('content')
         };
 
-        console.log('Dữ liệu gửi đi:', dataToSend);
         $.ajax({
             url: addToCartUrl,
             method: 'POST',
             data: dataToSend,
             success: function (response) {
+                resultAddCart = response;
+                
                 if (response.status === 200) {
+                    
+                    updateCartCount();
+                    
+                    $('#confirmationModal').modal('hide');
+                    if($('#saveSelectedUnit').data('is-purchase') != undefined) {
+                        window.location.href = response.redirect_url;
+                    }
                     toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
 
-                    updateCartCount();
-
-                    $('#confirmationModal').modal('hide');
                 } else {
                     toastr.error(response.message, null, { positionClass: 'toast-bottom-left' });
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (xhr) {
                 toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, { positionClass: 'toast-bottom-left' });
+                
+                if (xhr?.responseJSON?.errors?.product_unit_id) {
+                    $('#productUnitIdError').text(xhr?.responseJSON?.errors?.product_unit_id[0]);
+                }
             }
 
         });
@@ -182,4 +192,13 @@ $(document).ready(function () {
     function showError(message) {
         toastr.error(message, null, { positionClass: 'toast-bottom-left' });
     }
+
+
+    $('#purchase-button-product').on('click', function(event) {
+        event.preventDefault();
+        $('#saveSelectedUnit').attr('data-is-purchase', 'true');
+        $('#saveSelectedUnit').trigger('click');
+        
+        
+    });
 });

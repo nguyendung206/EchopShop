@@ -219,6 +219,7 @@ $totalQuantity = 0;
                     <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
 
                     @enderror
+                    <div id="productUnitIdError" class="text-danger py-2"></div>
                     @endif
                     <div style="display: {{ empty($product->getProductUnitTypeOne()) ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span>
                         <div class="number-input">
@@ -235,6 +236,8 @@ $totalQuantity = 0;
 
                     </div>
                 </div>
+                @if ($product->status->value == StatusEnums::ACTIVE->value)
+                    
                 <div class="product-button">
                     @if($product->type->value == 1)
                     <button>Trao đổi</button>
@@ -245,25 +248,34 @@ $totalQuantity = 0;
                         <input type="hidden" name="productId" id="modalProductId" value="{{ $product->id }}">
                         <input type="hidden" name="type" value="{{ $product->type }}">
                         <input type="hidden" name="productUnitId" id="productUnitId"
-                            value="{{ optional($product->getProductUnitTypeOne())->id }}">
+                        value="{{ optional($product->getProductUnitTypeOne())->id }}">
                         <input type="hidden" name="quantity" id="quantityInput" value="1">
-
+                        
                         <button type="button" id="saveSelectedUnit"
-                            data-add-to-cart="{{ route('cart.store') }}"
-                            class="text-white">Thêm hàng vào giỏ hàng</button>
+                        data-add-to-cart="{{ route('cart.store') }}"
+                        class="text-white">Thêm hàng vào giỏ hàng</button>
                     </form>
                     @else
                     <a href="{{ route('web.login') }}" class="btn-cart-product mr-2" style="padding: 11px 54px;">
                         Thêm hàng vào giỏ
                     </a>
                     @endauth
-                    <a href="#" class="btn-cart-product" style="padding: 11px 54px;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
+                    @auth
+                    <a href="#" class="btn-cart-product" id="purchase-button-product" style="padding: 11px 54px;color: white;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                         Mua hàng
                     </a>
+                    @else
+                    <a href="{{ route('web.login') }}" class="btn-cart-product" style="padding: 11px 54px;" >
+                        Mua hàng
+                    </a>
+                    @endauth
                     @elseif($product->type->value == 3)
                     <button>Nhận quà tặng</button>
                     @endif
                 </div>
+                @else
+                <p class="text-danger">Sản phẩm này đã dừng hoạt động.</p>
+                @endif
 
                 <div class="product-share">
                     <div>Chia sẻ</div>
