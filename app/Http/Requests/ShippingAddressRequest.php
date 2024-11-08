@@ -33,22 +33,15 @@ class ShippingAddressRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function attributes()
     {
         return [
-            'user_name.required' => 'Vui lòng nhập tên người dùng',
-            'user_name.min' => 'Tên phải có ít nhất 3 ký tự',
-            'user_name.max' => 'Tên tối đa là 100 ký tự',
-            'phone.required' => 'Vui lòng nhập số diện thoại',
-            'phone.digits' => 'Số điện thoại phải bao gồm 10 số',
-            'phone.numeric' => 'Số điện thoại chỉ chứa số',
-            'street.required' => 'Vui lòng nhập địa chỉ',
-            'province_id.required' => 'Vui lòng chọn thành phố',
-            'province_id.not_in' => 'Vui lòng chọn thành phố',
-            'district_id.required' => 'Vui lòng chọn quận/huyện',
-            'district_id.not_in' => 'Vui lòng chọn quận/huyện',
-            'ward_id.required' => 'Vui lòng chọn phường/thị xã',
-            'ward_id.not_in' => 'Vui lòng chọn phường/thị xã',
+            'user_name' => 'Tên người dùng',
+            'phone' => 'Số điện thoại',
+            'street' => 'Địa chỉ',
+            'province_id' => 'Thành phố',
+            'district_id' => 'Quận/huyện',
+            'ward_id' => 'Phường/thị xã',
         ];
     }
 }

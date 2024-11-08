@@ -127,22 +127,21 @@ class ProfileUserController extends Controller
         try {
             $check = $this->shippingAddressService->destroy($id);
             if ($check) {
-                session()->flash('success', 'Xoá địa chỉ thành công');
-
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Sửa thông tin thành công.',
+                    'message' => 'Xoá địa chỉ thành công.',
                 ], 200);
             } else {
-                session()->flash('success', 'Xoá địa chỉ thất bại');
-
                 return response()->json([
                     'status' => 500,
-                    'message' => 'Sửa thông tin thất bại.',
+                    'message' => 'Xoá địa chỉ thất bại.',
                 ], 500);
             }
         } catch (\Throwable $th) {
-            return false;
+            return response()->json([
+                'status' => 500,
+                'message' => 'Xoá địa chỉ thất bại.',
+            ], 500);
         }
     }
 }

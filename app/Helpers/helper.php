@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Storage;
 if (! function_exists('getAddress')) {
     function getAddress($object)
     {
-        $address = $object->address ?? $object->shipping_address;
+        $address = $object->street ?? $object->address ?? $object->shipping_address;
         if ($object->ward != null) {
             $address .= ', '.$object->ward->ward_name;
         }

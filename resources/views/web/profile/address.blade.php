@@ -289,9 +289,22 @@
                             'content') 
                     },
                     success: function(response) {
-                        location.reload();
+                        if (response.status === 200) {
+                            localStorage.setItem('toastMessage', response.message);
+                            localStorage.setItem('toastType', 'success');
+                            
+                            location.reload();
+                        } else {
+                            localStorage.setItem('toastMessage', response.message);
+                            localStorage.setItem('toastType', 'success');
+                            
+                        }
                     },
-                    error: function(err) {}
+                    error: function(xhr) {
+                        toastr.error("Xoá địa chỉ thất bại.", null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                    }
                 });
                 $('#deleteModal').hide();
             });
@@ -351,6 +364,23 @@
                     this.submit();
                 }
             });
+
+            const toastMessage = localStorage.getItem('toastMessage');
+            const toastType = localStorage.getItem('toastType');
+
+            if (toastMessage && toastType) {
+                if (toastType === 'success') {
+                    toastr.success(toastMessage, null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                } else if (toastType === 'error') {
+                    toastr.error(toastMessage, null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                }
+                localStorage.removeItem('toastMessage');
+                localStorage.removeItem('toastType');
+            }
 
         });
     </script>

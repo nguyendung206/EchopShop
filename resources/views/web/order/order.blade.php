@@ -140,9 +140,7 @@
                         <span class="infor-address">
                             <b class="mr-3">
                                 {{ $defaultAddress->user_name }} (+84) {{ $defaultAddress->phone }}</b>
-                            {{ $defaultAddress->street }}, {{ $defaultAddress->ward->ward_name }},
-                            {{ $defaultAddress->district->district_name }},
-                            {{ $defaultAddress->province->province_name }}</span>
+                                {{getAddress(Auth::user()->defaultAddress)}}</span>
                         <button class="change-address p-1 b-radius" id="btnChangeAddress">Thay đổi</button>
                     @endif
 
