@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShippingAddressRequest;
 use App\Services\CartService;
 use App\Services\OrderService;
 use App\Services\ShippingAddressService;
@@ -50,7 +51,7 @@ class OrderController extends Controller
         }
     }
 
-    public function addAddress(Request $request)
+    public function addAddress(ShippingAddressRequest $request)
     {
         try {
             $result = $this->shippingAddressService->addAddress($request->all());

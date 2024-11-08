@@ -241,7 +241,7 @@ class OrderService
             $query->whereBetween('total_amount', [$min, $max]);
         }
 
-        return $query->with(['discount', 'customer', 'province', 'district', 'ward'])->paginate(15);
+        return $query->orderBy('created_at', 'desc')->with(['discount', 'customer', 'province', 'district', 'ward'])->paginate(15);
     }
 
     public function getOrderById($id)

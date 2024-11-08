@@ -102,7 +102,7 @@ class ProfileUserController extends Controller
     public function getAddress(Request $request)
     {
         try {
-            $addresses = ShippingAddress::where('user_id', Auth::id())->get();
+            $addresses = ShippingAddress::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
 
             return view('web.profile.address', compact('addresses'));
         } catch (\Throwable $th) {
@@ -119,6 +119,29 @@ class ProfileUserController extends Controller
             return redirect()->back()->with('success', 'Cập nhật địa chỉ thành công');
         } catch (\Throwable $th) {
             return false;
+        }
+    }
+
+    public function deleteAddress($id)
+    {
+        try {
+            $check = $this->shippingAddressService->destroy($id);
+            if ($check) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Xoá địa chỉ thành công.',
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Xoá địa chỉ thất bại.',
+                ], 500);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Xoá địa chỉ thất bại.',
+            ], 500);
         }
     }
 }
