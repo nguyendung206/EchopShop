@@ -164,14 +164,14 @@ $(document).ready(function () {
                 resultAddCart = response;
                 
                 if (response.status === 200) {
-                    toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
-
+                    
                     updateCartCount();
-
+                    
                     $('#confirmationModal').modal('hide');
                     if($('#saveSelectedUnit').data('is-purchase') != undefined) {
                         window.location.href = response.redirect_url;
                     }
+                    toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
 
                 } else {
                     toastr.error(response.message, null, { positionClass: 'toast-bottom-left' });
