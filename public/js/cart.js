@@ -144,6 +144,7 @@ $(document).ready(function () {
 
     // Xử lý sự kiện khi bấm nút "Lưu vào giỏ hàng"
     $('#saveSelectedUnit').on('click', function () {
+        $('#productUnitIdError').empty();
         const selectedUnitId = $('input[name="selectedUnit"]:checked').val() ?? $('#productUnitId').val();
         const quantity = $('#quantityInput').val();
         const addToCartUrl = $(this).data('add-to-cart');
@@ -169,7 +170,6 @@ $(document).ready(function () {
 
                     $('#confirmationModal').modal('hide');
                     if($('#saveSelectedUnit').data('is-purchase') != undefined) {
-                        console.log(response.redirect_url);
                         window.location.href = response.redirect_url;
                     }
 
@@ -177,8 +177,12 @@ $(document).ready(function () {
                     toastr.error(response.message, null, { positionClass: 'toast-bottom-left' });
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function (xhr) {
                 toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, { positionClass: 'toast-bottom-left' });
+                
+                if (xhr?.responseJSON?.errors?.product_unit_id) {
+                    $('#productUnitIdError').text(xhr?.responseJSON?.errors?.product_unit_id[0]);
+                }
             }
 
         });

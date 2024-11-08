@@ -219,6 +219,7 @@ $totalQuantity = 0;
                     <div class="text-danger py-2">Vui lòng chọn loại hàng.</div>
 
                     @enderror
+                    <div id="productUnitIdError" class="text-danger py-2"></div>
                     @endif
                     <div style="display: {{ empty($product->getProductUnitTypeOne()) ? 'none' : 'block' }};" id="divQuantity"><span>Số Lượng</span>
                         <div class="number-input">
