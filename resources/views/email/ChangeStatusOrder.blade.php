@@ -203,8 +203,8 @@ html {
             <div class="company">
               <div class="name"><strong>{{$order->customer->name}}</strong></div>
               <div class="address">
-                Địa chỉ nhận hàng: {{ $order->customer->address }}, {{ $order->customer->ward->ward_name }}, {{ $order->customer->district->district_name }},
-                {{ $order->customer->province->province_name }}
+                Địa chỉ nhận hàng: {{ $order->shipping_address }}, {{ $order->ward->ward_name }}, {{ $order->district->district_name }},
+                {{ $order->province->province_name }}
               </div>
             </div>
           </header>

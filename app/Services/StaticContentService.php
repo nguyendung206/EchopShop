@@ -3,54 +3,59 @@
 namespace App\Services;
 
 use App\Enums\Status;
-use App\Models\Policy;
+use App\Models\StaticContent;
 use Exception;
 
-class PolicyService
+class StaticContentService
 {
     public function index($request)
     {
-        $query = Policy::query();
+        $query = StaticContent::query();
         if (! empty($request['search'])) {
             $query->where('description', 'like', '%'.$request['search'].'%');
         }
         if (isset($request['status'])) {
             $query->where('status', $request['status']);
         }
+        if (isset($request['type'])) {
+            $query->where('type', $request['type']);
+        }
 
-        return $query->paginate(10);
+        return $query->orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function store($request)
     {
-        $policyData = [
+        $data = [
             'description' => $request['description'],
             'status' => $request['status'],
             'type' => $request['type'],
+            'title' => $request['title'] ?? null,
         ];
 
-        return Policy::create($policyData);
+        return StaticContent::create($data);
     }
 
     public function update($request, $id)
     {
-        $policy = Policy::findOrFail($id);
+        $content = StaticContent::findOrFail($id);
 
-        $policyData = [
+        $data = [
             'description' => $request['description'],
             'status' => $request['status'],
+            'title' => $request['title'] ?? null,
             'type' => $request['type'],
         ];
-        $policy->update($policyData);
+        $content->update($data);
 
-        return $policy;
+        return $content;
     }
 
     public function destroy($id)
     {
         try {
-            $policy = Policy::findOrFail($id);
-            $check = $policy->delete();
+            $content = StaticContent::findOrFail($id);
+            $check = $content->delete();
 
             return $check;
         } catch (Exception $e) {
@@ -58,10 +63,10 @@ class PolicyService
         }
     }
 
-    public function getPolicyHome($type)
+    public function getStaticContentHome($type)
     {
-        $policies = Policy::query()->where('status', Status::ACTIVE)->where('type', $type)->get();
+        $contents = StaticContent::query()->where('status', Status::ACTIVE)->where('type', $type)->get();
 
-        return $policies;
+        return $contents;
     }
 }

@@ -8,11 +8,11 @@ use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\web\NotificationController;
 use App\Http\Controllers\Web\OrderController;
-use App\Http\Controllers\Web\PolicyController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
 use App\Http\Controllers\web\RatingController;
 use App\Http\Controllers\Web\ShopController;
+use App\Http\Controllers\Web\StaticContentController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/admin.php';
@@ -45,12 +45,24 @@ Route::prefix('/about')->name('about.')->group(function () {
     Route::post('/contactUs', [ContactController::class, 'store'])->name('contactUs.store');
 });
 
-Route::prefix('/policy')->name('policy.')->group(function () {
-    Route::get('/security', [PolicyController::class, 'getPolicy'])->name('security');
-    Route::get('/term', [PolicyController::class, 'getPolicy'])->name('term');
-    Route::get('/prohibited', [PolicyController::class, 'getPolicy'])->name('prohibited');
-    Route::get('/communicate', [PolicyController::class, 'getPolicy'])->name('communicate');
-    Route::get('/safeToUse', [PolicyController::class, 'getPolicy'])->name('safeToUse');
+Route::name('staticContent.')->group(function () {
+    Route::get('/seller-guide', [StaticContentController::class, 'getStaticContentHome'])->name('sellerGuide');
+    Route::get('/faq', [StaticContentController::class, 'getStaticContentHome'])->name('faq');
+    Route::get('/become-seller', [StaticContentController::class, 'getStaticContentHome'])->name('becomeSeller');
+    Route::get('/buyer-protection-policy', [StaticContentController::class, 'getStaticContentHome'])->name('buyerProtectionPolicy');
+    Route::get('/feedback', [StaticContentController::class, 'getStaticContentHome'])->name('feedback');
+    Route::get('/operation-rules', [StaticContentController::class, 'getStaticContentHome'])->name('operationRules');
+    Route::get('/dispute-resolution-policy', [StaticContentController::class, 'getStaticContentHome'])->name('disputeResolutionPolicy');
+    Route::get('/about-us', [StaticContentController::class, 'getStaticContentHome'])->name('aboutUs');
+    Route::get('/register-content', [StaticContentController::class, 'getStaticContentHome'])->name('registerContent');
+    Route::get('/login-content', [StaticContentController::class, 'getStaticContentHome'])->name('loginContent');
+    Route::get('/favourite', [StaticContentController::class, 'getStaticContentHome'])->name('favourite');
+    Route::get('/message', [StaticContentController::class, 'getStaticContentHome'])->name('message');
+    Route::get('/security', [StaticContentController::class, 'getStaticContentHome'])->name('security');
+    Route::get('/term', [StaticContentController::class, 'getStaticContentHome'])->name('term');
+    Route::get('/prohibited', [StaticContentController::class, 'getStaticContentHome'])->name('prohibited');
+    Route::get('/communicate', [StaticContentController::class, 'getStaticContentHome'])->name('communicate');
+    Route::get('/safe-to-use', [StaticContentController::class, 'getStaticContentHome'])->name('safeToUse');
 });
 
 Route::middleware(['auth:web'])->prefix('/')->group(function () {

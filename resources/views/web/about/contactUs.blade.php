@@ -1,6 +1,6 @@
 @extends('web.layout.app')
 @section('title')
-Chính sách
+Contact Us
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('/css/product.css') }}">
