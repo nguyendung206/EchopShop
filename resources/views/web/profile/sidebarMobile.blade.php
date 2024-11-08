@@ -29,6 +29,10 @@
                             <i class="fa-solid fa-bag-shopping mr-1"></i>
                             Đơn hàng của tôi
                         </a>
+                        <a href="{{ route('exchange.index') }}" class="profile-tab" data-tab="exchange">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                            Đơn hàng Trao đổi
+                        </a>
                         <a href="{{route('purchase')}}" class="profile-tab" data-tab="orders">
                             <i class="fa-regular fa-money-bill-1"></i>
                             Hóa đơn

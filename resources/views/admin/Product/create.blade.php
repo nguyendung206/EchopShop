@@ -91,6 +91,7 @@
                         <label style="font-size: 1rem;" class="col-sm-3 col-form-label font-weight-500">@lang('Hình thức')</label>
                         <div class="col-sm-9 mt-2">
                             @foreach(\App\Enums\TypeProduct::cases() as $type)
+                            @if($type !== \App\Enums\TypeProduct::EXCHANGE)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input @error('type') is-invalid @enderror" type="radio" name="type" id="type_{{ $type->value }}" value="{{ $type->value }}"
                                     {{ old('type') == $type->value ? 'checked' : '' }}>
@@ -98,6 +99,7 @@
                                     @lang($type->label())
                                 </label>
                             </div>
+                            @endif
                             @endforeach
                             @error('type')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -110,11 +112,11 @@
                         <div class="col-sm-9 " style="margin-top: 1.09rem;">
                             <div>
                                 <div class="range">
-                                    <input type="range" min="0" step="1" max="100"  value="{{old('quality') ? old('quality') : 100}}" name="quality" id="qualityRange">
+                                    <input type="range" min="0" step="1" max="100" value="{{old('quality') ? old('quality') : 100}}" name="quality" id="qualityRange">
                                 </div>
-                              
+
                                 <ul class="range-labels">
-                                  <li id="qualityLabel">Chất lượng sản phẩm: {{old('quality') ? old('quality') : 100}}%</li>
+                                    <li id="qualityLabel">Chất lượng sản phẩm: {{old('quality') ? old('quality') : 100}}%</li>
                                 </ul>
                             </div>
 

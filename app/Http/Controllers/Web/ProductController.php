@@ -54,6 +54,8 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::where('slug', $slug)->first();
+        $categories = Category::where('status', Status::ACTIVE)->get();
+        $brands = Brand::where('status', Status::ACTIVE)->get();
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->whereNot('id', $product->id)
             ->where('type', $product->type)
@@ -64,7 +66,7 @@ class ProductController extends Controller
         $isShopOwner = $user && $user->shop?->id === $product->shop_id;
         $hasRated = $user ? $user->hasRated($product->id) : false;
 
-        return view('web.product.productdetail', compact('product', 'relatedProducts', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated'));
+        return view('web.product.productdetail', compact('product', 'relatedProducts', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated', 'categories', 'brands'));
     }
 
     public function create()
@@ -106,13 +108,12 @@ class ProductController extends Controller
                     }
                 }
 
-                return redirect()->route('post.create')
-                    ->with('success', 'Đăng bài thành công! Vui lòng chờ kiểm duyệt!');
+                return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm thành công!']);
             } else {
-                return redirect()->back()->with('error', 'Đăng bài thất bại.');
+                return response()->json(['success' => false, 'message' => 'Đăng bài thất bại.']);
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi: '.$e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Đã có lỗi xảy ra, vui lòng thử lại!']);
         }
     }
 

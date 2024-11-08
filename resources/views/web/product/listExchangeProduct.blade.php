@@ -33,8 +33,19 @@
         </a>
         <br>
         <div class="buy-wrap-exchange">
+            @auth
             <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
-            <a class="btn-buy-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi hàng</a>
+            <button class="btn-buy-exchange exchange"
+                data-href="{{ route('user.exchangeProducts') }}"
+                data-id="{{ $product->id }}"
+                data-owner-id="{{ $product->user_id }}"
+                data-user-id="{{ optional(Auth::user())->id }}">
+                Đổi hàng
+            </button>
+            @else
+            <a class="btn-chat-exchange" href="{{ route('web.login') }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+            <a class="btn-buy-exchange" href="{{ route('web.login') }}">Đổi hàng</a>
+            @endauth
         </div>
     </div>
 </div>

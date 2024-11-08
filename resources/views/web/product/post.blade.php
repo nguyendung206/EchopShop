@@ -10,9 +10,10 @@
         <h1 class="profile-title">Thông tin sản phẩm</h1>
     </div>
     <div class="p-4">
-        <form action="{{route('post.store')}}" method="post" enctype="multipart/form-data">
+        <form id="formPost" action="{{route('post.store')}}" method="post" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="shop_id" value="{{ optional(Auth::user()->shop)->id }}">
+            <input type="hidden" name="user_id" value="{{ optional(Auth::user())->id }}">
             <input type="hidden" name="status" value="2">
             <div class="form-group">
                 <label for="productName">Tên sản phẩm *</label>
@@ -85,7 +86,7 @@
             <div class="form-group">
                 <label for="productDetails">Chi tiết *</label>
                 <div class="ml-4 form-check form-check-inline">
-                    <input name="unittype" type="radio" id="unitType1" class="form-check-input" value="1" {{ old('unittype') == '1' ? 'checked' : '' }} style="cursor: pointer;" onchange="toggleDetailInput()">
+                    <input name="unittype" type="radio" id="unitType1" class="form-check-input" value="1" {{ old('unittype') == '1' ? 'checked' : '' }} checked style="cursor: pointer;" onchange="toggleDetailInput()">
                     <label class="form-check-label" for="unitType1" style="cursor: pointer;">Chỉ có số lượng</label>
                 </div>
 
@@ -113,14 +114,14 @@
             </div>
 
             <div class="form-group">
-                <label >Tình trạng sản phẩm </label>
+                <label>Tình trạng sản phẩm </label>
                 <div>
                     <div class="range">
-                        <input type="range" min="0" step="1" max="100"  value="{{old('quality') ? old('quality') : 100}}" name="quality" id="qualityRange">
+                        <input type="range" min="0" step="1" max="100" value="{{old('quality') ? old('quality') : 100}}" name="quality" id="qualityRange">
                     </div>
-                  
+
                     <ul class="range-labels">
-                      <li id="qualityLabel">Chất lượng sản phẩm: {{old('quality') ? old('quality') : 100}}%</li>
+                        <li id="qualityLabel">Chất lượng sản phẩm: {{old('quality') ? old('quality') : 100}}%</li>
                     </ul>
                 </div>
             </div>
@@ -148,11 +149,64 @@
 
             <div class="float-right form-btn">
                 <a href="{{ route('home') }}" class="form-btn-cancel">Hủy</a>
-                <button type="submit" class="form-btn-save">Lưu</button>
+                <button id="post" type="submit" class="form-btn-save">Lưu</button>
             </div>
         </form>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(event) {
+            event.preventDefault();
+
+            $('.is-invalid').removeClass('is-invalid');
+            $('.invalid-feedback').remove();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success(response.message, null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                        $('#formPost').trigger("reset");
+                        $('.invalid-feedback').empty();
+                    } else {
+                        toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var errors = xhr.responseJSON.errors;
+
+                    if (errors) {
+                        $.each(errors, function(field, messages) {
+                            var fieldElement = $('[name="' + field + '"]');
+                            fieldElement.addClass('is-invalid');
+                            $.each(messages, function(index, message) {
+                                fieldElement.after('<div class="invalid-feedback">' + message + '</div>');
+                            });
+                        });
+                        toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                    } else {
+                        toastr.error('Đã có lỗi xảy ra. Vui lòng thử lại!', null, {
+                            positionClass: 'toast-bottom-left'
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const categories = @json($categories);

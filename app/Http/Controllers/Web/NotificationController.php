@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 use App\Enums\TypeNotification;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Services\ExchangeService;
 use App\Services\NotificationService;
 use App\Services\OrderService;
 use Exception;
@@ -17,10 +18,13 @@ class NotificationController extends Controller
 
     protected $orderService;
 
-    public function __construct(NotificationService $notificationService, OrderService $orderService)
+    protected $exchangeService;
+
+    public function __construct(NotificationService $notificationService, OrderService $orderService, ExchangeService $exchangeService)
     {
         $this->notificationService = $notificationService;
         $this->orderService = $orderService;
+        $this->exchangeService = $exchangeService;
     }
 
     public function isreaded($id)
@@ -29,7 +33,12 @@ class NotificationController extends Controller
         if ($notification->type->value == TypeNotification::CHANGESTATUSORDER->value) {
             $orders = $this->orderService->purchase(['type' => null]);
 
-            return view('web.order.purchase', compact('orders'));
+            return view('web.profile.exchangeList', compact('orders'));
+        }
+        if ($notification->type->value == TypeNotification::REQUESTEXCHANGE->value) {
+            $exchanges = $this->exchangeService->getList(10);
+
+            return view('web.profile.exchangeList', compact('exchanges'));
         }
 
         return redirect()->route('web.productdetail.index', ['slug' => $notification->product->slug]);

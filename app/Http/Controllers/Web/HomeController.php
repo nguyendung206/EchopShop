@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Enums\Status;
 use App\Enums\TypeProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Province;
 use App\Services\HomeService;
@@ -57,6 +59,8 @@ class HomeController extends Controller
 
     public function filterProducts(Request $request)
     {
+        $categories = Category::where('status', Status::ACTIVE)->get();
+        $brands = Brand::where('status', Status::ACTIVE)->get();
         $products = $this->homeService->filterProducts($request->all());
         $provinces = Province::query()->get();
         if ($request->ajax() || $request->wantsJson()) {
@@ -70,10 +74,20 @@ class HomeController extends Controller
         if (isset($queryParams['type'])) {
             $queryParams = [0 => $queryParams['type']];
 
-            return view('web.product.productPage', ['products' => $products, 'provinces' => $provinces])->withQueryString($queryParams);
+            return view('web.product.productPage', [
+                'products' => $products,
+                'categories' => $categories,
+                'brands' => $brands,
+                'provinces' => $provinces,
+            ])->withQueryString($queryParams);
         }
 
-        return view('web.product.productPage', ['products' => $products, 'provinces' => $provinces]);
+        return view('web.product.productPage', [
+            'products' => $products,
+            'categories' => $categories,
+            'brands' => $brands,
+            'provinces' => $provinces,
+        ]);
 
     }
 

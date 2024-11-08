@@ -9,6 +9,7 @@ enum TypeNotification: int
     case REJECT = 3;
     case ACCEPT = 4;
     case CHANGESTATUSORDER = 5;
+    case REQUESTEXCHANGE = 6;
 
     public function label(): string
     {
@@ -17,7 +18,8 @@ enum TypeNotification: int
             self::INACTIVE => 'Vô hiệu hóa sản phẩm',
             self::REJECT => 'Từ chối cập nhật sản phẩm',
             self::ACCEPT => 'Đã được cập nhật',
-            self::CHANGESTATUSORDER => 'Đơn hàng của bạn đã thay đổi trạng thái'
+            self::CHANGESTATUSORDER => 'Đơn hàng của bạn đã thay đổi trạng thái',
+            self::REQUESTEXCHANGE => 'Yêu cầu trao đổi sản phẩm',
         };
     }
 }

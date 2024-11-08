@@ -108,6 +108,7 @@ class ProductService
     public function createProduct(ProductRequest $request)
     {
         $product = new Product;
+        $product->user_id = $request->user_id;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->status = $request->status;
@@ -210,6 +211,7 @@ class ProductService
     public function updateProduct(ProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
+        $product->user_id = $request->user_id;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->status = $request->status;
