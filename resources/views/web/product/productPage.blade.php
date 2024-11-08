@@ -49,6 +49,7 @@ Danh sách sản phẩm theo danh mục
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/product.css') }}">
+<!-- <link rel="stylesheet" href="{{ asset('/css/profile.css') }}"> -->
 @endsection
 
 @section('content')
@@ -140,12 +141,19 @@ Danh sách sản phẩm theo danh mục
                         @switch($case)
                         @case(TypeProductEnums::EXCHANGE->value)
                         <div class="buy-wrap-exchange">
-                            <a class="btn-chat-exchange"
-                                href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i
-                                    class="fa-regular fa-comment-dots"></i> Chat</a>
-                            <a class="btn-buy-exchange"
-                                href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi
-                                hàng</a>
+                            @auth
+                            <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+                            <button class="btn-buy-exchange exchange"
+                                data-href="{{ route('user.exchangeProducts') }}"
+                                data-id="{{ $product->id }}"
+                                data-owner-id="{{ $product->user_id }}"
+                                data-user-id="{{ optional(Auth::user())->id }}">
+                                Đổi hàng
+                            </button>
+                            @else
+                            <a class="btn-chat-exchange" href="{{ route('web.login') }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+                            <a class="btn-buy-exchange" href="{{ route('web.login') }}">Đổi hàng</a>
+                            @endauth
                         </div>
                         @break
 
@@ -271,7 +279,13 @@ Danh sách sản phẩm theo danh mục
                         <div class="product-actions">
                             @if ($product->type->value == TypeProductEnums::EXCHANGE->value)
                             <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
-                            <a class="btn-buy-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi hàng</a>
+                            <button class="btn-buy-exchange exchange"
+                                data-href="{{ route('user.exchangeProducts') }}"
+                                data-id="{{ $product->id }}"
+                                data-owner-id="{{ $product->user_id }}"
+                                data-user-id="{{ optional(Auth::user())->id }}">
+                                Đổi hàng
+                            </button>
                             @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
                             <div class="buy-wrap">
                                 <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
@@ -353,10 +367,12 @@ Danh sách sản phẩm theo danh mục
         </div>
     </div>
 </div>
-
+@include('web/Modal/exchange')
+@include('web/Modal/add-exchange-product')
 @section('script')
 <script src="{{ asset('/js/favorite.js') }}"></script>
 <script src="{{ asset('/js/cart.js') }}"></script>
+<script src="{{ asset('/js/exchange.js') }}"></script>
 
 <script>
     $(document).ready(function() {

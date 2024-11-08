@@ -54,6 +54,8 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::where('slug', $slug)->first();
+        $categories = Category::where('status', Status::ACTIVE)->get();
+        $brands = Brand::where('status', Status::ACTIVE)->get();
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->whereNot('id', $product->id)
             ->where('type', $product->type)
@@ -64,7 +66,7 @@ class ProductController extends Controller
         $isShopOwner = $user && $user->shop?->id === $product->shop_id;
         $hasRated = $user ? $user->hasRated($product->id) : false;
 
-        return view('web.product.productdetail', compact('product', 'relatedProducts', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated'));
+        return view('web.product.productdetail', compact('product', 'relatedProducts', 'ratings', 'isPurchased', 'isShopOwner', 'hasRated', 'categories', 'brands'));
     }
 
     public function create()

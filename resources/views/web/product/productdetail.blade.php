@@ -237,7 +237,13 @@ $totalQuantity = 0;
                 </div>
                 <div class="product-button">
                     @if($product->type->value == 1)
-                    <button>Trao đổi</button>
+                    <button class="btn-buy-exchange exchange"
+                        data-href="{{ route('user.exchangeProducts') }}"
+                        data-id="{{ $product->id }}"
+                        data-owner-id="{{ $product->user_id }}"
+                        data-user-id="{{ optional(Auth::user())->id }}">
+                        Đổi hàng
+                    </button>
                     @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
                     @auth
                     <form action="{{ route('cart.store') }}" method="POST" class="d-inline" id="cartForm">
@@ -447,7 +453,7 @@ $totalQuantity = 0;
     <div class="content-5-wrap container">
         <div class="main-content-5 responsive slider multiple-items-2">
             @foreach ($relatedProducts as $relatedProduct)
-            <div class="product-wrap mx-2">
+            <div class="product-wrap product-item-category mx-2">
                 <a href="{{ route('web.productdetail.index', ['slug' => $relatedProduct->slug]) }}">
                     <div style="position: relative;">
                         <img class="product-img" src="{{ getImage($relatedProduct->photo) }} " alt="">
@@ -484,7 +490,7 @@ $totalQuantity = 0;
                 </a>
 
                 <br>
-
+                @if($relatedProduct->type->value == TypeProductEnums::SECONDHAND->value )
                 <div class="buy-wrap">
                     <a href="#" class="btn-chat-product text-center"><i class="fa-regular fa-comment-dots"></i></a>
                     @auth
@@ -505,6 +511,23 @@ $totalQuantity = 0;
                         Mua ngay
                     </a>
                 </div>
+                @elseif($relatedProduct->type->value == TypeProductEnums::EXCHANGE->value)
+                <div class="buy-wrap-exchange">
+                    @auth
+                    <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+                    <button class="btn-buy-exchange exchange"
+                        data-href="{{ route('user.exchangeProducts') }}"
+                        data-id="{{ $product->id }}"
+                        data-owner-id="{{ $product->user_id }}"
+                        data-user-id="{{ optional(Auth::user())->id }}">
+                        Đổi hàng
+                    </button>
+                    @else
+                    <a class="btn-chat-exchange" href="{{ route('web.login') }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+                    <a class="btn-buy-exchange" href="{{ route('web.login') }}">Đổi hàng</a>
+                    @endauth
+                </div>
+                @endif
             </div>
             @endforeach
 
@@ -613,7 +636,8 @@ $totalQuantity = 0;
     <div class="custom-modal-content" id="modalContent">
     </div>
 </div>
-
+@include('web/Modal/exchange')
+@include('web/Modal/add-exchange-product')
 @section('script')
 <!-- <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
@@ -951,5 +975,6 @@ $totalQuantity = 0;
 </script>
 <script src="{{ asset('/js/favorite.js') }}"></script>
 <script src="{{ asset('/js/cart.js')}}"></script>
+<script src="{{ asset('/js/exchange.js')}}"></script>
 @endsection
 @endsection

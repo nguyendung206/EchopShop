@@ -237,7 +237,7 @@
 .product-item div {
     text-align: center;
 }
-.product-item button {
+/* .product-item button {
     border: none;
     background-color: rgba(177, 0, 0, 1);
     color: white;
@@ -247,7 +247,7 @@
 }
 .product-item button:hover {
     background-color: rgba(177, 0, 0, 0.8);
-}
+} */
 .category-item-wrap {
     display: none;
 }

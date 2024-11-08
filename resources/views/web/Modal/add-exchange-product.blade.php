@@ -1,38 +1,6 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('/css/profile.css') }}">
 <link rel="stylesheet" href="{{ asset('/css/inputRangerQuality.css') }}">
-<style>
-    .add {
-        color: #B10000 !important;
-        border: none !important;
-        padding: 0 !important;
-        cursor: pointer;
-    }
-
-    .add:hover {
-        background-color: #fff !important;
-        color: #B10000 !important;
-    }
-
-    .apply {
-        padding: 8px 40px;
-        border: 1px solid #B10000;
-        cursor: pointer;
-        border-radius: 10px;
-        background-color: #B10000;
-        color: #fff;
-    }
-
-    .apply:hover {
-        background-color: #4f0000;
-        color: #fff !important;
-    }
-
-    .back {
-        color: #B10000;
-        background-color: #fff;
-    }
-</style>
 @endsection
 <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

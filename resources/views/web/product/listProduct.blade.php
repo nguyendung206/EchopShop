@@ -71,12 +71,19 @@ $dataUrl = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
         @switch($case)
         @case(TypeProductEnums::EXCHANGE->value)
         <div class="buy-wrap-exchange">
-            <a class="btn-chat-exchange"
-                href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i
-                    class="fa-regular fa-comment-dots"></i> Chat</a>
-            <a class="btn-buy-exchange"
-                href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi
-                hàng</a>
+            @auth
+            <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+            <button class="btn-buy-exchange exchange"
+                data-href="{{ route('user.exchangeProducts') }}"
+                data-id="{{ $product->id }}"
+                data-owner-id="{{ $product->user_id }}"
+                data-user-id="{{ optional(Auth::user())->id }}">
+                Đổi hàng
+            </button>
+            @else
+            <a class="btn-chat-exchange" href="{{ route('web.login') }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
+            <a class="btn-buy-exchange" href="{{ route('web.login') }}">Đổi hàng</a>
+            @endauth
         </div>
         @break
 
@@ -201,7 +208,13 @@ $dataUrl = route('listProducts', ['type' => TypeProductEnums::EXCHANGE]);
         <div class="product-actions">
             @if ($product->type->value == TypeProductEnums::EXCHANGE->value)
             <a class="btn-chat-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}"><i class="fa-regular fa-comment-dots"></i> Chat</a>
-            <a class="btn-buy-exchange" href="{{ route('web.productdetail.index', ['slug' => $product->slug]) }}">Đổi hàng</a>
+            <button class="btn-buy-exchange exchange"
+                data-href="{{ route('user.exchangeProducts') }}"
+                data-id="{{ $product->id }}"
+                data-owner-id="{{ $product->user_id }}"
+                data-user-id="{{ optional(Auth::user())->id }}">
+                Đổi hàng
+            </button>
             @elseif($product->type->value == TypeProductEnums::SECONDHAND->value || $product->type->value == TypeProductEnums::SALE->value)
             <div class="buy-wrap">
                 <a href="#" class="btn-chat-product"><i class="fa-regular fa-comment-dots"></i></a>
