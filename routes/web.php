@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
+use App\Http\Controllers\web\ExchangeController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\web\NotificationController;
@@ -110,4 +111,10 @@ Route::middleware(['auth:web'])->prefix('/')->group(function () {
     Route::prefix('/rating')->name('rating.')->group(function () {
         Route::post('/store', [RatingController::class, 'store'])->name('store');
     });
+
+    Route::resource('/exchange', ExchangeController::class);
+    Route::get('/user-exchange-products', [ExchangeController::class, 'getUserExchangeProducts'])->name('user.exchangeProducts');
+    Route::get('/exchange/detail', [ExchangeController::class, 'detail'])->name('exchange.detail');
+    Route::get('/exchange/accept/{id}', [ExchangeController::class, 'accept'])->name('exchange.accept');
+    Route::get('/exchange/reject/{id}', [ExchangeController::class, 'reject'])->name('exchange.reject');
 });

@@ -25,6 +25,14 @@
                         <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->shop->name }}</p>
                     </div>
                 </div>
+                @if(isset($product->user->name))
+                <div class="form-group row">
+                    <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Người thêm:')</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-plaintext pt-0" style="font-size: 1rem;">{{ $product->user->name }}</p>
+                    </div>
+                </div>
+                @endif
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500" style="font-size: 1rem;">@lang('Tên sản phẩm:')</label>
                     <div class="col-sm-9">
@@ -106,11 +114,12 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-from-label font-weight-500 mt-2" style="font-size: 1rem;">@lang('Số lượng:')</label>
                     <div class="col-sm-9">
+                        @if($product->productUnits->isNotEmpty() && $product->productUnits->first()->type == 2)
                         <table class="table table-bordered" style="font-size: 1rem;">
                             <thead>
                                 <tr>
                                     <th>@lang('Màu sắc')</th>
-                                    <th>@lang('Kích cở')</th>
+                                    <th>@lang('Kích cỡ')</th>
                                     <th>@lang('Số lượng')</th>
                                 </tr>
                             </thead>
@@ -124,6 +133,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @else
+                        <p class="form-control-plaintext pt-0 my-2" style="font-size: 1rem;">
+                            {{ $product->productUnits->sum('quantity') }}
+                        </p>
+                        @endif
                     </div>
                 </div>
 

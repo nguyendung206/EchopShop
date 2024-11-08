@@ -807,6 +807,7 @@ a:hover {
     color: white;
     background-color: #ff0000;
     border: 1px solid #ff0000;
+    cursor: pointer;
 }
 
 .btn-buy-exchange:hover {

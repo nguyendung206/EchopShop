@@ -106,13 +106,12 @@ class ProductController extends Controller
                     }
                 }
 
-                return redirect()->route('post.create')
-                    ->with('success', 'Đăng bài thành công! Vui lòng chờ kiểm duyệt!');
+                return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm thành công!']);
             } else {
-                return redirect()->back()->with('error', 'Đăng bài thất bại.');
+                return response()->json(['success' => false, 'message' => 'Đăng bài thất bại.']);
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi: '.$e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Đã có lỗi xảy ra, vui lòng thử lại!']);
         }
     }
 
