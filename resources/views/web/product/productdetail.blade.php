@@ -257,9 +257,15 @@ $totalQuantity = 0;
                         Thêm hàng vào giỏ
                     </a>
                     @endauth
-                    <a href="#" class="btn-cart-product" style="padding: 11px 54px;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
+                    @auth
+                    <a href="#" class="btn-cart-product" id="purchase-button-product" style="padding: 11px 54px;color: white;" data-url-add-to-cart="{{ route('cart.store') }}" data-id="{{ $product->id }}" data-url-check="{{ route('cart.check') }}">
                         Mua hàng
                     </a>
+                    @else
+                    <a href="{{ route('web.login') }}" class="btn-cart-product" style="padding: 11px 54px;" >
+                        Mua hàng
+                    </a>
+                    @endauth
                     @elseif($product->type->value == 3)
                     <button>Nhận quà tặng</button>
                     @endif

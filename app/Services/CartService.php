@@ -25,6 +25,7 @@ class CartService
     {
         try {
             $userId = Auth::id();
+            $cart = collect();
             $existingCartItem = Cart::where('user_id', $userId)
                 ->where('product_unit_id', $request->product_unit_id)
                 ->first();
@@ -39,19 +40,19 @@ class CartService
                     $existingCartItem->save();
                 }
 
-                return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
+                return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!', 'cartId' => $existingCartItem?->id];
             }
             if ($request->has('type') && is_numeric($request->type)) {
                 if ($request->type == 1) {
 
-                    Cart::create([
+                    $cart = Cart::create([
                         'user_id' => $userId,
                         'product_id' => $request->productId,
                         'quantity' => 1,
                         'product_unit_id' => $request->product_unit_id,
                     ]);
 
-                    return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
+                    return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!', 'cartId' => $cart?->id];
                 } else {
                     $productUnit = ProductUnit::find($request->product_unit_id);
                     $cart = Cart::create([
@@ -63,7 +64,7 @@ class CartService
                         'quantity' => $request->quantity ? $request->quantity : 1,
                     ]);
 
-                    return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!'];
+                    return ['status' => 200, 'message' => 'Thêm vào giỏ hàng thành công!', 'cartId' => $cart?->id];
                 }
             }
 

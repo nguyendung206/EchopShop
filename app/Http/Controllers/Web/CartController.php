@@ -37,6 +37,8 @@ class CartController extends Controller
                     return response()->json([
                         'status' => 200,
                         'message' => $result['message'],
+                        'cartId' => $result['cartId'],
+                        'redirect_url' => route('order.index', ['cart_ids[]' => $result['cartId']]),
                     ], 200);
                 } else {
                     return response()->json([

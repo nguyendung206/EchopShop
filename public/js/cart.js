@@ -155,18 +155,24 @@ $(document).ready(function () {
             _token: $('meta[name="csrf-token"]').attr('content')
         };
 
-        console.log('Dữ liệu gửi đi:', dataToSend);
         $.ajax({
             url: addToCartUrl,
             method: 'POST',
             data: dataToSend,
             success: function (response) {
+                resultAddCart = response;
+                
                 if (response.status === 200) {
                     toastr.success(response.message, null, { positionClass: 'toast-bottom-left' });
 
                     updateCartCount();
 
                     $('#confirmationModal').modal('hide');
+                    if($('#saveSelectedUnit').data('is-purchase') != undefined) {
+                        console.log(response.redirect_url);
+                        window.location.href = response.redirect_url;
+                    }
+
                 } else {
                     toastr.error(response.message, null, { positionClass: 'toast-bottom-left' });
                 }
@@ -182,4 +188,13 @@ $(document).ready(function () {
     function showError(message) {
         toastr.error(message, null, { positionClass: 'toast-bottom-left' });
     }
+
+
+    $('#purchase-button-product').on('click', function(event) {
+        event.preventDefault();
+        $('#saveSelectedUnit').attr('data-is-purchase', 'true');
+        $('#saveSelectedUnit').trigger('click');
+        
+        
+    });
 });
