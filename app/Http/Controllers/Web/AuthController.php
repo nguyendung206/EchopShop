@@ -65,7 +65,6 @@ class AuthController extends Controller
                     'success' => true,
                     'access_token' => $tokenResult,
                     'token_type' => 'Bearer',
-                    'expires_in' => 60,
                 ], 200);
             }
 
