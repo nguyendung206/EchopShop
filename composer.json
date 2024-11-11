@@ -12,7 +12,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laracasts/flash": "*",
         "laravel/framework": "^9.19",
-        "laravel/sanctum": "^3.0",
+        "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "symfony/css-selector": "6.0",
