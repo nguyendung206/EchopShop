@@ -40,42 +40,50 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        try {
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
 
-        if ($request->is('api/*') || $request->wantsJson()) {
-            if (! Auth::attempt($credentials)) {
+            if ($request->is('api/*') || $request->wantsJson()) {
+                if (! Auth::attempt($credentials)) {
+                    return response()->json([
+                        'status_code' => 500,
+                        'message' => 'Unauthorized',
+                    ]);
+                }
+
+                $user = User::where('email', $request->email)->first();
+
+                if (! Hash::check($request->password, $user->password, [])) {
+                    throw new \Exception('Error in Login');
+                }
+                $tokenResult = $user->createToken('authToken')->plainTextToken;
+
                 return response()->json([
-                    'status_code' => 500,
-                    'message' => 'Unauthorized',
-                ]);
+                    'success' => true,
+                    'access_token' => $tokenResult,
+                    'token_type' => 'Bearer',
+                    'expires_in' => 60,
+                ], 200);
             }
 
-            $user = User::where('email', $request->email)->first();
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+                $user = Auth::user();
+                Session::put('user', $user);
 
-            if (! Hash::check($request->password, $user->password, [])) {
-                throw new \Exception('Error in Login');
+                return redirect('/');
+            } else {
+                return redirect()->back()->with('error', 'Email hoặc mật khẩu không đúng.');
             }
-            $tokenResult = $user->createToken('authToken')->plainTextToken;
-
+        } catch (\Exception $error) {
             return response()->json([
-                'success' => true,
-                'access_token' => $tokenResult,
-                'token_type' => 'Bearer',
-                'expires_in' => 60,
-            ], 200);
-        }
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            $user = Auth::user();
-            Session::put('user', $user);
-
-            return redirect('/');
-        } else {
-            return redirect()->back()->with('error', 'Email hoặc mật khẩu không đúng.');
+                'status_code' => 500,
+                'message' => 'Error in Login',
+                'error' => $error,
+            ]);
         }
     }
 
