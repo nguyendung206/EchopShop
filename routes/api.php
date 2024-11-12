@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::post('/resetPassword/{token}', [AuthController::class, 'checkPinCodeAndResetPassword'])->name('api.resetPassword');
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('/logout', [AuthController::class, 'logout']);
+
 });
