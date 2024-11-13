@@ -105,7 +105,7 @@ class ProductService
         return $query->paginate(10);
     }
 
-    public function createProduct(ProductRequest $request)
+    public function createProduct($request)
     {
         $product = new Product;
         $product->user_id = $request->user_id;
