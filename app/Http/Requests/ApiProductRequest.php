@@ -5,10 +5,10 @@ namespace App\Http\Requests;
 use App\Enums\Status;
 use App\Enums\TypeProduct;
 use App\Enums\TypeProductUnit;
-use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class ApiProductRequest extends FormRequest
 {
@@ -48,6 +48,15 @@ class ApiProductRequest extends FormRequest
             'sizes' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'nullable', 'array'],
             'sizes.*' => [Rule::requiredIf($this->input('unittype') == TypeProductUnit::FULL), 'nullable', 'string'],
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (request()->user()->load('shop')->shop === null) {
+                $validator->errors()->add('shop', 'Người dùng chưa đăng ký bán hàng.');
+            }
+        });
     }
 
     public function attributes()
