@@ -24,9 +24,9 @@ class ProfileUserRequest extends FormRequest
     public function rules()
     {
         $rule = [
-            'name' => ['required', 'min:3', 'max:100'],
-            'phone_number' => ['required', 'numeric', 'digits:10'],
-            'email' => ['required', 'email', 'unique:users,email,'.$this->id],
+            'name' => 'required|min:3|max:100',
+            'phone_number' => 'required|numeric|digits:10',
+            'email' => 'required|email|unique:users,email,'.$this->id,
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
 
@@ -39,6 +39,7 @@ class ProfileUserRequest extends FormRequest
             'name' => 'Tên người dùng',
             'email' => 'Địa chỉ email',
             'phone_number' => 'Số điện thoại',
+            'avatar' => 'Ảnh đại diện',
         ];
     }
 }
