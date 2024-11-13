@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
-Route::post('/resetPassword', [AuthController::class, 'checkPinCodeAndResetPassword'])->name('api.resetPassword');
+Route::post('/checkPin', [AuthController::class, 'checkPinCode'])->name('api.checkPin');
+Route::post('/resetPassword', [AuthController::class, 'resetPassword'])->name('api.resetPassword')->middleware('signed.json');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);

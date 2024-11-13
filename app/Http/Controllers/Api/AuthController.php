@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ApiCheckPinRequest;
 use App\Http\Requests\ApiEmailRequest;
 use App\Http\Requests\ApiResetPasswordRequest;
 use App\Jobs\SendForgotPasswordMail;
@@ -70,44 +71,44 @@ class AuthController extends Controller
 
     public function forgotPassword(ApiEmailRequest $request)
     {
-        // try {
+        try {
 
-        $user = User::where('email', $request->email)->first();
-        $token = \Str::random(40);
-        $pin = rand(100000, 999999);
-        $tokenData = [
-            'email' => $request->email,
-            'token' => $token,
-            'pin' => $pin,
-        ];
-        if (ResetPasswordToken::where('email', $request->email)->exists()) {
-            ResetPasswordToken::where('email', $request->email)->update(['token' => $token, 'pin' => $pin]); // update token mới nếu đã có email trong database
+            $user = User::where('email', $request->email)->first();
+            $token = \Str::random(40);
+            $pin = rand(100000, 999999);
+            $tokenData = [
+                'email' => $request->email,
+                'token' => $token,
+                'pin' => $pin,
+            ];
+            if (ResetPasswordToken::where('email', $request->email)->exists()) {
+                ResetPasswordToken::where('email', $request->email)->update(['token' => $token, 'pin' => $pin]); // update token mới nếu đã có email trong database
 
-            $emailJob = new SendForgotPasswordMail($user, $token, $pin, $user->email);
-            dispatch($emailJob);
-        } else {
-            ResetPasswordToken::create($tokenData);
-            $emailJob = new SendForgotPasswordMail($user, $token, $pin, $user->email);
-            dispatch($emailJob);
+                $emailJob = new SendForgotPasswordMail($user, $token, $pin, $user->email);
+                dispatch($emailJob);
+            } else {
+                ResetPasswordToken::create($tokenData);
+                $emailJob = new SendForgotPasswordMail($user, $token, $pin, $user->email);
+                dispatch($emailJob);
+            }
+
+            return response()->json([
+                'status' => 200,
+                'email' => $user->email,
+                'token' => $token,
+                'pin' => $pin,
+
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Lỗi server',
+                'error' => $e,
+            ], 500);
         }
-
-        return response()->json([
-            'status' => 200,
-            'email' => $user->email,
-            'token_data' => $token,
-            'pin' => $pin,
-            'url_reset_password' => URL::temporarySignedRoute('api.resetPassword', now()->addMinute(10)),
-        ], 200);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'status' => 500,
-        //         'message' => 'Lỗi server',
-        //         'error' => $e,
-        //     ], 500);
-        // }
     }
 
-    public function checkPinCodeAndResetPassword(ApiResetPasswordRequest $request)
+    public function checkPinCode(ApiCheckPinRequest $request)
     {
         try {
             $token = $request->token;
@@ -122,15 +123,10 @@ class AuthController extends Controller
                     ], 404);
                 }
 
-                $user = User::where('email', $checkToken->email)->firstOrFail();
-                $data = [
-                    'password' => bcrypt($request->password),
-                ];
-                $user->update($data);
-
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Đổi mật khẩu thành công.',
+                    'message' => 'Kiểm tra mã pin thành công.',
+                    'url_reset_password' => URL::temporarySignedRoute('api.resetPassword', now()->addMinute(3)),
                 ], 200);
             }
 
@@ -151,5 +147,37 @@ class AuthController extends Controller
             ], 500);
         }
 
+    }
+
+    public function resetPassword(ApiResetPasswordRequest $request)
+    {
+        try {
+            $token = $request->token;
+            $checkToken = ResetPasswordToken::where('token', $token)->first();
+
+            if (! $checkToken) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Token không chính xác.',
+                ], 404);
+            }
+
+            $user = User::where('email', $checkToken->email)->firstOrFail();
+            $data = [
+                'password' => bcrypt($request->password),
+            ];
+            $user->update($data);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Đổi mật khẩu thành công.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Lỗi server',
+                'error' => $e,
+            ], 500);
+        }
     }
 }
