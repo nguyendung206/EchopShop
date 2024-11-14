@@ -16,7 +16,6 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Mail;
 
@@ -40,55 +39,21 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        try {
-            $credentials = $request->validate([
-                'email' => ['required', 'email'],
-                'password' => ['required'],
-            ]);
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-            if ($request->is('api/*') || $request->wantsJson()) {
-                if (! Auth::attempt($credentials)) {
-                    return response()->json([
-                        'status_code' => 500,
-                        'message' => 'Unauthorized',
-                    ]);
-                }
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+            Session::put('user', $user);
 
-                $user = User::where('email', $request->email)->first();
-
-                if (! Hash::check($request->password, $user->password, [])) {
-                    throw new \Exception('Error in Login');
-                }
-                $tokenResult = $user->createToken('authToken')->plainTextToken;
-
-                return response()->json([
-                    'success' => true,
-                    'access_token' => $tokenResult,
-                    'token_type' => 'Bearer',
-                ], 200);
-            }
-
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
-                $user = Auth::user();
-                Session::put('user', $user);
-
-                return redirect('/');
-            } else {
-                return redirect()->back()->with('error', 'Email hoặc mật khẩu không đúng.');
-            }
-        } catch (\Exception $error) {
-            return response()->json([
-                'status_code' => 500,
-                'message' => 'Error in Login',
-                'error' => $error,
-            ]);
+            return redirect('/');
+        } else {
+            return redirect()->back()->with('error', 'Email hoặc mật khẩu không đúng.');
         }
-    }
 
-    public function me(Request $request)
-    {
-        return $request->user();
     }
 
     public function register()
@@ -225,15 +190,6 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        if ($request->is('api/*') || $request->wantsJson()) {
-            auth()->user()->tokens()->delete();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Successfully logged out',
-            ], 200);
-        }
-
         Auth::logout();
 
         return redirect()->route('web.login');
