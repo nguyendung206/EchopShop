@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use App\Enums\Status;
 use App\Enums\TypeProduct;
 use App\Enums\TypeProductUnit;
 use Illuminate\Contracts\Validation\Validator;
@@ -34,7 +33,6 @@ class ApiProductRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'list_photo.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
-            'status' => ['required', 'integer', Rule::in(array_column(Status::cases(), 'value'))],
             'type' => ['required', 'integer', Rule::in(array_column(TypeProduct::cases(), 'value'))],
             'description' => 'nullable|string',
             'brand_id' => 'nullable|exists:brands,id',
@@ -66,7 +64,6 @@ class ApiProductRequest extends FormRequest
             'price' => 'Giá sản phẩm',
             'photo' => 'Ảnh sản phẩm chính',
             'list_photo.*' => 'Ảnh sản phẩm khác',
-            'status' => 'Trạng thái sản phẩm',
             'type' => 'Kiểu sản phẩm',
             'description' => 'Mô tả sản phẩm',
             'brand_id' => 'Thương hiệu',
