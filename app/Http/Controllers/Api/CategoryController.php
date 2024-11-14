@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Services\CategoryService;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function getCategories()
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
+    public function getCategories(Request $request)
     {
         try {
-            $datas = Category::where('status', Status::ACTIVE)->get();
+            $datas = $this->categoryService->getCategories($request);
 
             return response()->json([
                 'status' => 200,

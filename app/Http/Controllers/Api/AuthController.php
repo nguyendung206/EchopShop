@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ApiCheckPinRequest;
-use App\Http\Requests\ApiEmailRequest;
-use App\Http\Requests\ApiResetPasswordRequest;
+use App\Http\Requests\Api\ApiCheckPinRequest;
+use App\Http\Requests\Api\ApiEmailRequest;
+use App\Http\Requests\Api\ApiResetPasswordRequest;
 use App\Jobs\SendForgotPasswordMail;
 use App\Models\ResetPasswordToken;
 use App\Models\User;
@@ -72,7 +72,6 @@ class AuthController extends Controller
     public function forgotPassword(ApiEmailRequest $request)
     {
         try {
-
             $user = User::where('email', $request->email)->first();
             $token = \Str::random(40);
             $pin = rand(100000, 999999);

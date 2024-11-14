@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ApiProductRequest;
+use App\Http\Requests\Api\ApiProductRequest;
 use App\Services\ProductService;
 
 class ProductController extends Controller
@@ -21,6 +22,7 @@ class ProductController extends Controller
             $user = $request->user()->load('shop');
             $request['user_id'] = $user->id;
             $request['shop_id'] = $user->shop->id;
+            $request['status'] = Status::INACTIVE->value;
             $product = $this->productService->createProduct($request);
             if ($product) {
                 if ($request->unittype == 1) {

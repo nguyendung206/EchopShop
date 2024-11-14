@@ -23,6 +23,10 @@ class BrandService
             $query->where('status', $request->status);
         }
 
+        if ($request->ajax() || $request->wantsJson() || $request->is('api/*')) {
+            return $query->get();
+        }
+
         return $query->paginate(10);
     }
 

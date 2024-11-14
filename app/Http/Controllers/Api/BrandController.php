@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
+use App\Services\BrandService;
+use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    public function getBrands()
+    protected $brandService;
+
+    public function __construct(BrandService $brandService)
+    {
+        $this->brandService = $brandService;
+    }
+
+    public function getBrands(Request $request)
     {
         try {
-            $datas = Brand::where('status', Status::ACTIVE)->get();
+            $datas = $this->brandService->getBrands($request);
 
             return response()->json([
                 'status' => 200,
-                'success' => true,
                 'datas' => $datas,
             ], 200);
         } catch (\Exception $e) {
