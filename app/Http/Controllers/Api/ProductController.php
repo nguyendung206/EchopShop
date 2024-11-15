@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\Status;
+use App\Http\ApiRequests\ApiProductRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ApiProductRequest;
 use App\Services\ProductService;
 
 class ProductController extends Controller

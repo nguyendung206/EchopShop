@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\ApiRequests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ApiEmailRequest extends FormRequest
+class ApiCheckPinRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,9 @@ class ApiEmailRequest extends FormRequest
      */
     public function rules()
     {
-        $rule = [
-            'email' => ['required', 'email', 'exists:users'],
+        return [
+            'pin' => ['required', 'digits:6'],
         ];
-
-        return $rule;
     }
 
     protected function failedValidation(Validator $validator)

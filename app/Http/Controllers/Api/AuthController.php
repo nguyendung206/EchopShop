@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\ApiRequests\ApiCheckPinRequest;
+use App\Http\ApiRequests\ApiEmailRequest;
+use App\Http\ApiRequests\ApiResetPasswordRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ApiCheckPinRequest;
-use App\Http\Requests\Api\ApiEmailRequest;
-use App\Http\Requests\Api\ApiResetPasswordRequest;
 use App\Jobs\SendForgotPasswordMail;
 use App\Models\ResetPasswordToken;
 use App\Models\User;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\ApiRequests;
 
 use App\Enums\TypeProduct;
 use App\Enums\TypeProductUnit;
