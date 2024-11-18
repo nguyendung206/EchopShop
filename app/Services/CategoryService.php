@@ -26,6 +26,25 @@ class CategoryService
         return $query->paginate(10);
     }
 
+    public function getApiCategories($request)
+    {
+        $query = Category::query();
+
+        if (! empty($request['search']) && $request['search'] != '') {
+            $searchTerm = $request['search'];
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
+            });
+        }
+
+        if (! empty($request['status']) && $request['status'] != '') {
+            $query->where('status', $request['status']);
+        }
+
+        return $query->get();
+    }
+
     public function createCategory(CategoryRequest $request)
     {
         $category = new Category;

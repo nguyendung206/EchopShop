@@ -26,6 +26,25 @@ class BrandService
         return $query->paginate(10);
     }
 
+    public function getApiBrands($request)
+    {
+        $query = Brand::query();
+
+        if (! empty($request['search']) && $request['search'] != '') {
+            $searchTerm = $request['search'];
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
+            });
+        }
+
+        if (! empty($request['status']) && $request['status'] != '') {
+            $query->where('status', $request['status']);
+        }
+
+        return $query->get();
+    }
+
     public function createBrand(BrandRequest $request)
     {
         $brand = new Brand;
