@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\ApiRequests;
+namespace App\Http\Requests\Api;
 
 use App\Enums\TypeProduct;
 use App\Enums\TypeProductUnit;
@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class ApiProductRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

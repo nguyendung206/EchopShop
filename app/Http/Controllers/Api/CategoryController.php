@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function getCategories(Request $request)
     {
         try {
-            $datas = $this->categoryService->getCategories($request);
+            $datas = $this->categoryService->getApiCategories($request->all());
 
             return response()->json([
                 'status' => 200,

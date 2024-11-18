@@ -18,7 +18,7 @@ class BrandController extends Controller
     public function getBrands(Request $request)
     {
         try {
-            $datas = $this->brandService->getBrands($request);
+            $datas = $this->brandService->getApiBrands($request->all());
 
             return response()->json([
                 'status' => 200,

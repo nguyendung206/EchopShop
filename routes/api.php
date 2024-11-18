@@ -22,16 +22,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
 Route::post('/checkPin', [AuthController::class, 'checkPinCode'])->name('api.checkPin');
 Route::post('/resetPassword', [AuthController::class, 'resetPassword'])->name('api.resetPassword')->middleware('signed.json');
+Route::get('/brand', [BrandController::class, 'getBrands']);
+Route::get('/category', [CategoryController::class, 'getcategories']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('/logout', [AuthController::class, 'logout']);
-
     Route::post('/post', [ProductController::class, 'store']);
 
-    Route::get('/brand', [BrandController::class, 'getBrands']);
-
-    Route::get('/category', [CategoryController::class, 'getcategories']);
     // Profile
     Route::put('/profile', [ProfileUserController::class, 'updateProfile']);
     Route::put('/identification', [ProfileUserController::class, 'updateIdentification']);
