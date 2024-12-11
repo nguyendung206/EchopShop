@@ -10,7 +10,7 @@ use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
-use App\Http\Controllers\web\RatingController;
+use App\Http\Controllers\Web\RatingController;
 use App\Http\Controllers\Web\ShopController;
 use App\Http\Controllers\Web\StaticContentController;
 use Illuminate\Support\Facades\Route;
