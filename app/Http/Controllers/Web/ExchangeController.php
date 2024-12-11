@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\web;
+namespace App\Http\Controllers\Web;
 
 use App\Enums\Status;
 use App\Enums\TypeNotification;
