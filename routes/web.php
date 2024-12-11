@@ -6,7 +6,7 @@ use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\web\ExchangeController;
 use App\Http\Controllers\Web\FavoriteController;
 use App\Http\Controllers\Web\HomeController;
-use App\Http\Controllers\web\NotificationController;
+use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\ProfileUserController;
